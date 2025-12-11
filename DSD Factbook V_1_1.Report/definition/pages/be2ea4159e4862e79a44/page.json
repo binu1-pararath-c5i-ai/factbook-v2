@@ -1,0 +1,194 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "be2ea4159e4862e79a44",
+  "displayName": "%Sold Drilldown_Current",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "3d4d8f9db93c8952b633",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "LocalChainName"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "And": {
+                  "Left": {
+                    "Not": {
+                      "Expression": {
+                        "Contains": {
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "v"
+                                }
+                              },
+                              "Property": "LocalChainName"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "'Fuel'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Right": {
+                    "Not": {
+                      "Expression": {
+                        "Contains": {
+                          "Left": {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "v"
+                                }
+                              },
+                              "Property": "LocalChainName"
+                            }
+                          },
+                          "Right": {
+                            "Literal": {
+                              "Value": "'CLSD'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User",
+        "isHiddenInViewMode": true,
+        "isLockedInViewMode": true
+      },
+      {
+        "name": "a5cc375900abaa96ce9d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "NationalChainName"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "v"
+                            }
+                          },
+                          "Property": "NationalChainName"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'RITE AID'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "objects": {
+    "outspacePane": [
+      {
+        "properties": {
+          "width": {
+            "expr": {
+              "Literal": {
+                "Value": "275L"
+              }
+            }
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "1f1de79d977006657365",
+      "target": "38775ac9ec30dcbb5d1e",
+      "type": "NoFilter"
+    },
+    {
+      "source": "1f1de79d977006657365",
+      "target": "9143c0d52cc125232791",
+      "type": "NoFilter"
+    },
+    {
+      "source": "1f1de79d977006657365",
+      "target": "56b3e3d6d84b7cdc668c",
+      "type": "NoFilter"
+    },
+    {
+      "source": "1f1de79d977006657365",
+      "target": "de170d56a4d0ab322001",
+      "type": "NoFilter"
+    },
+    {
+      "source": "1f1de79d977006657365",
+      "target": "5f1cba5f047ebd7b850d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "1f1de79d977006657365",
+      "target": "4a1684292bb384d8276c",
+      "type": "NoFilter"
+    }
+  ]
+}

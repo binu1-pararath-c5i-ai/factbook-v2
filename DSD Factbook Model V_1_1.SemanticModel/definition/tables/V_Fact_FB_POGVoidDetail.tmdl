@@ -1,0 +1,294 @@
+table V_Fact_FB_POGVoidDetail
+	lineageTag: 9753f597-42ce-4c49-a908-803e08ebe0b4
+
+	column CustomerID
+		dataType: string
+		lineageTag: 09efa96c-1799-46c3-b9b9-c266e2f47b10
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerName
+		dataType: string
+		lineageTag: 9fa59216-53e4-4257-bb0c-8815558631bd
+		summarizeBy: none
+		sourceColumn: CustomerName
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemID
+		dataType: string
+		lineageTag: 124cfaaa-536f-4418-9210-1251459c87d7
+		summarizeBy: none
+		sourceColumn: ItemID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemDesc
+		dataType: string
+		lineageTag: 2e5b5d02-21ff-43b1-9ba2-561c6aa70b78
+		summarizeBy: none
+		sourceColumn: ItemDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesGroupID
+		dataType: string
+		lineageTag: ea3cd1bf-4798-4402-801e-aa9628f65f56
+		summarizeBy: none
+		sourceColumn: SalesGroupID
+
+		annotation SummarizationSetBy = Automatic
+
+	column LastInvoiceDate
+		dataType: dateTime
+		formatString: mm/dd/yyyy
+		lineageTag: 625a7786-c745-437f-9fa1-95734183ef41
+		summarizeBy: none
+		sourceColumn: LastInvoiceDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column LocalChainId
+		dataType: string
+		lineageTag: d0a1681a-4abc-45a7-a9e8-462df0a07f10
+		summarizeBy: none
+		sourceColumn: LocalChainId
+
+		annotation SummarizationSetBy = Automatic
+
+	column PkgTypeID
+		dataType: string
+		lineageTag: aa64008c-7f9c-4cc6-9105-941aba8b97a0
+		summarizeBy: none
+		sourceColumn: PkgTypeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column PkgConfigID
+		dataType: string
+		lineageTag: e6c865e8-cde3-4f3a-8430-a2c0e016d890
+		summarizeBy: none
+		sourceColumn: PkgConfigID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RouteID
+		dataType: string
+		lineageTag: b35c306a-dfc2-479b-8e02-62945d59f81a
+		summarizeBy: none
+		sourceColumn: RouteID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Format
+		dataType: string
+		lineageTag: 6d9a1665-6a1a-488c-a5c7-67a265c24986
+		summarizeBy: none
+		sourceColumn: Format
+
+		annotation SummarizationSetBy = Automatic
+
+	column FormatDesc
+		dataType: string
+		lineageTag: 6af762db-2119-4537-9f5d-1d211d2128a1
+		summarizeBy: none
+		sourceColumn: FormatDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column VoidReason
+		dataType: string
+		lineageTag: d83a5f6a-a458-415a-9eaf-fa4821f826fe
+		summarizeBy: none
+		sourceColumn: VoidReason
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation __PBI_SemanticLinks = [{"LinkTarget":{"TableName":"V_Fact_FB_POGVoidDetail","TableItemName":"VoidReason_Group","ObjectType":4},"LinkType":"UsedInGroup"}]
+
+	column IsDSS
+		dataType: double
+		lineageTag: d7731f51-01bc-49f7-bc4a-4923029fb5a6
+		summarizeBy: sum
+		sourceColumn: IsDSS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column POGItemType
+		dataType: string
+		lineageTag: 00695d0c-5691-4d9a-ba3e-46a2e639a283
+		summarizeBy: none
+		sourceColumn: POGItemType
+
+		annotation SummarizationSetBy = Automatic
+
+	column SystemName
+		dataType: string
+		lineageTag: b9fba000-5fd2-46bc-b02c-fa67928839f2
+		summarizeBy: none
+		sourceColumn: SystemName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SystemID
+		dataType: double
+		lineageTag: 26699974-8506-422a-913a-216d2ce4bf79
+		summarizeBy: count
+		sourceColumn: SystemID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IsDSSVoid
+		dataType: int64
+		formatString: #,0
+		lineageTag: 0dc314c4-a16c-452c-ad43-a351965d8508
+		summarizeBy: sum
+		sourceColumn: IsDSSVoid
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column RC_POG = COUNTROWS(V_Fact_FB_POGVoidDetail)
+		formatString: 0
+		lineageTag: 6a8f6cd3-27b5-4b30-b22b-34a36fe678b1
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 95ff7903-dc9e-415b-b423-a346cc78d063
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Period
+		dataType: string
+		lineageTag: b7fba86e-c55e-466d-81b3-696636cb0dab
+		summarizeBy: none
+		sourceColumn: Period
+
+		annotation SummarizationSetBy = Automatic
+
+	column SubPeriodEnd
+		dataType: dateTime
+		formatString: mm/dd/yyyy
+		lineageTag: 70f3c79d-f5cf-41b0-a4e8-74d3e7b6cef3
+		summarizeBy: none
+		sourceColumn: SubPeriodEnd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column TotalPOG
+		dataType: double
+		lineageTag: 35cf38a8-3271-484a-98f3-5a71e93dd60a
+		summarizeBy: sum
+		sourceColumn: TotalPOG
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Starting_ISO
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 212ba8aa-e969-4e31-8a55-fa14a17b5a4e
+		summarizeBy: none
+		sourceColumn: Starting_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column VoidReason_Group =
+			SWITCH(
+				TRUE,
+				ISBLANK('V_Fact_FB_POGVoidDetail'[VoidReason]),
+				"(Blank)",
+				'V_Fact_FB_POGVoidDetail'[VoidReason] IN {"Decision maker not available"},
+				"Decision maker not available",
+				'V_Fact_FB_POGVoidDetail'[VoidReason] IN {"Decision maker refused"},
+				"Decision maker refused",
+				'V_Fact_FB_POGVoidDetail'[VoidReason] IN {"Not in store's planogram"},
+				"Not in store's planogram",
+				'V_Fact_FB_POGVoidDetail'[VoidReason] IN {"Auto snooze pending delivery",
+					"Ordered / In Delivery"},
+				"Pending Delivery",
+				'V_Fact_FB_POGVoidDetail'[VoidReason] IN {"No Reason Code"},
+				"Pending Store Visit",
+				'V_Fact_FB_POGVoidDetail'[VoidReason] IN {"Planogram reset not complete"},
+				"Planogram reset not complete",
+				'V_Fact_FB_POGVoidDetail'[VoidReason] IN {"Product still on shelf"},
+				"Product still on shelf",
+				'V_Fact_FB_POGVoidDetail'[VoidReason] IN {"Product unavailable to place order"},
+				"Product unavailable to place order",
+				'V_Fact_FB_POGVoidDetail'[VoidReason] IN {"Receiving issue at the retailers backdoor"},
+				"Receiving issue at the retailers backdoor",
+				'V_Fact_FB_POGVoidDetail'[VoidReason]
+			)
+		lineageTag: 7ece1f63-654f-461e-8020-9b0fe8cb3d0f
+		summarizeBy: none
+
+		extendedProperty GroupingMetadata =
+				{
+				  "version": 0,
+				  "groupedColumns": [
+				    {
+				      "Column": {
+				        "Expression": {
+				          "SourceRef": {
+				            "Entity": "V_Fact_FB_POGVoidDetail"
+				          }
+				        },
+				        "Property": "VoidReason"
+				      }
+				    }
+				  ]
+				}
+
+		annotation GroupingDesignState = {"Version":0,"Sources":[{"Name":"v","Entity":"V_Fact_FB_POGVoidDetail"}],"GroupedColumns":[{"Column":{"Expression":{"SourceRef":{"Source":"v"}},"Property":"VoidReason"}}],"GroupItems":[{"DisplayName":"(Blank)","BlankDefaultPlaceholder":true},{"DisplayName":"Decision maker not available","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"v"}},"Property":"VoidReason"}}],"Values":[[{"Literal":{"Value":"'Decision maker not available'"}}]]}}},{"DisplayName":"Decision maker refused","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"v"}},"Property":"VoidReason"}}],"Values":[[{"Literal":{"Value":"'Decision maker refused'"}}]]}}},{"DisplayName":"Not in store's planogram","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"v"}},"Property":"VoidReason"}}],"Values":[[{"Literal":{"Value":"'Not in store''s planogram'"}}]]}}},{"DisplayName":"Pending Delivery","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"v"}},"Property":"VoidReason"}}],"Values":[[{"Literal":{"Value":"'Auto snooze pending delivery'"}}],[{"Literal":{"Value":"'Ordered / In Delivery'"}}]]}}},{"DisplayName":"Pending Store Visit","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"v"}},"Property":"VoidReason"}}],"Values":[[{"Literal":{"Value":"'No Reason Code'"}}]]}}},{"DisplayName":"Planogram reset not complete","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"v"}},"Property":"VoidReason"}}],"Values":[[{"Literal":{"Value":"'Planogram reset not complete'"}}]]}}},{"DisplayName":"Product still on shelf","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"v"}},"Property":"VoidReason"}}],"Values":[[{"Literal":{"Value":"'Product still on shelf'"}}]]}}},{"DisplayName":"Product unavailable to place order","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"v"}},"Property":"VoidReason"}}],"Values":[[{"Literal":{"Value":"'Product unavailable to place order'"}}]]}}},{"DisplayName":"Receiving issue at the retailers backdoor","Expression":{"In":{"Expressions":[{"Column":{"Expression":{"SourceRef":{"Source":"v"}},"Property":"VoidReason"}}],"Values":[[{"Literal":{"Value":"'Receiving issue at the retailers backdoor'"}}]]}}}]}
+
+		annotation SummarizationSetBy = Automatic
+
+	column Monthnumber = MONTH(V_Fact_FB_POGVoidDetail[Date])
+		formatString: 0
+		lineageTag: da71fa2a-605d-4c24-a238-e00d0dbdfaaa
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Fact_FB_POGVoidDetail = m
+		mode: import
+		source = ```
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_Fact_FB_POGVoidDetail_View = DSD_Schema{[Name="V_Fact_FB_POGVoidSummary",Kind="View"]}[Data]    
+				in
+				    #"V_Fact_FB_POGVoidDetail_View"
+				```
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

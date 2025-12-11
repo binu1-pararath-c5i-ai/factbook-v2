@@ -1,0 +1,99 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "64002a220974e400a93e",
+  "displayName": "Top Performer",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "95cf34405badb6944634",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "IsAccountActive"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "IsAccountActive"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "1D"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "f8357ef26073c074c847",
+      "target": "b7b2897a2d46a55de0ec",
+      "type": "NoFilter"
+    },
+    {
+      "source": "f8357ef26073c074c847",
+      "target": "1d7792d0291550ae7b3d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "f8357ef26073c074c847",
+      "target": "928a394d89d7e309c90d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "f8357ef26073c074c847",
+      "target": "1d5629ffaadb4393c2a9",
+      "type": "NoFilter"
+    },
+    {
+      "source": "f8357ef26073c074c847",
+      "target": "153ac8afa05b8b03a375",
+      "type": "NoFilter"
+    },
+    {
+      "source": "f8357ef26073c074c847",
+      "target": "934fb6c0471e8d32ca06",
+      "type": "NoFilter"
+    }
+  ]
+}

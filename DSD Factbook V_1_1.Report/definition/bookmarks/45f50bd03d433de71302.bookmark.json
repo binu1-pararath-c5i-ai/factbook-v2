@@ -1,0 +1,3609 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/bookmark/1.4.0/schema.json",
+  "displayName": "CMA_TeanJC_TL",
+  "name": "45f50bd03d433de71302",
+  "options": {
+    "targetVisualNames": [
+      "9154d670e6d08d36194c"
+    ],
+    "suppressData": true
+  },
+  "explorationState": {
+    "version": "1.3",
+    "activeSection": "ceeff777d7bcd53c982a",
+    "sections": {
+      "ceeff777d7bcd53c982a": {
+        "filters": {
+          "byExpr": [
+            {
+              "name": "b87249e3085ffefb737c",
+              "type": "Advanced",
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "v",
+                    "Entity": "V_Dim_FB_CustChainHeir",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "Not": {
+                        "Expression": {
+                          "Comparison": {
+                            "ComparisonKind": 0,
+                            "Left": {
+                              "Column": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Source": "v"
+                                  }
+                                },
+                                "Property": "NationalChainName"
+                              }
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "'RITE AID'"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "expression": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CustChainHeir"
+                    }
+                  },
+                  "Property": "NationalChainName"
+                }
+              },
+              "howCreated": 1
+            },
+            {
+              "name": "d6b9b8da6f942f96856c",
+              "type": "Categorical",
+              "expression": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_CMAComplianceSummary"
+                    }
+                  },
+                  "Property": "TimeGranularity"
+                }
+              },
+              "howCreated": 1
+            }
+          ]
+        },
+        "visualContainers": {
+          "9154d670e6d08d36194c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "4f5c0edc5b686a664b17",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "BUName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "BUName"
+                    }
+                  }
+                ]
+              },
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "3310fd1c538d700119da": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "a25ffeb40292275d98c9",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "RegionName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "RegionName"
+                    }
+                  }
+                ]
+              },
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "96d66bda008a7c38da36": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "6957b9c1d2635e2cf687",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "TerritoryName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "TerritoryName"
+                    }
+                  }
+                ]
+              },
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "7d3d38b26c51eb537547": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "d553edfbbad02f91207d",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "BranchName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "BranchName"
+                    }
+                  }
+                ]
+              },
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "000c2b9e2cef3035e732": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "06cb746dce237f1c03ac": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "07a05bcc68f7130c8f87": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "0a00d63363e966f8f881": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "1160ae21458af7045341": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "182c7fa59bb60b0d213d": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "1ec897dbbe9bb5546ad1": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "2435796e6b7d43db1a38": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "9a56882adca51e71c449",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "2bb5088323687d810c4f": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "2f2f5929a73c34c6c6ea": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "30b75302eadbbe7b1a97": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "dee499d16eb3a6fe9779",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "v",
+                        "Entity": "V_Fact_FB_CMAComplianceSummary",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "v"
+                                    }
+                                  },
+                                  "Property": "SKUCategory"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'CSD SKUS SOLD'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "SKUCategory"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "06ef4057f37585904986",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e1a7d899b4ab548d583e",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "PromoPlanName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "1af3d06581cfff560026",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "7f75a877a827b94795e5",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "115438dbe99c593c8ffc",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "5b615decb289fc30ec72",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "CSDPromo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "0acfddff7fd8ba424376",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "V_Fact_FB_CMAComplianceSummary"
+                            }
+                          },
+                          "Property": "CSDSkuSold"
+                        }
+                      },
+                      "Function": 1
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "cec50d2bf66b003af9df",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "Customer"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "afc4c551e07953d87165",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "CSD Variance"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c0c3ebece3bafdd39d47",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Calc_CSD_SKUsSold"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "activeProjections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "Customer"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "PromoPlanName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "CSDPromo"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "CSD Variance"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Calc_CSD_SKUsSold"
+                    }
+                  }
+                ],
+                "Columns": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  }
+                ]
+              },
+              "expansionStates": [
+                {
+                  "roles": [
+                    "Rows"
+                  ],
+                  "levels": [
+                    {
+                      "queryRefs": [
+                        "V_Dim_RouteSalesCustHeir.DSSName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_RouteSalesCustHeir.AMName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_FB_CustChainHeir.Customer"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.PromoPlanName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Tier"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.CSDPromo"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.CSD Variance"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Calc_CSD_SKUsSold"
+                      ],
+                      "isCollapsed": true,
+                      "isPinned": true
+                    }
+                  ],
+                  "root": {
+                    "identityValues": null
+                  }
+                }
+              ],
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "335ad1bc8381c5b2eec8": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "d852e1e80dc02e618fd4",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "RegionName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "RegionName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "337c5b1fc20eef05ddca": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "50465170481b423f7122",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "BUName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "BUName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "34b57d16ead4cc446ce2": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "35616f8970f4ce8510e7": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "369825336cc3cd02aa06": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "3994c10324d8f6c3bdfd": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "d003c390b24477b09c13",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "3b45473b6b160eab087c": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "3d0d031ce639b812870d": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "df25b13d341d5ee23df4",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "SalesGroupName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "SalesGroupName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "47fd81a0231932861fbe": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "498337d92775ecdf6551": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "dee499d16eb3a6fe9779",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "v",
+                        "Entity": "V_Fact_FB_CMAComplianceSummary",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "v"
+                                    }
+                                  },
+                                  "Property": "SKUCategory"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'TEA & JC SKUS SOLD'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "SKUCategory"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "00854a732689c34a7602",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "bf4ac9381166f4e1bec6",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "PromoPlanName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "0b75a2a415ca8cb2bb98",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "b1d8e0b6eef99d7779ae",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "98cbc747f8ee2dd76e85",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c9c65060cf413d476ff7",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "TeaJCPromo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e7a2697445fdce1bcc09",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "V_Fact_FB_CMAComplianceSummary"
+                            }
+                          },
+                          "Property": "TeaJCSkuSold"
+                        }
+                      },
+                      "Function": 1
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "6781ca2985ad79b800ba",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "Customer"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "d7e45b3c3b1325ff1ec0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tea & JC Variance"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "54620860c753fce7ec32",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Calc_TnJC_SKUsSold"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "activeProjections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "Customer"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "PromoPlanName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "TeaJCPromo"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tea & JC Variance"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Calc_TnJC_SKUsSold"
+                    }
+                  }
+                ],
+                "Columns": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  }
+                ]
+              },
+              "expansionStates": [
+                {
+                  "roles": [
+                    "Rows"
+                  ],
+                  "levels": [
+                    {
+                      "queryRefs": [
+                        "V_Dim_RouteSalesCustHeir.DSSName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_RouteSalesCustHeir.AMName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_FB_CustChainHeir.Customer"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.PromoPlanName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Tier"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.TeaJCPromo"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Tea & JC Variance"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Calc_TnJC_SKUsSold"
+                      ],
+                      "isCollapsed": true,
+                      "isPinned": true
+                    }
+                  ],
+                  "root": {
+                    "identityValues": null
+                  }
+                }
+              ]
+            }
+          },
+          "4a42c98e08a2672f5ca8": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "4baccc34773fb9064f33": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "dee499d16eb3a6fe9779",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "v",
+                        "Entity": "V_Fact_FB_CMAComplianceSummary",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "v"
+                                    }
+                                  },
+                                  "Property": "SKUCategory"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'WATER SKUS SOLD'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "SKUCategory"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "c1035a0c520a4232236f",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ed13ee4142d795a3aa90",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "PromoPlanName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "aab08e464b6ef8ec170a",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ae4d8def70ef19502dca",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "ec63125ac8b2762e86e2",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "10ed013bce0cfbdf3e84",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "WaterPromo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "4c5a40311e316b333275",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "V_Fact_FB_CMAComplianceSummary"
+                            }
+                          },
+                          "Property": "WaterSkuSold"
+                        }
+                      },
+                      "Function": 1
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "16561e15117a7cbffe14",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "Customer"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "241d111ccd8cbcad157a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Calc_Water_SKUsSold"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a0e82ab062165859b91f",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Water Variance"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "activeProjections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "Customer"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "PromoPlanName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "WaterPromo"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Water Variance"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Calc_Water_SKUsSold"
+                    }
+                  }
+                ],
+                "Columns": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  }
+                ]
+              },
+              "expansionStates": [
+                {
+                  "roles": [
+                    "Rows"
+                  ],
+                  "levels": [
+                    {
+                      "queryRefs": [
+                        "V_Dim_RouteSalesCustHeir.DSSName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_RouteSalesCustHeir.AMName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_FB_CustChainHeir.Customer"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.PromoPlanName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Tier"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.WaterPromo"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Water Variance"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Calc_Water_SKUsSold"
+                      ],
+                      "isCollapsed": true,
+                      "isPinned": true
+                    }
+                  ],
+                  "root": {
+                    "identityValues": null
+                  }
+                }
+              ],
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "4def0f899ea757433c65": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "ec900dfdcf9bb2c25fef",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "522d4a9aab70e699493d": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "53ce454841a4f15976c8": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "56978fcef87320c683d8": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "5874b765e2937e638f34": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "592338f5d39eff39b360": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "5af872d7be5e45b743b2",
+                  "type": "Categorical",
+                  "expression": {
+                    "HierarchyLevel": {
+                      "Expression": {
+                        "Hierarchy": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "V_Dim_FB_CalDay"
+                            }
+                          },
+                          "Hierarchy": "Year Hierarchy"
+                        }
+                      },
+                      "Level": "MonthName"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "3bec04e4c0adeacb7e10",
+                  "type": "Categorical",
+                  "expression": {
+                    "HierarchyLevel": {
+                      "Expression": {
+                        "Hierarchy": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "V_Dim_FB_CalDay"
+                            }
+                          },
+                          "Hierarchy": "Year Hierarchy"
+                        }
+                      },
+                      "Level": "Quarter_Name"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e54f3ee5ef82150d578b",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "v",
+                        "Entity": "V_Dim_FB_CalDay",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "v"
+                                    }
+                                  },
+                                  "Property": "ShowInSlicer_TL"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "true"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CalDay"
+                        }
+                      },
+                      "Property": "ShowInSlicer_TL"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "68d551e4708dc0b24304",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CalDay"
+                        }
+                      },
+                      "Property": "WeekStarting_ISO"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "9377b61c017c0190d7a1",
+                  "type": "Advanced",
+                  "expression": {
+                    "HierarchyLevel": {
+                      "Expression": {
+                        "Hierarchy": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "V_Dim_FB_CalDay"
+                            }
+                          },
+                          "Hierarchy": "Year Hierarchy"
+                        }
+                      },
+                      "Level": "Year"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "0460e27af68ea4e4d8c2",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CalDay"
+                        }
+                      },
+                      "Property": "YearMonthDay"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "cb600ea39e75ee00c05c",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CalDay"
+                        }
+                      },
+                      "Property": "YearID"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "24acf86fad6c66fb5c1a",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CalDay"
+                        }
+                      },
+                      "Property": "Quarter_Name"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "general": [
+                    {
+                      "properties": {
+                        "filter": {
+                          "filter": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "v",
+                                "Entity": "V_Dim_FB_CalDay",
+                                "Type": 0
+                              }
+                            ],
+                            "Where": [
+                              {
+                                "Condition": {
+                                  "In": {
+                                    "Expressions": [
+                                      {
+                                        "Column": {
+                                          "Expression": {
+                                            "SourceRef": {
+                                              "Source": "v"
+                                            }
+                                          },
+                                          "Property": "YearID"
+                                        }
+                                      }
+                                    ],
+                                    "Values": [
+                                      [
+                                        {
+                                          "Literal": {
+                                            "Value": "'2025'"
+                                          }
+                                        }
+                                      ]
+                                    ]
+                                  }
+                                }
+                              }
+                            ]
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "true"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CalDay"
+                        }
+                      },
+                      "Property": "YearID"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CalDay"
+                        }
+                      },
+                      "Property": "Quarter_Name"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CalDay"
+                        }
+                      },
+                      "Property": "YearMonthDay"
+                    }
+                  }
+                ]
+              },
+              "cachedFilterDisplayItems": [
+                {
+                  "id": {
+                    "scopeId": {
+                      "Comparison": {
+                        "ComparisonKind": 0,
+                        "Left": {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "V_Dim_FB_CalDay"
+                              }
+                            },
+                            "Property": "YearID"
+                          }
+                        },
+                        "Right": {
+                          "Literal": {
+                            "Value": "'2025'"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "displayName": "2025"
+                }
+              ],
+              "expansionStates": [
+                {
+                  "roles": [
+                    "Values"
+                  ],
+                  "levels": [
+                    {
+                      "queryRefs": [
+                        "V_Dim_FB_CalDay.YearID"
+                      ],
+                      "isCollapsed": true,
+                      "identityKeys": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "V_Dim_FB_CalDay"
+                              }
+                            },
+                            "Property": "YearID"
+                          }
+                        }
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_FB_CalDay.Quarter_Name"
+                      ],
+                      "isCollapsed": true,
+                      "identityKeys": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Entity": "V_Dim_FB_CalDay"
+                              }
+                            },
+                            "Property": "Quarter_Name"
+                          }
+                        }
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_FB_CalDay.YearMonthDay"
+                      ],
+                      "isCollapsed": true,
+                      "isPinned": true
+                    }
+                  ],
+                  "root": {
+                    "identityValues": null,
+                    "children": [
+                      {
+                        "identityValues": [
+                          {
+                            "Literal": {
+                              "Value": "'2025'"
+                            }
+                          }
+                        ],
+                        "isToggled": true,
+                        "children": [
+                          {
+                            "identityValues": [
+                              {
+                                "Literal": {
+                                  "Value": "'Q2'"
+                                }
+                              }
+                            ],
+                            "isToggled": true
+                          },
+                          {
+                            "identityValues": [
+                              {
+                                "Literal": {
+                                  "Value": "'Q3'"
+                                }
+                              }
+                            ],
+                            "isToggled": true
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ]
+            }
+          },
+          "65416eb02ca56cdfa4fb": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "65ec5105555b9d868e81": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "6b1fd43be7759b6209d0": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {},
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "6bbe10cfb23241203e47": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "73d24cf7c669d1deb319": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "74a81db3b02f473348c3": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "87410859db219d2eaa26": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "8a5b61fff56c59a17e76": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "8b99366e6a93d23a0538": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "28ef0a5726f56c947d84",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ],
+                  "selection": [
+                    {
+                      "properties": {
+                        "strictSingleSelect": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "false"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "8c551f21cc4f45454b33": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "933523469df57340bd93",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "BranchName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "BranchName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "90224fd162d8aa517d50": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "5cfef61904abd53200b0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Abs/RPC Table"
+                        }
+                      },
+                      "Property": "Tooltip"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Abs/RPC Table"
+                        }
+                      },
+                      "Property": "Tooltip"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "942276acf8fa9dbcb508": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "98a7636ab76e5aefc809": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "98e820028144f0c9f7dd": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "9a3e3a80565328cd9e10": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "dee499d16eb3a6fe9779",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "v",
+                        "Entity": "V_Fact_FB_CMAComplianceSummary",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "v"
+                                    }
+                                  },
+                                  "Property": "SKUCategory"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'SPORT SKUS SOLD'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "SKUCategory"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "1ddaf40c51510c903437",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "eeb722e6112709328dc1",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "PromoPlanName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "5818139eb5812ee64086",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "2e312a6d0834abcd3212",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e958dd527bcf056c4147",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "cadfa2d5f80286c74386",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "SportsPromo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "696a4b494d531e0776c8",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "V_Fact_FB_CMAComplianceSummary"
+                            }
+                          },
+                          "Property": "SportSkuSold"
+                        }
+                      },
+                      "Function": 1
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "c21a88aa86921cb8a3e8",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "Customer"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "70d21c45d4aef8d98701",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Sports Variance"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "83ab2cc6453fb10110eb",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Calc_Sports_SKUsSold"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "activeProjections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "Customer"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "PromoPlanName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "SportsPromo"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Sports Variance"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Calc_Sports_SKUsSold"
+                    }
+                  }
+                ],
+                "Columns": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  }
+                ]
+              },
+              "expansionStates": [
+                {
+                  "roles": [
+                    "Rows"
+                  ],
+                  "levels": [
+                    {
+                      "queryRefs": [
+                        "V_Dim_RouteSalesCustHeir.DSSName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_RouteSalesCustHeir.AMName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_FB_CustChainHeir.Customer"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.PromoPlanName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Tier"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.SportsPromo"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Sports Variance"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Calc_Sports_SKUsSold"
+                      ],
+                      "isCollapsed": true,
+                      "isPinned": true
+                    }
+                  ],
+                  "root": {
+                    "identityValues": null
+                  }
+                }
+              ],
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "9a97fb4f589ac9c0b93d": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "a036bbb1d6781ebd63a4": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "a0371863cd4a3025bdad": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "a7eea717130db7e5037f": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "a89feaf14832467bb210": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "471902675fdfbee98ffd",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Last Refresh as of"
+                        }
+                      },
+                      "Property": "Last Refresh as of"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Last Refresh as of"
+                        }
+                      },
+                      "Property": "Last Refresh as of"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "a8fd482f4c6b8af51968": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "aae734d13f971e9166e9": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "ae096ac9e086aaebc178": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "b264c635a81aba78833f": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "bc7623dc2f861bfe9d31": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "c00beb8a8a82f0608c15": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "c54245c2fb991d7ed788": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "c6f0bf746827cc0baf6f": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "cf56914f95ac943f973c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "dee499d16eb3a6fe9779",
+                  "type": "Categorical",
+                  "filter": {
+                    "Version": 2,
+                    "From": [
+                      {
+                        "Name": "v",
+                        "Entity": "V_Fact_FB_CMAComplianceSummary",
+                        "Type": 0
+                      }
+                    ],
+                    "Where": [
+                      {
+                        "Condition": {
+                          "In": {
+                            "Expressions": [
+                              {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Source": "v"
+                                    }
+                                  },
+                                  "Property": "SKUCategory"
+                                }
+                              }
+                            ],
+                            "Values": [
+                              [
+                                {
+                                  "Literal": {
+                                    "Value": "'ENERGY SKUS SOLD'"
+                                  }
+                                }
+                              ]
+                            ]
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "SKUCategory"
+                    }
+                  },
+                  "howCreated": 1
+                },
+                {
+                  "name": "a6e3b2c708210163c935",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "79f1fcfeb5f0b4d9d20e",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "PromoPlanName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "d76cf56c841f6ea849ff",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "bfce67f0947043514b25",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "bc0cec6bb88b641dc9f1",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "a471be787fb500029fa9",
+                  "type": "Advanced",
+                  "expression": {
+                    "Aggregation": {
+                      "Expression": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Entity": "V_Fact_FB_CMAComplianceSummary"
+                            }
+                          },
+                          "Property": "EnergySkuSold"
+                        }
+                      },
+                      "Function": 1
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "3cd547c3573d8be4a35f",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "EneryPromo"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "2c4e0199633f01552c2e",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "Customer"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "e1ab6e978d8871c94c54",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Calc_Energy_SKUsSold"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "f92e9a8ed3de8f8cec9e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Energy Variance"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "pivotTable",
+              "objects": {},
+              "activeProjections": {
+                "Rows": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "DSSName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_RouteSalesCustHeir"
+                        }
+                      },
+                      "Property": "AMName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "Customer"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "PromoPlanName"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Tier"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "EneryPromo"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Energy Variance"
+                    }
+                  },
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "Calc_Energy_SKUsSold"
+                    }
+                  }
+                ],
+                "Columns": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_CMAComplianceSummary"
+                        }
+                      },
+                      "Property": "RMMPOPPackageDesc"
+                    }
+                  }
+                ]
+              },
+              "expansionStates": [
+                {
+                  "roles": [
+                    "Rows"
+                  ],
+                  "levels": [
+                    {
+                      "queryRefs": [
+                        "V_Dim_RouteSalesCustHeir.DSSName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_RouteSalesCustHeir.AMName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Dim_FB_CustChainHeir.Customer"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.PromoPlanName"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Tier"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.EneryPromo"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Energy Variance"
+                      ],
+                      "isPinned": true
+                    },
+                    {
+                      "queryRefs": [
+                        "V_Fact_FB_CMAComplianceSummary.Calc_Energy_SKUsSold"
+                      ],
+                      "isCollapsed": true,
+                      "isPinned": true
+                    }
+                  ],
+                  "root": {
+                    "identityValues": null
+                  }
+                }
+              ],
+              "display": {
+                "mode": "hidden"
+              }
+            }
+          },
+          "d3c1d158787fd753ec47": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "55cbacdc92764d1a6305",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "TerritoryName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "TerritoryName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "d9f00c69b5ef4dd9be4e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "d4be77d2157f8b2732d3",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "LocalChainName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "LocalChainName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "ddb928c4f1770897fac5": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "fb18ae09bd784852a3c2": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "fbad77e574912430cadf": {
+            "singleVisual": {
+              "visualType": "image",
+              "objects": {}
+            }
+          },
+          "7e2da66353c5e300a7b0": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          }
+        },
+        "visualContainerGroups": {
+          "07c2b03e77764b137697": {
+            "children": {
+              "71c7154cd630d876f882": {
+                "isHidden": false
+              }
+            }
+          },
+          "1bd34054417636f31222": {
+            "isHidden": false
+          },
+          "cf7fe9ce705f7b588596": {
+            "children": {
+              "371e3a4cc497f78d38b0": {
+                "isHidden": false
+              }
+            }
+          },
+          "f764d11cdf1e20ad90ec": {
+            "isHidden": false
+          }
+        }
+      }
+    },
+    "objects": {
+      "merge": {
+        "outspacePane": [
+          {
+            "properties": {
+              "expanded": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              },
+              "visible": {
+                "expr": {
+                  "Literal": {
+                    "Value": "false"
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

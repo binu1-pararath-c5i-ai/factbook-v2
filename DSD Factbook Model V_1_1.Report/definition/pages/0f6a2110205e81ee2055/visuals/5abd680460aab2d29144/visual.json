@@ -1,0 +1,116 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "5abd680460aab2d29144",
+  "position": {
+    "x": 283.35045558968534,
+    "y": 0,
+    "z": 4000,
+    "height": 156.47711726594565,
+    "width": 995.95570584135669,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_SalesHier"
+                    }
+                  },
+                  "Property": "BUName"
+                }
+              },
+              "queryRef": "V_Dim_FB_SalesHier.BUName",
+              "nativeQueryRef": "BUName",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Org_Ord_Qty_CFR"
+                }
+              },
+              "queryRef": "Measure Table.Org_Ord_Qty_CFR",
+              "nativeQueryRef": "Org_Ord_Qty_CFR"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Cases_Ordered_Change_Vs_YA_CFR"
+                }
+              },
+              "queryRef": "Measure Table.Cases_Ordered_Change_Vs_YA_CFR",
+              "nativeQueryRef": "Cases_Ordered_Change_Vs_YA_CFR"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Total_CFR_Card"
+                }
+              },
+              "queryRef": "Measure Table.Total_CFR_Card",
+              "nativeQueryRef": "Total_CFR_Card"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Change_vs_YA_CFR"
+                }
+              },
+              "queryRef": "Measure Table.Change_vs_YA_CFR",
+              "nativeQueryRef": "Change_vs_YA_CFR"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Change_target_CFR"
+                }
+              },
+              "queryRef": "Measure Table.%Change_target_CFR",
+              "nativeQueryRef": "%Change_target_CFR"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,143 @@
+table V_Dim_FB_PL_SalesHier
+	lineageTag: 40fa7b68-68e4-4acf-b237-959153727a16
+
+	column PrftCtr
+		dataType: string
+		lineageTag: 33defd3e-e47b-4073-96f9-6b232b67ff39
+		summarizeBy: none
+		sourceColumn: PrftCtr
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 0e97a27a-a108-43ed-85c7-901bb5f0152b
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trtry
+		dataType: string
+		lineageTag: 862e9c37-14b2-4e75-a76d-dbdb52e49657
+		summarizeBy: none
+		sourceColumn: Trtry
+
+		annotation SummarizationSetBy = Automatic
+
+	column Branch
+		dataType: string
+		lineageTag: f69ddcc5-626a-4ae0-aee1-6bf0607de940
+		summarizeBy: none
+		sourceColumn: Branch
+
+		annotation SummarizationSetBy = Automatic
+
+	column BU
+		dataType: string
+		lineageTag: 30d110da-6d93-4929-90ba-22745a4400cd
+		summarizeBy: none
+		sourceColumn: BU
+
+		annotation SummarizationSetBy = Automatic
+
+	column PrftCtrNm
+		dataType: string
+		lineageTag: bbc4ffc3-c607-4d23-995d-c6055ac05ad1
+		summarizeBy: none
+		sourceColumn: PrftCtrNm
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'BU Sort' =
+			SWITCH(
+			    'V_Dim_FB_PL_SalesHier'[BU],
+			    "North", 1,
+			    "South", 2,
+			    "West", 3,
+			    "HQ", 4)
+		formatString: 0
+		lineageTag: 73d69306-fffa-46ed-8916-bae8e5cf131d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Bu_New = V_Dim_FB_PL_SalesHier[BU]
+		lineageTag: ab660503-3bd8-4cf7-b4d4-1eea48a7dad3
+		summarizeBy: none
+		sortByColumn: 'BU Sort'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column PrftCtrnm_Filtered
+		dataType: string
+		lineageTag: e5c6d914-7fde-4ccd-9427-76ac9a051799
+		summarizeBy: none
+		sourceColumn: PrftCtrnm_Filtered
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region_Filtered
+		dataType: string
+		lineageTag: c56ab63f-2e2b-427c-94db-32786866a442
+		summarizeBy: none
+		sourceColumn: Region_Filtered
+
+		annotation SummarizationSetBy = Automatic
+
+	column Trtry_Filtered
+		dataType: string
+		lineageTag: 539c4df3-7960-4310-b737-4fe01916e6ab
+		summarizeBy: none
+		sourceColumn: Trtry_Filtered
+
+		annotation SummarizationSetBy = Automatic
+
+	column BU_FILTERED
+		dataType: string
+		lineageTag: 4c1a362f-9ddf-465b-9c23-4314149c78b6
+		summarizeBy: none
+		sourceColumn: BU_FILTERED
+
+		annotation SummarizationSetBy = Automatic
+
+	hierarchy 'Region Hierarchy'
+		lineageTag: b22b2e68-97ff-40cd-8bda-fb51cceeb3ed
+
+		level Bu_New
+			lineageTag: ac37e6c1-25df-4152-9a66-9b533586c410
+			column: Bu_New
+
+		level Region
+			lineageTag: 40143adc-1ed6-42c8-923f-5a5b5a728c9c
+			column: Region
+
+		level Trtry
+			lineageTag: ef370313-3e33-4f7d-a57b-61f174b4caee
+			column: Trtry
+
+		level Branch
+			lineageTag: 129349a7-9b68-4b9c-8f09-433f80c135c8
+			column: Branch
+
+		level PrftCtrNm
+			lineageTag: cb47e707-f7df-4887-84d1-35ba405a2ce3
+			column: PrftCtrNm
+
+	partition V_Dim_FB_PL_SalesHier = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_Dim_FB_PL_SalesHier_View = DSD_Schema{[Name="V_Dim_FB_PL_SalesHier",Kind="View"]}[Data]
+				in
+				    V_Dim_FB_PL_SalesHier_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

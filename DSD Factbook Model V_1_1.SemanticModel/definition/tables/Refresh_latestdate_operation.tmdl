@@ -1,0 +1,30 @@
+table Refresh_latestdate_operation
+	lineageTag: 2bfd7871-de32-4ad9-b7ff-d124ac69354e
+
+	column DayDate
+		formatString: General Date
+		lineageTag: a395aa16-96ba-4a52-aa85-c177789fee20
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[DayDate]
+
+		annotation SummarizationSetBy = Automatic
+
+	column LYDayDate
+		formatString: General Date
+		lineageTag: e3cb1cbe-01a0-4895-891e-9be2ff3626a0
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[LYDayDate]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Refresh_latestdate_operation = calculated
+		mode: import
+		source =
+				
+				SUMMARIZECOLUMNS(V_Dim_FB_CalDay[DayDate],
+				V_Dim_FB_CalDay[LYDayDate])
+
+	annotation PBI_Id = 80e6a2300c124fe39316f647046473b2
+

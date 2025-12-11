@@ -1,0 +1,96 @@
+table V_FACT_FB_OPS_ROLLEDSTOPORDERS
+	lineageTag: e1637499-9238-47ce-87fc-814874287803
+
+	column OriginalOrderRDD
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 42e1b0f7-3145-4071-bf8d-d77e75204127
+		summarizeBy: none
+		sourceColumn: OriginalOrderRDD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column WeekStartDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a1f1a30d-85c0-4acd-a2da-6c324f25d532
+		summarizeBy: none
+		sourceColumn: WeekStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TotalOrder
+		dataType: double
+		lineageTag: e4c8b403-21a1-475c-a052-d7420f25f1b9
+		summarizeBy: sum
+		sourceColumn: TotalOrder
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RolledStopOrder
+		dataType: double
+		lineageTag: 4db0861f-afee-45ba-88dd-573c9489ff94
+		summarizeBy: sum
+		sourceColumn: RolledStopOrder
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WeekStartDate1 = V_FACT_FB_OPS_ROLLEDSTOPORDERS[OriginalOrderRDD]-WEEKDAY(V_FACT_FB_OPS_ROLLEDSTOPORDERS[OriginalOrderRDD],2)+1
+		formatString: General Date
+		lineageTag: 846dd81b-c604-4a96-bc51-522abaaa17e4
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Day = WEEKDAY(V_FACT_FB_OPS_ROLLEDSTOPORDERS[OriginalOrderRDD],1)
+		formatString: 0
+		lineageTag: 4bfeaa15-3a6d-42db-8508-23c27c7674fe
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column LocalChainID
+		dataType: string
+		lineageTag: 89a30ddc-9ab7-497c-83c2-55488b0ef0a4
+		summarizeBy: none
+		sourceColumn: LocalChainID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BranchID
+		dataType: string
+		lineageTag: 57ea7748-a2cc-46b7-89ff-4737b72f0da0
+		summarizeBy: none
+		sourceColumn: BranchID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RolledStopOrder_Key = 'V_FACT_FB_OPS_ROLLEDSTOPORDERS'[BranchID]&'V_FACT_FB_OPS_ROLLEDSTOPORDERS'[LocalChainID]&"01"
+		lineageTag: 195d456b-11de-404c-8a8c-7948f0cf0469
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_FACT_FB_OPS_ROLLEDSTOPORDERS = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_FACT_FB_OPS_ROLLEDSTOPORDERS_View = DSD_Schema{[Name="V_Fact_FB_Ops_RolledStopOrder",Kind="View"]}[Data]
+				in
+				    V_FACT_FB_OPS_ROLLEDSTOPORDERS_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

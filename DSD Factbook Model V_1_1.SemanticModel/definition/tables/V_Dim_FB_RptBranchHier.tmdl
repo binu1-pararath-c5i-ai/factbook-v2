@@ -1,0 +1,98 @@
+table V_Dim_FB_RptBranchHier
+	lineageTag: e8df3289-06f4-4dc9-b342-cbb8b50492d1
+
+	column ReportingBranch
+		dataType: string
+		lineageTag: 5a81e644-e8c8-4abf-87d1-7af440cd5e7f
+		summarizeBy: none
+		sourceColumn: ReportingBranch
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionName
+		dataType: string
+		lineageTag: 83ff44d7-53d1-4498-86b6-65bca9afa5eb
+		summarizeBy: none
+		sourceColumn: RegionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryName
+		dataType: string
+		lineageTag: fea8971a-1896-48db-b7a6-9910a9720bcf
+		summarizeBy: none
+		sourceColumn: TerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column BUName
+		dataType: string
+		lineageTag: f1d6fc36-1342-4faf-986f-00443b49a278
+		summarizeBy: none
+		sourceColumn: BUName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesOffice
+		dataType: string
+		lineageTag: 95d3c47b-5013-4792-9f85-a96c0c7ffbef
+		summarizeBy: none
+		sourceColumn: SalesOffice
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionName_Filtered
+		dataType: string
+		lineageTag: 2378edf4-244b-47b9-bfb1-2dcbef6fca1e
+		summarizeBy: none
+		sourceColumn: RegionName_Filtered
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryName_Filtered
+		dataType: string
+		lineageTag: c3443b31-0cc3-43e8-8abe-327c8c8c334c
+		summarizeBy: none
+		sourceColumn: TerritoryName_Filtered
+
+		annotation SummarizationSetBy = Automatic
+
+	column BUName_Filtered
+		dataType: string
+		lineageTag: b99b1715-edbd-410f-8c30-cb941d94f637
+		summarizeBy: none
+		sourceColumn: BUName_Filtered
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'New Calculated Column'
+		type: calculated
+		lineageTag: ff070fe6-c26a-468e-9ec4-1b53ba774a6a
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Key = ```
+			V_Dim_FB_RptBranchHier[SalesOffice]&V_Dim_FB_RptBranchHier[ReportingBranch]
+			
+			```
+		lineageTag: 88e8467d-5198-4dd9-8709-e735d510199b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Dim_FB_RptBranchHier = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_Dim_FB_RptBranchHier_View = DSD_Schema{[Name="V_Dim_FB_RptBranchHier",Kind="View"]}[Data]
+				in
+				    V_Dim_FB_RptBranchHier_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

@@ -1,0 +1,22 @@
+table 'Pillar Name'
+	lineageTag: 0a8b29aa-478b-42ca-8239-6f47dbaab63d
+
+	column Pillars
+		dataType: string
+		lineageTag: d5a44809-19e2-4f17-ae5a-dab2042dba04
+		summarizeBy: none
+		sourceColumn: Pillars
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Pillar Name' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WcsvMS8xLzkzMUfBNzEtMT81NzStRUIrViVYKyS/IycxLVXDMS8ypLMlMLgaLeuYBFRZlp5YouFakJpeWZObngcX9C1KLEkE8JHPAEsElicnZCkGJedlKsbEA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Pillars = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Pillars", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

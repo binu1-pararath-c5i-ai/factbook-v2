@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "c7e3fbd5dd0c7e4ad1d9",
+  "position": {
+    "x": 469.758179231863,
+    "y": 579.80085348506418,
+    "z": 6000,
+    "height": 140.199146514936,
+    "width": 290
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_FACT_FB_OPS_CFR"
+                        }
+                      },
+                      "Property": "RC_CFR"
+                    }
+                  },
+                  "Function": 5
+                }
+              },
+              "queryRef": "Sum(V_FACT_FB_OPS_CFR.RC_CFR)",
+              "nativeQueryRef": "Count of RC_CFR"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "V_FACT_FB_OPS_CFR"
+                      }
+                    },
+                    "Property": "RC_CFR"
+                  }
+                },
+                "Function": 5
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

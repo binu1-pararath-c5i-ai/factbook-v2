@@ -1,0 +1,231 @@
+relationship AutoDetected_9d9d3da5-7134-45c0-aff8-6d93a58bbff0
+	fromColumn: V_FB_Financial_Management.FnArea
+	toColumn: V_Dim_FB_Function.FnArea
+
+relationship AutoDetected_0ea3245d-6a88-45c9-bc17-7567728e4993
+	fromColumn: V_FB_Financial_Management.OpexKey
+	toColumn: V_Dim_FB_Opex.OpexKey
+
+relationship AutoDetected_fd1301dc-a7e0-400e-8218-df4a35f86dc7
+	fromColumn: V_FB_Financial_Management.PlHierKey
+	toColumn: V_Dim_FB_PlHier.PlHierKey
+
+relationship AutoDetected_7fc45fe9-7e34-4256-8044-499c89f9435a
+	fromColumn: V_FB_Financial_Management.PrftCtr
+	toColumn: V_Dim_FB_PL_SalesHier.PrftCtr
+
+relationship f7e9ecfb-879c-5378-e06b-2937491a3d6f
+	fromColumn: V_FB_Financial_Management.DayDate
+	toColumn: V_Dim_FB_CalDay.DayDate
+
+relationship AutoDetected_ab3b01fd-4d36-4990-b6d7-6830173a09c0
+	fromColumn: V_FB_Financial_Management.CmpnyCode
+	toColumn: V_Dim_FB_Company.CmpnyCode
+
+relationship a328e7f7-072a-ed26-681b-e88d646cba45
+	fromColumn: V_Fact_FB_ToplineActuals_Summary.SalesGroupID
+	toColumn: V_Dim_FB_SalesHier.SalesGroupID
+
+relationship ca103673-80f6-1908-4a55-c6185b9b9fd4
+	fromColumn: V_FACT_FB_OPS_BSO.ProfitCenter
+	toColumn: V_Dim_FB_PL_SalesHier.PrftCtr
+
+relationship 3c012591-c7ca-4379-9a73-d7efc680e7ad
+	fromColumn: V_FACT_FB_OPS_BSO.MonthID
+	toColumn: Distinct_MonthID.MonthID
+
+relationship 1f314348-78d3-dc04-2d3a-24c8ef9a1c24
+	crossFilteringBehavior: bothDirections
+	fromColumn: V_Dim_FB_CalDay.MonthID
+	toColumn: Distinct_MonthID.MonthID
+
+relationship 11004f47-5532-39cf-8b66-8025aa43749e
+	fromColumn: V_Fact_FB_Topline_Budget_All.ItemID
+	toColumn: V_Dim_FB_ProdHeir.ItemID
+
+relationship efa0fa0a-0fe0-1273-7821-fd72be92678f
+	fromColumn: V_Fact_FB_Topline_Budget_All.BranchID
+	toColumn: V_Dim_FB_SalesHier_Distinct.BranchID
+
+relationship 4a7e50d2-baa8-af06-aec2-350f0fca5a0a
+	fromColumn: V_Fact_FB_POGVoidDetail.RouteID
+	toColumn: V_Dim_RouteSalesCustHeir.RouteID
+
+relationship 01f1abbe-1d0e-3b5d-d70b-78ab4b75adc7
+	fromColumn: V_Fact_FB_POGVoidDetail.ItemID
+	toColumn: V_Dim_FB_ProdHeir.ItemID
+
+relationship 72662204-0af9-0090-5d4a-8d7c0c3e4880
+	fromColumn: V_Fact_FB_RevDetail.RouteID
+	toColumn: V_Dim_RouteSalesCustHeir.RouteID
+
+relationship dcccd926-e771-5343-e592-475bec4e974d
+	fromColumn: V_Fact_FB_ToplineActuals_Summary.Period
+	toColumn: V_Dim_FB_CalDay.DayDate
+
+relationship 85347b28-c3e9-71f0-f554-aa4e108dfe01
+	fromColumn: V_Fact_FB_Topline_Budget_All.PeriodEnd
+	toColumn: V_Dim_FB_CalDay.DayDate
+
+relationship 2567b3e3-4e4a-6231-9d6b-df717299787a
+	fromColumn: V_Fact_FB_ToplineActuals_Summary.ItemID
+	toColumn: V_Dim_FB_ProdHeir.ItemID
+
+relationship 4a24c7f8-5765-85d0-20c9-f8e409b77e89
+	fromColumn: V_FACT_FB_OPS_ROLLEDSTOP.SalesRouteNumber
+	toColumn: V_Dim_RouteSalesCustHeir.RouteID
+
+relationship 318741e3-3ecb-7aa3-4db4-08d0d21095a0
+	fromColumn: V_Fact_FB_Ops_CPH_CPC.DayDate
+	toColumn: V_Dim_FB_CalDay.DayDate
+
+relationship 36e14976-2e48-d200-554b-7a59e9992049
+	crossFilteringBehavior: bothDirections
+	fromColumn: V_Dim_FB_CustChainHeir.BranchID
+	toColumn: Distinct_SalesID.BranchID
+
+relationship 7285591f-dce9-9137-dc85-5cbec824000c
+	crossFilteringBehavior: bothDirections
+	fromColumn: V_Dim_FB_CalDay.MonthID
+	toColumn: V_Dim_FB_CalDay_Month_Distinct.MonthID
+
+relationship a674b82a-9ffc-3dbf-1cf2-f33f321c2766
+	fromColumn: V_Fact_FB_Ops_Deliveryorder.MonthID
+	toColumn: V_Dim_FB_CalDay_Month_Distinct.MonthID
+
+relationship 5d01cbc0-ce6f-7dda-9079-8c6c7a4c9df7
+	fromColumn: V_FB_MerchByEmployeeCustomer.MonthID
+	toColumn: V_Dim_FB_CalDay_Month_Distinct.MonthID
+
+relationship 15ce58d7-09a5-aac9-7db1-3519f61f1a2f
+	toCardinality: many
+	fromColumn: V_Fact_FB_Ops_Deliveryorder.TerritoryName
+	toColumn: V_Dim_FB_RptBranchHier.TerritoryName
+
+relationship 003ebc94-1b07-1aeb-e86f-d8bdc5d94f54
+	fromColumn: V_Fact_FB_Ops_Deliveryorder.ItemNumber
+	toColumn: V_Dim_FB_ProdHeir.ItemID
+
+relationship f5a3ac0d-9e04-ac06-aeac-c1c2d69e0f72
+	toCardinality: many
+	fromColumn: V_Fact_FB_Ops_Deliveryorder.CustomerNumber
+	toColumn: V_Dim_FB_CustChainHeir.CustomerNumber
+
+relationship 805bcca6-d1d8-558a-524b-2359b12a6714
+	crossFilteringBehavior: bothDirections
+	fromColumn: V_Dim_FB_CustChainHeir.CustomerNumber
+	toColumn: V_DIm_FB_CustChainHier_Distinct_Customer_number.CustomerNumber
+
+relationship e90ad59e-5daf-e1c4-68b7-ef524429be5e
+	toCardinality: many
+	fromColumn: V_Fact_FB_ToplineActuals_Summary.SalesGroupLocalChain
+	toColumn: V_Dim_FB_CustChainHeir.SalesGroupLocalChain
+
+relationship 8e5c7ce9-7ebf-5275-3538-0de69bee6dd0
+	crossFilteringBehavior: bothDirections
+	fromColumn: V_Dim_FB_SalesHier.BranchID
+	toColumn: V_Dim_FB_SalesHier_Distinct.BranchID
+
+relationship b92375e8-400c-87df-14d6-38f794614f93
+	toCardinality: many
+	fromColumn: V_FACT_FB_OPS_CFR.Package3Trademark
+	toColumn: V_Dim_FB_ProdHeir.Package3Trademark_cfr
+
+relationship f157af1a-52b4-3452-0df8-fbae1df9cf40
+	toCardinality: many
+	fromColumn: V_Fact_FB_RevDetail.CustomerID
+	toColumn: V_Dim_FB_CustChainHeir.CustomerID
+
+relationship d80c0642-475a-6136-5b6c-16d7ce3e255d
+	toCardinality: many
+	fromColumn: V_Fact_FB_POGVoidDetail.CustomerID
+	toColumn: V_Dim_FB_CustChainHeir.CustomerID
+
+relationship f39b9594-3012-d452-1c7c-19ec26aaebe3
+	toCardinality: many
+	fromColumn: V_Fact_FB_Topline_Budget_All.BranchID
+	toColumn: V_Dim_FB_CustChainHeir.BranchID
+
+relationship f6ae0c0c-07ff-5024-93e2-4d57676859ed
+	toCardinality: many
+	fromColumn: V_Fact_FB_CMAComplianceSummary.CustomerNumber
+	toColumn: V_Dim_FB_CustChainHeir.CustomerNumber
+
+relationship 35b4b6ae-ea50-9312-9a7a-9182dc6db8b7
+	fromColumn: V_Fact_FB_CMAComplianceSummary.RouteID
+	toColumn: V_Dim_RouteSalesCustHeir.RouteID
+
+relationship 5594c816-0b7a-c389-245b-f57eddda703e
+	toCardinality: many
+	fromColumn: V_FACT_FB_OPS_ROLLEDSTOP.RolledStop_Key
+	toColumn: V_Dim_FB_CustChainHeir._RolledStop_Key
+
+relationship 6f69871a-dc64-07f8-97eb-6b0ad6487ab6
+	toCardinality: many
+	fromColumn: V_FACT_FB_OPS_ROLLEDSTOPORDERS.RolledStopOrder_Key
+	toColumn: V_Dim_FB_CustChainHeir._RolledStop_Key
+
+relationship 89113273-62b6-d99c-0d5a-d3de6c567465
+	toCardinality: many
+	fromColumn: V_Fact_FB_Ops_CPH_CPC.Key
+	toColumn: V_Dim_FB_RptBranchHier.Key
+
+relationship 692e3998-daa6-36ab-1c73-148bd646adc3
+	crossFilteringBehavior: bothDirections
+	fromColumn: Operation_Cal_Day.DayDate
+	toColumn: V_Dim_FB_CalDay.DayDate
+
+relationship 3d7e733a-bbe8-8c54-4e4a-0a9235768a99
+	toCardinality: many
+	fromColumn: V_FACT_FB_OPS_CFR.RequestedDeliveryDate
+	toColumn: Operation_Cal_Day.DayDate
+
+relationship 8d5a7254-d9b9-3d5b-2eff-bbc4accaaf72
+	toCardinality: many
+	fromColumn: V_FACT_FB_OPS_ROLLEDSTOPORDERS.OriginalOrderRDD
+	toColumn: Operation_Cal_Day.DayDate
+
+relationship ee1d90dc-4602-1c51-20e0-038d759f069f
+	toCardinality: many
+	fromColumn: V_FACT_FB_OPS_ROLLEDSTOP.CalendarDay
+	toColumn: Operation_Cal_Day.DayDate
+
+relationship d8ffb587-bcfe-12af-9bc0-a63579113145
+	toCardinality: many
+	fromColumn: V_Fact_FB_POGVoidDetail.Starting_ISO
+	toColumn: Operation_Cal_Day.DayDate
+
+relationship 0652dba8-c5cf-4c01-805b-9175f71181e5
+	toCardinality: many
+	fromColumn: V_FACT_FB_OPS_CFR.CFR_Key
+	toColumn: V_Dim_FB_CustChainHeir._RolledStop_Key
+
+relationship f8a4f7d8-974b-283e-dbc8-0b8e4038758f
+	toCardinality: many
+	fromColumn: V_Fact_FB_CMAComplianceSummary.PeriodEnd
+	toColumn: Operation_Cal_Day.DayDate
+
+relationship 99481fcb-70a1-d986-cd09-eeb14e739913
+	toCardinality: many
+	fromColumn: V_Fact_FB_RevDetail.WeekStartDayDate
+	toColumn: Operation_Cal_Day.DayDate
+
+relationship 0507ee56-9212-4893-a592-a2ddb8f60629
+	crossFilteringBehavior: bothDirections
+	fromColumn: V_FB_MerchByEmployeeCustomer.CustomerNumber
+	toColumn: V_DIm_FB_CustChainHier_Distinct_Customer_number.CustomerNumber
+
+relationship 1c233f38-66e0-124f-7e51-99fa448186af
+	toCardinality: many
+	fromColumn: V_FB_MerchByEmployeeCustomer.TerritoryName
+	toColumn: V_Dim_FB_RptBranchHier.TerritoryName
+
+relationship 715993e4-e546-642c-a414-4ddd83104bda
+	toCardinality: many
+	fromColumn: V_Fact_FB_RevDetail.TradeMarkID
+	toColumn: V_Dim_FB_ProdHeir.TradeMarkID
+
+relationship 23ce7f4f-b014-5755-480b-9e6c4ca2454d
+	fromColumn: V_Dim_FB_CalDay.REF_KEY
+	toColumn: V_Dim_FB_Ref.REF_KEY
+

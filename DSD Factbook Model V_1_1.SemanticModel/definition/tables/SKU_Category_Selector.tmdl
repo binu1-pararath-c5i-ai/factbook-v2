@@ -1,0 +1,32 @@
+table SKU_Category_Selector
+	lineageTag: 0b71abb0-ce7e-47b8-8845-488b70fd3dec
+
+	column Order
+		formatString: 0
+		lineageTag: 090da2f9-baa4-4e16-ab25-71ad4408d77e
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Order]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Selector
+		lineageTag: b0e9a065-bab4-4609-b282-71ae98596bd8
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Selector]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SKU_Category_Selector = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "Order", INTEGER,
+				    "Selector", STRING,
+				    {{1,"SKU"},{2,"Account"}}
+				)
+
+	annotation PBI_Id = 080d35c28558476bb7bf0ac975b2af42
+

@@ -1,0 +1,143 @@
+table Operation_Cal_Day
+	lineageTag: 4f833bfd-bb9e-46b9-a153-bdcb6fbd4602
+
+	column DayDate
+		formatString: General Date
+		lineageTag: 5fb27668-70e8-4e0e-9edd-96774b76ea1d
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[DayDate]
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonthDay
+		lineageTag: 6a334850-1ca1-4488-ad49-e9ab73f7af24
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[YearMonthDay]
+		sortByColumn: YearMonthDay_Sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column Date_flag = ```
+			
+			var _today = [CD]
+			RETURN 
+			SWITCH(
+			    TRUE(),
+			    'Operation_Cal_Day'[DayDate]>_today,0,1)
+			```
+		formatString: 0
+		lineageTag: 7e3b7047-9675-4ece-95d1-5597f4c8bad2
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstDayOfMonth
+		formatString: General Date
+		lineageTag: a1277862-e3df-4733-b9c8-74db9ffb65e3
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[FirstDayOfMonth]
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekStarting_ISO
+		formatString: General Date
+		lineageTag: 4db3628f-2481-4cfc-ad35-29fde7b8bb36
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[WeekStarting_ISO]
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonthDay_Sort
+		lineageTag: 70ade705-92ca-4654-a626-32cf66ea2fba
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[YearMonthDay_Sort]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FirstDayOfYear
+		formatString: General Date
+		lineageTag: 3c59a3fd-1232-44ad-8f45-f282f97496bf
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[FirstDayOfYear]
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstDayOfQuarter
+		formatString: General Date
+		lineageTag: e9c14e3c-9107-4cde-a536-006d002d1553
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[FirstDayOfQuarter]
+
+		annotation SummarizationSetBy = Automatic
+
+	column POG_Flag =
+			
+			IF (Operation_Cal_Day[YearMonthDay_Sort] = 12.2, 0,
+			    IF (Operation_Cal_Day[YearMonthDay_Sort] <> MONTH([CD]), 1,
+			        IF (Operation_Cal_Day[YearMonthDay_Sort] = MONTH([CD]) &&
+			            WEEKNUM(Operation_Cal_Day[DayDate], 2) = WEEKNUM([CD], 2), 1, 0
+			        )
+			    )
+			)
+		formatString: 0
+		lineageTag: 690d39cd-20a7-4122-8097-60682dfba1ed
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Operation_Cal_Day = calculated
+		mode: import
+		source = ```
+				var x1 =
+				SUMMARIZE(
+				    V_Dim_FB_CalDay,
+				    V_Dim_FB_CalDay[DayDate],
+				    V_Dim_FB_CalDay[Year],
+				    V_Dim_FB_CalDay[Quarter_Name],
+				    V_Dim_FB_CalDay[YearMonthDay],
+				    V_Dim_FB_CalDay[FirstDayOfYear],
+				    V_Dim_FB_CalDay[FirstDayOfQuarter],
+				    V_Dim_FB_CalDay[FirstDayOfMonth],
+				    V_Dim_FB_CalDay[WeekStarting_ISO],
+				    V_Dim_FB_CalDay[YearMonthDay_Sort],
+				    "test",
+				        IF(SELECTEDVALUE(V_Dim_FB_CalDay[CurrWeekCounter_ISO]) =0||SELECTEDVALUE(V_Dim_FB_CalDay[CurrWeekCounter_ISO]) =-1, V_Dim_FB_CalDay[YearMonthDay],BLANK()))
+				 
+				var x2 =
+				SUMMARIZE(
+				    V_Dim_FB_CalDay,
+				    V_Dim_FB_CalDay[DayDate],
+				    V_Dim_FB_CalDay[Year],
+				    V_Dim_FB_CalDay[Quarter_Name],
+				    V_Dim_FB_CalDay[MonthName],
+				    V_Dim_FB_CalDay[FirstDayOfYear],
+				    V_Dim_FB_CalDay[FirstDayOfQuarter],
+				    V_Dim_FB_CalDay[FirstDayOfMonth],
+				    V_Dim_FB_CalDay[WeekStarting_ISO],
+				    V_Dim_FB_CalDay[MonthNumber],
+				    "test", V_Dim_FB_CalDay[MonthName])
+				 
+				var data = UNION(x1,x2)
+				RETURN 
+				SUMMARIZE(
+				    data,
+				    V_Dim_FB_CalDay[DayDate],
+				    V_Dim_FB_CalDay[FirstDayOfYear],
+				    V_Dim_FB_CalDay[FirstDayOfQuarter],
+				    V_Dim_FB_CalDay[FirstDayOfMonth],
+				    V_Dim_FB_CalDay[YearMonthDay], 
+				    V_Dim_FB_CalDay[WeekStarting_ISO], 
+				    V_Dim_FB_CalDay[YearMonthDay_Sort])
+				```
+
+	annotation PBI_Id = a9565b9f911a4bc9b36e805a9545bd76
+

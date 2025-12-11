@@ -1,0 +1,113 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "23785c025400b97d5ac4",
+  "displayName": "T&JC DD TL Inc 0 Var",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "b87249e3085ffefb737c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "NationalChainName"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "v"
+                            }
+                          },
+                          "Property": "NationalChainName"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'RITE AID'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "d6b9b8da6f942f96856c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Fact_FB_CMAComplianceSummary"
+              }
+            },
+            "Property": "TimeGranularity"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "531fcd36b6a640188017",
+      "target": "068f226ebd6b000bc428",
+      "type": "NoFilter"
+    },
+    {
+      "source": "531fcd36b6a640188017",
+      "target": "ba2f00cd0a7bccad8a80",
+      "type": "NoFilter"
+    },
+    {
+      "source": "531fcd36b6a640188017",
+      "target": "4779eaf8be8bdb7d0da3",
+      "type": "NoFilter"
+    },
+    {
+      "source": "531fcd36b6a640188017",
+      "target": "ac087920616a72738d83",
+      "type": "NoFilter"
+    },
+    {
+      "source": "531fcd36b6a640188017",
+      "target": "72373f2a66bbc0e8849a",
+      "type": "NoFilter"
+    },
+    {
+      "source": "531fcd36b6a640188017",
+      "target": "7ae6d11041e18909d304",
+      "type": "NoFilter"
+    }
+  ]
+}

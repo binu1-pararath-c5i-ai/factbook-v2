@@ -1,0 +1,38 @@
+table Top_Bottom_Selector
+	lineageTag: c6efd5c1-3049-4bb1-8a6c-ae87bfcb47df
+
+	measure Selected_Category =
+			
+			SELECTEDVALUE(Top_Bottom_Selector[Category])
+		lineageTag: 132bc15c-752b-40fe-9a80-0cc65b191ed2
+
+	column Category
+		lineageTag: 564d249d-9d03-4b24-a95f-ff45fa3ad334
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Category]
+		sortByColumn: Order
+
+		annotation SummarizationSetBy = Automatic
+
+	column Order
+		formatString: 0
+		lineageTag: 442099cc-db70-41de-9120-a1dd73ea21b5
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Order]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Top_Bottom_Selector = calculated
+		mode: import
+		source =
+				
+				DATATABLE(
+				    "Order", INTEGER,
+				    "Category", STRING,
+				    {{1,"Top Rank"},{2,"Bottom Rank"}}
+				)
+
+	annotation PBI_Id = 4cce2309fb3c4ac1b55d180c9729af1a
+

@@ -1,0 +1,757 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "caccc481297555143720",
+  "position": {
+    "x": 1037.1428571428571,
+    "y": 467.14285714285717,
+    "z": 79000,
+    "height": 392.85714285714289,
+    "width": 301.42857142857144,
+    "tabOrder": 80000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops_Rank_Order"
+                }
+              },
+              "queryRef": "Measure Table.Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops_Rank_Order",
+              "nativeQueryRef": " ",
+              "displayName": " "
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops_Rank"
+                }
+              },
+              "queryRef": "Measure Table.Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops_Rank",
+              "nativeQueryRef": ". ",
+              "displayName": ". "
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_RptBranchHier"
+                    }
+                  },
+                  "Property": "TerritoryName"
+                }
+              },
+              "queryRef": "V_Dim_FB_RptBranchHier.TerritoryName",
+              "nativeQueryRef": "Territory",
+              "displayName": "Territory"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops"
+                }
+              },
+              "queryRef": "Measure Table.Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops",
+              "nativeQueryRef": "Temp%",
+              "displayName": "Temp%"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_RevDetail"
+                    }
+                  },
+                  "Property": "Temp_YA"
+                }
+              },
+              "queryRef": "V_Fact_FB_RevDetail.Temp_YA",
+              "nativeQueryRef": "vs YA",
+              "displayName": "vs YA"
+            }
+          ],
+          "fieldParameters": [
+            {
+              "parameterExpr": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Dynamic_Parameter_3"
+                    }
+                  },
+                  "Property": "Dynamic_Parameter_3"
+                }
+              },
+              "index": 2,
+              "length": 1
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "wordWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "backColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#FFFFFF'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "properties": {
+            "icon": {
+              "kind": "Icon",
+              "layout": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'IconOnly'"
+                  }
+                }
+              },
+              "verticalAlignment": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'Middle'"
+                  }
+                }
+              },
+              "value": {
+                "expr": {
+                  "Conditional": {
+                    "Cases": [
+                      {
+                        "Condition": {
+                          "And": {
+                            "Left": {
+                              "Comparison": {
+                                "ComparisonKind": 1,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "V_Fact_FB_RevDetail"
+                                      }
+                                    },
+                                    "Property": "Temp_YA"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "0D"
+                                  }
+                                }
+                              }
+                            },
+                            "Right": {
+                              "Comparison": {
+                                "ComparisonKind": 3,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "V_Fact_FB_RevDetail"
+                                      }
+                                    },
+                                    "Property": "Temp_YA"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "99D"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Value": {
+                          "Literal": {
+                            "Value": "'ColoredArrowUpRed'"
+                          }
+                        }
+                      },
+                      {
+                        "Condition": {
+                          "And": {
+                            "Left": {
+                              "Comparison": {
+                                "ComparisonKind": 1,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "V_Fact_FB_RevDetail"
+                                      }
+                                    },
+                                    "Property": "Temp_YA"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "-99D"
+                                  }
+                                }
+                              }
+                            },
+                            "Right": {
+                              "Comparison": {
+                                "ComparisonKind": 3,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "V_Fact_FB_RevDetail"
+                                      }
+                                    },
+                                    "Property": "Temp_YA"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "0D"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Value": {
+                          "Literal": {
+                            "Value": "'ColoredArrowDownGreen'"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "V_Fact_FB_RevDetail.Temp_YA"
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "11D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.2
+                    }
+                  }
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "rowPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "5D"
+                }
+              }
+            },
+            "gridHorizontalColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            },
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "2D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "116.07400985891131D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Dim_FB_RptBranchHier.ReportingBranch"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "123.92856804374816D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Dim_FB_RptBranchHier.RegionName"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "122.68296346820622D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Dim_FB_RptBranchHier.BUName_Filtered"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "72.61460501009498D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Dim_FB_RptBranchHier.TerritoryName_Filtered"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "4D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops_Rank_Order"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "40.60971797333809D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops_Rank"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "71.07359747112304D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "112.28459328596725D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Dim_FB_RptBranchHier.TerritoryName"
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "background": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "3c7f2a4a39d398390726",
+        "ordinal": 0,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_OT_Selection_Ops_Rank_Order"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      },
+      {
+        "name": "773094060072d8d207c2",
+        "ordinal": 1,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_OT_Selection_Ops_Rank"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      },
+      {
+        "name": "689ea8e451603be3adc5",
+        "ordinal": 2,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_OT_Selection_Ops"
+          }
+        },
+        "type": "Advanced",
+        "howCreated": "User"
+      },
+      {
+        "name": "f5f33af759d06bda42cb",
+        "ordinal": 3,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_RptBranchHier"
+              }
+            },
+            "Property": "TerritoryName_Filtered"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "25b8e5edb6889534d230",
+        "ordinal": 4,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Whse/Delv/Mech Table"
+              }
+            },
+            "Property": "Whse/Delv/Mech"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "w",
+              "Entity": "Whse/Delv/Mech Table",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "w"
+                          }
+                        },
+                        "Property": "Whse/Delv/Mech"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Merchandising'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "b93994e3a83ce959a2ce",
+        "ordinal": 5,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Fact_FB_RevDetail"
+              }
+            },
+            "Property": "Temp_YA"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "fc005a33bc09d3b828cd",
+        "ordinal": 6,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "4d66633d16d0bd1a1650",
+        "ordinal": 7,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops_Rank_Order"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "6cce38d43004eb967560",
+        "ordinal": 8,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops_Rank"
+          }
+        },
+        "type": "Advanced"
+      }
+    ],
+    "filterSortOrder": "Custom"
+  }
+}

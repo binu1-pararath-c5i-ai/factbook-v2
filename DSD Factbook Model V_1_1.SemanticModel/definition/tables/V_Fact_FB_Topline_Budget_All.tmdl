@@ -1,0 +1,189 @@
+table V_Fact_FB_Topline_Budget_All
+	lineageTag: 9d532829-e432-471d-81cb-65df83d6bf8f
+
+	column MonthID
+		dataType: string
+		lineageTag: eb3a5973-1a80-4e4a-bc36-1d19e59decbe
+		summarizeBy: none
+		sourceColumn: MonthID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RYBkt
+		dataType: string
+		lineageTag: d729ffed-f2b9-4f58-bd9f-af7da4a7323f
+		summarizeBy: none
+		sourceColumn: RYBkt
+
+		annotation SummarizationSetBy = Automatic
+
+	column BranchID
+		dataType: string
+		lineageTag: 842d125f-1e7c-4bc1-8b0a-21446a242abc
+		summarizeBy: none
+		sourceColumn: BranchID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemID
+		dataType: string
+		lineageTag: 1ce0275f-47b6-4c9b-bdf2-510d9023b732
+		summarizeBy: none
+		sourceColumn: ItemID
+
+		annotation SummarizationSetBy = Automatic
+
+	column NationalChainName
+		dataType: string
+		lineageTag: 9595749e-38d0-4448-8126-f1f7c9383f46
+		summarizeBy: none
+		sourceColumn: NationalChainName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesCasesBudget
+		dataType: double
+		formatString: 0.000
+		lineageTag: 7c30e9d4-5787-44bf-a718-4c5d68940f4c
+		summarizeBy: sum
+		sourceColumn: SalesCasesBudget
+
+		annotation SummarizationSetBy = Automatic
+
+	column RevenueDeadNetBudget
+		dataType: double
+		formatString: 0.000
+		lineageTag: 938afaba-f425-47c5-bd08-85faf4a63685
+		summarizeBy: sum
+		sourceColumn: RevenueDeadNetBudget
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesCasesFC
+		dataType: double
+		formatString: 0.000
+		lineageTag: 017cd055-2f71-476e-8f1b-9d6093409b7e
+		summarizeBy: sum
+		sourceColumn: SalesCasesFC
+
+		annotation SummarizationSetBy = Automatic
+
+	column RevenueDeadNetFC
+		dataType: double
+		formatString: 0.000
+		lineageTag: 9b72cd89-b825-44e4-ba6d-620ae9381bd2
+		summarizeBy: sum
+		sourceColumn: RevenueDeadNetFC
+
+		annotation SummarizationSetBy = Automatic
+
+	column RC_topline_budget = COUNTROWS(V_Fact_FB_Topline_Budget_All)
+		formatString: 0
+		lineageTag: f60f289a-6d5a-462e-92f5-d6c11b171fe5
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column TimeGranularity
+		dataType: string
+		lineageTag: b89610d0-3b73-448d-ab3a-55812d983997
+		summarizeBy: none
+		sourceColumn: TimeGranularity
+
+		annotation SummarizationSetBy = Automatic
+
+	column PeriodEnd
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: a8c9a0fe-3518-48aa-b97f-ebcdda82b577
+		summarizeBy: none
+		sourceColumn: PeriodEnd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CurrMonthCounter
+		dataType: double
+		lineageTag: d642797f-1d45-45da-a7d1-641b1f4afe27
+		summarizeBy: sum
+		sourceColumn: CurrMonthCounter
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column ProfitCenterID
+		dataType: string
+		lineageTag: 2cdac108-c332-42dd-916e-95a9155b6aec
+		summarizeBy: none
+		sourceColumn: ProfitCenterID
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProfitCenter
+		dataType: string
+		lineageTag: 8575b259-ecd2-4103-8703-ccb24eafed5c
+		summarizeBy: none
+		sourceColumn: ProfitCenter
+
+		annotation SummarizationSetBy = Automatic
+
+	column GPDeadNetBudget
+		dataType: double
+		lineageTag: 35bf3d04-4f28-4f81-8b7d-62c83a59f9d5
+		summarizeBy: sum
+		sourceColumn: GPDeadNetBudget
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GPDeadNetFC
+		dataType: double
+		lineageTag: 6aa33681-8c61-4a81-b37e-a5d0e63cfb36
+		summarizeBy: sum
+		sourceColumn: GPDeadNetFC
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column BranchNationalChain
+		dataType: string
+		lineageTag: 09b694d7-4929-4d6a-b74d-83770a9f4d8a
+		summarizeBy: none
+		sourceColumn: BranchNationalChain
+
+		annotation SummarizationSetBy = Automatic
+
+	column ISFC
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a3818c32-0016-427e-b1ba-56e52a58cb5d
+		summarizeBy: none
+		sourceColumn: ISFC
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Fact_FB_Topline_Budget_All = m
+		mode: import
+		source =
+				let
+				
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				
+				    V_Fact_FB_Topline_Budget_All_View = DSD_Schema{[Name="V_Fact_FB_ToplineBudget_Summary",Kind="View"]}[Data]
+				
+				in
+				
+				    V_Fact_FB_Topline_Budget_All_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

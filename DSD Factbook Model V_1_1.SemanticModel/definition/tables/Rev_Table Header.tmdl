@@ -1,0 +1,37 @@
+table 'Rev_Table Header'
+	lineageTag: d7abed37-5598-4b0c-b8e7-573b8bdcbca3
+
+	column Header
+		dataType: string
+		lineageTag: 9472d729-ef48-4ecd-95e2-d6ae7d250f91
+		summarizeBy: none
+		sourceColumn: Header
+		sortByColumn: 'Sort order'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sort order'
+		dataType: string
+		lineageTag: a14c0a73-4b4a-4114-bc72-fb6629e0443b
+		summarizeBy: none
+		sourceColumn: Sort order
+
+		changedProperty = IsHidden
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Rev_Table Header' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WUlUIzs9JUdJRMlSK1QFxnUozc0oUNHzcFPzzcio1gTJGSrGxAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Header = _t, #"Sort order" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Header", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

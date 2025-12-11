@@ -1,0 +1,126 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "6740959dce030e92291a",
+  "position": {
+    "x": 331.42857142857144,
+    "y": 185.71428571428572,
+    "z": 2000,
+    "height": 434.28571428571433,
+    "width": 695.71428571428578,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "DayDate"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.DayDate.Variation.Date Hierarchy.Year",
+              "nativeQueryRef": "DayDate Year"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "MonthName"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.MonthName",
+              "nativeQueryRef": "MonthName"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue_Bar_Act"
+                }
+              },
+              "queryRef": "Measure Table.Revenue_Bar_Act",
+              "nativeQueryRef": "Revenue_Bar_Act"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume_Bar_Act"
+                }
+              },
+              "queryRef": "Measure Table.Volume_Bar_Act",
+              "nativeQueryRef": "Volume_Bar_Act"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue_Bar_RPC"
+                }
+              },
+              "queryRef": "Measure Table.Revenue_Bar_RPC",
+              "nativeQueryRef": "Revenue_Bar_RPC"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "columnFormatting": [
+        {
+          "properties": {
+            "labelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "15L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_Bar_Act"
+          }
+        },
+        {
+          "properties": {
+            "labelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "1L"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Revenue_Bar_RPC"
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

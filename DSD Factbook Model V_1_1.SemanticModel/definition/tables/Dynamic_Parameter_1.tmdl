@@ -1,0 +1,51 @@
+table Dynamic_Parameter_1
+	lineageTag: 37eccb1c-2169-4830-a9c5-677311ffec0c
+
+	column Dynamic_Parameter_1
+		lineageTag: 9e54c085-0997-4bf5-8027-3a7bbf4f6512
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Dynamic_Parameter_1 Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Dynamic_Parameter_1 Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dynamic_Parameter_1 Fields'
+		isHidden
+		lineageTag: 163a29e0-1499-46c9-9284-40859ac429f3
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Dynamic_Parameter_1 Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dynamic_Parameter_1 Order'
+		isHidden
+		formatString: 0
+		lineageTag: 8970e20c-6ce8-46cb-9d9d-dbda31616b11
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dynamic_Parameter_1 = calculated
+		mode: import
+		source =
+				{
+				    ("BU", NAMEOF('V_Dim_FB_PL_SalesHier'[BU]), 0),
+				    ("Region", NAMEOF('V_Dim_FB_PL_SalesHier'[Region]), 1),
+				    ("Territory", NAMEOF('V_Dim_FB_PL_SalesHier'[Trtry]), 2),
+				    ("Branch", NAMEOF('V_Dim_FB_PL_SalesHier'[Branch]), 3),
+				    ("Profit Center", NAMEOF('V_Dim_FB_PL_SalesHier'[PrftCtrNm]), 4)
+				}
+
+	annotation PBI_Id = e258f792c85e4d158f6ee836bc4b161d
+

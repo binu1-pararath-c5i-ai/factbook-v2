@@ -1,0 +1,22 @@
+table 'Act/VolAdj Table'
+	lineageTag: 05787abc-b3fe-4543-8983-f2290d091a89
+
+	column Act/VolAdj
+		dataType: string
+		lineageTag: 76413fab-bb12-4c16-a80b-cd5e7e0cf00d
+		summarizeBy: none
+		sourceColumn: Act/VolAdj
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Act/VolAdj Table' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WckwuKU3MKVaK1YlWCsvP0XNMySotLklNUYqNBQA=", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Act/VolAdj" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Act/VolAdj", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

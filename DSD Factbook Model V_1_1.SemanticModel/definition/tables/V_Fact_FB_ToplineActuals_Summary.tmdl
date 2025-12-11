@@ -1,0 +1,129 @@
+table V_Fact_FB_ToplineActuals_Summary
+	lineageTag: 0ed7f2e9-b2e1-4f5d-8966-4cdfe99463f4
+
+	column MonthID
+		dataType: string
+		lineageTag: 57c2a9e4-de8f-47ea-bacc-3650a07e9e0c
+		summarizeBy: none
+		sourceColumn: MonthID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesGroupID
+		dataType: string
+		lineageTag: a2afd1bc-b6d1-4f44-9dc7-0b809cb98c6f
+		summarizeBy: none
+		sourceColumn: SalesGroupID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesGroupName
+		dataType: string
+		lineageTag: edeb684d-280e-4b31-8ac3-47faac06867e
+		summarizeBy: none
+		sourceColumn: SalesGroupName
+
+		annotation SummarizationSetBy = Automatic
+
+	column LocalChainID
+		dataType: string
+		lineageTag: 7821aef7-cfff-4b80-8f52-8c73fdb98a3c
+		summarizeBy: none
+		sourceColumn: LocalChainID
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsFranchiseSales
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 5943f224-ae2e-46b9-b8fc-ba1262068ddb
+		summarizeBy: none
+		sourceColumn: IsFranchiseSales
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesCases
+		dataType: double
+		lineageTag: ef624636-d456-4021-9431-728870aae162
+		summarizeBy: sum
+		sourceColumn: SalesCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RevenueDeadNet
+		dataType: double
+		lineageTag: 7005c235-53bb-4f92-888b-3a4ae06a14ec
+		summarizeBy: sum
+		sourceColumn: RevenueDeadNet
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RC_Topline_Actuals = COUNTROWS(V_Fact_FB_ToplineActuals_Summary)
+		formatString: 0
+		lineageTag: f1af32f2-cf9d-49c7-b877-b66291157fd9
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Period
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3c30231b-ca78-4e12-b134-643a1986e601
+		summarizeBy: none
+		sourceColumn: Period
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column TimeGranularity
+		dataType: string
+		lineageTag: 4317882c-a14e-4a6e-89e2-c95298fb3fc3
+		summarizeBy: none
+		sourceColumn: TimeGranularity
+
+		annotation SummarizationSetBy = Automatic
+
+	column DSC_NC_Category
+		dataType: string
+		lineageTag: a9e4cabd-a3a8-4dd9-b164-1642822c6c38
+		summarizeBy: none
+		sourceColumn: DSC_NC_Category
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemID
+		dataType: string
+		lineageTag: c1864bdf-e524-446c-9c19-4a4042307b5f
+		summarizeBy: none
+		sourceColumn: ItemID
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesGroupLocalChain
+		dataType: string
+		lineageTag: 91ada066-e247-491d-89d8-5d935037b070
+		summarizeBy: none
+		sourceColumn: SalesGroupLocalChain
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Fact_FB_ToplineActuals_Summary = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_Fact_FB_ToplineActuals_Summary_View = DSD_Schema{[Name="V_Fact_FB_ToplineActuals_Summary",Kind="View"]}[Data]
+				in
+				    V_Fact_FB_ToplineActuals_Summary_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

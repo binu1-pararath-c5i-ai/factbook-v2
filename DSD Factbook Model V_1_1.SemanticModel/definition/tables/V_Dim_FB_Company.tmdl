@@ -1,0 +1,34 @@
+table V_Dim_FB_Company
+	lineageTag: 629b5c01-3543-40eb-b1f1-97ab5509d83d
+
+	column CmpnyCode
+		dataType: string
+		lineageTag: 94bd1115-645f-4d8c-8f64-4a9d771c77a3
+		summarizeBy: none
+		sourceColumn: CmpnyCode
+
+		annotation SummarizationSetBy = Automatic
+
+	column CmpnyCodeDesc
+		dataType: string
+		lineageTag: 0db15ffc-8531-4640-af4d-285bc15e0f8d
+		summarizeBy: none
+		sourceColumn: CmpnyCodeDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Dim_FB_Company = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_Dim_FB_Company_View = DSD_Schema{[Name="V_Dim_FB_Company",Kind="View"]}[Data]
+				in
+				    V_Dim_FB_Company_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

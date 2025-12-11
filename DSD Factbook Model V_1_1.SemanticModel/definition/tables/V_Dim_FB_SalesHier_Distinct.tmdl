@@ -1,0 +1,17 @@
+table V_Dim_FB_SalesHier_Distinct
+	lineageTag: 6ebb960b-c0e7-41b7-8373-0fee7e265b4b
+
+	column BranchID
+		lineageTag: 09ee1858-882d-44d2-9046-dbe1b43830a5
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_SalesHier[BranchID]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Dim_FB_SalesHier_Distinct = calculated
+		mode: import
+		source = DISTINCT(V_Dim_FB_SalesHier[BranchID])
+
+	annotation PBI_Id = a3ce7a8506a841c980971fb83492c4dd
+

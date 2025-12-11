@@ -1,0 +1,62 @@
+table V_Dim_FB_PlHier
+	lineageTag: b77d67b0-b203-48ab-9f99-c6c65fc1e605
+
+	column PlHierKey
+		dataType: double
+		lineageTag: 4d828e46-7292-49c8-ae8d-dd54c0456d3a
+		summarizeBy: none
+		sourceColumn: PlHierKey
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PlHier
+		dataType: string
+		lineageTag: 6bd4aa92-5430-4113-b1eb-a63d48c81f0b
+		summarizeBy: none
+		sourceColumn: PlHier
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlSubHier
+		dataType: string
+		lineageTag: 1f52f556-d924-486f-998f-3820e7768c19
+		summarizeBy: none
+		sourceColumn: PlSubHier
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlSubHierLine
+		dataType: string
+		lineageTag: b28dc5c9-885c-4e6d-8887-038920cf2df0
+		summarizeBy: none
+		sourceColumn: PlSubHierLine
+
+		annotation SummarizationSetBy = Automatic
+
+	column PlRank
+		dataType: double
+		lineageTag: d6c801e8-1e8f-4cf9-90d1-8df7f5495151
+		summarizeBy: none
+		sourceColumn: PlRank
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition V_Dim_FB_PlHier = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_Dim_FB_PlHier_View = DSD_Schema{[Name="V_Dim_FB_PlHier",Kind="View"]}[Data]
+				in
+				    V_Dim_FB_PlHier_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

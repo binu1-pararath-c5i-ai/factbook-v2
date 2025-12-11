@@ -1,0 +1,50 @@
+table Dynamic_Parameter_3
+	lineageTag: 69d27e90-b11a-4485-b27f-34b45a16ee32
+
+	column Dynamic_Parameter_3
+		lineageTag: 4d49bd0a-a899-4cea-8ac7-f487df45884d
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Dynamic_Parameter_3 Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Dyanmic_Parameter_2 Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dyanmic_Parameter_2 Fields'
+		isHidden
+		lineageTag: 849cfaae-27a0-4171-bdfc-d4f0bd2292d3
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Dynamic_Parameter_3 Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dynamic_Parameter_3 Order'
+		isHidden
+		formatString: 0
+		lineageTag: 6c24a028-ccde-4a90-8b52-fd79545d0e1f
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dynamic_Parameter_3 = calculated
+		mode: import
+		source =
+				{
+				    ("BU", NAMEOF('V_Dim_FB_RptBranchHier'[BUName]), 0),
+				    ("Region", NAMEOF('V_Dim_FB_RptBranchHier'[RegionName]), 1),
+				    ("Territory", NAMEOF('V_Dim_FB_RptBranchHier'[TerritoryName]), 2),
+				    ("Reporting Branch", NAMEOF('V_Dim_FB_RptBranchHier'[ReportingBranch]), 3)
+				}
+
+	annotation PBI_Id = ed8eb89669634fe2b0ecdbce8ba395b6
+

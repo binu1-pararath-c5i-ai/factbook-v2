@@ -1,0 +1,493 @@
+table V_Fact_FB_CMAComplianceSummary
+	lineageTag: 8715416f-fdf0-49af-a1a7-e378bb59095e
+
+	column CustomerNumber
+		dataType: string
+		lineageTag: 2d76e94f-c037-493c-8369-d45d1fdb96af
+		summarizeBy: none
+		sourceColumn: CustomerNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromoPlanName
+		dataType: string
+		lineageTag: 46749c31-ec8c-4fc8-84a4-44b721e77345
+		summarizeBy: none
+		sourceColumn: PromoPlanName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RC_CMAComp = COUNTROWS(V_Fact_FB_CMAComplianceSummary)
+		formatString: 0
+		lineageTag: 3054113b-91f0-4110-bcb8-b443181d1569
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Account = CONCATENATE(V_Fact_FB_CMAComplianceSummary[CustomerNumber],V_Fact_FB_CMAComplianceSummary[PromoPlanName])
+		lineageTag: c4f30f26-20e7-4d69-87e3-8951123026db
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Composite Key' = V_Fact_FB_CMAComplianceSummary[CustomerNumber]&V_Fact_FB_CMAComplianceSummary[DistributionChannel]
+		lineageTag: bdff905d-eb91-4c04-a1a0-2f23a56721c2
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column TimeGranularity
+		dataType: string
+		lineageTag: e26c0e5c-cbff-4a15-8a5c-49daab1b356c
+		summarizeBy: none
+		sourceColumn: TimeGranularity
+
+		annotation SummarizationSetBy = Automatic
+
+	column PeriodStart
+		dataType: string
+		lineageTag: d1acb8c7-8279-4b20-9590-8d7d5b114a82
+		summarizeBy: none
+		sourceColumn: PeriodStart
+
+		annotation SummarizationSetBy = Automatic
+
+	column PeriodEnd
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: da7cebf4-175e-46b8-b559-3bfb4ff2b8ae
+		summarizeBy: none
+		sourceColumn: PeriodEnd
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Period
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9ebc58c0-f112-48ba-b928-ae38fd68daab
+		summarizeBy: none
+		sourceColumn: Period
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column RMMPOPPackageDesc
+		dataType: string
+		lineageTag: 5ca4559f-d878-4eb3-9f1e-d690121039bd
+		summarizeBy: none
+		sourceColumn: RMMPOPPackageDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column PackageConfig
+		dataType: string
+		lineageTag: 3bda4c53-3528-4203-9f2c-a0b2b9d049d6
+		summarizeBy: none
+		sourceColumn: PackageConfig
+
+		annotation SummarizationSetBy = Automatic
+
+	column PackageType
+		dataType: string
+		lineageTag: 8d399964-ce8f-4f7b-96fb-8a58525d4f22
+		summarizeBy: none
+		sourceColumn: PackageType
+
+		annotation SummarizationSetBy = Automatic
+
+	column DistributionChannel
+		dataType: string
+		lineageTag: 74d39bee-49f3-41f5-ac9b-0626e3ab16dd
+		summarizeBy: none
+		sourceColumn: DistributionChannel
+
+		annotation SummarizationSetBy = Automatic
+
+	column RouteID
+		dataType: string
+		lineageTag: f3007caf-e148-46e3-be21-8a368e74ff1f
+		summarizeBy: none
+		sourceColumn: RouteID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CSDSkuSold
+		dataType: double
+		lineageTag: b298e8a4-32b9-4433-a6c9-4aed8d784e3f
+		summarizeBy: sum
+		sourceColumn: CSDSkuSold
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column EnergySkuSold
+		dataType: double
+		lineageTag: e316681e-4b1f-46a3-a437-79884fb61198
+		summarizeBy: sum
+		sourceColumn: EnergySkuSold
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SportSkuSold
+		dataType: double
+		lineageTag: a11e4f31-fc4e-475a-8309-3e97b5d3e943
+		summarizeBy: sum
+		sourceColumn: SportSkuSold
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WaterSkuSold
+		dataType: double
+		lineageTag: b717fbdd-6f34-4587-9852-9d31b2ae1b26
+		summarizeBy: sum
+		sourceColumn: WaterSkuSold
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TeaJCSkuSold
+		dataType: double
+		lineageTag: da1223e7-d112-4ee0-8663-033827e72849
+		summarizeBy: sum
+		sourceColumn: TeaJCSkuSold
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Tier
+		dataType: string
+		lineageTag: 6a0beeef-ea4e-4ee0-9a56-f6d49803f5a6
+		summarizeBy: none
+		sourceColumn: Tier
+
+		annotation SummarizationSetBy = Automatic
+
+	column CSDPromo
+		dataType: int64
+		formatString: 0
+		lineageTag: d3dac0bc-6e14-4440-a812-daa82e0645f7
+		summarizeBy: sum
+		sourceColumn: CSDPromo
+
+		annotation SummarizationSetBy = Automatic
+
+	column EneryPromo
+		dataType: int64
+		formatString: 0
+		lineageTag: 51794a6b-d81e-458e-87c6-3aa82de77d0f
+		summarizeBy: sum
+		sourceColumn: EneryPromo
+
+		annotation SummarizationSetBy = Automatic
+
+	column SportsPromo
+		dataType: int64
+		formatString: 0
+		lineageTag: 30fad5a3-1f24-410a-b832-1ea6c530f0bf
+		summarizeBy: sum
+		sourceColumn: SportsPromo
+
+		annotation SummarizationSetBy = Automatic
+
+	column WaterPromo
+		dataType: int64
+		formatString: 0
+		lineageTag: 89d9beda-62eb-4072-b4b9-6a371c7b6596
+		summarizeBy: sum
+		sourceColumn: WaterPromo
+
+		annotation SummarizationSetBy = Automatic
+
+	column TeaJCPromo
+		dataType: int64
+		formatString: 0
+		lineageTag: cd03e0e3-ad57-4b04-b035-e79d9f7b8ead
+		summarizeBy: sum
+		sourceColumn: TeaJCPromo
+
+		annotation SummarizationSetBy = Automatic
+
+	column SKUCategory
+		dataType: string
+		lineageTag: 998bd7b0-45c7-49ed-8a5c-14757add411e
+		summarizeBy: none
+		sourceColumn: SKUCategory
+
+		annotation SummarizationSetBy = Automatic
+
+	column CSDVariance
+		dataType: double
+		lineageTag: 42c82ca2-fe46-4d59-9c80-a4d5e166721d
+		summarizeBy: sum
+		sourceColumn: CSDVariance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column EnergyVariance
+		dataType: double
+		lineageTag: c65de1e8-5c68-486c-9e4f-4dd5645386c4
+		summarizeBy: sum
+		sourceColumn: EnergyVariance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SportsVariance
+		dataType: double
+		lineageTag: 43c8834b-8b72-4ab0-8e04-88a731641e21
+		summarizeBy: sum
+		sourceColumn: SportsVariance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WaterVariance
+		dataType: double
+		lineageTag: 26545cd3-07ed-4b72-b2e4-766ed4af917a
+		summarizeBy: sum
+		sourceColumn: WaterVariance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'Total Missing SKUs'
+		dataType: int64
+		formatString: 0
+		lineageTag: 25dc8c97-ac44-41a4-834c-02c5bbe16598
+		summarizeBy: sum
+		sourceColumn: Total Missing SKUs
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Total Planned SKUs'
+		dataType: string
+		lineageTag: c8cca36f-69d6-4c2a-838b-8290acffe8cd
+		summarizeBy: none
+		sourceColumn: Total Planned SKUs
+
+		annotation SummarizationSetBy = Automatic
+
+	column Calc_TnJC_SKUsSold =
+			
+			CALCULATE(
+			    SUM(V_Fact_FB_CMAComplianceSummary[TeaJCSkuSold]),
+			    ALLEXCEPT(
+			        V_Fact_FB_CMAComplianceSummary,
+			        V_Fact_FB_CMAComplianceSummary[CustomerNumber],
+			        V_Fact_FB_CMAComplianceSummary[PromoPlanName],
+			        V_Fact_FB_CMAComplianceSummary[Account],
+			        V_Fact_FB_CMAComplianceSummary[PeriodEnd],
+			        V_Fact_FB_CMAComplianceSummary[SKUCategory]
+			            )
+			        )
+		lineageTag: 993c790f-d249-42bd-87c0-4e53c59b305d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Calc_CSD_SKUsSold =
+			
+			CALCULATE(
+			    SUM(V_Fact_FB_CMAComplianceSummary[CSDSkuSold]),
+			    ALLEXCEPT(
+			        V_Fact_FB_CMAComplianceSummary,
+			        V_Fact_FB_CMAComplianceSummary[CustomerNumber],
+			        V_Fact_FB_CMAComplianceSummary[PromoPlanName],
+			        V_Fact_FB_CMAComplianceSummary[Account],
+			        V_Fact_FB_CMAComplianceSummary[PeriodEnd],
+			        V_Fact_FB_CMAComplianceSummary[SKUCategory]
+			            )
+			        )
+		lineageTag: e1189475-6e04-424e-bd68-d2433070cea9
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Calc_Sports_SKUsSold =
+			
+			CALCULATE(
+			    SUM(V_Fact_FB_CMAComplianceSummary[SportSkuSold]),
+			    ALLEXCEPT(
+			        V_Fact_FB_CMAComplianceSummary,
+			        V_Fact_FB_CMAComplianceSummary[CustomerNumber],
+			        V_Fact_FB_CMAComplianceSummary[PromoPlanName],
+			        V_Fact_FB_CMAComplianceSummary[Account],
+			        V_Fact_FB_CMAComplianceSummary[PeriodEnd],
+			        V_Fact_FB_CMAComplianceSummary[SKUCategory]
+			            )
+			        )
+		lineageTag: 91b268de-36e2-40e5-b399-1e2211c6f670
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Calc_Energy_SKUsSold =
+			
+			CALCULATE(
+			    SUM(V_Fact_FB_CMAComplianceSummary[EnergySkuSold]),
+			    ALLEXCEPT(
+			        V_Fact_FB_CMAComplianceSummary,
+			        V_Fact_FB_CMAComplianceSummary[CustomerNumber],
+			        V_Fact_FB_CMAComplianceSummary[PromoPlanName],
+			        V_Fact_FB_CMAComplianceSummary[Account],
+			        V_Fact_FB_CMAComplianceSummary[PeriodEnd],
+			        V_Fact_FB_CMAComplianceSummary[SKUCategory]
+			            )
+			        )
+		lineageTag: 9acf0bcb-9206-4203-a91d-539dbedd3dd5
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Calc_Water_SKUsSold =
+			
+			CALCULATE(
+			    SUM(V_Fact_FB_CMAComplianceSummary[WaterSkuSold]),
+			    ALLEXCEPT(
+			        V_Fact_FB_CMAComplianceSummary,
+			        V_Fact_FB_CMAComplianceSummary[CustomerNumber],
+			        V_Fact_FB_CMAComplianceSummary[PromoPlanName],
+			        V_Fact_FB_CMAComplianceSummary[Account],
+			        V_Fact_FB_CMAComplianceSummary[PeriodEnd],
+			        V_Fact_FB_CMAComplianceSummary[SKUCategory]
+			            )
+			        )
+		lineageTag: 53efa987-9ff5-48b3-818c-6ad24cfbddbd
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Tea & JC Variance' =
+			
+			var Target = V_Fact_FB_CMAComplianceSummary[TeaJCPromo]
+			var SKUs = V_Fact_FB_CMAComplianceSummary[Calc_TnJC_SKUsSold]
+			
+			RETURN
+			if (Target>SKUs,SKUs-Target,0 )
+		lineageTag: bd50c123-e7cc-4d59-9beb-b9eb91a318a2
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'CSD Variance' =
+			
+			var Target = V_Fact_FB_CMAComplianceSummary[CSDPromo]
+			var SKUs = V_Fact_FB_CMAComplianceSummary[Calc_CSD_SKUsSold]
+			
+			RETURN
+			if (Target>SKUs,SKUs-Target,0 )
+		lineageTag: 4ed7f382-9c87-4f5a-ae84-52cf33b0e25c
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Sports Variance' =
+			
+			var Target = V_Fact_FB_CMAComplianceSummary[SportsPromo]
+			var SKUs = V_Fact_FB_CMAComplianceSummary[Calc_Sports_SKUsSold]
+			
+			RETURN
+			if (Target>SKUs,SKUs-Target,0 )
+		lineageTag: b003860c-62e2-4a9e-8864-d232a53a1c68
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Energy Variance' =
+			
+			var Target = V_Fact_FB_CMAComplianceSummary[EneryPromo]
+			var SKUs = V_Fact_FB_CMAComplianceSummary[Calc_Energy_SKUsSold]
+			
+			RETURN
+			if (Target>SKUs,SKUs-Target,0 )
+		lineageTag: 3f6d52ac-ed13-4b22-9f10-9cebde0fec8c
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Water Variance' =
+			
+			var Target = V_Fact_FB_CMAComplianceSummary[WaterPromo]
+			var SKUs = V_Fact_FB_CMAComplianceSummary[Calc_Water_SKUsSold]
+			
+			RETURN
+			if (Target>SKUs,SKUs-Target,0 )
+		lineageTag: d6f5b3d0-664a-4869-bb38-a871119f7efe
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Monthnumber = MONTH(V_Fact_FB_CMAComplianceSummary[PeriodEnd])
+		formatString: 0
+		lineageTag: f63e348d-415a-424f-a1b1-44f09150e2e4
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column TimeGranularityNo = ```
+			
+			SWITCH(
+			    V_Fact_FB_CMAComplianceSummary[TimeGranularity], 
+			    "Monthly", 2,
+			    "Previous Week", -1,
+			    "Current Week",1,0)
+			```
+		formatString: 0
+		lineageTag: d0e501ec-391a-43af-ad64-65f621e364cb
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column TeaJCVariance
+		dataType: double
+		lineageTag: e2800daf-5d88-4c24-bac1-fc74f2eafe06
+		summarizeBy: sum
+		sourceColumn: TeaJCVariance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition V_Fact_FB_CMAComplianceSummary = m
+		mode: import
+		source =
+				let
+				
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				
+				    V_Fact_FB_CMAComplianceSummary_View = DSD_Schema{[Name="V_Fact_FB_CMAComplianceSummary",Kind="View"]}[Data],
+				
+				    #"Changed Type" = Table.TransformColumnTypes(V_Fact_FB_CMAComplianceSummary_View,{{"CSDPromo", Int64.Type}, {"TeaJCPromo", Int64.Type}, {"WaterPromo", Int64.Type}, {"SportsPromo", Int64.Type}, {"EneryPromo", Int64.Type}}),
+				
+				    #"Added Custom6" = Table.AddColumn(#"Changed Type", "Total Missing SKUs", each [CSDVariance] + [EnergyVariance] + [SportsVariance] + [WaterVariance] + [TeaJCVariance]),
+				    #"Added Custom7" = Table.AddColumn(#"Added Custom6", "Total Planned SKUs", each [CSDPromo] + [EneryPromo] + [SportsPromo] + [WaterPromo] + [TeaJCPromo])
+				in
+				    #"Added Custom7"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Exception
+

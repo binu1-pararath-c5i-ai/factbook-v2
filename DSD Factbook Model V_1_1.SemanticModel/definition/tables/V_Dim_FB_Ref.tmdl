@@ -1,0 +1,103 @@
+table V_Dim_FB_Ref
+	lineageTag: b23839e8-c256-4386-a660-38ccb1dc514d
+
+	column REF_KEY
+		dataType: double
+		lineageTag: 9d2618b9-ed52-4239-867b-b2a9a719d4a0
+		summarizeBy: none
+		sourceColumn: REF_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CD
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: b4cfd536-6ea1-4b82-bca7-9b6098e05fd8
+		summarizeBy: none
+		sourceColumn: CD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CW
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c12b2980-33e0-4880-9a15-e938bcf190f0
+		summarizeBy: none
+		sourceColumn: CW
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PW
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: bd40d684-4977-4ef0-b756-dd09bf3d7bdc
+		summarizeBy: none
+		sourceColumn: PW
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CM
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 18caf61c-452f-4914-96f6-374d58e81b88
+		summarizeBy: none
+		sourceColumn: CM
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PM
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: cc173b42-fff3-4b01-9504-56dd19da2146
+		summarizeBy: none
+		sourceColumn: PM
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CM_Y0
+		dataType: double
+		lineageTag: f4a90ef6-312b-4ef9-a724-faf00d140b74
+		summarizeBy: none
+		sourceColumn: CM_Y0
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PM_Y0
+		dataType: double
+		lineageTag: 4f460c29-570f-4886-8853-3af6ca5bf635
+		summarizeBy: none
+		sourceColumn: PM_Y0
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition V_Dim_FB_Ref = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_Dim_FB_CalDay_View = DSD_Schema{[Name="V_Dim_FB_Ref",Kind="View"]}[Data]
+				in
+				    V_Dim_FB_CalDay_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

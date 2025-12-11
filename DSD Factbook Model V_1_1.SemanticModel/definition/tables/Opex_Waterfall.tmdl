@@ -1,0 +1,52 @@
+table Opex_Waterfall
+	lineageTag: 6094641d-cfba-4734-bb73-13dbc68c14a0
+
+	column Step
+		lineageTag: c0311346-0072-41b7-b3f9-e68fbb77f511
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Step]
+		sortByColumn: Index
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		lineageTag: 4d2e9c26-73e0-4ad8-878d-8f73212d256b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Index
+		formatString: 0
+		lineageTag: 92b17dee-fbe3-4069-a76a-b1873f320155
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Index]
+
+		annotation SummarizationSetBy = User
+
+	partition Opex_Waterfall = calculated
+		mode: import
+		source =
+				DATATABLE(
+				    "Step", STRING,
+				    "Type", STRING,
+				    "Index",INTEGER,
+				    {
+				        {"Gross Profit", "Total","1"},
+				        {"DSD SG&A People Cost", "Breakdown","2"},
+				        {"DSD T&W People Cost", "Breakdown","3"},
+				        {"DSD T&W Building", "Breakdown","4"},
+				        {"DSD T&W Fleet", "Breakdown","5"},
+				        {"DSD SG&A Non-People Cost", "Breakdown","6"},
+				        {"A&P", "Breakdown","7"},
+				        {"Supply Chain", "Breakdown","8"},
+				        {"Other Income", "Breakdown","9"},
+				        {"Operating Income", "Total","10"}
+				    }
+				)
+
+	annotation PBI_Id = 080725fbf05e403abb3c1c9b512bd358
+

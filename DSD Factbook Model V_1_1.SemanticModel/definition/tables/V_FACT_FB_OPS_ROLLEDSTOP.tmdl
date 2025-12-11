@@ -1,0 +1,153 @@
+table V_FACT_FB_OPS_ROLLEDSTOP
+	excludeFromModelRefresh
+	lineageTag: f2dcef57-8b1f-424b-8838-645778c57a07
+
+	column NumStopsServiced
+		dataType: double
+		lineageTag: b4ef9956-973d-40db-bf92-3e5281fcf400
+		summarizeBy: sum
+		sourceColumn: NumStopsServiced
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NumStopsDNS
+		dataType: double
+		lineageTag: 122897a9-0037-4137-97e0-4c29b5777f26
+		summarizeBy: sum
+		sourceColumn: NumStopsDNS
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CategoryDesc
+		dataType: string
+		lineageTag: 88995621-bc2b-4d78-ba97-c87d8622c727
+		summarizeBy: none
+		sourceColumn: CategoryDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column HBReasonDesc
+		dataType: string
+		lineageTag: a274d43f-d97f-47b9-b8cb-b7fe83fcff6c
+		summarizeBy: none
+		sourceColumn: HBReasonDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column RC_Rolledstops = COUNTROWS(V_FACT_FB_OPS_ROLLEDSTOP)
+		formatString: 0
+		lineageTag: 0e80deb3-fd17-4e18-bf19-6905270e64dd
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesRouteNumber
+		dataType: string
+		lineageTag: 1865a38b-5f14-44e2-a90f-aebabfa2b86c
+		summarizeBy: none
+		sourceColumn: SalesRouteNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column DNS_ORDER_QTY
+		dataType: double
+		lineageTag: 030c0930-e01e-4d42-94ef-74b5fb2accc2
+		summarizeBy: sum
+		sourceColumn: DNS_ORDER_QTY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DAMAGES_CASES
+		dataType: double
+		lineageTag: 58d45270-d747-403c-a8de-c2d8118adf97
+		summarizeBy: sum
+		sourceColumn: DAMAGES_CASES
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column GOOD_BUY_BACKS_CASES
+		dataType: double
+		lineageTag: 9ab26e07-2f01-4505-8179-0d018bf79ff5
+		summarizeBy: sum
+		sourceColumn: GOOD_BUY_BACKS_CASES
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CUSTOMER_CUTS_CASES
+		dataType: double
+		lineageTag: e048a03f-1956-437c-963e-fa136a761195
+		summarizeBy: sum
+		sourceColumn: CUSTOMER_CUTS_CASES
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column COPA_SALES_QTY
+		dataType: double
+		lineageTag: 6b1b3092-5769-4e14-841d-1b3c4c0c4754
+		summarizeBy: sum
+		sourceColumn: COPA_SALES_QTY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CalendarDay
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 2535725a-86d9-4c79-8472-d6a10f1403c2
+		summarizeBy: none
+		sourceColumn: CalendarDay
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LocalChainID
+		dataType: string
+		lineageTag: 952a2a6b-3f24-4e8f-860c-38e169f85f28
+		summarizeBy: none
+		sourceColumn: LocalChainID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BranchID
+		dataType: string
+		lineageTag: 17ab34cc-a786-431c-ad3d-6c4c88d28384
+		summarizeBy: none
+		sourceColumn: BranchID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RolledStop_Key = 'V_FACT_FB_OPS_ROLLEDSTOP'[BranchID]&'V_FACT_FB_OPS_ROLLEDSTOP'[LocalChainID]&"01"
+		lineageTag: a653cf72-d442-42fc-8ddb-31ed915b9dae
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_FACT_FB_OPS_ROLLEDSTOP = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_FACT_FB_OPS_ROLLEDSTOP_View = DSD_Schema{[Name="V_Fact_FB_Ops_RolledStop",Kind="View"]}[Data]
+				in
+				    V_FACT_FB_OPS_ROLLEDSTOP_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

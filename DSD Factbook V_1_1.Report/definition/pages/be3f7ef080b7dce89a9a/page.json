@@ -1,0 +1,99 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "be3f7ef080b7dce89a9a",
+  "displayName": "Bottom Performer",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "15a17cb611d657e6e920",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "IsAccountActive"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "IsAccountActive"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "1D"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "e95556b601d7769a6d07",
+      "target": "1651eac6c626679054dc",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e95556b601d7769a6d07",
+      "target": "2a94d7249d04d02c97c1",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e95556b601d7769a6d07",
+      "target": "c7e16e064019e062adc1",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e95556b601d7769a6d07",
+      "target": "2d46aa07ca8de33b0492",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e95556b601d7769a6d07",
+      "target": "45dbedff0463448ef2bb",
+      "type": "NoFilter"
+    },
+    {
+      "source": "e95556b601d7769a6d07",
+      "target": "0ff019e292286d05f1f6",
+      "type": "NoFilter"
+    }
+  ]
+}

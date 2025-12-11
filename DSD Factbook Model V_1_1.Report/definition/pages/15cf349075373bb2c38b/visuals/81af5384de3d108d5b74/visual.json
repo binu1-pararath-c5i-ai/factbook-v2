@@ -1,0 +1,94 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "81af5384de3d108d5b74",
+  "position": {
+    "x": 676.36284627919611,
+    "y": 139.84946069682627,
+    "z": 9000,
+    "height": 175.44750523783657,
+    "width": 603.895398463568,
+    "tabOrder": 9000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_RevDetail"
+                    }
+                  },
+                  "Property": "WeekStartDayDate"
+                }
+              },
+              "queryRef": "V_Fact_FB_RevDetail.WeekStartDayDate",
+              "nativeQueryRef": "WeekStartDayDate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Sold"
+                }
+              },
+              "queryRef": "Measure Table.%Sold",
+              "nativeQueryRef": "%Sold"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_RevDetail"
+                    }
+                  },
+                  "Property": "Time Granularity"
+                }
+              },
+              "queryRef": "V_Fact_FB_RevDetail.Time Granularity",
+              "nativeQueryRef": "Time Granularity"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Built"
+                }
+              },
+              "queryRef": "Measure Table.%Built",
+              "nativeQueryRef": "%Built"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Built_Base_Calc"
+                }
+              },
+              "queryRef": "Measure Table.%Built_Base_Calc",
+              "nativeQueryRef": "%Built_Base_Calc"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

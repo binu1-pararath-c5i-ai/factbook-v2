@@ -1,0 +1,17 @@
+table V_Dim_FB_CustChainHeir_Distinct_SalesGroup
+	lineageTag: 4e5ef9ab-f4c8-40e4-8f2a-33b6b5501657
+
+	column BranchNationalChain
+		lineageTag: 8e297969-4362-4b07-8a8a-c8d8f8392e4a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CustChainHeir[BranchNationalChain]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Dim_FB_CustChainHeir_Distinct_SalesGroup = calculated
+		mode: import
+		source = DISTINCT(V_Dim_FB_CustChainHeir[BranchNationalChain])
+
+	annotation PBI_Id = 11b0b0ee29cd497db9cd23261b1ea634
+

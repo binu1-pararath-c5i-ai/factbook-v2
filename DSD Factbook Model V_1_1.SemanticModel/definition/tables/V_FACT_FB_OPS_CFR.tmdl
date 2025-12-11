@@ -1,0 +1,120 @@
+table V_FACT_FB_OPS_CFR
+	lineageTag: 6cb8b144-c4ba-4812-b29a-d33afe91f26b
+
+	column RequestedDeliveryDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 149d91e8-5db4-43b2-ac23-b12b676015b1
+		summarizeBy: none
+		sourceColumn: RequestedDeliveryDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column AdjOrderQty
+		dataType: double
+		lineageTag: d70fcdfc-f5dd-401c-bf32-ce06faa40681
+		summarizeBy: sum
+		sourceColumn: AdjOrderQty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CasesOrdered
+		dataType: double
+		lineageTag: dc285640-297e-4376-94eb-a72a7d2ebdea
+		summarizeBy: sum
+		sourceColumn: CasesOrdered
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CasesInvoiced
+		dataType: double
+		lineageTag: 18c45bdb-89fb-4a87-9b51-578b5889614f
+		summarizeBy: sum
+		sourceColumn: CasesInvoiced
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column RC_CFR = COUNTROWS(V_FACT_FB_OPS_CFR)
+		formatString: 0
+		lineageTag: 7e0eaace-a399-426e-a02e-85e8091e799f
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column DistributionChannel
+		dataType: string
+		lineageTag: d529130f-94b0-46f2-a760-730de383b61d
+		summarizeBy: none
+		sourceColumn: DistributionChannel
+
+		annotation SummarizationSetBy = Automatic
+
+	column Cuts = V_FACT_FB_OPS_CFR[CasesOrdered]-V_FACT_FB_OPS_CFR[AdjOrderQty]
+		lineageTag: 6527b565-a054-4b2a-8fa2-96259af17d13
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Package3Trademark
+		dataType: string
+		lineageTag: ab56548e-09f7-4f83-9090-2374cb56163d
+		summarizeBy: none
+		sourceColumn: Package3Trademark
+
+		annotation SummarizationSetBy = Automatic
+
+	column BranchID
+		dataType: string
+		lineageTag: cde30a49-9355-42a9-82d6-7a9d7da5e0f8
+		summarizeBy: none
+		sourceColumn: BranchID
+
+		annotation SummarizationSetBy = Automatic
+
+	column LocalChainID
+		dataType: string
+		lineageTag: a59dc04b-b314-48d3-bbdb-6840a0368010
+		summarizeBy: none
+		sourceColumn: LocalChainID
+
+		annotation SummarizationSetBy = Automatic
+
+	column BranchLocalChain
+		dataType: string
+		lineageTag: aa3c387d-b3ab-4a7d-8cb9-d39a82ca58c7
+		summarizeBy: none
+		sourceColumn: BranchLocalChain
+
+		annotation SummarizationSetBy = Automatic
+
+	column CFR_Key = V_FACT_FB_OPS_CFR[BranchID]&V_Fact_FB_Ops_CFR[LocalChainID]&"01"
+		lineageTag: 12ec1675-6804-4661-aa06-580bbb116bdb
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_FACT_FB_OPS_CFR = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_FACT_FB_OPS_CFR_View = DSD_Schema{[Name="V_Fact_FB_Ops_CFR",Kind="View"]}[Data]
+				in
+				    V_FACT_FB_OPS_CFR_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

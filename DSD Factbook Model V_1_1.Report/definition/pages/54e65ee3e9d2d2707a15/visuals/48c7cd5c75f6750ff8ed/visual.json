@@ -1,0 +1,123 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "48c7cd5c75f6750ff8ed",
+  "position": {
+    "x": 0,
+    "y": 451.6745021872901,
+    "z": 18000,
+    "height": 448.53787369987839,
+    "width": 762.20072244105211,
+    "tabOrder": 12000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CalDay"
+                        }
+                      },
+                      "Hierarchy": "Year Hierarchy"
+                    }
+                  },
+                  "Level": "Year"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.Year Hierarchy.Year",
+              "nativeQueryRef": "Year Hierarchy Year"
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CalDay"
+                        }
+                      },
+                      "Hierarchy": "Year Hierarchy"
+                    }
+                  },
+                  "Level": "Quarter_Name"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.Year Hierarchy.Quarter_Name",
+              "nativeQueryRef": "Year Hierarchy Quarter_Name"
+            },
+            {
+              "field": {
+                "HierarchyLevel": {
+                  "Expression": {
+                    "Hierarchy": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CalDay"
+                        }
+                      },
+                      "Hierarchy": "Year Hierarchy"
+                    }
+                  },
+                  "Level": "MonthName"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.Year Hierarchy.MonthName",
+              "nativeQueryRef": "Year Hierarchy MonthName"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Displays Schedules to be Built"
+                }
+              },
+              "queryRef": "Measure Table.Displays Schedules to be Built",
+              "nativeQueryRef": "Displays Schedules to be Built"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Displays Pending"
+                }
+              },
+              "queryRef": "Measure Table.Displays Pending",
+              "nativeQueryRef": "Displays Pending"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Display_schdls_tobe_Built_SF_Prior Period"
+                }
+              },
+              "queryRef": "Measure Table.%Display_schdls_tobe_Built_SF_Prior Period",
+              "nativeQueryRef": "%Display_schdls_tobe_Built_SF_Prior Period"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

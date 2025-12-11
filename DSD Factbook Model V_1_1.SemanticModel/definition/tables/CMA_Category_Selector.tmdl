@@ -1,0 +1,36 @@
+table CMA_Category_Selector
+	lineageTag: d3a70bb6-c5dd-4fad-87f6-0549e9718ac4
+
+	column CMA_SKU_Category
+		dataType: string
+		lineageTag: 38d41655-742d-4744-a0f0-c5bc01970a90
+		summarizeBy: none
+		sourceColumn: CMA_SKU_Category
+		sortByColumn: Sort
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sort
+		dataType: int64
+		formatString: 0
+		lineageTag: 2be9a60e-e756-4392-8f3c-b1972bbffd7e
+		summarizeBy: sum
+		sourceColumn: Sort
+
+		annotation SummarizationSetBy = Automatic
+
+	partition CMA_Category_Selector = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCskvScxRcPZ1VNJRMlSK1YlWcg52AbKNwGxXP9cg90gg1xjMDQ7wDwoB8kzAvBBXR4WYUgMDIzMFL2egqBlYNNwxxDUIyDNVio0FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [CMA_SKU_Category = _t, Sort = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"CMA_SKU_Category", type text}, {"Sort", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

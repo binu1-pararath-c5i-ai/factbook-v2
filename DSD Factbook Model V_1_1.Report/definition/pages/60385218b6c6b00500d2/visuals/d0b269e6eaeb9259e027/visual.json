@@ -1,0 +1,52 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "d0b269e6eaeb9259e027",
+  "position": {
+    "x": 906,
+    "y": 0,
+    "z": 6000,
+    "height": 208,
+    "width": 373,
+    "tabOrder": 4000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "DayOfMonth"
+                }
+              },
+              "queryRef": "Sum(V_Dim_FB_CalDay.DayOfMonth)",
+              "nativeQueryRef": "DayOfMonth"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "DayDate"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.DayDate.Variation.Date Hierarchy.Year",
+              "nativeQueryRef": "DayDate Year"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

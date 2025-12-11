@@ -1,0 +1,190 @@
+table V_FB_MerchByEmployeeCustomer
+	lineageTag: dab16ce6-0a85-4d67-9ab1-0e07fa187857
+
+	column Function
+		dataType: string
+		lineageTag: f1ddde37-a497-4658-86c2-18a65b10a012
+		summarizeBy: none
+		sourceColumn: Function
+
+		annotation SummarizationSetBy = Automatic
+
+	column ProfitCenter
+		dataType: string
+		lineageTag: 55edee07-51c8-4c6a-a93d-a6bfad8240f8
+		summarizeBy: none
+		sourceColumn: ProfitCenter
+
+		annotation SummarizationSetBy = Automatic
+
+	column ReportingBranch
+		dataType: string
+		lineageTag: 8f04ebc1-9652-4885-8342-fcb5c5527de3
+		summarizeBy: none
+		sourceColumn: ReportingBranch
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryName
+		dataType: string
+		lineageTag: 1bb840fa-f453-402a-a100-5fb1778c0c97
+		summarizeBy: none
+		sourceColumn: TerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionName
+		dataType: string
+		lineageTag: c1f16a78-e8fa-48df-9dcb-d4b541917a97
+		summarizeBy: none
+		sourceColumn: RegionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessUnitName
+		dataType: string
+		lineageTag: 04c52fbd-675c-4864-85c1-7ad618945d1a
+		summarizeBy: none
+		sourceColumn: BusinessUnitName
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeGSN
+		dataType: string
+		lineageTag: fb6fbdbc-0acd-49fd-81ad-ec0b1e940c6c
+		summarizeBy: none
+		sourceColumn: EmployeeGSN
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeName
+		dataType: string
+		lineageTag: aa02027a-7562-4d28-9ac8-f8eb8d7ed0d4
+		summarizeBy: none
+		sourceColumn: EmployeeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column EmployeeID
+		dataType: string
+		lineageTag: ffc90e28-b9e8-487c-97cd-dccbaa6d0ee6
+		summarizeBy: none
+		sourceColumn: EmployeeID
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerNumber
+		dataType: string
+		lineageTag: c233b4db-9141-4d71-ac76-9b9b30d4c150
+		summarizeBy: none
+		sourceColumn: CustomerNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: double
+		lineageTag: 90f24b16-00a7-4cef-8352-0c0399b039f5
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Week
+		dataType: string
+		lineageTag: 17ceac04-e46a-4965-a48b-e56681e0dbeb
+		summarizeBy: none
+		sourceColumn: Week
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month
+		dataType: string
+		lineageTag: f7acc1d0-6421-43a3-b135-33ea2db092b8
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeeklyHandledCases
+		dataType: double
+		lineageTag: 1df6c796-416a-440e-bb84-7eb7b65e1ea1
+		summarizeBy: sum
+		sourceColumn: WeeklyHandledCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NumberOfVisit
+		dataType: double
+		lineageTag: 2d9403a8-c75e-421d-a321-39f30000e276
+		summarizeBy: sum
+		sourceColumn: NumberOfVisit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WeeklyWorkedHours
+		dataType: double
+		lineageTag: a53da66c-bcf8-49e3-a57f-77c9f74d839c
+		summarizeBy: sum
+		sourceColumn: WeeklyWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WeeklyOvertimeHours
+		dataType: double
+		lineageTag: 64a39c15-68c8-4bb2-ad25-48a54ba07b77
+		summarizeBy: sum
+		sourceColumn: WeeklyOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CasesRank
+		dataType: double
+		lineageTag: 965c863b-322d-4043-a2ae-51e8f185ee1e
+		summarizeBy: sum
+		sourceColumn: CasesRank
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column HourRank
+		dataType: double
+		lineageTag: 2f8af704-b8ce-4b69-b66c-5d7a20b1ea04
+		summarizeBy: sum
+		sourceColumn: HourRank
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MonthID = V_FB_MerchByEmployeeCustomer[Year] & V_FB_MerchByEmployeeCustomer[Month]
+		lineageTag: 7690ddd5-9a2f-4a4b-a10a-c23f464f773f
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_FB_MerchByEmployeeCustomer = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name="DSD",Kind="Schema"]}[Data],
+				    V_FB_MerchByEmployeeCustomer_View = DSD_Schema{[Name="V_FB_MerchByEmployeeCustomer",Kind="View"]}[Data]
+				in
+				    V_FB_MerchByEmployeeCustomer_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

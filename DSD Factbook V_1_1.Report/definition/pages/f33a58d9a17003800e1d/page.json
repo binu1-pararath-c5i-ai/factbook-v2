@@ -1,0 +1,166 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "f33a58d9a17003800e1d",
+  "displayName": "Eng DD TL Exc 0 Var",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "b87249e3085ffefb737c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "NationalChainName"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "v"
+                            }
+                          },
+                          "Property": "NationalChainName"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'RITE AID'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "d6b9b8da6f942f96856c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Fact_FB_CMAComplianceSummary"
+              }
+            },
+            "Property": "TimeGranularity"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      },
+      {
+        "name": "965c0a2000444082a00a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Fact_FB_CMAComplianceSummary"
+              }
+            },
+            "Property": "Energy Variance"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Fact_FB_CMAComplianceSummary",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "v"
+                            }
+                          },
+                          "Property": "Energy Variance"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "0L"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "790803fd9db0d0e78624",
+      "target": "08dad1f5d7a0c0e6910e",
+      "type": "NoFilter"
+    },
+    {
+      "source": "790803fd9db0d0e78624",
+      "target": "47541e50654ba873a9de",
+      "type": "NoFilter"
+    },
+    {
+      "source": "790803fd9db0d0e78624",
+      "target": "af280f12690019a6e0dd",
+      "type": "NoFilter"
+    },
+    {
+      "source": "790803fd9db0d0e78624",
+      "target": "13ca92206ae2196569b4",
+      "type": "NoFilter"
+    },
+    {
+      "source": "790803fd9db0d0e78624",
+      "target": "acc26949945055a50e1b",
+      "type": "NoFilter"
+    },
+    {
+      "source": "790803fd9db0d0e78624",
+      "target": "7ebdc1640c166db4e9ad",
+      "type": "NoFilter"
+    }
+  ]
+}

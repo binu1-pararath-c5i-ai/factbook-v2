@@ -1,0 +1,127 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "2f1a8931b001a60828de",
+  "position": {
+    "x": 631.86529060293321,
+    "y": 177.99022270505159,
+    "z": 9000,
+    "height": 181.80429890587413,
+    "width": 648.39295413983086,
+    "tabOrder": 9000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_RevDetail"
+                    }
+                  },
+                  "Property": "WeekStartDayDate"
+                }
+              },
+              "queryRef": "V_Fact_FB_RevDetail.WeekStartDayDate",
+              "nativeQueryRef": "WeekStartDayDate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Sold"
+                }
+              },
+              "queryRef": "Measure Table.%Sold",
+              "nativeQueryRef": "%Sold"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Sold_Base_Calc"
+                }
+              },
+              "queryRef": "Measure Table.%Sold_Base_Calc",
+              "nativeQueryRef": "%Sold_Base_Calc"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_RevDetail"
+                    }
+                  },
+                  "Property": "Time Granularity"
+                }
+              },
+              "queryRef": "V_Fact_FB_RevDetail.Time Granularity",
+              "nativeQueryRef": "Time Granularity"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Built"
+                }
+              },
+              "queryRef": "Measure Table.%Built",
+              "nativeQueryRef": "%Built"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Built_Base_Calc"
+                }
+              },
+              "queryRef": "Measure Table.%Built_Base_Calc",
+              "nativeQueryRef": "%Built_Base_Calc"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_RevDetail"
+                        }
+                      },
+                      "Property": "SoldIn_Accum"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(V_Fact_FB_RevDetail.SoldIn_Accum)",
+              "nativeQueryRef": "Sum of SoldIn_Accum"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

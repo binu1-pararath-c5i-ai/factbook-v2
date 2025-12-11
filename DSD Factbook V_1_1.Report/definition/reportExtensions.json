@@ -1,0 +1,1152 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/reportExtension/1.0.0/schema.json",
+  "name": "extension",
+  "entities": [
+    {
+      "name": "Measure Table",
+      "measures": [
+        {
+          "name": "Opex AO FCST_nw",
+          "dataType": "Double",
+          "expression": "\nvar _y = SELECTEDVALUE(V_Dim_FB_CalDay[Year])\nVAR SelectedQuarter =\nCONCATENATEX(\n    FILTER(VALUES(V_Dim_FB_CalDay[Quarter]),not ISBLANK(V_Dim_FB_CalDay[Quarter])),V_Dim_FB_CalDay[Quarter],\",\")&\",\"&_y\n\nVar a= CALCULATE(\n                //SUM(V_FB_Financial_Management[AmtAOP]),\n                SUM(V_FB_Financial_Management[AmtAOP]),\n                V_Dim_FB_PlHier[PlHier] = \"Total Operating Expense\",\n                V_Dim_FB_Function[FnArea] IN {\"Z009\", \"Z019\"}\n            )\nVar b= CALCULATE(\n                SUM(V_FB_Financial_Management[AmtFcst39]),\n                V_Dim_FB_PlHier[PlHier] = \"Total Operating Expense\",\n                V_Dim_FB_Function[FnArea] IN {\"Z009\", \"Z019\"}\n            )\nVar c= CALCULATE(\n                SUM(V_FB_Financial_Management[AmtFcst66]),\n                V_Dim_FB_PlHier[PlHier] = \"Total Operating Expense\",\n                V_Dim_FB_Function[FnArea] IN {\"Z009\", \"Z019\"}\n            )\n\nVar d= CALCULATE(\n                SUM(V_FB_Financial_Management[AmtFcst93]),\n                V_Dim_FB_PlHier[PlHier] = \"Total Operating Expense\",\n                V_Dim_FB_Function[FnArea] IN {\"Z009\", \"Z019\"}\n            )\nVar e= CALCULATE(\n                //SUM(V_FB_Financial_Management[AmtAOP]),\n                SUM(V_FB_Financial_Management[AmtAOP]),\n                V_Dim_FB_PlHier[PlHier] = \"Total Operating Expense\",\n                V_Dim_FB_Function[FnArea] IN {\"Z009\", \"Z019\"},\n                V_Dim_FB_CalDay[QuarterID] = _y&\"Q2\")\nVar f= CALCULATE(\n                SUM(V_FB_Financial_Management[AmtAOP]),\n                V_Dim_FB_PlHier[PlHier] = \"Total Operating Expense\",\n                V_Dim_FB_Function[FnArea] IN {\"Z009\", \"Z019\"},\n                V_Dim_FB_CalDay[QuarterID] = _y&\"Q3\"\n            )\nVar g= CALCULATE(\n                SUM(V_FB_Financial_Management[AmtAOP]),\n                V_Dim_FB_PlHier[PlHier] = \"Total Operating Expense\",\n                V_Dim_FB_Function[FnArea] IN {\"Z009\", \"Z019\"},\n                V_Dim_FB_CalDay[QuarterID] = _y&\"Q4\")\n var cal=          \n        SWITCH(True(),\n            --SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter]),\n            SelectedQuarter = \"1\"&\",\"&_y, a,\n            SelectedQuarter = \"2\"&\",\"&_y, b,\n            SelectedQuarter = \"3\"&\",\"&_y, c,\n            SelectedQuarter = \"4\"&\",\"&_y, d,\n            SelectedQuarter =\"1,2\"&\",\"&_y, a+b-e,\n            SelectedQuarter =\"2,3\"&\",\"&_y, b+c,\n            SelectedQuarter = \"1,3\"&\",\"&_y, a+c-f,\n            SelectedQuarter = \"1,4\"&\",\"&_y, a+d-g,\n            SelectedQuarter = \"2,3\"&\",\"&_y, b+c,\n            SelectedQuarter = \"2,4\"&\",\"&_y, b+d,\n            SelectedQuarter = \"3,4\"&\",\"&_y, c+d,\n            SelectedQuarter = \"1,2,3\"&\",\"&_y,a+b+c-e-f,\n            SelectedQuarter = \"2,3,4\"&\",\"&_y,b+c+d,\n            SelectedQuarter = \"1,2,3,4\"&\",\"&_y,a+b+c+d-e-f-g)\nRETURN cal",
+          "formatString": "General Number"
+        },
+        {
+          "name": "OI Dummy Display",
+          "dataType": "Double",
+          "expression": "\nIF([OI_Bar_Actual_Selected] = 0, BLANK(), [OI_Bar_Actual_Selected])\n",
+          "formatString": "General Number",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "OI_Bar_Actual_Selected"
+              }
+            ]
+          }
+        },
+        {
+          "name": "#SKUs Target",
+          "dataType": "Text",
+          "expression": "\r\nVar _Category = SELECTEDVALUE(V_Fact_FB_CMAComplianceSummary[InternalCategoryDesc])\r\n\r\nVar _SKU_Target = SWITCH(TRUE(),\r\n_Category=\"CSD\",MAX(V_Fact_FB_CMAComplianceSummary[CSDPromo]),\r\n_Category=\"ENERGY\",MAX(V_Fact_FB_CMAComplianceSummary[EneryPromo]),\r\n_Category=\"SPORT\",MAX(V_Fact_FB_CMAComplianceSummary[SportsPromo]),\r\n_Category=\"TEAS DRINKS OTHER\",MAX(V_Fact_FB_CMAComplianceSummary[TeaJCPromo]),\r\n_Category=\"WATER\",MAX(V_Fact_FB_CMAComplianceSummary[WaterPromo])\r\n)\r\n\r\n\r\nRETURN \r\nIF(\r\n ISINSCOPE(V_Fact_FB_CMAComplianceSummary[RMMPOPPackageDesc]),\r\n           BLANK(),\r\nVALUE(_SKU_Target)\r\n)",
+          "formatString": "General Number"
+        },
+        {
+          "name": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_final_In_Dollar",
+          "dataType": "Double",
+          "expression": "\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Wh_CPC_Actuals_CPH]-[Wh_CPC_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Wh_CPC_Actuals_CPH]-[Wh_CPC_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", ([Wh_CPC_Actuals_CPH]-[Wh_CPC_Actuals_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Wh_CPC_Actuals_CPH]-[Wh_CPC_Vol_Adj_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Wh_CPC_Actuals_CPH]-[Wh_CPC_Vol_Adj_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", ([Wh_CPC_Actuals_CPH]-[Wh_CPC_Adj_Vol_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Delv_CPC_Actuals_CPH]-[Delv_CPC_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Delv_CPC_Actuals_CPH]-[Delv_CPC_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", ([Delv_CPC_Actuals_CPH]-[Delv_CPC_Actuals_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Delv_CPC_Actuals_CPH]-[Delv_CPC_Vol_Adj_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Delv_CPC_Actuals_CPH]-[Delv_CPC_Vol_Adj_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", ([Delv_CPC_Actuals_CPH]-[Delv_CPC_Adj_Vol_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Mech_CPC_Actuals_CPH]-[Mech_CPC_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Mech_CPC_Actuals_CPH]-[Mech_CPC_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", ([Mech_CPC_Actuals_CPH]-[Mech_CPC_Actuals_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Mech_CPC_Actuals_CPH]-[Mech_CPC_Vol_Adj_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Mech_CPC_Actuals_CPH]-[Mech_CPC_Vol_Adj_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", ([Mech_CPC_Actuals_CPH]-[Mech_CPC_Adj_Vol_PY_CPH]))\n",
+          "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_Actuals_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_Actuals_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_Vol_Adj_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_Vol_Adj_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_Adj_Vol_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPC_Actuals_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPC_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPC_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPC_Actuals_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPC_Vol_Adj_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPC_Vol_Adj_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPC_Adj_Vol_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPC_Actuals_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPC_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPC_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPC_Actuals_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPC_Vol_Adj_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPC_Vol_Adj_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPC_Adj_Vol_PY_CPH"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_In_Dollar",
+          "dataType": "Double",
+          "expression": "\nMAX(-10,MIN(\nIF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,\"\", [Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_final_In_Dollar]),\n    [Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_final_In_Dollar]\n),\n10))",
+          "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_final_In_Dollar"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Table_final_In_Dollar",
+          "dataType": "Double",
+          "expression": "SWITCH(\n    TRUE(),\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Wh_CPH_Actuals_CPH]-[Wh_CPH_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Wh_CPH_Actuals_CPH]-[Wh_CPH_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\",([Wh_CPH_Actuals_CPH]-[Wh_CPH_Actuals_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Wh_CPH_Actuals_CPH]-[Wh_CPH_Vol_Adj_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Wh_CPH_Actuals_CPH]-[Wh_CPH_Vol_Adj_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", ([Wh_CPC_Actuals_CPH]-[Wh_CPC_Adj_Vol_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Delv_CPH_Actuals_CPH]-[Delv_CPH_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Delv_CPH_Actuals_CPH]-[Delv_CPH_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\",([Delv_CPH_Actuals_CPH]-[Delv_CPH_Actuals_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Delv_CPH_Actuals_CPH]-[Delv_CPH_Vol_Adj_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Delv_CPH_Actuals_CPH]-[Delv_CPH_Vol_Adj_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", ([Delv_CPH_Actuals_CPH]-[Delv_CPH_Adj_Vol_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Mech_CPH_Actuals_CPH]-[Mech_CPH_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Mech_CPH_Actuals_CPH]-[Mech_CPH_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", ([Mech_CPH_Actuals_CPH]-[Mech_CPH_Actuals_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", ([Mech_CPH_Actuals_CPH]-[Mech_CPH_Vol_Adj_AOP_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"Fcst\", ([Mech_CPH_Actuals_CPH]-[Mech_CPH_Vol_Adj_FCST_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\" && \nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\",([Mech_CPH_Actuals_CPH]-[Mech_CPH_Adj_Vol_PY_CPH]))\n",
+          "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPH_Actuals_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPH_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPH_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPH_Actuals_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPH_Vol_Adj_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPH_Vol_Adj_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_Actuals_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_Adj_Vol_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPH_Actuals_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPH_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPH_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPH_Actuals_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPH_Vol_Adj_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPH_Vol_Adj_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPH_Adj_Vol_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPH_Actuals_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPH_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPH_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPH_Actuals_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPH_Vol_Adj_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPH_Vol_Adj_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPH_Adj_Vol_PY_CPH"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Table_In_Dollar",
+          "dataType": "Double",
+          "expression": "\nIF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,\"\", [Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Table_final_In_Dollar]),\n    [Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Table_final_In_Dollar]\n)",
+          "formatString": "#,0.00",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Table_final_In_Dollar"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_final_In_Dollar",
+          "dataType": "Double",
+          "expression": "SWITCH(\n    TRUE(),\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\",([Cases_Per_Order_actuals_CPH]-[Cases_Per_Order_actuals_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\",([Cases_Per_Order_actuals_CPH]-[Cases_Per_Order_Adj_Vol_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\",([Cases_Per_Deliver_actuals_CPH]-[Cases_Per_Deliver_actuals_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", ([Cases_Per_Deliver_actuals_CPH]-[Cases_Per_Deliver_Adj_Vol_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\" , ([Cases_Per_Visit_actuals_CPH]-[Cases_Per_Visit_actuals_PY_CPH]),\n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", ([Cases_Per_Visit_actuals_CPH]-[Cases_Per_Visit_Adj_Vol_PY_CPH]))\n",
+          "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "Cases_Per_Order_actuals_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Cases_Per_Order_actuals_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Cases_Per_Order_Adj_Vol_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Cases_Per_Deliver_actuals_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Cases_Per_Deliver_actuals_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Cases_Per_Deliver_Adj_Vol_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Cases_Per_Visit_actuals_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Cases_Per_Visit_actuals_PY_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Cases_Per_Visit_Adj_Vol_PY_CPH"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_In_Dollar",
+          "dataType": "Double",
+          "expression": "\nIF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,\"\", [Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_final_In_Dollar]),\n    [Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_final_In_Dollar]\n)\n",
+          "formatString": "0.00",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_final_In_Dollar"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_CPC_FCST_VolAdj_Selection_Ops",
+          "dataType": "Double",
+          "expression": "SWITCH(\n    TRUE(),\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Wh_CPC_FCST_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Wh_CPC_Vol_Adj_FCST_CPH], \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Delv_CPC_FCST_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Delv_CPC_Vol_Adj_FCST_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Mech_CPC_FCST_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Mech_CPC_Vol_Adj_FCST_CPH]) \n\n",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_Vol_Adj_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPC_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPC_Vol_Adj_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPC_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPC_Vol_Adj_FCST_CPH"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_CPC_FCST_VolAdj_Selection_Ops_Bar",
+          "dataType": "Double",
+          "expression": "\n\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6\nRETURN\n\nCALCULATE(\n     [Wh_Delv_Mech_CPC_FCST_VolAdj_Selection_Ops],\n    FILTER(\n        VALUES(V_Dim_FB_CalDay[DayDate]),\n        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(TODAY()) && MONTH(V_Dim_FB_CalDay[DayDate]) < (MONTH(TODAY())-1)) ||\n        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(TODAY()) && MONTH(V_Dim_FB_CalDay[DayDate]) < MONTH(TODAY())\n        && TODAY()>DelayCutoff)\n    )\n)",
+          "formatString": "0.00",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Wh_Delv_Mech_CPC_FCST_VolAdj_Selection_Ops"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_CPC_AOP_VolAdj_Selection_Ops",
+          "dataType": "Double",
+          "expression": "\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Wh_CPC_AOP_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Wh_CPC_Vol_Adj_AOP_CPH], \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Delv_CPC_AOP_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Delv_CPC_Vol_Adj_AOP_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Mech_CPC_AOP_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Mech_CPC_Vol_Adj_AOP_CPH]) \n\n",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPC_Vol_Adj_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPC_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPC_Vol_Adj_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPC_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPC_Vol_Adj_AOP_CPH"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_CPC_AOP_VolAdj_Selection_Ops_Bar",
+          "dataType": "Double",
+          "expression": "\n\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6\nRETURN\n\nCALCULATE(\n     [Wh_Delv_Mech_CPC_AOP_VolAdj_Selection_Ops],\n    FILTER(\n        VALUES(V_Dim_FB_CalDay[DayDate]),\n        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(TODAY()) && MONTH(V_Dim_FB_CalDay[DayDate]) < (MONTH(TODAY())-1)) ||\n        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(TODAY()) && MONTH(V_Dim_FB_CalDay[DayDate]) < MONTH(TODAY())\n        && TODAY()>DelayCutoff)\n    )\n)\n\n",
+          "formatString": "0.00",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Wh_Delv_Mech_CPC_AOP_VolAdj_Selection_Ops"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_CPH_AOP_VolAdj_Selection_Ops_Bar",
+          "dataType": "Double",
+          "expression": "\n\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6\nRETURN\n\nCALCULATE(\n     [Wh_Delv_Mech_CPH_AOP_VolAdj_Selection_Ops],\n    FILTER(\n        VALUES(V_Dim_FB_CalDay[DayDate]),\n        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(TODAY()) && MONTH(V_Dim_FB_CalDay[DayDate]) < (MONTH(TODAY())-1)) ||\n        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(TODAY()) && MONTH(V_Dim_FB_CalDay[DayDate]) < MONTH(TODAY())\n        && TODAY()>DelayCutoff)\n    )\n)\n\n",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Wh_Delv_Mech_CPH_AOP_VolAdj_Selection_Ops"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_CPH_AOP_VolAdj_Selection_Ops",
+          "dataType": "Double",
+          "expression": "\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Wh_CPH_AOP_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Wh_CPH_Vol_Adj_AOP_CPH], \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Delv_CPH_AOP_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Delv_CPH_Vol_Adj_AOP_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Mech_CPH_AOP_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Mech_CPH_Vol_Adj_AOP_CPH]) \n\n",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPH_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPH_Vol_Adj_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPH_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPH_Vol_Adj_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPH_AOP_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPH_Vol_Adj_AOP_CPH"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_CPH_FCST_VolAdj_Selection_Ops",
+          "dataType": "Double",
+          "expression": "SWITCH(\n    TRUE(),\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Wh_CPH_FCST_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Warehouse\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Wh_CPH_Vol_Adj_FCST_CPH], \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Delv_CPH_FCST_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Delivery\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Delv_CPH_Vol_Adj_FCST_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Actuals\", [Mech_CPH_FCST_CPH],  \n\nSELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = \"Merchandising\" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = \"Vol.Adjusted\", [Mech_CPH_Vol_Adj_FCST_CPH]) \n",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPH_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Wh_CPH_Vol_Adj_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPH_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Delv_CPH_Vol_Adj_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPH_FCST_CPH"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Mech_CPH_Vol_Adj_FCST_CPH"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Wh_Delv_Mech_CPH_FCST_VolAdj_Selection_Ops_Bar",
+          "dataType": "Double",
+          "expression": "\n\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6\nRETURN\n\nCALCULATE(\n     [Wh_Delv_Mech_CPH_FCST_VolAdj_Selection_Ops],\n    FILTER(\n        VALUES(V_Dim_FB_CalDay[DayDate]),\n        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(TODAY()) && MONTH(V_Dim_FB_CalDay[DayDate]) < (MONTH(TODAY())-1)) ||\n        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(TODAY()) && MONTH(V_Dim_FB_CalDay[DayDate]) < MONTH(TODAY())\n        && TODAY()>DelayCutoff)\n    )\n)",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Wh_Delv_Mech_CPH_FCST_VolAdj_Selection_Ops"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Obsolescence_Abs_RPC_Selection_Ops_New",
+          "dataType": "Double",
+          "expression": "\nVAR Obsolescence_Abs = SUM(V_FACT_FB_OPS_BSO[OBSODollars])\n\nVAR Obsolescence_RPC = \nDIVIDE(Sum(V_FACT_FB_OPS_BSO[OBSODollars]),\nCALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO)))\n\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\",\n\"$\" & FORMAT(Obsolescence_Abs / 1000, \"0.0\") & \"K\",\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\", \nIF(VALUE(Obsolescence_RPC) = 0, 0 , (FORMAT(Obsolescence_RPC,\"$0.000\"))))\n\n/* \n     -- Created: Pruthviraj Mohite\n     -- Purpose: Calculate Obsolescence KPI\n*/ \n",
+          "formatString": "General Number",
+          "displayFolder": "Ops"
+        },
+        {
+          "name": "Shrinklescence_Abs_RPC_Selection_Ops_New",
+          "dataType": "Double",
+          "expression": "\nVAR Shrinklescence_Abs = SUM(V_FACT_FB_OPS_BSO[ShrinkDollars])\n\nVAR Shrinklescence_RPC = \n    DIVIDE(Sum(V_FACT_FB_OPS_BSO[ShrinkDollars]),\n    CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO)))\n\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\", \n\"$\" & FORMAT(Shrinklescence_Abs / 1000, \"0.0\") & \"K\",\n\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\", \nIF(VALUE(Shrinklescence_RPC) = 0, 0 , (FORMAT(Shrinklescence_RPC,\"$0.000\")))\n)\n--ROUND(Shrinklescence_Abs, -2),\n    /* \n     -- Created: Pruthviraj Mohite\n     -- Purpose: Calculate Shrinkage KPI\n     */ \n",
+          "formatString": "",
+          "displayFolder": "Ops"
+        },
+        {
+          "name": "TotalBreaklescence_Abs_RPC_Selection_Ops_New",
+          "dataType": "Double",
+          "expression": "\nVAR TotalBreaklescence_Abs = \nSUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars])\n\nVAR TotalBreaklescence_RPC =\n     DIVIDE\n        (SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]),\n        CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO)))\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\", \nIF(TotalBreaklescence_Abs > 1000000,\n\"$\" & FORMAT(TotalBreaklescence_Abs / 1000000, \"0.0\") & \"M\",\n\"$\" & FORMAT(TotalBreaklescence_Abs / 1000, \"0.0\") & \"K\"),\n\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\", \nIF(VALUE(TotalBreaklescence_RPC) = 0, 0 , (FORMAT(TotalBreaklescence_RPC,\"$0.000\")))\n)\n--ROUND(TotalBreaklescence_Abs, -4),\n/* \n     -- Created: Pruthviraj Mohite\n     -- Purpose: Calculate Total Breakage KPI\n*/\n\n",
+          "formatString": "General Number",
+          "displayFolder": "Ops"
+        },
+        {
+          "name": "Measure",
+          "dataType": "Double",
+          "expression": "",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "annotations": [
+            {
+              "name": "43dbc3e8-3a1c-4b6f-9923-b49ff7d6691c",
+              "value": "True"
+            }
+          ]
+        },
+        {
+          "name": "Total_BSO_New",
+          "dataType": "Double",
+          "expression": "\r\nVAR val = \r\nSUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + \r\nSUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) +\r\nSUM(V_FACT_FB_OPS_BSO[ShrinkDollars]) +\r\nSUM(V_FACT_FB_OPS_BSO[OBSODollars])\r\n\r\nVAR RPC_val = \r\nDIVIDE(\r\nSUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + \r\nSUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) +\r\nSUM(V_FACT_FB_OPS_BSO[ShrinkDollars]) +\r\nSUM(V_FACT_FB_OPS_BSO[OBSODollars]), \r\nCALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO)))\r\n\r\nRETURN\r\nSWITCH(\r\n    TRUE(),\r\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\", \r\nIF(val > 1000000, \r\n\"$\" & FORMAT(val / 1000000, \"0.0\") & \"M\",\r\n\"$\" & FORMAT(val / 1000, \"0.0\") & \"K\"),\r\n\r\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\", \r\nIF(VALUE(val) = 0, 0 , (FORMAT(RPC_val,\"$0.000\")))\r\n)\r\n\r\n--ROUND(val, -4),\r\n/* \r\n     -- Created: Pruthviraj Mohite\r\n     -- Purpose: Calculate Total BSO KPI\r\n*/",
+          "formatString": "\\$#,0.###############;(\\$#,0.###############);\\$#,0.###############",
+          "displayFolder": "Ops"
+        },
+        {
+          "name": "Total_BSO_UI_New",
+          "dataType": "Double",
+          "expression": "\n\nVAR TotalBreaklescence_Abs = \nSUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + \nSUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) +\nSUM(V_FACT_FB_OPS_BSO[ShrinkDollars]) +\nSUM(V_FACT_FB_OPS_BSO[OBSODollars])\n\nVAR TotalBreaklescence_RPC = \n    DIVIDE(\n        SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) +\n        SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) +\n        SUM(V_FACT_FB_OPS_BSO[ShrinkDollars]) +\n        SUM(V_FACT_FB_OPS_BSO[OBSODollars]), \n    CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner])))\n\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\", \nFORMAT(TRUNC(DIVIDE(TotalBreaklescence_Abs, 1000)), \"$#,##0\"),\n\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\", \nIF(VALUE(TotalBreaklescence_RPC) = 0, \"$0\" , (FORMAT(TotalBreaklescence_RPC,\"$0.000\"))))\n\n/* \n     -- Created: Pruthviraj Mohite\n     -- Purpose: Calculate Total Breakage KPI\n*/\n\n\n\n",
+          "formatString": "General Number",
+          "displayFolder": "Ops"
+        },
+        {
+          "name": "WhBreakage_UI_New",
+          "dataType": "Double",
+          "expression": "\n\nVAR WhBreaklescence_Abs = \nSUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) \nVAR WhBreaklescence_RPC =\nDIVIDE(Sum(V_FACT_FB_OPS_BSO[WhseBreakDollars]),\nCALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner])))\n        \nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\", \nFORMAT(TRUNC(DIVIDE(WhBreaklescence_Abs, 1000)), \"$#,##0\"),\n\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\", \nIF(VALUE(WhBreaklescence_RPC) = 0, \"$0\" , FORMAT(WhBreaklescence_RPC,\"$0.000\")))\n\n/* \n     -- Created: Pruthviraj Mohite\n     -- Purpose: Calculate Total Breakage KPI\n*/\n\n\n\n",
+          "formatString": "General Number",
+          "displayFolder": "Ops"
+        },
+        {
+          "name": "TradeBreakage_UI_New",
+          "dataType": "Double",
+          "expression": "\n\nVAR TradeBreaklescence_Abs = \nSUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) \nVAR TradeBreaklescence_RPC =\n    DIVIDE(Sum(V_FACT_FB_OPS_BSO[TradeBreakDollars]),\n    CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner])))\n        \nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\", \nFORMAT(TRUNC(DIVIDE(TradeBreaklescence_Abs, 1000)), \"$#,##0\"),\n\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\", \nIF(VALUE(TradeBreaklescence_RPC) = 0, \"$0\" , FORMAT(TradeBreaklescence_RPC, \"$0.000\")))\n\n/* \n     -- Created: Pruthviraj Mohite\n     -- Purpose: Calculate Total Breakage KPI\n*/\n\n\n\n",
+          "formatString": "General Number",
+          "displayFolder": "Ops"
+        },
+        {
+          "name": "Shrinkage_UI_New",
+          "dataType": "Double",
+          "expression": "\n\nVAR Shrinklescence_Abs = SUM(V_FACT_FB_OPS_BSO[ShrinkDollars])\n\nVAR Shrinklescence_RPC = \n    DIVIDE(Sum(V_FACT_FB_OPS_BSO[ShrinkDollars]),\n    CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner])))\n\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\", \nFORMAT(TRUNC(DIVIDE(Shrinklescence_Abs, 1000)), \"$#,##0\"),\n\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\", \nIF(VALUE(Shrinklescence_RPC) = 0, \"$0\" , FORMAT(Shrinklescence_RPC,\"$0.000\")))",
+          "formatString": "General Number"
+        },
+        {
+          "name": "Obsolescence_UI_New",
+          "dataType": "Double",
+          "expression": "\n\nVAR Obslescence_Abs = SUM(V_FACT_FB_OPS_BSO[OBSODollars])\n\nVAR Obsolescence_RPC = \n    DIVIDE(Sum(V_FACT_FB_OPS_BSO[OBSODollars]),\n    CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner])))\n\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\", \nFORMAT(TRUNC(DIVIDE(Obslescence_Abs, 1000)), \"$#,##0\"),\n\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\", \nIF(VALUE(Obsolescence_RPC) = 0, \"$0\" , FORMAT(Obsolescence_RPC,\"$0.000\")))",
+          "formatString": "General Number"
+        },
+        {
+          "name": "metric_wh_merch_delv_New",
+          "dataType": "Double",
+          "expression": "Var SelectedMetric = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])\nRETURN\n    SWITCH(\n        SelectedMetric,\n        \"Warehouse\", \"Cases per Order\",\n        \"Merchandising\", \"Cases per Visit\",\n        \"Delivery\", \"Cases per Delivery\"\n    )",
+          "formatString": "General Number",
+          "displayFolder": "Ops"
+        },
+        {
+          "name": "Measure 2",
+          "dataType": "Double",
+          "expression": "",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "annotations": [
+            {
+              "name": "43dbc3e8-3a1c-4b6f-9923-b49ff7d6691c",
+              "value": "True"
+            }
+          ]
+        },
+        {
+          "name": "WhBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final",
+          "dataType": "Double",
+          "expression": "\nVAR _Act = Sum(V_FACT_FB_OPS_BSO[WhseBreakDollars])\nVAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Plan = Sum(V_FACT_FB_OPS_BSO[PlanWhseBreakDollars])\nVAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstWhseBreakDollars])\nVAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\n\nVAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)\nVAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)\nVAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)\nVAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)\n\nVAR _PY_Ops = CALCULATE([WhseBreaklescence_Ops ], SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\nVAR _RPC_Act_PY_Ops = CALCULATE([WhseBreaklescence_Rate_per_Case_Act_Ops], SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\n\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", _Attainment_to_AOP_Ops,\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((_Act - _Fcst), _Fcst),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((_RPC_ACT_AOP - _RPC_FCST), _RPC_FCST),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_Act - _PY_Ops), _PY_Ops),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops))",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "WhseBreaklescence_Ops "
+              },
+              {
+                "entity": "Measure Table",
+                "name": "WhseBreaklescence_Rate_per_Case_Act_Ops"
+              }
+            ]
+          }
+        },
+        {
+          "name": "WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New",
+          "dataType": "Double",
+          "expression": "\r\nVAR TodayDate = TODAY()\r\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\r\nVAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month\r\n\r\nVAR MaxClosedMonth =\r\n    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))\r\n\r\nVAR CurrentYear = YEAR(MaxClosedMonth)\r\nVAR CurrentMonth = MONTH(MaxClosedMonth)\r\nVAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])\r\nVAR VisualQuarter = SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter])\r\nVAR IsCurrentYear = VisualYear = CurrentYear\r\n\r\nVAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)\r\n\r\nVAR SelectedMonths =\r\n    CALCULATETABLE(\r\n        VALUES('V_Dim_FB_CalDay'[MonthNumber]),\r\n        'V_Dim_FB_CalDay'[Year] = VisualYear\r\n    )\r\n\r\nVAR TotalMonthsSelected = COUNTROWS(SelectedMonths)\r\nVAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths\r\n\r\nVAR IsDateSelected =\r\n    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||\r\n    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||\r\n    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||\r\n    ISFILTERED('V_Dim_FB_CalDay'[DayDate])\r\n\r\nVAR MaxClosedQuarter =\r\n    CALCULATE(\r\n        MAX('V_Dim_FB_CalDay'[Quarter]),\r\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth,\r\n        'V_Dim_FB_CalDay'[Year] = CurrentYear\r\n    )\r\n\r\nVAR IsClosedQuarter =\r\n    VisualYear < CurrentYear ||\r\n    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)\r\n\r\nVAR slicerFilter =\r\n    FILTER(\r\n        ALLSELECTED('V_Dim_FB_CalDay'),\r\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth\r\n    )\r\n\r\nVAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])\r\nVAR BaseMeasure = [WhBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]\r\nVAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)\r\n\r\nRETURN\r\n    IF (\r\n        MetricSelected = \"FCST\",\r\n        IF (\r\n            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,\r\n            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),\r\n            BLANK()\r\n        ),\r\n        BaseMeasure\r\n    )\r\n/*IF(\r\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\r\n    IF(\r\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,\"\",[TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]),\r\n    [TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final])*/\r\n    ",
+          "formatString": "#,##0%;(#,##0%)",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "WhBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final"
+              }
+            ]
+          }
+        },
+        {
+          "name": "TradeBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final",
+          "dataType": "Double",
+          "expression": "\nVAR _Act = Sum(V_FACT_FB_OPS_BSO[TradeBreakDollars])\nVAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Plan = Sum(V_FACT_FB_OPS_BSO[PlanTradeBreakDollars])\nVAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstTradeBreakDollars])\nVAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\n\nVAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)\nVAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)\nVAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)\n--VAR _RPC_AOP_Ops = DIVIDE(_Plan, _Act_Vol)\nVAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)\n\nVAR _PY_Ops = CALCULATE([TradeBreaklescence_Ops ], SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\nVAR _RPC_Act_PY_Ops = CALCULATE([TradeBreaklescence_Rate_per_Case_Act_Ops], SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\n\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", _Attainment_to_AOP_Ops,\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((_Act - _Fcst), _Fcst),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((_RPC_ACT_AOP - _RPC_FCST), _RPC_FCST),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_Act - _PY_Ops), _PY_Ops),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops))\n",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "TradeBreaklescence_Ops "
+              },
+              {
+                "entity": "Measure Table",
+                "name": "TradeBreaklescence_Rate_per_Case_Act_Ops"
+              }
+            ]
+          }
+        },
+        {
+          "name": "TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New",
+          "dataType": "Double",
+          "expression": "\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month\n\nVAR MaxClosedMonth =\n    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))\n\nVAR CurrentYear = YEAR(MaxClosedMonth)\nVAR CurrentMonth = MONTH(MaxClosedMonth)\nVAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])\nVAR VisualQuarter = SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter])\nVAR IsCurrentYear = VisualYear = CurrentYear\n\nVAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)\n\nVAR SelectedMonths =\n    CALCULATETABLE(\n        VALUES('V_Dim_FB_CalDay'[MonthNumber]),\n        'V_Dim_FB_CalDay'[Year] = VisualYear\n    )\n\nVAR TotalMonthsSelected = COUNTROWS(SelectedMonths)\nVAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths\n\nVAR IsDateSelected =\n    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[DayDate])\n\nVAR MaxClosedQuarter =\n    CALCULATE(\n        MAX('V_Dim_FB_CalDay'[Quarter]),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth,\n        'V_Dim_FB_CalDay'[Year] = CurrentYear\n    )\n\nVAR IsClosedQuarter =\n    VisualYear < CurrentYear ||\n    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)\n\nVAR slicerFilter =\n    FILTER(\n        ALLSELECTED('V_Dim_FB_CalDay'),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth\n    )\n\nVAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])\nVAR BaseMeasure = [TradeBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]\nVAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)\n\nRETURN\n    IF (\n        MetricSelected = \"FCST\",\n        IF (\n            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,\n            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),\n            BLANK()\n        ),\n        BaseMeasure\n    )\n/*IF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,\"\",[TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]),\n    [TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final])*/\n    ",
+          "formatString": "#,##0%;(#,##0%)",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "TradeBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Shrinkage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final",
+          "dataType": "Double",
+          "expression": "\nVAR _Act = Sum(V_FACT_FB_OPS_BSO[ShrinkDollars])\nVAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Plan = Sum(V_FACT_FB_OPS_BSO[PlanShrinkDollars])\nVAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstShrinkDollars])\nVAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\n\nVAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)\nVAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)\nVAR RPC_Act_Op = DIVIDE(_Act, _Act_Vol)\nVAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)\n--VAR _RPC_AOP_Ops = DIVIDE(_Plan, _Act_Vol)\nVAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)\n\nVAR _PY_Ops = CALCULATE([Shrinklescence_Ops], SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\nVAR _RPC_Act_PY_Ops = CALCULATE([Shrinklescence_Rate_per_Case_Act_Ops], SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\n\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", _Attainment_to_AOP_Ops,\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((_Act - _Fcst), _Fcst),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((RPC_Act_Op - _RPC_FCST), _RPC_FCST),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_Act - _PY_Ops), _PY_Ops),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops))",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "Shrinklescence_Ops"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Shrinklescence_Rate_per_Case_Act_Ops"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New",
+          "dataType": "Double",
+          "expression": "\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month\n\nVAR MaxClosedMonth =\n    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))\n\nVAR CurrentYear = YEAR(MaxClosedMonth)\nVAR CurrentMonth = MONTH(MaxClosedMonth)\nVAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])\nVAR VisualQuarter = SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter])\nVAR IsCurrentYear = VisualYear = CurrentYear\n\nVAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)\n\nVAR SelectedMonths =\n    CALCULATETABLE(\n        VALUES('V_Dim_FB_CalDay'[MonthNumber]),\n        'V_Dim_FB_CalDay'[Year] = VisualYear\n    )\n\nVAR TotalMonthsSelected = COUNTROWS(SelectedMonths)\nVAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths\n\nVAR IsDateSelected =\n    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[DayDate])\n\nVAR MaxClosedQuarter =\n    CALCULATE(\n        MAX('V_Dim_FB_CalDay'[Quarter]),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth,\n        'V_Dim_FB_CalDay'[Year] = CurrentYear\n    )\n\nVAR IsClosedQuarter =\n    VisualYear < CurrentYear ||\n    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)\n\nVAR slicerFilter =\n    FILTER(\n        ALLSELECTED('V_Dim_FB_CalDay'),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth\n    )\n\nVAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])\nVAR BaseMeasure = MAX(-10, MIN([Shrinkage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], 10))\nVAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)\n\nRETURN\n    IF (\n        MetricSelected = \"FCST\",\n        IF (\n            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,\n            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),\n            BLANK()\n        ),\n        BaseMeasure\n    )\n/*IF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,BLANK(),[Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]),\n  MAX(-10, MIN([Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], 10))\n\n    )*/",
+          "formatString": "#,##0%;(#,##0%)",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Shrinkage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final"
+              }
+            ]
+          }
+        },
+        {
+          "name": "OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final",
+          "dataType": "Double",
+          "expression": "\nVAR _Act = Sum(V_FACT_FB_OPS_BSO[OBSODollars])\nVAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Plan = Sum(V_FACT_FB_OPS_BSO[PlanOBSODollars])\nVAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstOBSODollars])\nVAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\n\nVAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)\nVAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)\nVAR RPC_Act_Op = DIVIDE(_Act, _Act_Vol)\nVAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)\n--VAR _RPC_AOP_Ops = DIVIDE(_Plan, _Act_Vol)\nVAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)\n\nVAR _PY_Ops = CALCULATE([Obsolescence_Ops], SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\nVAR _RPC_Act_PY_Ops = CALCULATE([Obsolescence_Rate_per_Case_Act_Ops], SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\n\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", _Attainment_to_AOP_Ops,\n\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),\n\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((_Act - _Fcst), _Fcst),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((RPC_Act_Op - _RPC_FCST), _RPC_FCST),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_Act - _PY_Ops), _PY_Ops),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops))",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "Obsolescence_Ops"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Obsolescence_Rate_per_Case_Act_Ops"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New",
+          "dataType": "Double",
+          "expression": "\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month\n\nVAR MaxClosedMonth =\n    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))\n\nVAR CurrentYear = YEAR(MaxClosedMonth)\nVAR CurrentMonth = MONTH(MaxClosedMonth)\nVAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])\nVAR VisualQuarter = SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter])\nVAR IsCurrentYear = VisualYear = CurrentYear\n\nVAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)\n\nVAR SelectedMonths =\n    CALCULATETABLE(\n        VALUES('V_Dim_FB_CalDay'[MonthNumber]),\n        'V_Dim_FB_CalDay'[Year] = VisualYear\n    )\n\nVAR TotalMonthsSelected = COUNTROWS(SelectedMonths)\nVAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths\n\nVAR IsDateSelected =\n    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[DayDate])\n\nVAR MaxClosedQuarter =\n    CALCULATE(\n        MAX('V_Dim_FB_CalDay'[Quarter]),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth,\n        'V_Dim_FB_CalDay'[Year] = CurrentYear\n    )\n\nVAR IsClosedQuarter =\n    VisualYear < CurrentYear ||\n    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)\n\nVAR slicerFilter =\n    FILTER(\n        ALLSELECTED('V_Dim_FB_CalDay'),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth\n    )\n\nVAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])\nVAR BaseMeasure = MAX(-10, MIN([OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], 10))\nVAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)\n\nRETURN\n    IF (\n        MetricSelected = \"FCST\",\n        IF (\n            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,\n            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),\n            BLANK()\n        ),\n        BaseMeasure\n    )\n\n\n/*IF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,BLANK(),[Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]),\n    [Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final])*/\n    ",
+          "formatString": "#,##0%;(#,##0%)",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New",
+          "dataType": "Double",
+          "expression": "\nVAR _Act = SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[ShrinkDollars]) + SUM(V_FACT_FB_OPS_BSO[OBSODollars])\nVAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Plan = SUM(V_FACT_FB_OPS_BSO[PlanWhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[PlanTradeBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[PlanShrinkDollars]) + SUM(V_FACT_FB_OPS_BSO[PlanOBSODollars]) \nVAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstWhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[FcstTradeBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[FcstShrinkDollars]) + SUM(V_FACT_FB_OPS_BSO[FcstOBSODollars]) \nVAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\n\nVAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)\nVAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)\nVAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)\nVAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)\n\nVAR _PY_Ops = CALCULATE([WhseBreaklescence_Ops ] + [TradeBreaklescence_Ops ] + [Shrinklescence_Ops] + [Obsolescence_Ops], SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\nVAR _RPC_Act_PY_Ops = CALCULATE([WhseBreaklescence_Rate_per_Case_Act_Ops] + [TradeBreaklescence_Rate_per_Case_Act_Ops] + [Shrinklescence_Rate_per_Case_Act_Ops] + [Obsolescence_Rate_per_Case_Act_Ops], SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\n\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", _Attainment_to_AOP_Ops,\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((_Act - _Fcst), _Fcst),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((_RPC_ACT_AOP - _RPC_FCST), _RPC_FCST),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_Act - _PY_Ops), _PY_Ops),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops))",
+          "formatString": "General Number",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "WhseBreaklescence_Ops "
+              },
+              {
+                "entity": "Measure Table",
+                "name": "TradeBreaklescence_Ops "
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Shrinklescence_Ops"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Obsolescence_Ops"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "WhseBreaklescence_Rate_per_Case_Act_Ops"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "TradeBreaklescence_Rate_per_Case_Act_Ops"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Shrinklescence_Rate_per_Case_Act_Ops"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Obsolescence_Rate_per_Case_Act_Ops"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New",
+          "dataType": "Double",
+          "expression": "\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month\n\nVAR MaxClosedMonth =\n    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))\n\nVAR CurrentYear = YEAR(MaxClosedMonth)\nVAR CurrentMonth = MONTH(MaxClosedMonth)\nVAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])\nVAR VisualQuarter = SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter])\nVAR IsCurrentYear = VisualYear = CurrentYear\n\nVAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)\n\nVAR SelectedMonths =\n    CALCULATETABLE(\n        VALUES('V_Dim_FB_CalDay'[MonthNumber]),\n        'V_Dim_FB_CalDay'[Year] = VisualYear\n    )\n\nVAR TotalMonthsSelected = COUNTROWS(SelectedMonths)\nVAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths\n\nVAR IsDateSelected =\n    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[DayDate])\n\nVAR MaxClosedQuarter =\n    CALCULATE(\n        MAX('V_Dim_FB_CalDay'[Quarter]),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth,\n        'V_Dim_FB_CalDay'[Year] = CurrentYear\n    )\n\nVAR IsClosedQuarter =\n    VisualYear < CurrentYear ||\n    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)\n\nVAR slicerFilter =\n    FILTER(\n        ALLSELECTED('V_Dim_FB_CalDay'),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth\n    )\n\nVAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])\nVAR BaseMeasure = [Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New]\nVAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)\n\nRETURN\n    IF (\n        MetricSelected = \"FCST\",\n        IF (\n            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,\n            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),\n            BLANK()\n        ),\n        BaseMeasure\n    )\n/*IF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,\"\",[TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]),\n    [TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final])*/\n    ",
+          "formatString": "#,##0%;(#,##0%)",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New"
+              }
+            ]
+          }
+        },
+        {
+          "name": "ShowDim_Abs_RPC",
+          "dataType": "Double",
+          "expression": "\nVAR MetricSelected = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])\nRETURN\n    IF(\n        MetricSelected = \"Absolute\",\n        1,                     // Show all: North, South, HQ\n        IF(\n            MetricSelected = \"RPC\" && \n            CONTAINS(VALUES(V_Dim_FB_PL_SalesHier[Bu_New]),\n            V_Dim_FB_PL_SalesHier[Bu_New], \"North\") ||\n             CONTAINS(VALUES(V_Dim_FB_PL_SalesHier[Bu_New]),\n            V_Dim_FB_PL_SalesHier[Bu_New], \"South\") ||\n             CONTAINS(VALUES(V_Dim_FB_PL_SalesHier[Bu_New]),\n            V_Dim_FB_PL_SalesHier[Bu_New], \"West\"), \n            1,                 // Show only North and South when RPC selected\n            0                  // Hide others\n        )\n    )",
+          "formatString": "General Number"
+        },
+        {
+          "name": "Label vs Selected Metric_BSO_New",
+          "dataType": "Double",
+          "expression": "\nVAR SelectedMetric = SELECTEDVALUE('Metric Table'[Metrics])\nRETURN\n    SWITCH(\n        SelectedMetric,\n        \"AOP\",  \"vs AOP\",\n        \"FCST\", \"vs FCST\",\n        \"YA\",   \"\"\n    )",
+          "formatString": "General Number"
+        },
+        {
+          "name": "Total_Breakage_New",
+          "dataType": "Double",
+          "expression": "\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month\n\nVAR MaxClosedMonth =\n    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))\n\nVAR CurrentYear = YEAR(MaxClosedMonth)\nVAR CurrentMonth = MONTH(MaxClosedMonth)\nVAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])\nVAR VisualQuarter = SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter])\nVAR IsCurrentYear = VisualYear = CurrentYear\n\nVAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)\n\nVAR SelectedMonths =\n    CALCULATETABLE(\n        VALUES('V_Dim_FB_CalDay'[MonthNumber]),\n        'V_Dim_FB_CalDay'[Year] = VisualYear\n    )\n\nVAR TotalMonthsSelected = COUNTROWS(SelectedMonths)\nVAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths\n\nVAR IsDateSelected =\n    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[DayDate])\n\nVAR MaxClosedQuarter =\n    CALCULATE(\n        MAX('V_Dim_FB_CalDay'[Quarter]),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth,\n        'V_Dim_FB_CalDay'[Year] = CurrentYear\n    )\n\nVAR IsClosedQuarter =\n    VisualYear < CurrentYear ||\n    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)\n\nVAR slicerFilter =\n    FILTER(\n        ALLSELECTED('V_Dim_FB_CalDay'),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth\n    )\n\nVAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])\nVAR BaseMeasure = [Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New]\nVAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)\n\nRETURN\n    IF (\n        MetricSelected = \"FCST\",\n        IF (\n            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,\n            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),\n            BLANK()\n        ),\n        BaseMeasure\n    )\n/*IF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,\"\",[TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]),\n    [TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final])*/\n    ",
+          "formatString": "#,##0%;(#,##0%)",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Total_Break_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New",
+          "dataType": "Double",
+          "expression": "\nVAR _Act = SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars])  \nVAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Plan = SUM(V_FACT_FB_OPS_BSO[PlanWhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[PlanTradeBreakDollars])  \nVAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\nVAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstWhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[FcstTradeBreakDollars])\nVAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))\n\nVAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)\nVAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)\nVAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)\nVAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)\n\nVAR _PY_Ops = CALCULATE([WhseBreaklescence_Ops ] + [TradeBreaklescence_Ops ] , SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\nVAR _RPC_Act_PY_Ops = CALCULATE([WhseBreaklescence_Rate_per_Case_Act_Ops] + [TradeBreaklescence_Rate_per_Case_Act_Ops], SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))\n\nRETURN\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", _Attainment_to_AOP_Ops,\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((_Act - _Fcst), _Fcst),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\", DIVIDE((_RPC_ACT_AOP - _RPC_FCST), _RPC_FCST),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"Absolute\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_Act - _PY_Ops), _PY_Ops),\nSELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = \"RPC\" && SELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops))",
+          "formatString": "#,##0%;(#,##0%)",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "WhseBreaklescence_Ops "
+              },
+              {
+                "entity": "Measure Table",
+                "name": "TradeBreaklescence_Ops "
+              },
+              {
+                "entity": "Measure Table",
+                "name": "WhseBreaklescence_Rate_per_Case_Act_Ops"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "TradeBreaklescence_Rate_per_Case_Act_Ops"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Total_BSO_KPI",
+          "dataType": "Double",
+          "expression": "\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month\n\nVAR MaxClosedMonth =\n    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))\n\nVAR CurrentYear = YEAR(MaxClosedMonth)\nVAR CurrentMonth = MONTH(MaxClosedMonth)\nVAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])\nVAR VisualQuarter = SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter])\nVAR IsCurrentYear = VisualYear = CurrentYear\n\nVAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)\n\nVAR SelectedMonths =\n    CALCULATETABLE(\n        VALUES('V_Dim_FB_CalDay'[MonthNumber]),\n        'V_Dim_FB_CalDay'[Year] = VisualYear\n    )\n\nVAR TotalMonthsSelected = COUNTROWS(SelectedMonths)\nVAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths\n\nVAR IsDateSelected =\n    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[DayDate])\n\nVAR MaxClosedQuarter =\n    CALCULATE(\n        MAX('V_Dim_FB_CalDay'[Quarter]),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth,\n        'V_Dim_FB_CalDay'[Year] = CurrentYear\n    )\n\nVAR IsClosedQuarter =\n    VisualYear < CurrentYear ||\n    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)\n\nVAR slicerFilter =\n    FILTER(\n        ALLSELECTED('V_Dim_FB_CalDay'),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth\n    )\n\nVAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])\nVAR BaseMeasure = [Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New]\nVAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)\n\nRETURN\n    IF (\n        MetricSelected = \"FCST\",\n        IF (\n            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,\n            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),\n            BLANK()\n        ),\n        IF(MetricSelected = \"YA\", \"\", BaseMeasure)\n    )\n/*IF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,\"\",[TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]),\n    [TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final])*/\n    ",
+          "formatString": "#,##0%;(#,##0%)",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Total_Break_KPI",
+          "dataType": "Double",
+          "expression": "\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month\n\nVAR MaxClosedMonth =\n    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))\n\nVAR CurrentYear = YEAR(MaxClosedMonth)\nVAR CurrentMonth = MONTH(MaxClosedMonth)\nVAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])\nVAR VisualQuarter = SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter])\nVAR IsCurrentYear = VisualYear = CurrentYear\n\nVAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)\n\nVAR SelectedMonths =\n    CALCULATETABLE(\n        VALUES('V_Dim_FB_CalDay'[MonthNumber]),\n        'V_Dim_FB_CalDay'[Year] = VisualYear\n    )\n\nVAR TotalMonthsSelected = COUNTROWS(SelectedMonths)\nVAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths\n\nVAR IsDateSelected =\n    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[DayDate])\n\nVAR MaxClosedQuarter =\n    CALCULATE(\n        MAX('V_Dim_FB_CalDay'[Quarter]),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth,\n        'V_Dim_FB_CalDay'[Year] = CurrentYear\n    )\n\nVAR IsClosedQuarter =\n    VisualYear < CurrentYear ||\n    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)\n\nVAR slicerFilter =\n    FILTER(\n        ALLSELECTED('V_Dim_FB_CalDay'),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth\n    )\n\nVAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])\nVAR BaseMeasure = [Total_Break_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New]\nVAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)\n\nRETURN\n    IF (\n        MetricSelected = \"FCST\",\n        IF (\n            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,\n            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),\n            BLANK()\n        ),\n        IF(MetricSelected = \"YA\", \"\", BaseMeasure)\n    )\n/*IF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,\"\",[TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]),\n    [TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final])*/\n    ",
+          "formatString": "#,##0%;(#,##0%)",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Total_Break_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Total_Shrink_KPI",
+          "dataType": "Double",
+          "expression": "\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month\n\nVAR MaxClosedMonth =\n    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))\n\nVAR CurrentYear = YEAR(MaxClosedMonth)\nVAR CurrentMonth = MONTH(MaxClosedMonth)\nVAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])\nVAR VisualQuarter = SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter])\nVAR IsCurrentYear = VisualYear = CurrentYear\n\nVAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)\n\nVAR SelectedMonths =\n    CALCULATETABLE(\n        VALUES('V_Dim_FB_CalDay'[MonthNumber]),\n        'V_Dim_FB_CalDay'[Year] = VisualYear\n    )\n\nVAR TotalMonthsSelected = COUNTROWS(SelectedMonths)\nVAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths\n\nVAR IsDateSelected =\n    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[DayDate])\n\nVAR MaxClosedQuarter =\n    CALCULATE(\n        MAX('V_Dim_FB_CalDay'[Quarter]),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth,\n        'V_Dim_FB_CalDay'[Year] = CurrentYear\n    )\n\nVAR IsClosedQuarter =\n    VisualYear < CurrentYear ||\n    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)\n\nVAR slicerFilter =\n    FILTER(\n        ALLSELECTED('V_Dim_FB_CalDay'),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth\n    )\n\nVAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])\nVAR BaseMeasure = [Shrinkage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]\nVAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)\n\nRETURN\n    IF (\n        MetricSelected = \"FCST\",\n        IF (\n            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,\n            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),\n            BLANK()\n        ),\n        IF(MetricSelected = \"YA\", \"\", BaseMeasure)\n    )\n/*IF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,\"\",[TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]),\n    [TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final])*/\n    ",
+          "formatString": "#,##0%;(#,##0%)",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Shrinkage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Total_Obso_KPI",
+          "dataType": "Double",
+          "expression": "\nVAR TodayDate = TODAY()\nVAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)\nVAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month\n\nVAR MaxClosedMonth =\n    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))\n\nVAR CurrentYear = YEAR(MaxClosedMonth)\nVAR CurrentMonth = MONTH(MaxClosedMonth)\nVAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])\nVAR VisualQuarter = SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter])\nVAR IsCurrentYear = VisualYear = CurrentYear\n\nVAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)\n\nVAR SelectedMonths =\n    CALCULATETABLE(\n        VALUES('V_Dim_FB_CalDay'[MonthNumber]),\n        'V_Dim_FB_CalDay'[Year] = VisualYear\n    )\n\nVAR TotalMonthsSelected = COUNTROWS(SelectedMonths)\nVAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths\n\nVAR IsDateSelected =\n    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||\n    ISFILTERED('V_Dim_FB_CalDay'[DayDate])\n\nVAR MaxClosedQuarter =\n    CALCULATE(\n        MAX('V_Dim_FB_CalDay'[Quarter]),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth,\n        'V_Dim_FB_CalDay'[Year] = CurrentYear\n    )\n\nVAR IsClosedQuarter =\n    VisualYear < CurrentYear ||\n    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)\n\nVAR slicerFilter =\n    FILTER(\n        ALLSELECTED('V_Dim_FB_CalDay'),\n        'V_Dim_FB_CalDay'[DayDate] <= MaxClosedMonth\n    )\n\nVAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])\nVAR BaseMeasure = MAX(-10, MIN([OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], 10))\nVAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)\n\nRETURN\n    IF (\n        MetricSelected = \"FCST\",\n        IF (\n            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,\n            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),\n            BLANK()\n        ), \n        IF(MetricSelected = \"YA\", \"\", BaseMeasure)\n    )\n\n\n/*IF(\n    SELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",\n    IF(\n        MAX(V_Dim_FB_CalDay[MonthNumber])<=6,BLANK(),[Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]),\n    [Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final])*/\n    ",
+          "formatString": "#,##0%;(#,##0%)",
+          "displayFolder": "Ops",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Temp_y",
+          "dataType": "Double",
+          "expression": "\nCALCULATE(\n    SUM(V_FACT_FB_OPS_CFR[CasesOrdered]),\n    FILTER(V_Dim_FB_CustChainHeir,V_Dim_FB_CustChainHeir[NationalChainName] <> \"Publix\"),\n    FILTER(V_FACT_FB_OPS_CFR,V_FACT_FB_OPS_CFR[CasesOrdered]<>0))",
+          "formatString": "General Number",
+          "displayFolder": "Ops"
+        },
+        {
+          "name": "Temp_y111",
+          "dataType": "Double",
+          "expression": "\nCALCULATE(\n    SUM(V_FACT_FB_OPS_CFR[CasesOrdered]),\n    FILTER(V_Dim_FB_CustChainHeir,V_Dim_FB_CustChainHeir[NationalChainName] <> \"Publix\"))",
+          "formatString": "General Number",
+          "displayFolder": "Ops"
+        },
+        {
+          "name": "Total_CFR_Card_New",
+          "dataType": "Double",
+          "expression": "\nVAR a = \nCALCULATE(SUM(V_FACT_FB_OPS_CFR[CasesInvoiced]), FILTER(V_FACT_FB_OPS_CFR, V_FACT_FB_OPS_CFR[CasesInvoiced] <> 0))\nVAR b = \nCALCULATE(SUM(V_FACT_FB_OPS_CFR[CasesOrdered]), FILTER(V_FACT_FB_OPS_CFR, V_FACT_FB_OPS_CFR[CasesOrdered] <> 0))\n\nRETURN\nDIVIDE(a, b)\n\n",
+          "formatString": "#,##0%;(#,##0%)\\ ",
+          "displayFolder": "Ops"
+        },
+        {
+          "name": "%Rolled_Stop_Acc_New",
+          "dataType": "Double",
+          "expression": "\nvar _a =\nCALCULATE(\n    SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[RolledStopOrder]), FILTER(V_FACT_FB_OPS_ROLLEDSTOPORDERS, V_FACT_FB_OPS_ROLLEDSTOPORDERS[RolledStopOrder] <> 0))\nvar _b =\nCALCULATE(\n    SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[TotalOrder]), FILTER(V_FACT_FB_OPS_ROLLEDSTOPORDERS, V_FACT_FB_OPS_ROLLEDSTOPORDERS[TotalOrder] <> 0))\nRETURN DIVIDE(_a, _b)",
+          "formatString": "0.00\\ %;-0.00\\ %;0.00\\ %",
+          "displayFolder": "Ops - DNP"
+        },
+        {
+          "name": "Selected_Duration",
+          "dataType": "Double",
+          "expression": "\n\n VAR signBetweenY2Q = IF(ISBLANK(SELECTEDVALUE(V_Dim_FB_CalDay[Quarter_Name])), \"\", \" > \") \n VAR signBetweenQ2M = IF(ISBLANK(SELECTEDVALUE(V_Dim_FB_CalDay[MonthName])), \"\", \" > \")\n VAR signBetweenM2W = \n            IF(ISBLANK(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay])) ||  SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]) = SELECTEDVALUE(V_Dim_FB_CalDay[MonthName]),\n             \"\", \" > \")\n\n RETURN \n \"Selected Period: \" & SELECTEDVALUE(V_Dim_FB_CalDay[Year]) & signBetweenY2Q & SELECTEDVALUE(V_Dim_FB_CalDay[Quarter_Name]) & signBetweenQ2M & SELECTEDVALUE(V_Dim_FB_CalDay[MonthName]) & signBetweenM2W & IF(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]) = SELECTEDVALUE(V_Dim_FB_CalDay[MonthName]), \"\", SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]))\n ",
+          "formatString": "General Number"
+        },
+        {
+          "name": "LaborProd_Lable",
+          "dataType": "Double",
+          "expression": "\n\nVAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], \"AOP\")\nRETURN\n    SWITCH(\n        SelectedScenario,\n        \"AOP\",  \" AOP\",\n        \"FCST\", \" FCST\",\n        \"YA\",  \" YA\"\n    )\n",
+          "formatString": "General Number"
+        },
+        {
+          "name": "Volume_AOP_TL_New",
+          "dataType": "Integer",
+          "expression": "\nIF(ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName]) || ISFILTERED(V_Dim_FB_CustChainHeir[BranchName]) || ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]), \"\",\nCALCULATE\n(\n    Sum(V_Fact_FB_Topline_Budget_All[SalesCasesBudget]),\n    Filter(\n        V_Fact_FB_Topline_Budget_All, V_Fact_FB_Topline_Budget_All[ISFC] = False\n    )\n))\n\n/* Created by Pruthvi */",
+          "formatString": "General Number",
+          "displayFolder": "Topline"
+        },
+        {
+          "name": "Quarter dynamic volume aop KPICARD_New",
+          "dataType": "Double",
+          "expression": "\nVAR currentMonth = MONTH(TODAY())\nVAR currentYear = YEAR(TODAY())\n \nRETURN\nSUMX(\n    FILTER(\n        VALUES('V_Dim_FB_CalDay'[MonthNumber]),\n        CALCULATE(MAX('V_Dim_FB_CalDay'[Year])) = currentYear &&\n        'V_Dim_FB_CalDay'[MonthNumber] <= currentMonth\n    ),\n    VAR selectedMonth = 'V_Dim_FB_CalDay'[MonthNumber]\n    VAR isCurrentMonth = selectedMonth = currentMonth\n \n    RETURN\n    IF(\n        isCurrentMonth,\n        // ✅ CURRENT MONTH → MTD + RYBKT\n        CALCULATE(\n            [Volume_AOP_TL_New],\n            KEEPFILTERS(\n                FILTER(\n                    ALL('V_Dim_FB_CalDay'),\n                    'V_Dim_FB_CalDay'[MonthNumber] = selectedMonth &&\n                    'V_Dim_FB_CalDay'[Year] = currentYear\n                )\n            ),\n            FILTER( \n                \n                ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),\n                'V_Fact_FB_Topline_Budget_All'[TimeGranularity] = \"MTD\" &&\n                'V_Fact_FB_Topline_Budget_All'[RYBKT] = \"RCY\"\n            )\n        ),\n        // ✅ CLOSED MONTH → Monthly, no RYBKT\n        CALCULATE(\n            [Volume_AOP_TL_New],\n            KEEPFILTERS(\n                FILTER(\n                    ALL('V_Dim_FB_CalDay'),\n                    'V_Dim_FB_CalDay'[MonthNumber] = selectedMonth &&\n                    'V_Dim_FB_CalDay'[Year] = currentYear\n                )\n            ),\n            FILTER(\n                ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),\n                'V_Fact_FB_Topline_Budget_All'[TimeGranularity] = \"Monthly\" &&\n                'V_Fact_FB_Topline_Budget_All'[RYBKT] = \"RCY\"\n            )\n        )\n    )\n)\n \n",
+          "formatString": "General Number",
+          "displayFolder": "Topline",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Volume_AOP_TL_New"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Volume_AOP_FCST_YA_Selection_TL_New",
+          "dataType": "Double",
+          "expression": "\nSWITCH(\n    TRUE(),\nSELECTEDVALUE('Metric Table'[Metrics]) = \"AOP\", [Quarter dynamic volume aop KPICARD_New],\nSELECTEDVALUE('Metric Table'[Metrics]) = \"FCST\",  IF(ISBLANK([Quarter dynamic Volume FCST KPICARD BLANK logic]) ,BLANK(), [Quarter dynamic Volume FCST KPICARD BLANK logic]),\nSELECTEDVALUE('Metric Table'[Metrics]) = \"YA\", [Quarter dynamic Volume YA KPICARD]\n)\n",
+          "formatString": "\\$#,0.0;(\\$#,0.0);\\$#,0.0",
+          "displayFolder": "Topline",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "Quarter dynamic volume aop KPICARD_New"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Quarter dynamic Volume FCST KPICARD BLANK logic"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Quarter dynamic Volume YA KPICARD"
+              }
+            ]
+          }
+        },
+        {
+          "name": "OI_Bar_FCST_new_P",
+          "dataType": "Double",
+          "expression": "\nVAR CurrentMonth = MONTH(TODAY())\nVAR CurrentYear = YEAR(TODAY())\nVAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])\n \nRETURN\nIF (\n    VisualYear = CurrentYear,\n    SWITCH(\n        TRUE(),\n \n        // Q1: Jan–Mar → Show AOP for ALL months\n        CurrentMonth IN {2,3,4},\n        CALCULATE(\n            SUM('V_FB_financial_Management'[AmtAOP]),\n           V_Dim_FB_PlHier[PlHier] IN {\"Total Operating Expense\",\"Gross Profit\",\"Other Income (Expense)\"}\n        ),\n \n        // Q2: Apr–Jun → Custom logic\n        CurrentMonth IN {5,6,7},\n        CALCULATE(\n            SUM('V_FB_financial_Management'[AmtFcst39]),\n           V_Dim_FB_PlHier[PlHier] IN {\"Total Operating Expense\",\"Gross Profit\",\"Other Income (Expense)\"},\n            'V_Dim_FB_CalDay'[MonthNumber] >= 4,\n            'V_Dim_FB_CalDay'[MonthNumber] < 7,\n            'V_FB_financial_Management'[IsForecast] = \"N\"\n        ) +\n        CALCULATE(\n            SUM('V_FB_financial_Management'[AmtFcst39]),\n           V_Dim_FB_PlHier[PlHier] IN {\"Total Operating Expense\",\"Gross Profit\",\"Other Income (Expense)\"},\n           'V_Dim_FB_Opex'[OpexLine] IN {\"Total COGS\",\"DSD-T&W\",\"Other Income (Expense)\"},\n            'V_Dim_FB_CalDay'[MonthNumber] >= 7,\n            'V_FB_financial_Management'[IsForecast] = \"Y\"\n           \n       ),\n \n        // Q3: Jul–Sep → Show FCST_66 from July to Dec\n        CurrentMonth IN {8,9,10},\n       CALCULATE(\n            SUM('V_FB_Financial_Management'[AmtFcst66]),\n          V_Dim_FB_PlHier[PlHier] IN {\"Total Operating Expense\",\"Gross Profit\",\"Other Income (Expense)\"},\n            'V_Dim_FB_CalDay'[MonthNumber] >= 7,\n            'V_Dim_FB_CalDay'[MonthNumber] < 8,\n            'V_FB_financial_Management'[IsForecast] = \"N\"\n        ) +\n        CALCULATE(\n            SUM('V_FB_Financial_Management'[AmtFcst66]),\n            V_Dim_FB_PlHier[PlHier] IN {\"Total Operating Expense\",\"Gross Profit\",\"Other Income (Expense)\"},\n           'V_Dim_FB_Opex'[OpexLine] IN {\"Total COGS\",\"DSD-T&W\",\"Other Income (Expense)\"},\n            'V_FB_financial_Management'[IsForecast] = \"Y\",\n            'V_Dim_FB_CalDay'[MonthNumber] >= 8\n       ),\n \n        // Q4: Oct–Dec → Show FCST_93 from October to Dec\n        CurrentMonth IN {11,12,1},\n         CALCULATE(\n            SUM('V_FB_Financial_Management'[AmtFcst93]),\n          V_Dim_FB_PlHier[PlHier] IN {\"Total Operating Expense\",\"Gross Profit\",\"Other Income (Expense)\"},\n            'V_Dim_FB_CalDay'[MonthNumber] >= 10,\n            'V_Dim_FB_CalDay'[MonthNumber] < 11,\n            'V_FB_financial_Management'[IsForecast] = \"N\"\n        ) +\n        CALCULATE(\n            SUM('V_FB_Financial_Management'[AmtFcst93]),\n            V_Dim_FB_PlHier[PlHier] IN {\"Total Operating Expense\",\"Gross Profit\",\"Other Income (Expense)\"},\n           'V_Dim_FB_Opex'[OpexLine] IN {\"Total COGS\",\"DSD-T&W\",\"Other Income (Expense)\"},\n            'V_FB_financial_Management'[IsForecast] = \"Y\",\n            'V_Dim_FB_CalDay'[MonthNumber] >=11\n       )\n    )\n)",
+          "formatString": "General Number"
+        },
+        {
+          "name": "OI_Bar_RPC_FCST_New",
+          "dataType": "Double",
+          "expression": "DIVIDE([OI_Bar_FCST_new_P],[Volume_Bar_FCST_new])",
+          "formatString": "General Number",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "OI_Bar_FCST_new_P"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Volume_Bar_FCST_new"
+              }
+            ]
+          }
+        },
+        {
+          "name": "PNEW",
+          "dataType": "Text",
+          "expression": "\r\nVAR _x = [OI_Bar_Selected_New]\r\nVAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])\r\n\r\nVAR _y =\r\n    IF(\r\n        SelectedToggle = \"Absolute\",\r\n        SWITCH(\r\n            TRUE(),\r\n            _x >= 1000000, FORMAT(_x / 1000000, \"$#,##0.0\") & \"M\",\r\n            _x >= 1000, FORMAT(_x / 1000, \"$#,##0.0\") & \"K\",\r\n            FORMAT(_x, \"$#,##0.0\")\r\n        ),\r\n        FORMAT(_x, \"$#,##0.00\")\r\n    )\r\n\r\nRETURN _x\r\n\r\n\r\n\r\n\r\n/*\r\nVAR _xNum = VALUE(SUBSTITUTE(_x, \",\", \"\"))\r\n\r\nVAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])\r\nVAR _y =\r\n    IF(\r\n        SelectedToggle = \"Absolute\",\r\n        \"$\" & FORMAT(ROUND(_x / 1000000, 1), \"0.0\") & \"M\",\r\n        FORMAT(_x, \"$#,##0.00\")\r\n    )\r\nRETURN _y */",
+          "formatString": "General Number"
+        },
+        {
+          "name": "FormattedLabel",
+          "dataType": "Double",
+          "expression": "\nVAR _x = [OI_Bar_Selected_New]\nVAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])\nVAR _y =\n    IF(\n        SelectedToggle = \"Absolute\",\n        SWITCH(\n            TRUE(),\n            (_x) >= 1000000,  \"$\" & FORMAT(_x / 1000000, \"0.0\") & \"M\",\n            (_x) < 1000000,  \"$\" & FORMAT(_x / 1000, \"0.0\") & \"K\",\n            (_x) < 1000, \"$\" & FORMAT(_x, \"0.00\")\n        ),\n        // For RPC: 2 decimals, no units\n         FORMAT(_x, \"$#,##0.00\")\n    )\n \nRETURN _y",
+          "formatString": "General Number"
+        },
+        {
+          "name": "OI_Bar_Selected_Graph_New",
+          "dataType": "Double",
+          "expression": "\nVAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], \"AOP\")\nVAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], \"Absolute\")\n\nRETURN\nSWITCH(\n    TRUE(),\nSelectedToggle = \"Absolute\" && SelectedScenario = \"AOP\", [OI_Bar_FCST_New_P],\nSelectedToggle = \"Absolute\" && SelectedScenario = \"FCST\",\"\",\nSelectedToggle = \"Absolute\" && SelectedScenario = \"YA\", [OI_Bar_FCST_new_P],\nSelectedToggle = \"RPC\" && SelectedScenario = \"AOP\", [OI_Bar_RPC_FCST_New],\nSelectedToggle = \"RPC\" && SelectedScenario = \"FCST\", \"\",\nSelectedToggle = \"RPC\" && SelectedScenario = \"YA\", [OI_Bar_RPC_FCST_New]\n)",
+          "formatString": "General Number",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "OI_Bar_FCST_new_P"
+              },
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "OI_Bar_RPC_FCST_New"
+              }
+            ]
+          }
+        },
+        {
+          "name": "FormattedLabel1",
+          "dataType": "Double",
+          "expression": "\nVAR _x = [OI_Bar_Selected_Graph_New]\nRETURN \nIF(_x = \"\", \"\",\nIF(\n    _x >= 1000000,\n    \"$\" & FORMAT(_x / 1000000, \"0.0\") & \"M\",\n    IF(\n        _x >= 1000,\n        \"$\" & FORMAT(_x / 1000, \"0.0\") & \"K\",\n        \"$\" & FORMAT(_x, \"0.00\"))))\n",
+          "formatString": "General Number",
+          "references": {
+            "measures": [
+              {
+                "schema": "extension",
+                "entity": "Measure Table",
+                "name": "OI_Bar_Selected_Graph_New"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "Abs/RPC Table",
+      "measures": [
+        {
+          "name": "Latest Refresh as of",
+          "dataType": "Double",
+          "expression": "MAX('Last Refresh as of'[Last Refresh as of])",
+          "formatString": "General Number"
+        },
+        {
+          "name": "#SKU Compliance",
+          "dataType": "Double",
+          "expression": "\nVar _Category = SELECTEDVALUE(V_Fact_FB_CMAComplianceSummary[SKUCategory])\n\n\nVar _SKU_Sold = SWITCH(TRUE(),\n_Category=\"CSD\",[CSD_SKU_CMA_Compliance],\n_Category=\"ENERGY\",[Energy_SKU_CMA_Compliance],\n_Category=\"JUICE\",[Sport_SKU_CMA_vs_Target],\n_Category=\"TEAS DRINKS OTHER\",[TeanJC_SKU_CMA_Compliance],\n_Category=\"WATER\",[Water_SKU_CMA_Compliance],\n[CMA_SKU_Compliance])\n\n\nRETURN \n_SKU_Sold",
+          "formatString": "0.00\\ %;-0.00\\ %;0.00\\ %",
+          "references": {
+            "measures": [
+              {
+                "entity": "Measure Table",
+                "name": "CSD_SKU_CMA_Compliance"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Energy_SKU_CMA_Compliance"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Sport_SKU_CMA_vs_Target"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "TeanJC_SKU_CMA_Compliance"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "Water_SKU_CMA_Compliance"
+              },
+              {
+                "entity": "Measure Table",
+                "name": "CMA_SKU_Compliance"
+              }
+            ]
+          }
+        },
+        {
+          "name": "Metrics_CMA_TL",
+          "dataType": "Double",
+          "expression": "DATATABLE(\"Metric\", STRING,\r\n\r\n{\r\n\r\n    {\"Target\"},\r\n\r\n    {\"Skus Sold\"},\r\n\r\n    {\"Variance\"}\r\n\r\n})\r\n ",
+          "formatString": "General Number"
+        }
+      ]
+    }
+  ]
+}

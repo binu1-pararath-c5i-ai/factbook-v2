@@ -1,0 +1,94 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "089eb3018c68aa400c0a",
+  "position": {
+    "x": 2.5427174672150228,
+    "y": 283.51299759447505,
+    "z": 10000,
+    "height": 88.9951113525258,
+    "width": 420.8197408240863,
+    "tabOrder": 10000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_RevDetail"
+                    }
+                  },
+                  "Property": "MonthStart"
+                }
+              },
+              "queryRef": "Sum(V_Fact_FB_RevDetail.MonthStart)",
+              "nativeQueryRef": "MonthStart"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Sold"
+                }
+              },
+              "queryRef": "Measure Table.%Sold",
+              "nativeQueryRef": "%Sold"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Built"
+                }
+              },
+              "queryRef": "Measure Table.%Built",
+              "nativeQueryRef": "%Built"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Sold_Base_Calc"
+                }
+              },
+              "queryRef": "Measure Table.%Sold_Base_Calc",
+              "nativeQueryRef": "%Sold_Base_Calc"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "%Built_Base_Calc"
+                }
+              },
+              "queryRef": "Measure Table.%Built_Base_Calc",
+              "nativeQueryRef": "%Built_Base_Calc"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

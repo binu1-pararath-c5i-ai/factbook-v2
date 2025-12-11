@@ -1,0 +1,122 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "a19898b0049d13ef2803",
+  "position": {
+    "x": 0,
+    "y": 80,
+    "z": 1000,
+    "height": 294.28571428571428,
+    "width": 480.00000000000006,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "DayDate"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.DayDate.Variation.Date Hierarchy.Year",
+              "nativeQueryRef": "DayDate Year"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "MonthName"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.MonthName",
+              "nativeQueryRef": "MonthName"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Operating Income Act"
+                }
+              },
+              "queryRef": "Measure Table.Operating Income Act",
+              "nativeQueryRef": "Operating Income Act"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Operating Income AOP"
+                }
+              },
+              "queryRef": "Measure Table.Operating Income AOP",
+              "nativeQueryRef": "Operating Income AOP"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Arrow to OI_AOP"
+                }
+              },
+              "queryRef": "Measure Table.Arrow to OI_AOP",
+              "nativeQueryRef": "Arrow to OI_AOP"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "OI Varient AOP"
+                }
+              },
+              "queryRef": "Measure Table.OI Varient AOP",
+              "nativeQueryRef": "OI Varient AOP"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "OI_AttainmentSelected"
+                }
+              },
+              "queryRef": "Measure Table.OI_AttainmentSelected",
+              "nativeQueryRef": "OI_AttainmentSelected"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

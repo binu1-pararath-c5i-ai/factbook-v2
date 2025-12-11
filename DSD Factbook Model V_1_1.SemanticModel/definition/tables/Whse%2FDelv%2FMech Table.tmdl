@@ -1,0 +1,36 @@
+table 'Whse/Delv/Mech Table'
+	lineageTag: 1ded2eb0-1129-4188-856a-3b6b44b1a3d2
+
+	column Whse/Delv/Mech
+		dataType: string
+		lineageTag: 7d4721bd-2d1d-4163-9e7b-1c57b8da9b8e
+		summarizeBy: none
+		sourceColumn: Whse/Delv/Mech
+		sortByColumn: Sort
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Sort
+		dataType: int64
+		formatString: 0
+		lineageTag: 6b2e3c41-5722-4ec9-8feb-51638878797c
+		summarizeBy: sum
+		sourceColumn: Sort
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Whse/Delv/Mech Table' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCk8sSs3ILy1OVdJRMlSK1YlWcknNySxLLaoEChiBBXxTi5IzEvNSMosz89KBosZKsbEA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Whse/Delv/Mech" = _t, Sort = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Whse/Delv/Mech", type text}, {"Sort", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
+	annotation PBI_NavigationStepName = Navigation
+

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "2e2708ca1c0988383d9e",
+  "position": {
+    "x": 609.9573257467996,
+    "y": 299.44659041012994,
+    "z": 7000,
+    "height": 140.199146514936,
+    "width": 290
+  },
+  "visual": {
+    "visualType": "card",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Fact_FB_Topline_Budget_All"
+                        }
+                      },
+                      "Property": "RC_topline_budget"
+                    }
+                  },
+                  "Function": 5
+                }
+              },
+              "queryRef": "Sum(V_Fact_FB_Topline_Budget_All.RC_topline_budget)",
+              "nativeQueryRef": "Count of RC_topline_budget"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "V_Fact_FB_Topline_Budget_All"
+                      }
+                    },
+                    "Property": "RC_topline_budget"
+                  }
+                },
+                "Function": 5
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "border": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

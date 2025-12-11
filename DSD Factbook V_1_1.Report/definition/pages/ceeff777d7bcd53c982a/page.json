@@ -1,0 +1,118 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "ceeff777d7bcd53c982a",
+  "displayName": "Fractle CMA Drill Down TL",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "b87249e3085ffefb737c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "NationalChainName"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "v"
+                            }
+                          },
+                          "Property": "NationalChainName"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'RITE AID'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "d6b9b8da6f942f96856c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Fact_FB_CMAComplianceSummary"
+              }
+            },
+            "Property": "TimeGranularity"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "8b99366e6a93d23a0538",
+      "target": "30b75302eadbbe7b1a97",
+      "type": "NoFilter"
+    },
+    {
+      "source": "592338f5d39eff39b360",
+      "target": "337c5b1fc20eef05ddca",
+      "type": "NoFilter"
+    },
+    {
+      "source": "592338f5d39eff39b360",
+      "target": "335ad1bc8381c5b2eec8",
+      "type": "NoFilter"
+    },
+    {
+      "source": "592338f5d39eff39b360",
+      "target": "d3c1d158787fd753ec47",
+      "type": "NoFilter"
+    },
+    {
+      "source": "592338f5d39eff39b360",
+      "target": "8c551f21cc4f45454b33",
+      "type": "NoFilter"
+    },
+    {
+      "source": "592338f5d39eff39b360",
+      "target": "3d0d031ce639b812870d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "592338f5d39eff39b360",
+      "target": "d9f00c69b5ef4dd9be4e",
+      "type": "NoFilter"
+    }
+  ]
+}

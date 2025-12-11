@@ -1,0 +1,24 @@
+table SalesStatus
+	lineageTag: 011205bb-fe8b-4249-9b03-423419b0c07a
+
+	column Status
+		dataType: string
+		lineageTag: 489c9b81-5cf2-45e4-8563-9fcc3e990115
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition SalesStatus = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WckwuKU3MUYrViVYKSs1NzMzLzEtXio0FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Status = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Status", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

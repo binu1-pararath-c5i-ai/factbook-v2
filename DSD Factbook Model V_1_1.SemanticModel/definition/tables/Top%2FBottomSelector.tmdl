@@ -1,0 +1,194 @@
+table Top/BottomSelector
+	lineageTag: e82b751d-7516-4021-9e7f-bd90ef4df874
+
+	measure %Sold_Rank = ```
+			
+			VAR SelectedOrder = SELECTEDVALUE('Top/BottomSelector'[Top/Bottom])
+			RETURN
+			IF(ISBLANK([%Sold]),-1,
+			SWITCH(
+			    TRUE(),
+			    
+			    ISINSCOPE('V_Dim_FB_CustChainHeir'[NationalChainName]),
+			        SWITCH(
+			        SelectedOrder,
+			        "Top", RANKX(ALL('V_Dim_FB_CustChainHeir'[NationalChainName]),[%Sold], , DESC, Skip),
+			        "Bottom", RANKX(ALL('V_Dim_FB_CustChainHeir'[NationalChainName]),[%Sold], , ASC, DENSE),
+			        BLANK()
+			    ),
+			/*
+			    ISINSCOPE('V_Dim_FB_CustChainHeir'[RegionName]),
+			        SWITCH(
+			        SelectedOrder,
+			        "Top", RANKX(ALL('V_Dim_FB_CustChainHeir'[RegionName]),[%Sold], , DESC, DENSE),
+			        "Bottom", RANKX(ALL('V_Dim_FB_CustChainHeir'[RegionName]),[%Sold], , ASC, DENSE),
+			        BLANK()
+			    ),
+			    ISINSCOPE('V_Fact_FB_RevDetail'[Priority]),
+			         SWITCH(
+			        SelectedOrder,
+			        "Top", RANKX(ALL('V_Fact_FB_RevDetail'[Key]),[%Sold], , DESC, DENSE),
+			        "Bottom", RANKX(ALL('V_Fact_FB_RevDetail'[Key]),[%Sold], , ASC, DENSE),
+			        BLANK()
+			    ),
+			*/       
+			    BLANK()
+			)
+			)
+			```
+		formatString: 0
+		lineageTag: 2d153bdd-aa3b-4954-bc03-eb621328acbc
+
+	measure %Built_Rank = ```
+			
+			VAR SelectedOrder = SELECTEDVALUE('Top/BottomSelector'[Top/Bottom])
+			VAR RankingTable =
+			    FILTER(
+			        ALL('V_Dim_FB_CustChainHeir'[NationalChainName]),
+			        NOT(ISBLANK([%Built])) && [%Built] <> 0
+			    )
+			RETURN
+			IF(ISBLANK([%Built]),-1,
+			SWITCH(
+			    TRUE(),
+			    
+			    ISINSCOPE('V_Dim_FB_CustChainHeir'[NationalChainName]),
+			        SWITCH(
+			        SelectedOrder,
+			        "Top", RANKX(ALL('V_Dim_FB_CustChainHeir'[NationalChainName]),[%Built], , DESC,Skip),
+			        "Bottom",
+			         IF(ISBLANK([%Built]) || [%Built] = 0,
+			        BLANK(),
+			         RANKX(ALL('V_Dim_FB_CustChainHeir'[NationalChainName]),[%Built], , ASC, Dense)),
+			        BLANK()
+			    ),
+			    ISINSCOPE('V_Dim_FB_CustChainHeir'[RegionName]),
+			        SWITCH(
+			        SelectedOrder,
+			        "Top", RANKX(ALL('V_Dim_FB_CustChainHeir'[RegionName]),[%Built], , DESC, DENSE),
+			        "Bottom", RANKX(ALL('V_Dim_FB_CustChainHeir'[RegionName]),[%Built], , ASC, DENSE),
+			        BLANK()
+			    ),
+			    ISINSCOPE('V_Fact_FB_RevDetail'[Priority]),
+			         SWITCH(
+			        SelectedOrder,
+			        "Top", RANKX(ALL('V_Fact_FB_RevDetail'[Key]),[%Built], , DESC, DENSE),
+			        "Bottom", RANKX(ALL('V_Fact_FB_RevDetail'[Key]),[%Built], , ASC, DENSE),
+			        BLANK()
+			    ),
+			       
+			    BLANK()
+			)
+			)
+			```
+		formatString: 0
+		lineageTag: c50d3264-faa0-4f7b-8eab-d74665f8f069
+
+	measure POG_COMP_Rank = ```
+			
+			VAR SelectedOrder = SELECTEDVALUE('Top/BottomSelector'[Top/Bottom])
+			RETURN
+			IF(ISBLANK([POG_Comp]),-1,
+			SWITCH(
+			    TRUE(),
+			    
+			    ISINSCOPE('V_Dim_FB_CustChainHeir'[NationalChainName]),
+			        SWITCH(
+			        SelectedOrder,
+			        "Top", RANKX(ALL('V_Dim_FB_CustChainHeir'[NationalChainName]),[POG_Comp], , DESC, DENSE),
+			        "Bottom", RANKX(ALL('V_Dim_FB_CustChainHeir'[NationalChainName]),[POG_Comp], , ASC, DENSE),
+			        BLANK()
+			    ),
+			/*    
+			    ISINSCOPE('V_Dim_FB_CustChainHeir'[RegionName]),
+			        SWITCH(
+			        SelectedOrder,
+			        "Top", RANKX(ALL('V_Dim_FB_CustChainHeir'[RegionName]),[POG_Comp], , DESC, DENSE),
+			        "Bottom", RANKX(ALL('V_Dim_FB_CustChainHeir'[RegionName]),[POG_Comp], , ASC, DENSE),
+			        BLANK()        
+			    ),
+			    */
+			    ISINSCOPE('V_Dim_FB_ProdHeir'[TradeMarkDesc]),
+			         SWITCH(
+			        SelectedOrder,
+			        "Top", RANKX(ALL('V_Dim_FB_ProdHeir'[TradeMarkDesc]),[POG_Comp], , DESC, DENSE),
+			        "Bottom", RANKX(ALL('V_Dim_FB_ProdHeir'[TradeMarkDesc]),[POG_Comp], , ASC, DENSE),
+			        BLANK()
+			    ),
+			       
+			    BLANK()
+			)
+			)
+			```
+		formatString: 0
+		lineageTag: 94b86563-94b6-452e-be2a-f2a23be8640b
+
+	measure CMA_Energy_Rank = ```
+			
+			VAR SelectedOrder = SELECTEDVALUE('Top/BottomSelector'[Top/Bottom])
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    
+			    ISINSCOPE('V_Fact_FB_CMAComplianceSummary'[SKUCategory]),
+			        SWITCH(
+			        SelectedOrder,
+			        "Top", RANKX(ALL('V_Dim_FB_CustChainHeir'[NationalChainName]),[Energy_CMA_Compliance], , DESC, DENSE),
+			        "Bottom", RANKX(ALL('V_Dim_FB_CustChainHeir'[NationalChainName]),[Energy_CMA_Compliance], , ASC, DENSE),
+			        BLANK()
+			    ),
+			
+			    ISINSCOPE('V_Dim_FB_CustChainHeir'[RegionName]),
+			        SWITCH(
+			        SelectedOrder,
+			        "Top", RANKX(ALL('V_Dim_FB_CustChainHeir'[RegionName]),[Energy_CMA_Compliance], , DESC, DENSE),
+			        "Bottom", RANKX(ALL('V_Dim_FB_CustChainHeir'[RegionName]),[Energy_CMA_Compliance], , ASC, DENSE),
+			        BLANK()
+			    ),
+			       
+			    BLANK()
+			)
+			```
+		formatString: 0
+		lineageTag: ec60dcf4-d42b-434a-89c6-4d93dcb02546
+
+	column Top/Bottom
+		dataType: string
+		lineageTag: 621e26c4-5d2f-478c-8a5a-03db9b9b9f4a
+		summarizeBy: none
+		sourceColumn: Top/Bottom
+		sortByColumn: Sort
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rank
+		dataType: int64
+		formatString: 0
+		lineageTag: 504db063-36e9-4445-a307-84a06e5121ff
+		summarizeBy: sum
+		sourceColumn: Rank
+
+		annotation SummarizationSetBy = User
+
+	column Sort
+		dataType: int64
+		formatString: 0
+		lineageTag: ac6dc08e-1aff-422f-bdd5-9219cba9cfe0
+		summarizeBy: sum
+		sourceColumn: Sort
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Top/BottomSelector = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WCskvUNJRMjQAEUqxOtFKTvklJfm5MDEjpdhYAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Top/Bottom" = _t, Rank = _t, Sort = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Top/Bottom", type text}, {"Rank", Int64.Type}, {"Sort", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

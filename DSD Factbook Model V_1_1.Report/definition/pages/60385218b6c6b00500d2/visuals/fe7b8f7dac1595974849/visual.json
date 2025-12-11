@@ -1,0 +1,52 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "fe7b8f7dac1595974849",
+  "position": {
+    "x": 378.50545933249015,
+    "y": 0,
+    "z": 3000,
+    "height": 226.25745334400247,
+    "width": 528.63890968224882,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "HardWeekStarting"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.HardWeekStarting.Variation.Date Hierarchy.Year",
+              "nativeQueryRef": "HardWeekStarting Year"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "DayDate"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.DayDate.Variation.Date Hierarchy.Year",
+              "nativeQueryRef": "DayDate Year"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

@@ -1,0 +1,52 @@
+table V_Dim_FB_Opex
+	lineageTag: 4b675ccf-e9f6-4aee-ac53-9d44eebe6630
+
+	column OpexKey
+		dataType: double
+		lineageTag: a1ae69ec-2caf-4a73-b15d-5f7854b465e3
+		summarizeBy: none
+		sourceColumn: OpexKey
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OpexLine
+		dataType: string
+		lineageTag: c3bf605c-116c-4a18-97fd-61c1da545624
+		summarizeBy: none
+		sourceColumn: OpexLine
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpexLineDtl
+		dataType: string
+		lineageTag: edb32ca8-ec0e-4409-89bd-f54c4885d066
+		summarizeBy: none
+		sourceColumn: OpexLineDtl
+
+		annotation SummarizationSetBy = Automatic
+
+	column OpexLineDtl1
+		dataType: string
+		lineageTag: 91d27581-6c76-448d-8dbb-82f178bc0118
+		summarizeBy: none
+		sourceColumn: OpexLineDtl1
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Dim_FB_Opex = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_Dim_FB_Opex_View = DSD_Schema{[Name="V_Dim_FB_Opex",Kind="View"]}[Data]
+				in
+				    V_Dim_FB_Opex_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

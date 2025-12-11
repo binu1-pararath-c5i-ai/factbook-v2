@@ -1,0 +1,87 @@
+table PnL_KPI_Selector
+	lineageTag: 7bf97686-360d-46ee-8152-adb7fa703cdd
+
+	measure ShowKPI =
+			
+			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
+			RETURN
+			IF(
+			    MAX(PnL_KPI_Selector[Type]) = SelectedToggle,
+			    1,
+			    0
+			)
+		formatString: 0
+		lineageTag: 912ff591-4265-4eb2-bcff-94f6e53e81b2
+
+	measure PnL_Selected_Measure_Act =
+			
+			
+			SWITCH(
+			    SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]),
+			    "Revenue", CALCULATE([Revenue_Bar_Actual_Selected]),
+			    "Gross Profit", CALCULATE([GP_Bar_Actual_Selected]),
+			    "Volume", CALCULATE([Volume Act]),
+			    "Operating Income", CALCULATE([OI_Bar_Actual_Selected]),
+			    BLANK()
+			)
+		lineageTag: 71d22b9f-d098-4573-8f4d-6cda71758611
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure PnL_Selected_Measure_Comparison =
+			
+			
+			SWITCH(
+			    SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]),
+			    "Revenue", CALCULATE([Revenue_Bar_Selected]),
+			    "Gross Profit", CALCULATE([GP_Bar_Selected]),
+			    "Volume", CALCULATE([Volume_Bar_Selected]),
+			    "Operating Income", CALCULATE([OI_Bar_Selected]),
+			    BLANK()
+			)
+		lineageTag: aa71e473-b14b-40de-91de-4634dad63eac
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column KPI_Name
+		lineageTag: bb871486-64d0-4b55-a6a7-137fb4154418
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [KPI_Name]
+		sortByColumn: 'S.No'
+
+		annotation SummarizationSetBy = Automatic
+
+	column Type
+		lineageTag: b05ff428-813f-4353-9327-6cbbdb371a1a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Type]
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'S.No'
+		formatString: 0
+		lineageTag: 18aa7f7f-4afb-46b3-9cb5-d464d03c1c24
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [S.No]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition PnL_KPI_Selector = calculated
+		mode: import
+		source =
+				DATATABLE("S.No",INTEGER,
+				    "KPI_Name", STRING,
+				    "Type", STRING,
+				    {
+				        {"1","Volume", "Absolute"},
+				        {"2","Revenue", "Absolute"},
+				        {"3","Gross Profit", "Absolute"},
+				        {"4","Operating Income", "Absolute"}
+				    }
+				)
+
+	annotation PBI_Id = d9668f60ad8446208bfb198715080d58
+

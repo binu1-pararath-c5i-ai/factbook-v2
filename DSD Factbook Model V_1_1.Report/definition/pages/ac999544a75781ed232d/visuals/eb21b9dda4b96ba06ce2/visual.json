@@ -1,0 +1,163 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "eb21b9dda4b96ba06ce2",
+  "position": {
+    "x": 0,
+    "y": 240.21461994384944,
+    "z": 2000,
+    "height": 240.21461994384944,
+    "width": 734.27305812623479
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "FirstDayOfMonth"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.FirstDayOfMonth",
+              "nativeQueryRef": "FirstDayOfMonth",
+              "active": true
+            }
+          ]
+        },
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_ProdHeir"
+                    }
+                  },
+                  "Property": "PackageHierarchyLevel1"
+                }
+              },
+              "queryRef": "V_Dim_FB_ProdHeir.PackageHierarchyLevel1",
+              "nativeQueryRef": "PackageHierarchyLevel1",
+              "active": true
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_ProdHeir"
+                    }
+                  },
+                  "Property": "PackageHierarchyLevel2"
+                }
+              },
+              "queryRef": "V_Dim_FB_ProdHeir.PackageHierarchyLevel2",
+              "nativeQueryRef": "PackageHierarchyLevel2",
+              "active": false
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_ProdHeir"
+                    }
+                  },
+                  "Property": "PackageHierarchyLevel3"
+                }
+              },
+              "queryRef": "V_Dim_FB_ProdHeir.PackageHierarchyLevel3",
+              "nativeQueryRef": "PackageHierarchyLevel3",
+              "active": false
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP"
+                }
+              },
+              "queryRef": "Measure Table.Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP",
+              "nativeQueryRef": "Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "8cf93d474c62f5a7e581",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Act/VolAdj Table"
+              }
+            },
+            "Property": "Act/VolAdj"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "a",
+              "Entity": "Act/VolAdj Table",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "a"
+                          }
+                        },
+                        "Property": "Act/VolAdj"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Actuals'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  }
+}

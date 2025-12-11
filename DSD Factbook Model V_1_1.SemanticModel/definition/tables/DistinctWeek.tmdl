@@ -1,0 +1,18 @@
+table DistinctWeek
+	lineageTag: 3adcd301-8183-4a0e-8685-61acb1377a74
+
+	column WeekStarting_ISO
+		formatString: General Date
+		lineageTag: 94802a74-93d5-44f9-9645-7f5da2b68934
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[WeekStarting_ISO]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DistinctWeek = calculated
+		mode: import
+		source = DISTINCT(V_Dim_FB_CalDay[WeekStarting_ISO])
+
+	annotation PBI_Id = c8ca1429c2f14361a644e2878d425abd
+

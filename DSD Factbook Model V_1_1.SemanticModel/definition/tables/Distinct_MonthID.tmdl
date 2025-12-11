@@ -1,0 +1,17 @@
+table Distinct_MonthID
+	lineageTag: f0a291cd-2a10-4f46-b0b1-6f6f70f240b8
+
+	column MonthID
+		lineageTag: 470361c6-0fc8-432c-ae7e-1cd037af6a80
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[MonthID]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Distinct_MonthID = calculated
+		mode: import
+		source = DISTINCT(V_Dim_FB_CalDay[MonthID])
+
+	annotation PBI_Id = 64c78c7ed9d54589b80f3b02bd6eb4b8
+

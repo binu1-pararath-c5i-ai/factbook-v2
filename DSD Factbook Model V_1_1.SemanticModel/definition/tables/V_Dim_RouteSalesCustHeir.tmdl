@@ -1,0 +1,114 @@
+table V_Dim_RouteSalesCustHeir
+	lineageTag: 32ce2086-bca0-46be-bba9-fe8e0a1d8717
+
+	column RouteID
+		dataType: string
+		lineageTag: 74ea9c90-4bb5-453d-b1f9-e0de4a965051
+		summarizeBy: none
+		sourceColumn: RouteID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RouteName
+		dataType: string
+		lineageTag: 572a357a-7fe3-4378-9e5f-ca2421a2e783
+		summarizeBy: none
+		sourceColumn: RouteName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AMName
+		dataType: string
+		lineageTag: 42031a0c-befc-44f7-a3dd-8ec61fa82d90
+		summarizeBy: none
+		sourceColumn: AMName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AMGSN
+		dataType: string
+		lineageTag: f0422e40-7073-478c-8ad6-06d3184ca7fa
+		summarizeBy: none
+		sourceColumn: AMGSN
+
+		annotation SummarizationSetBy = Automatic
+
+	column DSSName
+		dataType: string
+		lineageTag: ef8c32a9-7a6e-40d7-a747-fc9acd4e56fb
+		summarizeBy: none
+		sourceColumn: DSSName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DSSGSN
+		dataType: string
+		lineageTag: cd787dad-1ea1-41f9-bc67-c9522cf801fd
+		summarizeBy: none
+		sourceColumn: DSSGSN
+
+		annotation SummarizationSetBy = Automatic
+
+	column TLName
+		dataType: string
+		lineageTag: 585d990a-b67e-4af6-84f3-b1cc7f591f72
+		summarizeBy: none
+		sourceColumn: TLName
+
+		annotation SummarizationSetBy = Automatic
+
+	column TLGSN
+		dataType: string
+		lineageTag: 505df590-0445-41c8-84c7-d2040885f54f
+		summarizeBy: none
+		sourceColumn: TLGSN
+
+		annotation SummarizationSetBy = Automatic
+
+	column RVPName
+		dataType: string
+		lineageTag: d789be9d-f779-45b7-981f-f7ebb5ec5dd4
+		summarizeBy: none
+		sourceColumn: RVPName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RVPGSN
+		dataType: string
+		lineageTag: a2e87c57-07c8-4a39-bcbf-df271add69e8
+		summarizeBy: none
+		sourceColumn: RVPGSN
+
+		annotation SummarizationSetBy = Automatic
+
+	column BUGMName
+		dataType: string
+		lineageTag: 968803a3-6541-46bf-9617-280d51d1a7ac
+		summarizeBy: none
+		sourceColumn: BUGMName
+
+		annotation SummarizationSetBy = Automatic
+
+	column BUGMGSN
+		dataType: string
+		lineageTag: 533e0869-9c66-42ba-b7ff-6207cd80fbaf
+		summarizeBy: none
+		sourceColumn: BUGMGSN
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Dim_RouteSalesCustHeir = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_Dim_RouteSalesCustHeir_View = DSD_Schema{[Name="V_Dim_FB_RouteSalesCustHeir",Kind="View"]}[Data]
+				in
+				    V_Dim_RouteSalesCustHeir_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

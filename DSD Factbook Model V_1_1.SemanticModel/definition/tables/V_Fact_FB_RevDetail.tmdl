@@ -1,0 +1,414 @@
+table V_Fact_FB_RevDetail
+	lineageTag: de3e59ca-526e-4894-81e8-bf5981719463
+
+	measure Temp_YA = ```
+			(SWITCH(
+			    TRUE(),
+			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals", [Wh_TempLab_Change_vs_YA_CPH],
+			 
+			 
+			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted", [Wh_%TempLab_Adj_Vol_Change_vs_YA_CPH],
+			 
+			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals", [Delv_TempLab_Change_vs_YA_CPH],
+			 
+			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted", [Delv_%TempLab_Adj_Vol_Change_vs_YA_CPH],
+			 
+			 
+			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals", [Mech_TempLab_Change_vs_YA_CPH],
+			 
+			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted",
+			[Mech_%TempLab_Adj_Vol_Change_vs_YA_CPH])
+			)*100
+			```
+		lineageTag: 3ff8270d-c58c-403e-a0cc-6bd36107a328
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PromotionID
+		dataType: double
+		lineageTag: 20b4d844-0940-47bf-949e-8fa4887a03e7
+		summarizeBy: count
+		sourceColumn: PromotionID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CustomerID
+		dataType: string
+		lineageTag: 354d814b-6ee6-47b3-86eb-e270037a0bb0
+		summarizeBy: none
+		sourceColumn: CustomerID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Rank
+		dataType: int64
+		lineageTag: 6f74b73e-cd16-485e-871e-cede8a415cb7
+		summarizeBy: none
+		sourceColumn: Rank
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WeekStartDayDate
+		dataType: dateTime
+		formatString: mm/dd/yyyy
+		lineageTag: c5589b15-5cb4-41d1-837b-374fd6bb343a
+		summarizeBy: none
+		sourceColumn: WeekStartDayDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column WeekDesc
+		dataType: string
+		lineageTag: acbbf6b7-0db6-4a74-ae4e-d070cd6432a1
+		summarizeBy: none
+		sourceColumn: WeekDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column AreaName
+		dataType: string
+		lineageTag: 845e5dcf-9746-47a1-ace4-378a3de1fada
+		summarizeBy: none
+		sourceColumn: AreaName
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionName
+		dataType: string
+		lineageTag: a0a2423a-1da5-43fe-9c0e-8b2e2a0d3512
+		summarizeBy: none
+		sourceColumn: PromotionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column AccountName
+		dataType: string
+		lineageTag: c4ad5c9e-b303-481d-a93d-b30000631f46
+		summarizeBy: none
+		sourceColumn: AccountName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RevRollupChainName
+		dataType: string
+		lineageTag: ea43dc47-3ee9-489c-95c6-e5b1a4772743
+		summarizeBy: none
+		sourceColumn: RevRollupChainName
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionStartDate
+		dataType: dateTime
+		formatString: mm/dd/yyyy
+		lineageTag: 9cb312ea-7baf-4a7b-aeb8-7e9cb46dc636
+		summarizeBy: none
+		sourceColumn: PromotionStartDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column PromotionEndDate
+		dataType: dateTime
+		formatString: mm/dd/yyyy
+		lineageTag: bc5627e4-c705-46b7-a442-dfe6aefd6628
+		summarizeBy: none
+		sourceColumn: PromotionEndDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column PromotionCreatedDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f2dd3aee-4674-42cb-80de-27b080e3b8d3
+		summarizeBy: none
+		sourceColumn: PromotionCreatedDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PromotionDurationDays
+		dataType: double
+		lineageTag: c94eae54-1111-4cd2-ae9e-73651e5be3ac
+		summarizeBy: sum
+		sourceColumn: PromotionDurationDays
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Status
+		dataType: string
+		lineageTag: c20dca6a-db49-4c28-9c68-7c7d0b95abc9
+		summarizeBy: none
+		sourceColumn: Status
+
+		annotation SummarizationSetBy = Automatic
+
+	column RefusalReason
+		dataType: string
+		lineageTag: 08aac0bd-cf2e-4af1-a9e2-e0c630e8c297
+		summarizeBy: none
+		sourceColumn: RefusalReason
+
+		annotation SummarizationSetBy = Automatic
+
+	column SoldIn
+		dataType: double
+		lineageTag: 3d1577b9-e3de-4fd7-9dbb-5fe45f6479e4
+		summarizeBy: sum
+		sourceColumn: SoldIn
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SoldIn_Accum
+		dataType: double
+		lineageTag: 82a4338e-7299-4f23-af75-a196e7b9099b
+		summarizeBy: sum
+		sourceColumn: SoldIn_Accum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Refused_Accum
+		dataType: double
+		lineageTag: 9ebf7e68-c3f8-4186-9327-e4d6cbe3272f
+		summarizeBy: sum
+		sourceColumn: Refused_Accum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column NoAction_Accum
+		dataType: double
+		lineageTag: 8098ed03-7d1f-45bc-810c-b9c66f6f9513
+		summarizeBy: sum
+		sourceColumn: NoAction_Accum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PromotionBrands
+		dataType: string
+		lineageTag: 1b6c0830-b484-4d2f-896f-a046b9232b38
+		summarizeBy: none
+		sourceColumn: PromotionBrands
+
+		annotation SummarizationSetBy = Automatic
+
+	column PromotionPackages
+		dataType: string
+		lineageTag: ad7e5df0-1f20-4822-9387-267e168b4dab
+		summarizeBy: none
+		sourceColumn: PromotionPackages
+
+		annotation SummarizationSetBy = Automatic
+
+	column DisplayBuildID
+		dataType: double
+		lineageTag: 2a4488fc-702b-4443-ad0d-b44e700e0182
+		summarizeBy: count
+		sourceColumn: DisplayBuildID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column BuildStatusID
+		dataType: double
+		lineageTag: e62e5614-1ae6-47b3-b03c-f0778c8deba6
+		summarizeBy: count
+		sourceColumn: BuildStatusID
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column BuildCnt_Accum
+		dataType: double
+		lineageTag: c9d251da-a6df-4470-839e-8ad18d11a1e3
+		summarizeBy: sum
+		sourceColumn: BuildCnt_Accum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DisplayLocationName
+		dataType: string
+		lineageTag: be95500a-f420-4f80-9a36-b1a392f971ec
+		summarizeBy: none
+		sourceColumn: DisplayLocationName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DisplayTypeDesc
+		dataType: string
+		lineageTag: b2529473-039b-4558-8e16-42e468361c43
+		summarizeBy: none
+		sourceColumn: DisplayTypeDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column StoreCnt
+		dataType: double
+		lineageTag: 59e13fbf-cb18-426f-bcdf-e76fd01bd204
+		summarizeBy: sum
+		sourceColumn: StoreCnt
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column OECPromotionID
+		dataType: string
+		lineageTag: 094e855f-bfa0-4024-b006-fb7c2f70a4ac
+		summarizeBy: none
+		sourceColumn: OECPromotionID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RouteID
+		dataType: string
+		lineageTag: 78c0202b-7919-4951-b7cd-e8d123a32ce1
+		summarizeBy: none
+		sourceColumn: RouteID
+
+		annotation SummarizationSetBy = Automatic
+
+	column RC_RevDetails = COUNTROWS(V_Fact_FB_RevDetail)
+		formatString: 0
+		lineageTag: de0e1ab4-0a87-4d99-abf3-47bfaa767399
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Priority = ```
+			
+			    "Priority " & FORMAT('V_Fact_FB_RevDetail'[Rank], "0")
+			
+			```
+		lineageTag: 5e609549-9ad1-475f-b5ac-0b5ac165c0f2
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Key = CONCATENATE(V_Fact_FB_RevDetail[CustomerID],CONCATENATE("-",V_Fact_FB_RevDetail[OECPromotionID]))
+		lineageTag: eea23780-f537-4e75-9421-df267abf6b3b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column RefusalReason_new = IF(V_Fact_FB_RevDetail[RefusalReason]= "Unknown","",V_Fact_FB_RevDetail[RefusalReason])
+		lineageTag: 096e572d-9fe2-4409-920b-d414a448d91d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Status_new = IF(V_Fact_FB_RevDetail[Status]= "Unknown","No Action",V_Fact_FB_RevDetail[Status])
+		lineageTag: c4dd8b7e-8cd6-4de3-990b-9cf349333352
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Time Granularity' =
+			
+			Switch(True(),
+			V_Fact_FB_RevDetail[CurrWeekCounter_ISO] =0, "Monthly - Current Week",
+			V_Fact_FB_RevDetail[CurrWeekCounter_ISO] =-1, "Monthly - Previous Week",
+			"Monthly"
+			)
+			
+			
+			// YearMonthDay = IF(V_Dim_FB_CalDay[CurrMonthCounter]=0 || V_Dim_FB_CalDay[CurrMonthCounter]=-1
+			// --&& V_Dim_FB_CalDay[CurrWeekCounter_Sun]=0
+			// ,FORMAT(V_Dim_FB_CalDay[WeekStarting_ISO], "yyyy-MMM-DD"),FORMAT(V_Dim_FB_CalDay[MonthDesc],"YYYY-MMM"))
+			// --CONCATENATE(V_Dim_FB_CalDay[Year],V_Dim_FB_CalDay[MonthName]))
+		lineageTag: b6b906b2-acb0-4e2e-ac7c-e3ed20d16b00
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrWeekCounter_ISO
+		dataType: double
+		lineageTag: 66c29702-f4ac-464b-8024-03aeba3009af
+		summarizeBy: sum
+		sourceColumn: CurrWeekCounter_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IsNotBuilt
+		dataType: double
+		lineageTag: 47e2ca9c-2333-4f85-abf8-bd9a4ef76c7a
+		summarizeBy: sum
+		sourceColumn: IsNotBuilt
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DisplayRequirementDesc
+		dataType: string
+		lineageTag: b2dcb5f8-8e8e-474c-958a-a19d6ff5c647
+		summarizeBy: none
+		sourceColumn: DisplayRequirementDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthStart = MONTH(V_Fact_FB_RevDetail[WeekStartDayDate])
+		dataType: string
+		lineageTag: fed4d00e-1e72-4a26-b374-cd7f1bb1a14f
+		summarizeBy: none
+
+		changedProperty = DataType
+
+		annotation SummarizationSetBy = Automatic
+
+	column TradeMarkID
+		dataType: string
+		lineageTag: 61222f8b-1d01-4ef0-9018-3a1b71ff7f8d
+		summarizeBy: none
+		sourceColumn: TradeMarkID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Fact_FB_RevDetail = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_Fact_FB_RevDetail_View = DSD_Schema{[Name="V_Fact_FB_RevDetail",Kind="View"]}[Data],
+				    #"Replaced Value" = Table.ReplaceValue(V_Fact_FB_RevDetail_View,"Unknown","No Action",Replacer.ReplaceText,{"Status"})
+				in
+				    #"Replaced Value"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

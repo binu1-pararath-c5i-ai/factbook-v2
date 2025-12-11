@@ -1,0 +1,113 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "516a773a70004a4a099e",
+  "displayName": "Eng DD TL Inc 0 Var",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "b87249e3085ffefb737c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "NationalChainName"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "v"
+                            }
+                          },
+                          "Property": "NationalChainName"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'RITE AID'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "d6b9b8da6f942f96856c",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Fact_FB_CMAComplianceSummary"
+              }
+            },
+            "Property": "TimeGranularity"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "2c2fd29dd2a90a2a1ea5",
+      "target": "4da518f6038617ada6cb",
+      "type": "NoFilter"
+    },
+    {
+      "source": "2c2fd29dd2a90a2a1ea5",
+      "target": "ace2adb0920dc0691b08",
+      "type": "NoFilter"
+    },
+    {
+      "source": "2c2fd29dd2a90a2a1ea5",
+      "target": "564fa157541b50767a68",
+      "type": "NoFilter"
+    },
+    {
+      "source": "2c2fd29dd2a90a2a1ea5",
+      "target": "aa4d2c95cca3a80dad08",
+      "type": "NoFilter"
+    },
+    {
+      "source": "2c2fd29dd2a90a2a1ea5",
+      "target": "f477a8b0374c9e246d35",
+      "type": "NoFilter"
+    },
+    {
+      "source": "2c2fd29dd2a90a2a1ea5",
+      "target": "1c098f09336abe1a4a10",
+      "type": "NoFilter"
+    }
+  ]
+}

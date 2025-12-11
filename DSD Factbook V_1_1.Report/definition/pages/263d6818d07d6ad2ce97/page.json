@@ -1,0 +1,99 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "263d6818d07d6ad2ce97",
+  "displayName": "Rolled Stop Drilldown",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "17bbdbd5851a424bcb14",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "IsAccountActive"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "IsAccountActive"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "1D"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "4892104bb6a084c7d902",
+      "target": "a0e8aa6738403790c040",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4892104bb6a084c7d902",
+      "target": "e48cd7ad0395cd2cfe60",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4892104bb6a084c7d902",
+      "target": "a0ad5a23adb94e8114c7",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4892104bb6a084c7d902",
+      "target": "d4c169fac28393b5e32b",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4892104bb6a084c7d902",
+      "target": "7b1cb2d111c5a0497f96",
+      "type": "NoFilter"
+    },
+    {
+      "source": "4892104bb6a084c7d902",
+      "target": "f8f5d9096bb4bc4f506b",
+      "type": "NoFilter"
+    }
+  ]
+}

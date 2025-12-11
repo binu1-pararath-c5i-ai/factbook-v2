@@ -1,0 +1,789 @@
+table V_Dim_FB_CalDay
+	lineageTag: 3bb1e15e-6cdb-41c0-a48e-5992416bc855
+
+	column DayDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 63198bb8-8c14-4cbb-a17f-552f3eac06df
+		summarizeBy: none
+		sourceColumn: DayDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DayID
+		dataType: string
+		lineageTag: ab03b2c3-02ed-4642-8651-8f55ea41b4d0
+		summarizeBy: none
+		sourceColumn: DayID
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayDesc
+		dataType: string
+		lineageTag: 095e4b03-ddaa-4751-83dc-07eb959b7c8f
+		summarizeBy: none
+		sourceColumn: DayDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column DayOfYear
+		dataType: double
+		lineageTag: a8e4f93c-4f2d-4c9c-95d8-1af4a0e19d53
+		summarizeBy: sum
+		sourceColumn: DayOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IsWorkDay
+		dataType: double
+		lineageTag: 66a8cb67-9fdd-425b-9388-663e9c6cd858
+		summarizeBy: sum
+		sourceColumn: IsWorkDay
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IsCompanyHQHoliday
+		dataType: double
+		lineageTag: 4634faab-7a27-4fae-9eba-8f280fc2ac48
+		summarizeBy: sum
+		sourceColumn: IsCompanyHQHoliday
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column HolidayName
+		dataType: string
+		lineageTag: 930d0b20-9205-4ffa-8ef7-b7b7e34cd366
+		summarizeBy: none
+		sourceColumn: HolidayName
+
+		annotation SummarizationSetBy = Automatic
+
+	column PrevDayDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 79a4b9d7-a651-410a-b373-79488212ba55
+		summarizeBy: none
+		sourceColumn: PrevDayDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column NextDayDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: d140a777-eb92-4a57-8b69-dd6ba01e82a8
+		summarizeBy: none
+		sourceColumn: NextDayDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DOWName
+		dataType: string
+		lineageTag: 88d317d6-823c-4e2c-a9ce-23492ef2d8de
+		summarizeBy: none
+		sourceColumn: DOWName
+
+		annotation SummarizationSetBy = Automatic
+
+	column DOWNameLong
+		dataType: string
+		lineageTag: f510eb43-8266-4b6b-b12d-305402b2b42b
+		summarizeBy: none
+		sourceColumn: DOWNameLong
+
+		annotation SummarizationSetBy = Automatic
+
+	column CurrWeekCounter_Sun
+		dataType: double
+		lineageTag: fa823b01-ce96-4d6d-bacb-e0c6eb2bc966
+		summarizeBy: sum
+		sourceColumn: CurrWeekCounter_Sun
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DOW_ISO
+		dataType: double
+		lineageTag: acb3c86d-2791-452b-a8bb-985a6aa4bcba
+		summarizeBy: sum
+		sourceColumn: DOW_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WeekID_ISO
+		dataType: string
+		lineageTag: a5c5eae3-cb4d-4e42-a18a-7782f259ea28
+		summarizeBy: none
+		sourceColumn: WeekID_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+	column YOW_ISO
+		dataType: double
+		lineageTag: 68caa369-12ff-431a-96a0-47d02550d723
+		summarizeBy: sum
+		sourceColumn: YOW_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WOY_ISO
+		dataType: string
+		lineageTag: e069c9b1-2ccc-4f7a-a5bc-5bfff9693acc
+		summarizeBy: none
+		sourceColumn: WOY_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekStarting_ISO
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: df7e6258-5749-4935-aeac-81cb5ec349ed
+		summarizeBy: none
+		sourceColumn: WeekStarting_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column WeekEnding_ISO
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6cfced25-ee98-4f07-b1eb-891f7793dfde
+		summarizeBy: none
+		sourceColumn: WeekEnding_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column WeekDaysRangeDesc_ISO
+		dataType: string
+		lineageTag: 097006ec-2718-490d-bdf0-a4daf77579cc
+		summarizeBy: none
+		sourceColumn: WeekDaysRangeDesc_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsFirstDayOfWeek_ISO
+		dataType: double
+		lineageTag: ea9d2e16-89e1-480e-bc79-52464769e3e3
+		summarizeBy: sum
+		sourceColumn: IsFirstDayOfWeek_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column IsLastDayOfWeek_ISO
+		dataType: double
+		lineageTag: a1071d6e-b9f6-4d8e-924f-872544afa9a4
+		summarizeBy: sum
+		sourceColumn: IsLastDayOfWeek_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CurrWeekCounter_ISO
+		dataType: double
+		lineageTag: 4b84a6ec-303a-4976-abff-475e544af888
+		summarizeBy: sum
+		sourceColumn: CurrWeekCounter_ISO
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CurrMonthCounter
+		dataType: double
+		lineageTag: 7acbd7db-2182-4474-a8da-4a45a8b64c6d
+		summarizeBy: sum
+		sourceColumn: CurrMonthCounter
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Month
+		dataType: string
+		lineageTag: 8617ae83-5046-4d33-83fa-e1d1815053c5
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthID
+		dataType: string
+		lineageTag: 7f988458-1a03-4007-9de8-81c59d77e31d
+		summarizeBy: none
+		sourceColumn: MonthID
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		dataType: string
+		lineageTag: ac0859db-11cd-438e-91dd-b15c62079668
+		summarizeBy: none
+		sourceColumn: MonthName
+		sortByColumn: Month
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthDesc
+		dataType: string
+		lineageTag: 8aa66107-de30-4d53-9d10-57b211a9aff2
+		summarizeBy: none
+		sourceColumn: MonthDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column DaysInMonth
+		dataType: double
+		lineageTag: 359cf8f7-6c89-46e1-be79-aa879343bf53
+		summarizeBy: sum
+		sourceColumn: DaysInMonth
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DayOfMonth
+		dataType: double
+		formatString: 0
+		lineageTag: b00aa99c-fa7b-4ed7-b881-36d99036a399
+		summarizeBy: none
+		sourceColumn: DayOfMonth
+
+		annotation SummarizationSetBy = User
+
+	column FirstDayOfMonth
+		dataType: dateTime
+		formatString: mmmm yyyy
+		lineageTag: 701c8bd7-7775-475a-ba83-8cb904899da9
+		summarizeBy: none
+		sourceColumn: FirstDayOfMonth
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+		annotation PBI_FormatHint = {"isDateTimeCustom":true}
+
+	column LastDayOfMonth
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 45e7163d-7f38-4a35-a758-2666691d556b
+		summarizeBy: none
+		sourceColumn: LastDayOfMonth
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CurrQuarterCounter
+		dataType: double
+		lineageTag: c6605c53-6633-468e-820c-45d2e8b9c262
+		summarizeBy: sum
+		sourceColumn: CurrQuarterCounter
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quarter
+		dataType: double
+		lineageTag: dc270506-98ef-46d2-9d0f-df25255df5b1
+		summarizeBy: sum
+		sourceColumn: Quarter
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column QuarterID
+		dataType: string
+		lineageTag: 0688bf05-9c41-44f7-8117-454bda93efab
+		summarizeBy: none
+		sourceColumn: QuarterID
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterDesc
+		dataType: string
+		lineageTag: 9851727e-8a9d-4b30-a7ed-9303e806f0c9
+		summarizeBy: none
+		sourceColumn: QuarterDesc
+
+		annotation SummarizationSetBy = Automatic
+
+	column DaysInQuarter
+		dataType: double
+		lineageTag: afd5b32a-7143-4192-ae98-ce4f4d549f3f
+		summarizeBy: sum
+		sourceColumn: DaysInQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DayOfQuarter
+		dataType: double
+		lineageTag: ed38f753-068d-4d11-bf93-2b4c9f8209a2
+		summarizeBy: sum
+		sourceColumn: DayOfQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CurrYearCounter
+		dataType: double
+		lineageTag: 505ffda8-a308-4391-b88c-403a77060ea6
+		summarizeBy: sum
+		sourceColumn: CurrYearCounter
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YearID
+		dataType: string
+		lineageTag: 0ccd6674-9f98-44a3-b1cd-36a3094327a2
+		summarizeBy: none
+		sourceColumn: YearID
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: int64
+		lineageTag: e49a44aa-1309-4efb-ac63-7e223d021df1
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column FirstDayOfYear
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ab8be4ab-7723-41f2-9b34-5e20ae5f594a
+		summarizeBy: none
+		sourceColumn: FirstDayOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LastDayOfYear
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: ec6d8b26-6d6a-4e5b-9fe9-f0e95099e074
+		summarizeBy: none
+		sourceColumn: LastDayOfYear
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column DaysInYear
+		dataType: double
+		lineageTag: 12c9ad2d-5427-47af-bf92-fc98b5899451
+		summarizeBy: sum
+		sourceColumn: DaysInYear
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LMDayDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 9c02b6b9-f18a-47ee-8ce6-581580212d82
+		summarizeBy: none
+		sourceColumn: LMDayDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LQDayDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6ee89731-376a-4824-8bed-b8e734110806
+		summarizeBy: none
+		sourceColumn: LQDayDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LYDayDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: fc0afa0c-9f42-4be7-9a6e-3d324f19aa9d
+		summarizeBy: none
+		sourceColumn: LYDayDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column LWDayDate
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 3342cab9-c3f2-4e94-b112-ea91a355b06d
+		summarizeBy: none
+		sourceColumn: LWDayDate
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column Quarter_Name = LEFT('V_Dim_FB_CalDay'[QuarterDesc],2)
+		lineageTag: 8824b4cf-f931-4f7d-b096-f0750351e9f7
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonthDay = ```
+			
+			// // Returns the completed months, Previous week & Current Running week
+			SWITCH (
+			   TRUE(),
+			   V_Dim_FB_CalDay[CurrWeekCounter_ISO] = 0
+			&& WEEKDAY (V_Dim_FB_CalDay[CD], 2) = 1,  
+			//2 been Monday and 3 been Tuesday
+			           "No Data",
+			   V_Dim_FB_CalDay[CurrWeekCounter_ISO] = 0,
+			       "Current Week Starting " &
+			       FORMAT ( V_Dim_FB_CalDay[Weekstarting_ISO], "MMM-DD" ),
+			   V_Dim_FB_CalDay[CurrWeekCounter_ISO] = -1,
+			       "Previous Week Starting " &
+			       FORMAT ( V_Dim_FB_CalDay[Weekstarting_ISO], "MMM-DD" ),
+			   V_Dim_FB_CalDay[MonthName]
+			)
+			// // Returns the completed months, Previous week & Current Running week 
+			//Backup 25Aug
+			// Switch(True(),
+			// V_Dim_FB_CalDay[CurrWeekCounter_ISO] =0, "Current Week Starting "& FORMAT(V_Dim_FB_CalDay[weekstarting_ISO],"MMM-DD"),
+			// V_Dim_FB_CalDay[CurrWeekCounter_ISO] =-1, "Previous Week Starting "& FORMAT(V_Dim_FB_CalDay[weekstarting_ISO],"MMM-DD"),
+			// V_Dim_FB_CalDay[MonthName])
+			
+			// Backup_Aug4th
+			// Switch(True(),
+			// V_Dim_FB_CalDay[CurrWeekCounter_ISO] =0, "Current Week Starting "& FORMAT(V_Dim_FB_CalDay[weekstarting_ISO],"MMM-DD"),
+			// V_Dim_FB_CalDay[CurrWeekCounter_ISO] =-1, "Previous Week Starting "& FORMAT(V_Dim_FB_CalDay[weekstarting_ISO],"MMM-DD"),
+			// FORMAT(V_Dim_FB_CalDay[MonthDesc],"MMM"))
+			 
+			// YearMonthDay = IF(V_Dim_FB_CalDay[CurrMonthCounter]=0 || V_Dim_FB_CalDay[CurrMonthCounter]=-1
+			// --&& V_Dim_FB_CalDay[CurrWeekCounter_Sun]=0
+			// ,FORMAT(V_Dim_FB_CalDay[WeekStarting_ISO], "yyyy-MMM-DD"),FORMAT(V_Dim_FB_CalDay[MonthDesc],"YYYY-MMM"))
+			// --CONCATENATE(V_Dim_FB_CalDay[Year],V_Dim_FB_CalDay[MonthName]))
+			```
+		lineageTag: 5cc5e823-16f3-40b4-9a2d-322997a3fdee
+		summarizeBy: none
+		sortByColumn: YearMonthDay_Sort
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShowInSlicer =
+			
+			VAR TodayDate = MAX(V_Dim_FB_CalDay[CD])
+			VAR PrevMonthEnd = EOMONTH(TodayDate, -1)  -- End of previous month
+			RETURN
+			    IF (
+			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(TodayDate) &&
+			        V_Dim_FB_CalDay[DayDate] <= PrevMonthEnd,
+			        TRUE,
+			        FALSE
+			    )
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 325b8115-3096-4c31-87ff-3e9fb6740f58
+		summarizeBy: none
+
+		changedProperty = Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column ShowInSlicer_TL = ```
+			
+			VAR TodayDate = MAX(V_Dim_FB_CalDay[CD])
+			VAR CurrentYear = YEAR(TodayDate)
+			RETURN
+			    IF (
+			        V_Dim_FB_CalDay[DayDate] <= TodayDate 
+			        && YEAR(V_Dim_FB_CalDay[DayDate]) = CurrentYear,
+			        TRUE,
+			        FALSE
+			    )
+			
+			
+			```
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 765b22b5-6982-42fa-ba97-b164fe9b22bb
+		summarizeBy: none
+
+		changedProperty = Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthNumber =
+			
+			VALUE(RIGHT('V_Dim_FB_CalDay'[MonthID], 2))
+		lineageTag: 7531150e-291c-444f-a127-bb9849e236d3
+		summarizeBy: none
+
+		annotation SummarizationSetBy = User
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column 'All/Next 2 Wks' = ```
+			
+			IF(
+			    V_Dim_FB_CalDay[CurrWeekCounter_ISO] in {1,2},// && 
+			    //V_Dim_FB_CalDay[CurrWeekCounter_ISO] <= 2, 
+			    "Next 2 Weeks", 
+			    "Current"
+			)
+			```
+		lineageTag: a39249c1-3ede-4b6c-b568-206f241cfdaa
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Showslicer_topline = ```
+			
+			VAR TodayDate = MAX(V_Dim_FB_CalDay[CD])
+			VAR CurrentYear = YEAR(TodayDate)
+			VAR CurrentMonth = MONTH(TodayDate)
+			VAR SeventhOfMonth = DATE(CurrentYear, CurrentMonth, 7)
+			VAR PrevMonth = CurrentMonth - 1
+			 
+			RETURN
+			    IF (
+			        YEAR(V_Dim_FB_CalDay[DayDate]) = CurrentYear &&
+			        (
+			            MONTH(V_Dim_FB_CalDay[DayDate]) < PrevMonth ||  // Earlier than previous month
+			            (
+			                MONTH(V_Dim_FB_CalDay[DayDate]) = PrevMonth &&
+			                TodayDate >= SeventhOfMonth  // Show previous month only from 7th onward
+			            )
+			        ),
+			        TRUE,
+			        FALSE
+			    )
+			 
+			```
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: a1a27ff4-481a-43e0-bb65-28159d07bcfb
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearMonthDay_Sort =
+			
+			//To Sort the Dateslicer as per the calendar
+			Switch(True(),
+			V_Dim_FB_CalDay[CurrWeekCounter_ISO] =0, 12.1,
+			V_Dim_FB_CalDay[CurrWeekCounter_ISO] =-1, 12.2,
+			VALUE(RIGHT('V_Dim_FB_CalDay'[MonthID], 2)))
+		lineageTag: 5cad0357-2858-4616-8a7e-91a67f82fc56
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column REF_KEY
+		dataType: double
+		lineageTag: 95bc9a42-6e97-44c1-bc6c-c77931c65255
+		summarizeBy: none
+		sourceColumn: REF_KEY
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CD
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: dce72593-d2d2-4965-8921-4ce15376c4e1
+		summarizeBy: none
+		sourceColumn: CD
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CW
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 59af43b7-414b-441a-8bd0-f066b1e0ceb6
+		summarizeBy: none
+		sourceColumn: CW
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PW
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 79a2fc2d-b244-4941-bb11-9dfe5cbc7537
+		summarizeBy: none
+		sourceColumn: PW
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CM
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 6683cbfc-2f44-4bd6-8d44-1d387dac55f2
+		summarizeBy: none
+		sourceColumn: CM
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column PM
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 750882ed-fb95-43ae-a5d2-7a1e673ec864
+		summarizeBy: none
+		sourceColumn: PM
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CM_Y0
+		dataType: double
+		lineageTag: f7edfe8f-899f-4dc6-a2bc-af8ad628523d
+		summarizeBy: sum
+		sourceColumn: CM_Y0
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column PM_Y0
+		dataType: double
+		lineageTag: cdb53684-cc7e-42b2-9343-d10f2f83256a
+		summarizeBy: sum
+		sourceColumn: PM_Y0
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column T_EOD
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1805af51-83fd-40a8-aedc-48619e06650b
+		summarizeBy: none
+		sourceColumn: T_EOD
+
+		annotation SummarizationSetBy = Automatic
+
+	column T_BOBD
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 1078ab76-8329-40d8-b90a-9555dce2fe53
+		summarizeBy: none
+		sourceColumn: T_BOBD
+
+		annotation SummarizationSetBy = Automatic
+
+	column FirstDayOfQuarter
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 81975a22-3ff9-474e-8b7d-aca6ee8f85cc
+		summarizeBy: none
+		sourceColumn: FirstDayOfQuarter
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column HardWeekStarting
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 8b009799-c718-4fd4-b410-3a8c60e9bed8
+		summarizeBy: none
+		sourceColumn: HardWeekStarting
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column HardWeekEnding
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 725f071b-1c9e-454e-984a-dd9f981c52d8
+		summarizeBy: none
+		sourceColumn: HardWeekEnding
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	hierarchy 'Year Hierarchy'
+		lineageTag: 679485e5-cd62-4014-bb3e-a12cf9191359
+
+		level Year
+			lineageTag: 2d06d473-8ae3-4112-9016-a48f2c0d11f6
+			column: Year
+
+		level Quarter_Name
+			lineageTag: b04a00ee-92c0-4cad-b76b-1aff2717eb73
+			column: Quarter_Name
+
+		level MonthName
+			lineageTag: b15dda34-fa12-46f3-a34a-6b3461788b0c
+			column: MonthName
+
+		level DayOfMonth
+			lineageTag: fa129df9-8d98-41b3-af4b-4dbbf2e251c2
+			column: DayOfMonth
+
+	partition V_Dim_FB_CalDay = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
+				    V_Dim_FB_CalDay_View = DSD_Schema{[Name="V_Dim_FB_CalDay",Kind="View"]}[Data],
+				    #"Filtered Rows" = Table.SelectRows(V_Dim_FB_CalDay_View, each ([CurrYearCounter] = -1 or [CurrYearCounter] = 0)),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows",{{"Year", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

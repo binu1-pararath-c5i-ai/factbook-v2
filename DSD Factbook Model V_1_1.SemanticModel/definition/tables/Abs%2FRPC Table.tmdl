@@ -1,0 +1,245 @@
+table 'Abs/RPC Table'
+	lineageTag: 5b2f3f89-84bd-403f-afbb-4d1a65f31989
+
+	measure Breakage_Abs_RPC_AOP_Fcst_YA_Selection_OPs = [TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Selection_Ops]+[WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Selection_Ops]
+		displayFolder: OPS
+		lineageTag: 8b8d729a-0bb4-4c49-b614-11aefa53a427
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Breakage_Abs_RPC_Selection_OPs = [TradeBreaklescence_Abs_RPC_Selection_Ops]+[WhseBreaklescence_Abs_RPC_Selection_Ops]
+		displayFolder: OPS
+		lineageTag: 463ae77b-d54a-498f-8a71-b7f1d9b40fed
+
+		formatStringDefinition =
+				var _y = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
+				VAR _val =
+				SWITCH(
+				    TRUE(),
+				        _y = "Absolute","$0.0",
+				        _y = "RPC", "$0.000")
+				RETURN _val
+
+	measure Breakage_Abs_RPC_Selection_Py_OPs = CALCULATE([Breakage_Abs_RPC_Selection_OPs],SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))
+		displayFolder: OPS
+		lineageTag: b3af9c63-f93d-4b61-8749-8d8f10378f90
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Haulback_cases_table%_cc =
+			
+			var _num =
+			CALCULATE(
+			    [Haulback_cases_table],
+			    V_FACT_FB_OPS_ROLLEDSTOP[CategoryDesc] = "DAMAGED BUYBACKS"||
+			    V_FACT_FB_OPS_ROLLEDSTOP[CategoryDesc] = "GOOD BUYBACKS")
+			var _den =
+			CALCULATE(
+			    [Haulback_cases_table],
+			    V_FACT_FB_OPS_ROLLEDSTOP[CategoryDesc] = "DAMAGED BUYBACKS"||
+			    V_FACT_FB_OPS_ROLLEDSTOP[CategoryDesc] = "GOOD BUYBACKS",
+			    ALL(V_Dim_FB_CustChainHeir[NationalChainName]))
+			RETURN _num/_den
+		formatString: 0
+		lineageTag: 401454cd-0f9a-4782-8ec0-1b57423b14df
+
+		annotation PBI_FormatHint = {"isDecimal":true}
+
+	measure Haulbacks+schedule_adherence_cc = [Haulback_cases_table%_cc]+[Schedule_adherence_table%_cc]
+		displayFolder: Ops
+		lineageTag: 15573603-704b-4695-865e-ef0c10e78a72
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Sel_Vol_Rev_GP_OI_bar_CC =
+			Switch(TRUE(),SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Volume",[Volume_Bar_Selected],
+			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Revenue",[Revenue_Bar_Selected],
+			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Gross Profit",[GP_Bar_Selected],
+			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Operating Income",[OI_Bar_Selected])
+		lineageTag: 6b4dd194-bf3d-4d66-aff9-4affeabd8f88
+
+		formatStringDefinition = ```
+				VAR _x = [Sel_Vol_Rev_GP_OI_bar_CC]
+				VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
+				 
+				VAR _y =
+				    IF(SELECTEDVALUE(PnL_KPI_Selector[KPI_Name])= "Volume",        SWITCH(
+				            TRUE(),
+				            (_x) >= 1000000,  "$#,##0,,.0M",
+				             (_x) < 1000000,  "$#,##0,.0K",
+				                         (_x) < 1000, "$#,##0.0"
+				           
+				           
+				        ),
+				        IF(
+				        SelectedToggle = "Absolute",
+				        SWITCH(
+				            TRUE(),
+				            (_x) >= 1000000,  "$#,##0,,.0M",
+				             (_x) < 1000000,  "$#,##0,.0K",
+				                         (_x) < 1000, "$#,##0.0"
+				           
+				           
+				        ),
+				        // For RPC: 2 decimals, no units
+				         "$#,##0.00"
+				    )
+				    )
+				RETURN _y
+				```
+
+	measure Sel_Vol_Rev_GP_OI_Actual_RPC_bar_CC =
+			Switch(TRUE(),SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Volume",[Volume_Bar_Actual_Selected],
+			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Revenue",[Revenue_Bar_Actual_Selected],
+			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Gross Profit",[GP_Bar_Actual_Selected],
+			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Operating Income",[OI_Bar_Actual_Selected])
+		lineageTag: 9d8d3877-fc96-4c0d-8488-18daa801a1f5
+
+		formatStringDefinition = ```
+				VAR _x = [Sel_Vol_Rev_GP_OI_Actual_RPC_bar_CC]
+				VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
+				 
+				VAR _y =
+				    IF(SELECTEDVALUE(PnL_KPI_Selector[KPI_Name])= "Volume",        
+				    SWITCH(
+				            TRUE(),
+				            (_x) >= 1000000,  "$#,##0,,.0M",
+				             (_x) < 1000000,  "$#,##0,.0K",
+				                         (_x) < 1000, "$#,##0.0"
+				           
+				           
+				        ),
+				        IF(
+				        SelectedToggle = "Absolute",
+				        SWITCH(
+				            TRUE(),
+				            (_x) >= 1000000,  "$#,##0,,.0M",
+				             (_x) < 1000000,  "$#,##0,.0K",
+				                         (_x) < 1000, "$#,##0.0"
+				           
+				           
+				        ),
+				        // For RPC: 2 decimals, no units
+				         "$#,##0.00"
+				    )
+				    )
+				RETURN _y
+				```
+
+	measure 'SKU_CMA_Selected Period' = ```
+			
+			var _SelectedPeriod=[IM_Selected_Period]
+			VAR _isWeek =
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
+			
+			VAR _isMonth =
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
+			
+			VAR _isQuarter =
+			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
+			
+			VAR _isYear =
+			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
+			Var _SelectedKPI = 
+			 SWITCH(
+			        TRUE(),
+			        _isWeek,CALCULATE([CMA_SKU_Compliance],
+			                            FILTER(ALL(V_Dim_FB_CalDay),
+			                            V_Dim_FB_CalDay[WeekStarting_ISO]=_SelectedPeriod)),
+			        _isMonth,CALCULATE([CMA_SKU_Compliance],
+			                            FILTER(ALL(V_Dim_FB_CalDay),
+			                            V_Dim_FB_CalDay[FirstDayOfMonth]=_SelectedPeriod)),
+			        _isQuarter,CALCULATE([CMA_SKU_Compliance],
+			                            FILTER(ALL(V_Dim_FB_CalDay),
+			                             V_Dim_FB_CalDay[FirstDayOfQuarter]=_SelectedPeriod)),
+			        _isYear,  CALCULATE([CMA_SKU_Compliance],
+			                            FILTER(ALL(V_Dim_FB_CalDay),
+			                             V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod), MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
+			         )
+			RETURN _SelectedKPI
+			```
+		lineageTag: 224e9a06-4264-48ef-978f-d1a546a24881
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure %Sold_Vs_CurrentWeek =
+			(
+			CALCULATE([%Sold],
+			                        FILTER(V_Fact_FB_RevDetail,V_Fact_FB_RevDetail[CurrWeekCounter_ISO] in {1,2}))
+			                        -
+			CALCULATE([%Sold],
+			                        FILTER(V_Fact_FB_RevDetail,V_Fact_FB_RevDetail[CurrWeekCounter_ISO] in {0}))
+			)*100
+		formatString: #,##0pts;(#,##0pts)
+		lineageTag: ce392467-16a2-4136-a341-3a8140f15887
+
+		annotation PBI_FormatHint = {"isCustom":true}
+
+	measure Tooltip =
+			"tooltip"
+			// "    "
+		lineageTag: 967c33ea-d2b8-4128-b1a0-6ba4acbd294c
+
+	measure 'Sel_Vol_Rev_GP_OI_bar_CC_3rd graph' =
+			Switch(TRUE(),SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Volume",[Volume_Bar_Selected_graph],
+			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Revenue",[Revenue_Bar_Selected graph],
+			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Gross Profit",[GP_Bar_Selected graph],
+			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Operating Income",[OI_Bar_Selected graph])
+		lineageTag: 40664b89-e655-413a-a7b0-173c8d2af7c5
+
+		formatStringDefinition = ```
+				VAR _x = [Sel_Vol_Rev_GP_OI_bar_CC_3rd graph]
+				VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
+				 
+				VAR _y =
+				    IF(SELECTEDVALUE(PnL_KPI_Selector[KPI_Name])= "Volume",        SWITCH(
+				            TRUE(),
+				            (_x) >= 1000000,  "$#,##0,,.0M",
+				             (_x) < 1000000,  "$#,##0,.0K",
+				                         (_x) < 1000, "$#,##0.0"
+				           
+				           
+				        ),
+				        IF(
+				        SelectedToggle = "Absolute",
+				        SWITCH(
+				            TRUE(),
+				            (_x) >= 1000000,  "$#,##0,,.0M",
+				             (_x) < 1000000,  "$#,##0,.0K",
+				                         (_x) < 1000, "$#,##0.0"
+				           
+				           
+				        ),
+				        // For RPC: 2 decimals, no units
+				         "$#,##0.00"
+				    )
+				    )
+				RETURN _y
+				```
+
+	column Abs/RPC
+		dataType: string
+		lineageTag: bda878d7-4da4-4451-8cf8-f539a41a1f82
+		summarizeBy: none
+		sourceColumn: Abs/RPC
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Abs/RPC Table' = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45Wckwqzs8pLUlVitWJVgoKcFaKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [#"Abs/RPC" = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Abs/RPC", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+

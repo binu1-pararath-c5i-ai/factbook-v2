@@ -1,0 +1,98 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "4c064f5922b3e03595ea",
+  "displayName": "Voids Drilldown_All",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "df576eca8c3488e9c3e5",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "NationalChainName"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "v"
+                            }
+                          },
+                          "Property": "NationalChainName"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'RITE AID'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "7b33c5dc98a876362215",
+      "target": "48560f5bab09b23e8662",
+      "type": "NoFilter"
+    },
+    {
+      "source": "7b33c5dc98a876362215",
+      "target": "6629f9a8a3e3657db110",
+      "type": "NoFilter"
+    },
+    {
+      "source": "7b33c5dc98a876362215",
+      "target": "39d0734bd2000390c67d",
+      "type": "NoFilter"
+    },
+    {
+      "source": "7b33c5dc98a876362215",
+      "target": "45203a88766a8e1a3e37",
+      "type": "NoFilter"
+    },
+    {
+      "source": "7b33c5dc98a876362215",
+      "target": "d9cb6f280adaa2bbc331",
+      "type": "NoFilter"
+    },
+    {
+      "source": "7b33c5dc98a876362215",
+      "target": "3c0b82bc5101181acb09",
+      "type": "NoFilter"
+    }
+  ]
+}

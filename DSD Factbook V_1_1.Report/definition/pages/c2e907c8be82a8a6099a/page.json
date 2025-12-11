@@ -1,0 +1,134 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "c2e907c8be82a8a6099a",
+  "displayName": "Operation Management",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "cca705bbd0d82402a528",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Metric Table"
+              }
+            },
+            "Property": "Metrics"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "Drillthrough"
+      },
+      {
+        "name": "fa9175ed23d466b96497",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "IsAccountActive"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "IsAccountActive"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "1D"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "pageBinding": {
+    "name": "91df22e90ac0919bd773",
+    "type": "Drillthrough",
+    "parameters": [
+      {
+        "name": "fb7487f05b7a100faf9d",
+        "boundFilter": "cca705bbd0d82402a528",
+        "fieldExpr": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Metric Table"
+              }
+            },
+            "Property": "Metrics"
+          }
+        }
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "9eca37d31ec940aeb595",
+      "target": "4c5d97991bb52d924871",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9eca37d31ec940aeb595",
+      "target": "833c9603d8e7c8b45247",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9eca37d31ec940aeb595",
+      "target": "9d01c4ace20005cf5391",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9eca37d31ec940aeb595",
+      "target": "f7c0819411c99fa3545b",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9eca37d31ec940aeb595",
+      "target": "911d8dd8b5f3c90cc216",
+      "type": "NoFilter"
+    },
+    {
+      "source": "9eca37d31ec940aeb595",
+      "target": "1b47dcaf6994db6029ef",
+      "type": "NoFilter"
+    }
+  ]
+}

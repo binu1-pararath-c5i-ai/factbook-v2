@@ -1,0 +1,52 @@
+table Dynamic_Parameter_2
+	lineageTag: 530c5223-517d-4c88-9299-5339cb480d8f
+
+	column Dynamic_Parameter_2
+		lineageTag: f46e3dae-53a9-45e5-85db-500ba0f4cd5f
+		summarizeBy: none
+		sourceColumn: [Value1]
+		sortByColumn: 'Dynamic_Parameter_2 Order'
+
+		relatedColumnDetails
+			groupByColumn: 'Dynamic_Parameter_2 Fields'
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dynamic_Parameter_2 Fields'
+		isHidden
+		lineageTag: 8fc33bfe-4b92-42f0-9623-32e6fb86d8de
+		summarizeBy: none
+		sourceColumn: [Value2]
+		sortByColumn: 'Dynamic_Parameter_2 Order'
+
+		extendedProperty ParameterMetadata =
+				{
+				  "version": 3,
+				  "kind": 2
+				}
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dynamic_Parameter_2 Order'
+		isHidden
+		formatString: 0
+		lineageTag: c20539eb-1f03-4771-bb6b-4ea484c1886d
+		summarizeBy: sum
+		sourceColumn: [Value3]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Dynamic_Parameter_2 = calculated
+		mode: import
+		source =
+				{
+				    ("BU", NAMEOF('V_Dim_FB_CustChainHeir'[BUName]), 0),
+				    ("Region", NAMEOF('V_Dim_FB_CustChainHeir'[RegionName]), 1),
+				    ("Territory", NAMEOF('V_Dim_FB_CustChainHeir'[TerritoryName]), 2),
+				    ("Branch", NAMEOF('V_Dim_FB_CustChainHeir'[BranchName]), 3),
+				    ("DSS", NAMEOF('V_Dim_RouteSalesCustHeir'[DSSName]), 4),
+				    ("AM", NAMEOF('V_Dim_RouteSalesCustHeir'[AMName]), 5)
+				}
+
+	annotation PBI_Id = 86353113550045b3a4862bb3b2c869ce
+

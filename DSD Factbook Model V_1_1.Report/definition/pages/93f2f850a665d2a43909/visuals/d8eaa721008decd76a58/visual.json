@@ -1,0 +1,106 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "d8eaa721008decd76a58",
+  "position": {
+    "x": 0,
+    "y": 177.89511481969117,
+    "z": 0,
+    "height": 105.05617016910897,
+    "width": 640.1422635637706,
+    "tabOrder": 3000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_CMAComplianceSummary"
+                    }
+                  },
+                  "Property": "PeriodEnd"
+                }
+              },
+              "queryRef": "V_Fact_FB_CMAComplianceSummary.PeriodEnd",
+              "nativeQueryRef": "PeriodEnd"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "CMA_Account_Compliance_tgl"
+                }
+              },
+              "queryRef": "Measure Table.CMA_Account_Compliance_tgl",
+              "nativeQueryRef": "CMA_Account_Compliance_tgl"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "CMA_SKU_Compliance_tgl"
+                }
+              },
+              "queryRef": "Measure Table.CMA_SKU_Compliance_tgl",
+              "nativeQueryRef": "CMA_SKU_Compliance_tgl"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "CMA_SKU_Prior Period_SP"
+                }
+              },
+              "queryRef": "Measure Table.CMA_SKU_Prior Period_SP",
+              "nativeQueryRef": "CMA_SKU_Prior Period_SP"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a6e0f42a55b1061d1c02",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "LocalChainName"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User",
+        "objects": {
+          "general": [
+            {
+              "properties": {}
+            }
+          ]
+        }
+      }
+    ]
+  }
+}

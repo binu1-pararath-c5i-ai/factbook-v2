@@ -1,0 +1,1018 @@
+table V_Fact_FB_Ops_CPH_CPC
+	lineageTag: cb2a3a73-e98c-4245-a326-77e9731b1a2c
+
+	column SalesOffice
+		dataType: string
+		lineageTag: 45ee6146-9a8e-4975-bd80-e4131f6367f3
+		summarizeBy: none
+		sourceColumn: SalesOffice
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: double
+		lineageTag: 6ef2b6ef-c83b-44d9-964c-e88b55305fb0
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Month
+		dataType: string
+		lineageTag: bdb77daa-5ff4-404e-a4eb-171afcaa795e
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthID = ```
+			CONCATENATE(V_Fact_FB_Ops_CPH_CPC[Year],V_Fact_FB_Ops_CPH_CPC[Month])
+			
+			```
+		lineageTag: ce82950c-c169-4e8e-b107-5addc034e1a6
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column BusinessUnit
+		dataType: string
+		lineageTag: 460b844b-279d-4d04-aa6e-d70aefb91b46
+		summarizeBy: none
+		sourceColumn: BusinessUnit
+
+		annotation SummarizationSetBy = Automatic
+
+	column Region
+		dataType: string
+		lineageTag: 614e41d0-747d-4b0b-b5d2-bad995079355
+		summarizeBy: none
+		sourceColumn: Region
+
+		annotation SummarizationSetBy = Automatic
+
+	column Territory
+		dataType: string
+		lineageTag: b4d841d2-ed10-4281-9477-9a583e06b146
+		summarizeBy: none
+		sourceColumn: Territory
+
+		annotation SummarizationSetBy = Automatic
+
+	column WhseConvertedCases
+		dataType: double
+		lineageTag: defa93ad-dd34-4c96-8ab0-31762d5421a8
+		summarizeBy: sum
+		sourceColumn: WhseConvertedCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseWorkedHours
+		dataType: double
+		lineageTag: 69d4ea56-b1ec-43a2-a73a-bd4e6e01e5c7
+		summarizeBy: sum
+		sourceColumn: WhseWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseOvertimeHours
+		dataType: double
+		lineageTag: be52f98a-caf9-49ea-b376-ec845eb28f42
+		summarizeBy: sum
+		sourceColumn: WhseOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseTempHours
+		dataType: double
+		lineageTag: 56907e1d-cf14-4f53-ad71-a9d8e42b5f16
+		summarizeBy: sum
+		sourceColumn: WhseTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseCost
+		dataType: double
+		lineageTag: 33fda68d-fcd0-42b6-af73-427ad1124ebe
+		summarizeBy: sum
+		sourceColumn: WhseCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAOPCases
+		dataType: double
+		lineageTag: 7b6bf089-2d77-4ad2-aaf8-927f7da32020
+		summarizeBy: sum
+		sourceColumn: WhseAOPCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAOPWorkedHours
+		dataType: double
+		lineageTag: 74c9c858-d69d-4a38-9c8b-f57fd8793644
+		summarizeBy: sum
+		sourceColumn: WhseAOPWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAOPTempHours
+		dataType: double
+		lineageTag: 7b5fb982-27bb-4aa7-8653-bb4210e3b842
+		summarizeBy: sum
+		sourceColumn: WhseAOPTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAOPCost
+		dataType: double
+		lineageTag: 3864c722-961b-4baa-aae8-065424ba819e
+		summarizeBy: sum
+		sourceColumn: WhseAOPCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseElasticity
+		dataType: double
+		lineageTag: abb41b5b-a038-45db-aa23-b97549e4814e
+		summarizeBy: sum
+		sourceColumn: WhseElasticity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseVolVariance
+		dataType: double
+		lineageTag: 529c8e19-b1f0-4a32-b77f-435d5e7e6ede
+		summarizeBy: sum
+		sourceColumn: WhseVolVariance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAdjAOPCases
+		dataType: double
+		lineageTag: 00a67f51-cd8f-4791-99a3-8b502b8ea172
+		summarizeBy: sum
+		sourceColumn: WhseAdjAOPCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAdjAOPWorkedHours
+		dataType: double
+		lineageTag: ca58d707-fa95-42b1-828a-d31c2ff2a7e2
+		summarizeBy: sum
+		sourceColumn: WhseAdjAOPWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAdjAOPOvertimeHour
+		dataType: double
+		lineageTag: 4d476ac0-edaf-4166-9bd1-92c71cb1b8a3
+		summarizeBy: sum
+		sourceColumn: WhseAdjAOPOvertimeHour
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAdjAOPTempHours
+		dataType: double
+		lineageTag: 8d9fa247-76ed-4f81-b7fb-9254c6f0a024
+		summarizeBy: sum
+		sourceColumn: WhseAdjAOPTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAdjAOPCost
+		dataType: double
+		lineageTag: ec12209a-147e-4128-81f4-df2942d4c5f2
+		summarizeBy: sum
+		sourceColumn: WhseAdjAOPCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseFcstCases
+		dataType: double
+		lineageTag: b5b99717-3233-4201-90c2-9793e42c3649
+		summarizeBy: sum
+		sourceColumn: WhseFcstCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseFcstWorkedHours
+		dataType: double
+		lineageTag: be751d4c-3402-4a14-95a6-e337baca4fe2
+		summarizeBy: sum
+		sourceColumn: WhseFcstWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseFcstOvertimeHours
+		dataType: double
+		lineageTag: aeeb1fd4-c34c-490f-b3e1-1bab7794d42d
+		summarizeBy: sum
+		sourceColumn: WhseFcstOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseFcstTempHours
+		dataType: double
+		lineageTag: 919344aa-d8dc-499a-9c5e-908e16b4ab78
+		summarizeBy: sum
+		sourceColumn: WhseFcstTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseFcstCost
+		dataType: double
+		lineageTag: 928688e3-eb1b-4d09-83cf-01b557a5c70d
+		summarizeBy: sum
+		sourceColumn: WhseFcstCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAdjFcstCases
+		dataType: double
+		lineageTag: 1344b15c-077a-4d6d-bb18-5423a3e117e4
+		summarizeBy: sum
+		sourceColumn: WhseAdjFcstCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAdjFcstWorkedHours
+		dataType: double
+		lineageTag: 0ff3cada-9b56-494f-b472-4eda6f920356
+		summarizeBy: sum
+		sourceColumn: WhseAdjFcstWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAdjFcstOvertimeHours
+		dataType: double
+		lineageTag: fdc76bfc-7ff1-4cc4-8a7a-894356111df4
+		summarizeBy: sum
+		sourceColumn: WhseAdjFcstOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAdjFcstTempHours
+		dataType: double
+		lineageTag: 44aceeea-c02f-4f00-ae99-e7c4b28b377d
+		summarizeBy: sum
+		sourceColumn: WhseAdjFcstTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAdjFcstCost
+		dataType: double
+		lineageTag: 691f594b-770c-4ffc-a69e-64634a3cc4c6
+		summarizeBy: sum
+		sourceColumn: WhseAdjFcstCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvConvertedCases
+		dataType: double
+		lineageTag: 6167a97a-07ef-408f-8b32-8732aa192611
+		summarizeBy: sum
+		sourceColumn: DelvConvertedCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvWorkedHours
+		dataType: double
+		lineageTag: c98f8fdc-6a8c-4081-abf7-51005ebb76c9
+		summarizeBy: sum
+		sourceColumn: DelvWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvOvertimeHours
+		dataType: double
+		lineageTag: 28bc3f82-7fd4-4c79-b83c-9ad4ea2b3546
+		summarizeBy: sum
+		sourceColumn: DelvOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvTempHours
+		dataType: double
+		lineageTag: 8a6c6311-931e-4968-96bc-c38cc530e881
+		summarizeBy: sum
+		sourceColumn: DelvTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvCost
+		dataType: double
+		lineageTag: 07b8bbbe-b154-46cc-a113-3dc4d92cb1de
+		summarizeBy: sum
+		sourceColumn: DelvCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAOPCases
+		dataType: double
+		lineageTag: 44612fd7-9db1-4807-8c08-525458c278c6
+		summarizeBy: sum
+		sourceColumn: DelvAOPCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAOPWorkedHours
+		dataType: double
+		lineageTag: bb34834e-e052-4eaf-bd5e-ed51ded85786
+		summarizeBy: sum
+		sourceColumn: DelvAOPWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAOPOvertimeHour
+		dataType: double
+		lineageTag: e96d270f-0e06-42dc-8572-7d434fa6238a
+		summarizeBy: sum
+		sourceColumn: DelvAOPOvertimeHour
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAOPTempHours
+		dataType: double
+		lineageTag: d2f00e27-430b-439b-b5e1-5b9eb1af2d4a
+		summarizeBy: sum
+		sourceColumn: DelvAOPTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAOPCost
+		dataType: double
+		lineageTag: 3c9edc84-2c2e-4b66-83fc-834d374a2e97
+		summarizeBy: sum
+		sourceColumn: DelvAOPCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvElasticity
+		dataType: double
+		lineageTag: 503a90f6-764c-4a14-895f-9f123ad94a93
+		summarizeBy: sum
+		sourceColumn: DelvElasticity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvVolVariance
+		dataType: double
+		lineageTag: 8ddc18d9-930f-4aa5-8a27-f22150f10b0e
+		summarizeBy: sum
+		sourceColumn: DelvVolVariance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAdjAOPCases
+		dataType: double
+		lineageTag: e3a0df4a-aade-47be-b580-dc47aebcd02b
+		summarizeBy: sum
+		sourceColumn: DelvAdjAOPCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAdjAOPWorkedHours
+		dataType: double
+		lineageTag: f9844a76-9474-4c53-a5d8-a87ff434e2a7
+		summarizeBy: sum
+		sourceColumn: DelvAdjAOPWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAdjAOPOvertimeHour
+		dataType: double
+		lineageTag: 2aa165eb-b7f3-4f25-b595-47d05fd1048c
+		summarizeBy: sum
+		sourceColumn: DelvAdjAOPOvertimeHour
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAdjAOPTempHours
+		dataType: double
+		lineageTag: 23b062e8-829e-4293-986a-2f9b2335cb0f
+		summarizeBy: sum
+		sourceColumn: DelvAdjAOPTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAdjAOPCost
+		dataType: double
+		lineageTag: a44f74d0-ee04-4123-bd20-16e09e2ca3d4
+		summarizeBy: sum
+		sourceColumn: DelvAdjAOPCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvFcstCases
+		dataType: double
+		lineageTag: 2ca7e5ab-705f-484e-865a-1f16b4a16893
+		summarizeBy: sum
+		sourceColumn: DelvFcstCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvFcstWorkedHours
+		dataType: double
+		lineageTag: 9e322e2f-7934-4f1b-9035-958b56a0c71e
+		summarizeBy: sum
+		sourceColumn: DelvFcstWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvFcstOvertimeHours
+		dataType: double
+		lineageTag: 138b27d3-b98a-475e-9002-e3ba6ee66d41
+		summarizeBy: sum
+		sourceColumn: DelvFcstOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvFcstTempHours
+		dataType: double
+		lineageTag: 59975bbc-a6f8-41a1-ba57-b9d319cc3e13
+		summarizeBy: sum
+		sourceColumn: DelvFcstTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvFcstCost
+		dataType: double
+		lineageTag: 0988a165-7b5e-4ab0-8161-3a90099d66ba
+		summarizeBy: sum
+		sourceColumn: DelvFcstCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAdjFcstCases
+		dataType: double
+		lineageTag: 5d7b54dd-a81a-43e1-883b-5c07c94c6f98
+		summarizeBy: sum
+		sourceColumn: DelvAdjFcstCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAdjFcstWorkedHours
+		dataType: double
+		lineageTag: aa077265-363b-4bf1-9ee7-cc15e5438e8f
+		summarizeBy: sum
+		sourceColumn: DelvAdjFcstWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAdjFcstOvertimeHours
+		dataType: double
+		lineageTag: 8c4724a1-9d1d-49de-ace9-271ed3388ac4
+		summarizeBy: sum
+		sourceColumn: DelvAdjFcstOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAdjFcstTempHours
+		dataType: double
+		lineageTag: 69d06bb7-417a-4247-a0dd-d459d0cb2264
+		summarizeBy: sum
+		sourceColumn: DelvAdjFcstTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvAdjFcstCost
+		dataType: double
+		lineageTag: ffc4a85c-9f6b-46c7-8e71-af468833174c
+		summarizeBy: sum
+		sourceColumn: DelvAdjFcstCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechHandledCases
+		dataType: double
+		lineageTag: 18889434-607e-4d53-a432-952f7da6fd32
+		summarizeBy: sum
+		sourceColumn: MechHandledCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechWorkedHours
+		dataType: double
+		lineageTag: 1ce60dd3-99ae-42ed-b1d0-063ba441c3fd
+		summarizeBy: sum
+		sourceColumn: MechWorkedHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechCost
+		dataType: double
+		lineageTag: 2037375b-cdb6-45d8-b2cf-9b093f48c12a
+		summarizeBy: sum
+		sourceColumn: MechCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAOPCases
+		dataType: double
+		lineageTag: 159d510a-6bf9-4be0-9cd6-c6a1656dfdf6
+		summarizeBy: sum
+		sourceColumn: MechAOPCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAOPHours
+		dataType: double
+		lineageTag: e095f1de-3ba1-4f1c-b768-2c10464122d2
+		summarizeBy: sum
+		sourceColumn: MechAOPHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechFcstCases
+		dataType: double
+		lineageTag: 2a40a29b-767b-449f-8f17-1b2208f3e265
+		summarizeBy: sum
+		sourceColumn: MechFcstCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechFcstHours
+		dataType: double
+		lineageTag: 7a0bd64f-fae4-4bb6-b483-f2414c566013
+		summarizeBy: sum
+		sourceColumn: MechFcstHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechFcstCost
+		dataType: double
+		lineageTag: df617b5f-678f-4531-868d-acef28dc50ba
+		summarizeBy: sum
+		sourceColumn: MechFcstCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAdjFcstCases
+		dataType: double
+		lineageTag: 40cbd0dd-0c67-4d26-804c-faec7cea10c0
+		summarizeBy: sum
+		sourceColumn: MechAdjFcstCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAdjFcstHours
+		dataType: double
+		lineageTag: fab00774-de93-4731-af30-77bac9159012
+		summarizeBy: sum
+		sourceColumn: MechAdjFcstHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAdjFcstCost
+		dataType: double
+		lineageTag: d3f915cc-aaea-4af3-a3b5-5090d0ab4895
+		summarizeBy: sum
+		sourceColumn: MechAdjFcstCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Mech_OvertimeHours
+		dataType: double
+		lineageTag: 37cd18b4-3b21-4b29-9b68-5b7cec6b99af
+		summarizeBy: sum
+		sourceColumn: Mech_OvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechTempHours
+		dataType: double
+		lineageTag: fb9e6faf-afa3-4485-8375-58d22c31dc4d
+		summarizeBy: sum
+		sourceColumn: MechTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAOPOvertimeHours
+		dataType: double
+		lineageTag: 7d467c47-8d27-4e44-8021-65096a55c388
+		summarizeBy: sum
+		sourceColumn: MechAOPOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAOPTempHours
+		dataType: double
+		lineageTag: 73d1758b-1227-470e-9f3e-d58cf11f6e6e
+		summarizeBy: sum
+		sourceColumn: MechAOPTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAdjAOPOvertimeHours
+		dataType: double
+		lineageTag: e4b0046f-dc18-4241-ac60-78c78752486a
+		summarizeBy: sum
+		sourceColumn: MechAdjAOPOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAdjAOPTempHours
+		dataType: double
+		lineageTag: 8c3e8c35-65a5-4fdf-8351-9ecd88ec72e0
+		summarizeBy: sum
+		sourceColumn: MechAdjAOPTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechFcstOvertimeHours
+		dataType: double
+		lineageTag: 180a0a55-078b-4079-ab24-32b4ec6189de
+		summarizeBy: sum
+		sourceColumn: MechFcstOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAdjFcstOvertimeHours
+		dataType: double
+		lineageTag: 1b630fa4-0a18-4dd7-8bdc-7c60e878922b
+		summarizeBy: sum
+		sourceColumn: MechAdjFcstOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAdjFcstTempHours
+		dataType: double
+		lineageTag: b842f88b-702e-418d-88cf-84bb32931d6c
+		summarizeBy: sum
+		sourceColumn: MechAdjFcstTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAOPCost
+		dataType: double
+		lineageTag: b1545f96-306e-4cae-b20f-4c957652f341
+		summarizeBy: sum
+		sourceColumn: MechAOPCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAdjAOPCost
+		dataType: double
+		lineageTag: 390a1685-d81b-45a7-a0b2-1e6bdf29c9a6
+		summarizeBy: sum
+		sourceColumn: MechAdjAOPCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAdjAOPCases
+		dataType: double
+		lineageTag: 132532d0-cdeb-4f79-a01c-f355056a6317
+		summarizeBy: sum
+		sourceColumn: MechAdjAOPCases
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechAdjAOPHours
+		dataType: double
+		lineageTag: add25814-c9cf-410d-9bcc-67e1749850e9
+		summarizeBy: sum
+		sourceColumn: MechAdjAOPHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column SalesOfficeName
+		dataType: string
+		lineageTag: 26ef6eca-41d0-46ec-b87e-2c7b93ac0799
+		summarizeBy: none
+		sourceColumn: SalesOfficeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column WhseAOPOvertimeHours
+		dataType: double
+		lineageTag: a266070a-330b-4ccf-8e81-5280f83ee57b
+		summarizeBy: sum
+		sourceColumn: WhseAOPOvertimeHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseAdjOrderQty
+		dataType: double
+		lineageTag: e6b22600-352d-4bfd-9a02-f3e4dad230ca
+		summarizeBy: sum
+		sourceColumn: WhseAdjOrderQty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseTotalOrder
+		dataType: double
+		lineageTag: 03f7743f-6101-4ecd-9023-214ae53792cc
+		summarizeBy: sum
+		sourceColumn: WhseTotalOrder
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvInvoicedQty
+		dataType: double
+		lineageTag: 1845bfc9-b354-411a-9d9e-34bfb01d5fc6
+		summarizeBy: sum
+		sourceColumn: DelvInvoicedQty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvTotalOrder
+		dataType: double
+		lineageTag: fb43c878-ec2e-4c03-af8d-8cc7865be22c
+		summarizeBy: sum
+		sourceColumn: DelvTotalOrder
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechElasticity
+		dataType: double
+		lineageTag: 93519834-647a-4964-a789-8b64037f212d
+		summarizeBy: sum
+		sourceColumn: MechElasticity
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechVariance
+		dataType: double
+		lineageTag: b8064dce-b4cc-4ef7-825f-10cb30ad0655
+		summarizeBy: sum
+		sourceColumn: MechVariance
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechNumberOfVisit
+		dataType: double
+		lineageTag: 2ecae3d1-ebb9-44f4-913f-779df1558a5d
+		summarizeBy: sum
+		sourceColumn: MechNumberOfVisit
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechFcstTempHours
+		dataType: double
+		lineageTag: cc3d9abc-c9c1-418d-b85f-71d97d8d1326
+		summarizeBy: sum
+		sourceColumn: MechFcstTempHours
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DayDate = DATE(V_Fact_FB_Ops_CPH_CPC[Year],V_Fact_FB_Ops_CPH_CPC[Month],1)
+		formatString: General Date
+		lineageTag: 4ccbe907-ef07-44d4-ace3-e404d65ea2cf
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column Key = V_Fact_FB_Ops_CPH_CPC[SalesOffice]&V_Fact_FB_Ops_CPH_CPC[SalesOfficeName]
+		lineageTag: a3afcfbc-8267-4eb9-8cf0-8dd102ea157b
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column WhseSalariedAOPCost
+		dataType: double
+		lineageTag: 6b167394-e542-42ef-97cb-11a8ee09e59b
+		summarizeBy: sum
+		sourceColumn: WhseSalariedAOPCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column WhseSalariedFcstCost
+		dataType: double
+		lineageTag: 40aaf523-2562-496d-89e7-e956433c66f2
+		summarizeBy: sum
+		sourceColumn: WhseSalariedFcstCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvSalariedAOPCost
+		dataType: double
+		lineageTag: 9fcf0ed1-fa13-44ee-b144-6f6792faf186
+		summarizeBy: sum
+		sourceColumn: DelvSalariedAOPCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column DelvSalariedFcstCost
+		dataType: double
+		lineageTag: 84538cdd-0eff-4468-b94c-2bcca2cf3a53
+		summarizeBy: sum
+		sourceColumn: DelvSalariedFcstCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechSalariedAOPCost
+		dataType: double
+		lineageTag: 973fd3f6-9585-46b9-9a0e-4ab62abc4cce
+		summarizeBy: sum
+		sourceColumn: MechSalariedAOPCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column MechSalariedFcstCost
+		dataType: double
+		lineageTag: 371e6ca2-63d2-4a7f-a643-e2b8c72f1275
+		summarizeBy: sum
+		sourceColumn: MechSalariedFcstCost
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition V_Fact_FB_Ops_CPH_CPC = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name="DSD",Kind="Schema"]}[Data],
+				    V_Fact_FB_Ops_CPH_CPC_View = DSD_Schema{[Name="V_Fact_FB_Ops_CPH_CPC",Kind="View"]}[Data]
+				in
+				    V_Fact_FB_Ops_CPH_CPC_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

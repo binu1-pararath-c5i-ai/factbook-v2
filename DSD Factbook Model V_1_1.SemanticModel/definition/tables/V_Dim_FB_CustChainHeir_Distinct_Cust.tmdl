@@ -1,0 +1,17 @@
+table V_Dim_FB_CustChainHeir_Distinct_Cust
+	lineageTag: 51d3642f-166b-4c74-a154-153c3e937985
+
+	column CustomerID
+		lineageTag: 93a0213a-0260-4e86-a057-f66f635c01fd
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CustChainHeir[CustomerID]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Dim_FB_CustChainHeir_Distinct_Cust = calculated
+		mode: import
+		source = DISTINCT(V_Dim_FB_CustChainHeir[CustomerID])
+
+	annotation PBI_Id = 0b08e1d781644bc78f1efa54661bbfcc
+

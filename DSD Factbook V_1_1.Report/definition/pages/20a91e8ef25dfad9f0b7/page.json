@@ -1,0 +1,103 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "20a91e8ef25dfad9f0b7",
+  "displayName": "CMA Account Drill Down",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "133aa5c99d22f26af81a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "NationalChainName"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "Comparison": {
+                      "ComparisonKind": 0,
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "v"
+                            }
+                          },
+                          "Property": "NationalChainName"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'RITE AID'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "dd6085b23f78b78aeab8",
+      "target": "07f0086f00410ada2e4d",
+      "type": "DataFilter"
+    },
+    {
+      "source": "dd6085b23f78b78aeab8",
+      "target": "8e9d19987ba3b968856f",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dd6085b23f78b78aeab8",
+      "target": "26030c11fb3152fefc13",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dd6085b23f78b78aeab8",
+      "target": "602e1b451de975162fc1",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dd6085b23f78b78aeab8",
+      "target": "530050c592c0a3a2ee08",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dd6085b23f78b78aeab8",
+      "target": "70ba84e7ef15e258c2c9",
+      "type": "NoFilter"
+    },
+    {
+      "source": "dd6085b23f78b78aeab8",
+      "target": "4c6fdf420c9b4f211bbd",
+      "type": "NoFilter"
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+table V_Fact_FB_Ops_Deliveryorder
+	lineageTag: 0aed85cb-d06a-4e4e-b175-b02903d1fc4b
+
+	column BusinessUnitName
+		dataType: string
+		lineageTag: bdf88c0d-5a9b-448b-a49a-30c490d7e1c2
+		summarizeBy: none
+		sourceColumn: BusinessUnitName
+
+		annotation SummarizationSetBy = Automatic
+
+	column RegionName
+		dataType: string
+		lineageTag: 9aca2158-0a3b-47e6-9e95-c0859ce4469c
+		summarizeBy: none
+		sourceColumn: RegionName
+
+		annotation SummarizationSetBy = Automatic
+
+	column TerritoryName
+		dataType: string
+		lineageTag: 5efe5556-8756-439a-a224-0e0aae4dcd4d
+		summarizeBy: none
+		sourceColumn: TerritoryName
+
+		annotation SummarizationSetBy = Automatic
+
+	column SalesOfficeName
+		dataType: string
+		lineageTag: 654e8e18-7f8a-4397-95d5-025048dcc23d
+		summarizeBy: none
+		sourceColumn: SalesOfficeName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year
+		dataType: double
+		lineageTag: a546dcb2-c6fb-4144-9eb9-c72e8536afd9
+		summarizeBy: sum
+		sourceColumn: Year
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Month
+		dataType: string
+		lineageTag: ab5cbab1-a9e9-4f58-85df-84594523e9b2
+		summarizeBy: none
+		sourceColumn: Month
+
+		annotation SummarizationSetBy = Automatic
+
+	column ItemNumber
+		dataType: string
+		lineageTag: 71cfe741-7ed3-4b61-8562-69269597769c
+		summarizeBy: none
+		sourceColumn: ItemNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column CustomerNumber
+		dataType: string
+		lineageTag: 29942728-db60-494d-868c-8a5e3d3131a5
+		summarizeBy: none
+		sourceColumn: CustomerNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column InvoicedQty
+		dataType: double
+		lineageTag: 870fd7e4-4aa2-4b48-92ac-2453d7a172bd
+		summarizeBy: sum
+		sourceColumn: InvoicedQty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column AdjOrderQty
+		dataType: double
+		lineageTag: 1d0035db-f1e8-4d15-be6b-fc70eed297a7
+		summarizeBy: sum
+		sourceColumn: AdjOrderQty
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column TotalOrder
+		dataType: double
+		lineageTag: 1ffac199-975d-43f6-a74f-79b1cce1bbbe
+		summarizeBy: sum
+		sourceColumn: TotalOrder
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Month_new =
+			SWITCH(TRUE(),V_Fact_FB_Ops_DeliveryOrder[Month]="1","01",
+			V_Fact_FB_Ops_DeliveryOrder[Month]="2","02",
+			V_Fact_FB_Ops_DeliveryOrder[Month]="3","03",
+			V_Fact_FB_Ops_DeliveryOrder[Month]="4","04",
+			V_Fact_FB_Ops_DeliveryOrder[Month]="5","05",
+			V_Fact_FB_Ops_DeliveryOrder[Month]="6","06",
+			V_Fact_FB_Ops_DeliveryOrder[Month]="7","07",
+			V_Fact_FB_Ops_DeliveryOrder[Month]="8","08",
+			V_Fact_FB_Ops_DeliveryOrder[Month]="9","09",
+			V_Fact_FB_Ops_DeliveryOrder[Month]="10","10",
+			V_Fact_FB_Ops_DeliveryOrder[Month]="11","11",
+			V_Fact_FB_Ops_DeliveryOrder[Month]="12","12")
+		lineageTag: 7f0799e8-c169-41d4-a16b-9b6af2bd0a3e
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthID = V_Fact_FB_Ops_DeliveryOrder[Year] & V_Fact_FB_Ops_Deliveryorder[Month]
+		lineageTag: b34db1e2-7112-4f2e-8f1d-70ccea40c603
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	partition V_Fact_FB_Ops_Deliveryorder = m
+		mode: import
+		source =
+				let
+				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
+				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name="DSD",Kind="Schema"]}[Data],
+				    V_Fact_FB_Ops_Deliveryorder_View = DSD_Schema{[Name="V_Fact_FB_Ops_Deliveryorder",Kind="View"]}[Data]
+				in
+				    V_Fact_FB_Ops_Deliveryorder_View
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

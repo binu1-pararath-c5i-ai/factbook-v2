@@ -1,0 +1,99 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.0.0/schema.json",
+  "name": "4a1fd68c0c1d096c509c",
+  "displayName": "CFR Drilldown",
+  "displayOption": "FitToPage",
+  "height": 900,
+  "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "69d3568a7238473103c0",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "IsAccountActive"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CustChainHeir",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "IsAccountActive"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "1D"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
+  "visibility": "HiddenInViewMode",
+  "visualInteractions": [
+    {
+      "source": "18c2dd8bcda53a25b589",
+      "target": "f7640940c60780c305c0",
+      "type": "NoFilter"
+    },
+    {
+      "source": "18c2dd8bcda53a25b589",
+      "target": "9455d6e7b87c79b28f20",
+      "type": "NoFilter"
+    },
+    {
+      "source": "18c2dd8bcda53a25b589",
+      "target": "cd16a4948a7dd5663ae8",
+      "type": "NoFilter"
+    },
+    {
+      "source": "18c2dd8bcda53a25b589",
+      "target": "c456b7fce274199a5654",
+      "type": "NoFilter"
+    },
+    {
+      "source": "18c2dd8bcda53a25b589",
+      "target": "98c6ba791c1f2ab154e1",
+      "type": "NoFilter"
+    },
+    {
+      "source": "18c2dd8bcda53a25b589",
+      "target": "79138b16b54bd210c771",
+      "type": "NoFilter"
+    }
+  ]
+}

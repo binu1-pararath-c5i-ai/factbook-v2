@@ -1,0 +1,122 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "30b45c51fe3d42fc3283",
+  "position": {
+    "x": 39.211618257261414,
+    "y": 138.17427385892117,
+    "z": 2000,
+    "height": 233.40248962655602,
+    "width": 1066.1825726141078,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_CMAComplianceSummary"
+                    }
+                  },
+                  "Property": "PeriodEnd"
+                }
+              },
+              "queryRef": "V_Fact_FB_CMAComplianceSummary.PeriodEnd",
+              "nativeQueryRef": "PeriodEnd"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_CMAComplianceSummary"
+                    }
+                  },
+                  "Property": "TimeGranularity"
+                }
+              },
+              "queryRef": "V_Fact_FB_CMAComplianceSummary.TimeGranularity",
+              "nativeQueryRef": "TimeGranularity"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "CMA_SKU_Compliance"
+                }
+              },
+              "queryRef": "Measure Table.CMA_SKU_Compliance",
+              "nativeQueryRef": "CMA_SKU_Compliance"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "CMA_SKU_Compliance_tgl"
+                }
+              },
+              "queryRef": "Measure Table.CMA_SKU_Compliance_tgl",
+              "nativeQueryRef": "CMA_SKU_Compliance_tgl"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "CMA_SKU_Prior Period"
+                }
+              },
+              "queryRef": "Measure Table.CMA_SKU_Prior Period",
+              "nativeQueryRef": "CMA_SKU_Prior Period"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "SKU_CMA_Compliance"
+                }
+              },
+              "queryRef": "Measure Table.SKU_CMA_Compliance",
+              "nativeQueryRef": "SKU_CMA_Compliance"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "CMA_SKU_Prior Period_tgl"
+                }
+              },
+              "queryRef": "Measure Table.CMA_SKU_Prior Period_tgl",
+              "nativeQueryRef": "CMA_SKU_Prior Period_tgl"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

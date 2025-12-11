@@ -1,0 +1,32 @@
+table 'Last Refresh as of'
+	lineageTag: ac16ea76-1bea-4d68-a2ab-5d53ac31f438
+
+	column 'Last Refresh as of'
+		dataType: string
+		lineageTag: ade5fc75-d83d-4721-9a6f-d39ffeebeed4
+		summarizeBy: none
+		sourceColumn: Last Refresh as of
+
+		annotation SummarizationSetBy = Automatic
+
+	partition 'Last Refresh as of' = m
+		mode: import
+		source =
+				let
+				    // Get UTC Now
+				    utcNow = DateTimeZone.UtcNow(),
+				
+				    // CDT is UTC-5
+				    cdtNow = DateTimeZone.SwitchZone(utcNow, -5),
+				
+				    // Remove timezone info if you want just DateTime type
+				    cdtLocal = DateTimeZone.RemoveZone(cdtNow),
+				
+				    formattedCDT = DateTime.ToText(cdtLocal, "MM/dd/yyyy hh:mm tt")
+				in
+				    formattedCDT
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Text
+

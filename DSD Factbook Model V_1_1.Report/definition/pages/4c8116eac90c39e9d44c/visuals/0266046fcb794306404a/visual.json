@@ -1,0 +1,125 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "0266046fcb794306404a",
+  "position": {
+    "x": 923.78048780487813,
+    "y": 131.70731707317074,
+    "z": 50000,
+    "height": 201.21951219512195,
+    "width": 212.19512195121953,
+    "tabOrder": 46000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_PL_SalesHier"
+                    }
+                  },
+                  "Property": "Branch"
+                }
+              },
+              "queryRef": "V_Dim_FB_PL_SalesHier.Branch",
+              "nativeQueryRef": "Branch"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Conditional_Revenue AttainmentSelected_Rank_Order"
+                }
+              },
+              "queryRef": "Measure Table.Conditional_Revenue AttainmentSelected_Rank_Order",
+              "nativeQueryRef": "Conditional_Revenue AttainmentSelected_Rank_Order"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue RPC"
+                }
+              },
+              "queryRef": "Measure Table.Revenue RPC",
+              "nativeQueryRef": "Revenue RPC"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue RPC AOP"
+                }
+              },
+              "queryRef": "Measure Table.Revenue RPC AOP",
+              "nativeQueryRef": "Revenue RPC AOP"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume Act"
+                }
+              },
+              "queryRef": "Measure Table.Volume Act",
+              "nativeQueryRef": "Volume Act"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue Act"
+                }
+              },
+              "queryRef": "Measure Table.Revenue Act",
+              "nativeQueryRef": "Revenue Act"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Measure Table"
+                  }
+                },
+                "Property": "Conditional_Revenue AttainmentSelected_Rank_Order"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

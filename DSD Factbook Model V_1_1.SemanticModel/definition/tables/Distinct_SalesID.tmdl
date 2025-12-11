@@ -1,0 +1,26 @@
+table Distinct_SalesID
+	lineageTag: 5459f481-4e5e-477e-a65b-d6cf45523a60
+
+	column BranchID
+		dataType: string
+		lineageTag: b5b41093-8166-4046-8b4d-7e23f0a537b7
+		summarizeBy: none
+		sourceColumn: BranchID
+
+		annotation SummarizationSetBy = Automatic
+
+	partition Distinct_SalesID = m
+		mode: import
+		source =
+				let
+				    Source = V_Dim_FB_CustChainHeir,
+				    #"Removed Other Columns" = Table.SelectColumns(Source,{"BranchID"}),
+				    #"Removed Duplicates" = Table.Distinct(#"Removed Other Columns"),
+				    #"Filtered Rows" = Table.SelectRows(#"Removed Duplicates", each [BranchID] <> null and [BranchID] <> "")
+				in
+				    #"Filtered Rows"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

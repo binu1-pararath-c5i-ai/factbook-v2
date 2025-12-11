@@ -1,0 +1,382 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "476120583cb301bb09ce",
+  "position": {
+    "x": 19,
+    "y": 2.7450980392156907,
+    "z": 1000,
+    "height": 644,
+    "width": 1288,
+    "tabOrder": 15
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CustChainHeir"
+                    }
+                  },
+                  "Property": "TerritoryName"
+                }
+              },
+              "queryRef": "V_Dim_FB_CustChainHeir.TerritoryName",
+              "nativeQueryRef": "TerritoryName"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_RouteSalesCustHeir"
+                    }
+                  },
+                  "Property": "DSSName"
+                }
+              },
+              "queryRef": "V_Dim_RouteSalesCustHeir.DSSName",
+              "nativeQueryRef": "DSSName"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_RouteSalesCustHeir"
+                    }
+                  },
+                  "Property": "AMName"
+                }
+              },
+              "queryRef": "V_Dim_RouteSalesCustHeir.AMName",
+              "nativeQueryRef": "AMName"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_ProdHeir"
+                    }
+                  },
+                  "Property": "TradeMarkDesc"
+                }
+              },
+              "queryRef": "V_Dim_FB_ProdHeir.TradeMarkDesc",
+              "nativeQueryRef": "TRADEMARK",
+              "displayName": "TRADEMARK"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_ProdHeir"
+                    }
+                  },
+                  "Property": "PackageHierarchyLevel3"
+                }
+              },
+              "queryRef": "V_Dim_FB_ProdHeir.PackageHierarchyLevel3",
+              "nativeQueryRef": "PACKAGE",
+              "displayName": "PACKAGE"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_POGVoidDetail"
+                    }
+                  },
+                  "Property": "VoidReason"
+                }
+              },
+              "queryRef": "V_Fact_FB_POGComplianceDetail.VoidReason",
+              "nativeQueryRef": "REASON CODE",
+              "displayName": "REASON CODE"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_POGVoidDetail"
+                    }
+                  },
+                  "Property": "ItemDesc"
+                }
+              },
+              "queryRef": "V_Fact_FB_POGComplianceDetail.ItemDesc",
+              "nativeQueryRef": "SKU",
+              "displayName": "SKU"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_POGVoidDetail"
+                    }
+                  },
+                  "Property": "POGItemType"
+                }
+              },
+              "queryRef": "V_Fact_FB_POGComplianceDetail.POGItemType",
+              "nativeQueryRef": "POG Item Type",
+              "displayName": "POG Item Type"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Fact_FB_POGVoidDetail"
+                    }
+                  },
+                  "Property": "LastInvoiceDate"
+                }
+              },
+              "queryRef": "V_Fact_FB_POGVoidDetail.LastInvoiceDate",
+              "nativeQueryRef": "LastInvoiceDate"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "143.66668007677094D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Dim_FB_ProdHeir.PackageHierarchyLevel3"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "165.33333569060292D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Fact_FB_POGComplianceDetail.VoidReason"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "101D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Fact_FB_POGComplianceDetail.POGItemType"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "155D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Fact_FB_POGComplianceDetail.ItemDesc"
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "gridHorizontalWeight": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "rowPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "9D"
+                }
+              }
+            },
+            "fontColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "backColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F6F1EC'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "backColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F9F9F9'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#EFE6DE'"
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "parentGroupName": "0ef697d6009ce5060634"
+}

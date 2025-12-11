@@ -1,0 +1,427 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "f3bbe7b59035dd128725",
+  "position": {
+    "x": 24.999999999999996,
+    "y": 247.05882352941174,
+    "z": 44000,
+    "height": 607.35294117647049,
+    "width": 1307.3529411764705,
+    "tabOrder": 43000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CustChainHeir"
+                    }
+                  },
+                  "Property": "TerritoryName"
+                }
+              },
+              "queryRef": "V_Dim_FB_CustChainHeir.TerritoryName",
+              "nativeQueryRef": "TERRITORY",
+              "displayName": "TERRITORY"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_RouteSalesCustHeir"
+                    }
+                  },
+                  "Property": "DSSName"
+                }
+              },
+              "queryRef": "V_Dim_RouteSalesCustHeir.DSSName",
+              "nativeQueryRef": "DSS",
+              "displayName": "DSS"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_RouteSalesCustHeir"
+                    }
+                  },
+                  "Property": "AMName"
+                }
+              },
+              "queryRef": "V_Dim_RouteSalesCustHeir.AMName",
+              "nativeQueryRef": "ASM",
+              "displayName": "ASM"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CustChainHeir"
+                    }
+                  },
+                  "Property": "RegionalChainName"
+                }
+              },
+              "queryRef": "V_Dim_FB_CustChainHeir.RegionalChainName",
+              "nativeQueryRef": "REGIONAL CHAIN",
+              "displayName": "REGIONAL CHAIN"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_FACT_FB_OPS_ROLLEDSTOP"
+                    }
+                  },
+                  "Property": "CategoryDesc"
+                }
+              },
+              "queryRef": "V_FACT_FB_OPS_ROLLEDSTOP.CategoryDesc",
+              "nativeQueryRef": "REASON CATEGORY",
+              "displayName": "REASON CATEGORY"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_FACT_FB_OPS_ROLLEDSTOP"
+                    }
+                  },
+                  "Property": "HBReasonCode"
+                }
+              },
+              "queryRef": "V_FACT_FB_OPS_ROLLEDSTOP.HBReasonCode",
+              "nativeQueryRef": "HBReasonCode",
+              "displayName": "REASON CODE"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_FACT_FB_OPS_ROLLEDSTOP"
+                    }
+                  },
+                  "Property": "HBReasonDesc"
+                }
+              },
+              "queryRef": "V_FACT_FB_OPS_ROLLEDSTOP.HBReasonDesc",
+              "nativeQueryRef": "REASON CODE DESC",
+              "displayName": "REASON CODE DESC"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Haulback_cases"
+                }
+              },
+              "queryRef": "Measure Table.Haulback_cases",
+              "nativeQueryRef": "HAULBACK CASES",
+              "displayName": "HAULBACK CASES"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Haulback_cases%_table"
+                }
+              },
+              "queryRef": "Measure Table.Haulback_cases%_table",
+              "nativeQueryRef": "Haulback_cases%_table"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Measure Table"
+                  }
+                },
+                "Property": "Haulback_cases%_table"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "autoSizeColumnWidth": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "backColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#EFE6DE'"
+                    }
+                  }
+                }
+              }
+            },
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 1,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "118.71428604685295D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Dim_FB_CustChainHeir.TerritoryName"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "146.99999965672015D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Dim_RouteSalesCustHeir.DSSName"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "149.57142764434843D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Dim_RouteSalesCustHeir.AMName"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "161D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Dim_FB_CustChainHeir.RegionalChainName"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "141D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_FACT_FB_OPS_ROLLEDSTOP.CategoryDesc"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "125D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Haulback_cases"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "198D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_FACT_FB_OPS_ROLLEDSTOP.HBReasonDesc"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "103D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_FACT_FB_OPS_ROLLEDSTOP.HBReasonCode"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "156D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Haulback_cases%_table"
+          }
+        }
+      ],
+      "grid": [
+        {
+          "properties": {
+            "rowPadding": {
+              "expr": {
+                "Literal": {
+                  "Value": "3D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "values": [
+        {
+          "properties": {
+            "backColorPrimary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#F7F3ED'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Haulback insights'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'None'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "isHidden": true
+}

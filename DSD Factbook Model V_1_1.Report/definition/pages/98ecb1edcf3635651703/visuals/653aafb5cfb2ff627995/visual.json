@@ -1,0 +1,66 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "653aafb5cfb2ff627995",
+  "position": {
+    "x": 0,
+    "y": 0,
+    "z": 1000,
+    "height": 685.643153526971,
+    "width": 463.0705394190872,
+    "tabOrder": 1000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CustChainHeir"
+                    }
+                  },
+                  "Property": "BUName"
+                }
+              },
+              "queryRef": "V_Dim_FB_CustChainHeir.BUName",
+              "nativeQueryRef": "BUName"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CustChainHeir"
+                    }
+                  },
+                  "Property": "NationalChainName"
+                }
+              },
+              "queryRef": "V_Dim_FB_CustChainHeir.NationalChainName",
+              "nativeQueryRef": "NationalChainName"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume_AOP_TL"
+                }
+              },
+              "queryRef": "Measure Table.Volume_AOP_TL",
+              "nativeQueryRef": "Volume_AOP_TL"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
