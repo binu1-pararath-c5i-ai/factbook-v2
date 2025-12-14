@@ -86,6 +86,27 @@ table V_Dim_FB_Ref
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	column CL_M_END
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: c23c1303-f419-48cd-8e3a-9b515c41a42c
+		summarizeBy: none
+		sourceColumn: CL_M_END
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CL_Y0
+		dataType: double
+		lineageTag: 202485bb-a2ba-4d05-9f40-954669faf675
+		summarizeBy: none
+		sourceColumn: CL_Y0
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition V_Dim_FB_Ref = m
 		mode: import
 		source =

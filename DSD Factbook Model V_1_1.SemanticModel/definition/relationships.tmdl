@@ -170,6 +170,30 @@ relationship 89113273-62b6-d99c-0d5a-d3de6c567465
 	fromColumn: V_Fact_FB_Ops_CPH_CPC.Key
 	toColumn: V_Dim_FB_RptBranchHier.Key
 
+relationship 0652dba8-c5cf-4c01-805b-9175f71181e5
+	toCardinality: many
+	fromColumn: V_FACT_FB_OPS_CFR.CFR_Key
+	toColumn: V_Dim_FB_CustChainHeir._RolledStop_Key
+
+relationship 0507ee56-9212-4893-a592-a2ddb8f60629
+	crossFilteringBehavior: bothDirections
+	fromColumn: V_FB_MerchByEmployeeCustomer.CustomerNumber
+	toColumn: V_DIm_FB_CustChainHier_Distinct_Customer_number.CustomerNumber
+
+relationship 1c233f38-66e0-124f-7e51-99fa448186af
+	toCardinality: many
+	fromColumn: V_FB_MerchByEmployeeCustomer.TerritoryName
+	toColumn: V_Dim_FB_RptBranchHier.TerritoryName
+
+relationship 715993e4-e546-642c-a414-4ddd83104bda
+	toCardinality: many
+	fromColumn: V_Fact_FB_RevDetail.TradeMarkID
+	toColumn: V_Dim_FB_ProdHeir.TradeMarkID
+
+relationship 23ce7f4f-b014-5755-480b-9e6c4ca2454d
+	fromColumn: V_Dim_FB_CalDay.REF_KEY
+	toColumn: V_Dim_FB_Ref.REF_KEY
+
 relationship 692e3998-daa6-36ab-1c73-148bd646adc3
 	crossFilteringBehavior: bothDirections
 	fromColumn: Operation_Cal_Day.DayDate
@@ -195,11 +219,6 @@ relationship d8ffb587-bcfe-12af-9bc0-a63579113145
 	fromColumn: V_Fact_FB_POGVoidDetail.Starting_ISO
 	toColumn: Operation_Cal_Day.DayDate
 
-relationship 0652dba8-c5cf-4c01-805b-9175f71181e5
-	toCardinality: many
-	fromColumn: V_FACT_FB_OPS_CFR.CFR_Key
-	toColumn: V_Dim_FB_CustChainHeir._RolledStop_Key
-
 relationship f8a4f7d8-974b-283e-dbc8-0b8e4038758f
 	toCardinality: many
 	fromColumn: V_Fact_FB_CMAComplianceSummary.PeriodEnd
@@ -209,23 +228,4 @@ relationship 99481fcb-70a1-d986-cd09-eeb14e739913
 	toCardinality: many
 	fromColumn: V_Fact_FB_RevDetail.WeekStartDayDate
 	toColumn: Operation_Cal_Day.DayDate
-
-relationship 0507ee56-9212-4893-a592-a2ddb8f60629
-	crossFilteringBehavior: bothDirections
-	fromColumn: V_FB_MerchByEmployeeCustomer.CustomerNumber
-	toColumn: V_DIm_FB_CustChainHier_Distinct_Customer_number.CustomerNumber
-
-relationship 1c233f38-66e0-124f-7e51-99fa448186af
-	toCardinality: many
-	fromColumn: V_FB_MerchByEmployeeCustomer.TerritoryName
-	toColumn: V_Dim_FB_RptBranchHier.TerritoryName
-
-relationship 715993e4-e546-642c-a414-4ddd83104bda
-	toCardinality: many
-	fromColumn: V_Fact_FB_RevDetail.TradeMarkID
-	toColumn: V_Dim_FB_ProdHeir.TradeMarkID
-
-relationship 23ce7f4f-b014-5755-480b-9e6c4ca2454d
-	fromColumn: V_Dim_FB_CalDay.REF_KEY
-	toColumn: V_Dim_FB_Ref.REF_KEY
 

@@ -1,0 +1,353 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "9b71390443fcbf402a0b",
+  "position": {
+    "x": 14.673990924289468,
+    "y": 113.72342966324338,
+    "z": 0,
+    "height": 456.11655122999764,
+    "width": 909.787437305947,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "DayDate"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.DayDate",
+              "nativeQueryRef": "DayDate"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_FB_Financial_Management"
+                    }
+                  },
+                  "Property": "IsForecast"
+                }
+              },
+              "queryRef": "V_FB_Financial_Management.IsForecast",
+              "nativeQueryRef": "IsForecast"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Base PL FCST Act"
+                }
+              },
+              "queryRef": "Measure Table.Base PL FCST Act",
+              "nativeQueryRef": "Base PL FCST Act"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume FCST Act"
+                }
+              },
+              "queryRef": "Measure Table.Volume FCST Act",
+              "nativeQueryRef": "Volume FCST Act"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_FB_Financial_Management"
+                        }
+                      },
+                      "Property": "AmtAct"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(V_FB_Financial_Management.AmtAct)",
+              "nativeQueryRef": "Sum of AmtAct"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_FB_Financial_Management"
+                        }
+                      },
+                      "Property": "AmtAOP"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(V_FB_Financial_Management.AmtAOP)",
+              "nativeQueryRef": "Sum of AmtAOP"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_FB_Financial_Management"
+                        }
+                      },
+                      "Property": "AmtFcst39"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(V_FB_Financial_Management.AmtFcst39)",
+              "nativeQueryRef": "Sum of AmtFcst39"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_FB_Financial_Management"
+                        }
+                      },
+                      "Property": "AmtFcst66"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(V_FB_Financial_Management.AmtFcst66)",
+              "nativeQueryRef": "Sum of AmtFcst66"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_FB_Financial_Management"
+                        }
+                      },
+                      "Property": "AmtFcst93"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(V_FB_Financial_Management.AmtFcst93)",
+              "nativeQueryRef": "Sum of AmtFcst93"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "V_Dim_FB_CalDay"
+                  }
+                },
+                "Property": "DayDate"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "93.95547600266092D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_Dim_FB_CalDay.DayDate"
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "18337efe42ba068d6f1b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CalDay"
+              }
+            },
+            "Property": "GE_CL_Y0"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User",
+        "isHiddenInViewMode": true
+      },
+      {
+        "name": "71fb779f924e150f7d08",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CalDay"
+              }
+            },
+            "Property": "DayDate"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "48f751efa5dd0bcd0e70",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Base PL FCST Act"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "ba48858ccd6560dbec5b",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "V_FB_Financial_Management"
+                  }
+                },
+                "Property": "AmtAct"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "9e8ebce6c5b7263bf80d",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "V_FB_Financial_Management"
+                  }
+                },
+                "Property": "AmtAOP"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "3e9ef9771e8ae203de61",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "V_FB_Financial_Management"
+                  }
+                },
+                "Property": "AmtFcst39"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "430b72926ec264821986",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "V_FB_Financial_Management"
+                  }
+                },
+                "Property": "AmtFcst66"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "cf2ad0a9b0f42f3433e9",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "V_FB_Financial_Management"
+                  }
+                },
+                "Property": "AmtFcst93"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}

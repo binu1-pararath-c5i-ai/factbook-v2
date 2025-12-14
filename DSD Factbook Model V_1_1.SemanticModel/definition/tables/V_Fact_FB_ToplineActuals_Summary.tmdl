@@ -2,12 +2,14 @@ table V_Fact_FB_ToplineActuals_Summary
 	lineageTag: 0ed7f2e9-b2e1-4f5d-8966-4cdfe99463f4
 
 	column MonthID
-		dataType: string
+		dataType: double
 		lineageTag: 57c2a9e4-de8f-47ea-bacc-3650a07e9e0c
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: MonthID
 
 		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column SalesGroupID
 		dataType: string

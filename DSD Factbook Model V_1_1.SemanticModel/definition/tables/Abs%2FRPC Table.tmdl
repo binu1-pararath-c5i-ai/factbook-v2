@@ -130,14 +130,14 @@ table 'Abs/RPC Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -182,9 +182,7 @@ table 'Abs/RPC Table'
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure Tooltip =
-			"tooltip"
-			// "    "
+	measure Tooltip = "tooltip"
 		lineageTag: 967c33ea-d2b8-4128-b1a0-6ba4acbd294c
 
 	measure 'Sel_Vol_Rev_GP_OI_bar_CC_3rd graph' =

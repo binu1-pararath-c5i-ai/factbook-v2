@@ -37,77 +37,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Volume FCST Act' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[CD]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[CD]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" }
-			        ),
-			
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			
-			
-			```
+	measure 'Volume FCST Act' = CALCULATE([Base PL FCST Act], 'V_Dim_FB_PlHier'[PlSubHier] IN { "Franchise cases", "Contract cases" })
 		formatString: 0
 		lineageTag: ddb86fb2-4cfa-48f4-9827-34ebc812f7be
 
@@ -237,75 +167,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Revenue FCST Act' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			 
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			 
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"}
-			        ),
-			 
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			 
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			 
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			```
+	measure 'Revenue FCST Act' = CALCULATE([Base PL FCST Act], V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
 		formatString: 0
 		lineageTag: dafb296e-af5f-4835-8999-8e3d4b467f6d
 
@@ -319,78 +181,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'GP FCST Act' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			 
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			 
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit"
-			        ),
-			 
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_Opex'[OpexLine] = "Total COGS",
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			 
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_Opex'[OpexLine] = "Total COGS",
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			 
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_Opex'[OpexLine] = "Total COGS",
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			```
+	measure 'GP FCST Act' = CALCULATE([Base PL FCST Act], V_Dim_FB_PlHier[PlHier] = "Gross Profit")
 		formatString: 0
 		lineageTag: ec584e6a-b66d-46f7-8abf-054383a2bd1d
 
@@ -442,75 +233,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Opex FCST Act' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			 
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			 
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"}
-			        ),
-			 
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			 
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			 
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			```
+	measure 'Opex FCST Act' = CALCULATE([Base PL FCST Act], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
 		formatString: 0
 		lineageTag: ca49ceba-43c3-4cc9-8036-de5a07e1645a
 
@@ -562,79 +285,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'OI FCST Act' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			 
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			 
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"}
-			        ),
-			 
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			           'V_Dim_FB_Opex'[OpexLine] IN {"Total COGS","DSD-T&W"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_FB_financial_Management'[IsForecast] = "Y"
-			           
-			       ),
-			 
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			           'V_Dim_FB_Opex'[OpexLine] IN {"Total COGS","DSD-T&W"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			 
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			          V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			           'V_Dim_FB_Opex'[OpexLine] IN {"Total COGS","DSD-T&W"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			```
+	measure 'OI FCST Act' = CALCULATE([Base PL FCST Act], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense", "Gross Profit","Other Income (Expense)"})
 		formatString: 0
 		lineageTag: fbfd6a70-12e9-444f-8ccc-8e54df06a9ea
 
@@ -1883,77 +1534,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Volume_Bar_FCST = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" }
-			        ),
-			
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			
-			
-			```
+	measure Volume_Bar_FCST = CALCULATE([Base PL FCST Act], 'V_Dim_FB_PlHier'[PlSubHier] IN {"Franchise cases", "Contract cases"})
 		lineageTag: b371b1a7-ad4e-4028-9177-7042340fdc7b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2107,78 +1688,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure GP_Bar_FCST = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			 
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			 
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit"
-			        ),
-			 
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_Opex'[OpexLine] = "Total COGS",
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			 
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_Opex'[OpexLine] = "Total COGS",
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			 
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_Opex'[OpexLine] = "Total COGS",
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			```
+	measure GP_Bar_FCST = CALCULATE([Base PL FCST Act], V_Dim_FB_PlHier[PlHier] = "Gross Profit")
 		lineageTag: 2be126e7-c12b-4b11-bedc-92c35d87c187
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2226,75 +1736,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Opex_Bar_FCST = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			 
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			 
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"}
-			        ),
-			 
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			 
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			 
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			```
+	measure Opex_Bar_FCST = CALCULATE([Base PL FCST Act], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
 		lineageTag: e31fc281-01bf-4c9b-82bd-7e6e814f9deb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2342,79 +1784,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure OI_Bar_FCST = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			 
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			 
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"}
-			        ),
-			 
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			           'V_Dim_FB_Opex'[OpexLine] IN {"Total COGS","DSD-T&W"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_FB_financial_Management'[IsForecast] = "Y"
-			           
-			       ),
-			 
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			           'V_Dim_FB_Opex'[OpexLine] IN {"Total COGS","DSD-T&W"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			 
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			          V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			           'V_Dim_FB_Opex'[OpexLine] IN {"Total COGS","DSD-T&W"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			```
+	measure OI_Bar_FCST = CALCULATE([Base PL FCST Act], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense", "Gross Profit","Other Income (Expense)"})
 		lineageTag: 22336868-02de-4632-98b2-804ce45a8cb7
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3914,99 +3284,13 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A Labor FCST' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			             V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			        ),
-			
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			            V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			             V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			           V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
+	measure 'SG&A Labor FCST' =
+			CALCULATE([Base PL FCST Act],
+			    V_Dim_FB_Opex[OpexLine] = "SG&A",
+			    V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
+			    V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
+			    NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			)
-			
-			
-			
-			```
 		lineageTag: 439f1013-0edd-43d1-a0da-e3f06f1e7f53
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4134,300 +3418,35 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Building FCST' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1000",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			        ),
-			
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1000",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			          V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1000",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1000",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1000",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			           V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1000",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			          V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1000",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
+	measure 'T&W Building FCST' =
+			CALCULATE([Base PL FCST Act],
+			    V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
+			    V_Dim_FB_Company[CmpnyCode] = "1000",
+			    NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
+			    NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			)
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			```
 		lineageTag: 7785d22b-c86f-4e86-ba72-fe15f1157501
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Fleet FCST' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			             V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1010",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			        ),
-			
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1010",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1010",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			            V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1010",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1010",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			             V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1010",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] = "1010",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
+	measure 'T&W Fleet FCST' =
+			CALCULATE([Base PL FCST Act],
+			    V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
+			    V_Dim_FB_Company[CmpnyCode] = "1010",
+			    NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
+			    NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			)
-			
-			
-			```
 		lineageTag: 4b547745-6f21-4643-b971-8974fce7932d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Labor FCST' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			        ),
-			
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			          V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			          V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
+	measure 'T&W Labor FCST' =
+			CALCULATE([Base PL FCST Act],
+			    V_Dim_FB_Opex[OpexLine] = "DSD-T&W",
+			    V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
+			    V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
+			    NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			)
-			
-			
-			```
 		lineageTag: 3e7d7a0a-5a21-4d83-8db3-3c0a55617596
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4490,92 +3509,12 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Non Labor Opex FCST' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			        ),
-			
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			           V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
+	measure 'Non Labor Opex FCST' =
+			CALCULATE([Base PL FCST Act],
+			    V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
+			    NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
+			    NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			)
-			
-			
-			
-			```
 		lineageTag: 9e4e6f12-6768-4f32-93a8-2fb64b0fc69f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -7214,100 +6153,13 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A NON Labor FCST' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			        ),
-			
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			          V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
+	measure 'SG&A NON Labor FCST' =
+			CALCULATE([Base PL FCST Act],
+			    V_Dim_FB_Opex[OpexLine] = "SG&A",
+			    V_Dim_FB_Company[CmpnyCode] IN {"1010","1000"},
+			    NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
+			    NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			)
-			
-			
-			
-			
-			```
 		lineageTag: 31ef8c1a-a3ce-4033-bfc3-3794f2a0d09f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -7611,92 +6463,12 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'DSD Labor FCST' = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			        ),
-			
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			          V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			           V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			        V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
+	measure 'DSD Labor FCST' =
+			CALCULATE([Base PL FCST Act],
+			    V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
+			    V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
+			    NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			)
-			
-			
-			
-			```
 		lineageTag: c4cc6f37-f3b5-4991-9ca2-1020a590f599
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -14440,14 +13212,14 @@ table 'Measure Table'
 			var _voidpw = IF(ISBLANK(_val),BLANK(),1-_val)
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]),"Wk") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]),"Wk") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -14476,7 +13248,7 @@ table 'Measure Table'
 			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
 			         )
 			RETURN 
-			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2, "NA",
+			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, "NA",
 			([POG_Comp]-_PriorPeriod)*100)
 			```
 		formatString: #,##0pts;(#,##0pts)
@@ -14489,7 +13261,7 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period_Op]
 			
-			 var _isdsspw = 
+			var _isdsspw = 
 			CALCULATE(
 			    SUM(V_Fact_FB_POGVoidDetail[IsDSSVoid]),
 			    REMOVEFILTERS(Operation_Cal_Day),
@@ -14509,14 +13281,14 @@ table 'Measure Table'
 			var _voidpw = IF(ISBLANK(_val),BLANK(),1-_val)
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]),"Wk") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]),"Wk") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -14539,10 +13311,10 @@ table 'Measure Table'
 			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
 			        _isYear,  CALCULATE([LF_POG_COMP],
 			                            FILTER(ALL(V_Dim_FB_CalDay),
-			                             V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
+			                             V_Dim_FB_CalDay[FirstDayOfYear] = DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
 			         )
 			RETURN 
-			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2, "NA",([LF_POG_COMP]-_PriorPeriod)*100)
+			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, "NA",([LF_POG_COMP]-_PriorPeriod)*100)
 			```
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: POG
@@ -14574,14 +13346,14 @@ table 'Measure Table'
 			var _voidpw = IF(ISBLANK(_val),BLANK(),1-_val)
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]),"Wk ") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]),"Wk ") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -14607,7 +13379,7 @@ table 'Measure Table'
 			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
 			         )
 			RETURN 
-			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2, "NA",([SF_POG_COMP]-_PriorPeriod)*100)
+			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, "NA",([SF_POG_COMP]-_PriorPeriod)*100)
 			```
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: POG
@@ -14639,14 +13411,14 @@ table 'Measure Table'
 			var _voidpw = IF(ISBLANK(_val),BLANK(),1-_val)
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -14671,7 +13443,7 @@ table 'Measure Table'
 			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
 			         )
 			RETURN 
-			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2, "NA",([New Item_POG_COMP]-_PriorPeriod)*100)
+			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, "NA",([New Item_POG_COMP]-_PriorPeriod)*100)
 			```
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: POG
@@ -14748,68 +13520,7 @@ table 'Measure Table'
 		displayFolder: Rev
 		lineageTag: 11f49147-0626-49d5-8c52-195505d26edb
 
-	measure 'Displays Pending' = ```
-			
-			/*
-			// This dax will calculate the YTD, QYD, MTD CMA based on the date slicer selected.
-			var _SelectedPeriod=[IM_Selected_Period]
-			
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			Var Avg_Sold =
-			CALCULATE(
-			        AVERAGEX(
-			            VALUES(V_Fact_FB_RevDetail[Time Granularity]),
-			            [Displays Pending_Base_Calc]
-			                ),
-			                CONTAINSSTRING(V_Fact_FB_RevDetail[Time Granularity],"Monthly")||
-			                CONTAINSSTRING(V_Fact_FB_RevDetail[Time Granularity],"Current Week")
-			        )    
-			
-			Var _SelectedKPI = 
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,CALCULATE([Displays Pending_Base_Calc],
-			                            FILTER(ALL(V_Dim_FB_CalDay),
-			                            V_Dim_FB_CalDay[WeekStarting_ISO]=_SelectedPeriod)),
-			
-			        _isMonth,CALCULATE([Displays Pending_Base_Calc],
-			                            FILTER(ALL(V_Dim_FB_CalDay),
-			                            V_Dim_FB_CalDay[FirstDayOfMonth]=_SelectedPeriod),
-			                            CONTAINSSTRING(V_Fact_FB_RevDetail[Time Granularity],"Monthly")||
-			                            CONTAINSSTRING(V_Fact_FB_RevDetail[Time Granularity],"Current Week")
-			                            ),
-			                         
-			        _isQuarter,CALCULATE(Avg_Sold,
-			                            FILTER(ALL(V_Dim_FB_CalDay),
-			                             V_Dim_FB_CalDay[FirstDayOfQuarter]=_SelectedPeriod)),
-			                             
-			        _isYear,  CALCULATE(Avg_Sold,
-			                            FILTER(ALL(V_Dim_FB_CalDay),
-			                             V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod), MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			         )
-			RETURN _SelectedKPI
-			*/
-			
-			[Displays Pending_Base_Calc]
-			```
+	measure 'Displays Pending' = [Displays Pending_Base_Calc]
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Rev
 		lineageTag: 6d6a9f69-81b1-4c42-8969-9f92e854227c
@@ -14968,14 +13679,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period_Op]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -15014,14 +13725,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period_Op]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -15072,14 +13783,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period_Op]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -15118,14 +13829,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period_Op]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -15164,14 +13875,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period_Op]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -15326,14 +14037,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -15902,10 +14613,10 @@ table 'Measure Table'
 	measure 'IM_Date Validation_Week' = ```
 			
 			 
-			 Var _Day = SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay])
+			 Var _Day = SELECTEDVALUE(V_Dim_FB_CalDay[L3])
 			 
 			 RETURN
-			CALCULATE(MAX(V_Dim_FB_CalDay[WeekStarting_ISO]),V_Dim_FB_CalDay[YearMonthDay]=_Day)
+			CALCULATE(MAX(V_Dim_FB_CalDay[WeekStarting_ISO]),V_Dim_FB_CalDay[L3]=_Day)
 			```
 		formatString: General Date
 		displayFolder: CMA
@@ -15928,14 +14639,14 @@ table 'Measure Table'
 			
 			 
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -15976,14 +14687,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -16021,14 +14732,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -17034,14 +15745,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -17742,77 +16453,7 @@ table 'Measure Table'
 
 		formatStringDefinition = ""
 
-	measure Volume_Bar_FCST_new = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" }
-			        ),
-			
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			           'V_Dim_FB_PlHier'[PlSubHier]  IN { "Franchise cases", "Contract cases" },
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			
-			
-			```
+	measure Volume_Bar_FCST_new = CALCULATE([Base PL FCST Act], 'V_Dim_FB_PlHier'[PlSubHier] IN {"Franchise cases", "Contract cases"})
 		lineageTag: 4b8d591f-76e5-4138-b901-a439f613beeb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -17890,228 +16531,17 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure GP_Bar_FCST_new = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			 
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			 
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit"
-			        ),
-			 
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_Opex'[OpexLine] = "Total COGS",
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			 
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_Opex'[OpexLine] = "Total COGS",
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			 
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-			            'V_Dim_FB_Opex'[OpexLine] = "Total COGS",
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			```
+	measure GP_Bar_FCST_new = CALCULATE([Base PL FCST Act], V_Dim_FB_PlHier[PlHier] = "Gross Profit")
 		lineageTag: 268f2471-1951-46ae-9a25-7a86b41524e4
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Opex_Bar_FCST_new = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			 
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			 
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"}
-			        ),
-			 
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			 
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			 
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			```
+	measure Opex_Bar_FCST_new = CALCULATE([Base PL FCST Act], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
 		lineageTag: 558035ef-b1ee-44fb-accd-b3183d34121e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure OI_Bar_FCST_new = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			 
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			 
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"}
-			        ),
-			 
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			           'V_Dim_FB_Opex'[OpexLine] IN {"Total COGS","DSD-T&W"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_FB_financial_Management'[IsForecast] = "Y"
-			           
-			       ),
-			 
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			          V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			           'V_Dim_FB_Opex'[OpexLine] IN {"Total COGS","DSD-T&W"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			 
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			          V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			           'V_Dim_FB_Opex'[OpexLine] IN {"Total COGS","DSD-T&W"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			```
+	measure OI_Bar_FCST_new = CALCULATE([Base PL FCST Act], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense", "Gross Profit","Other Income (Expense)"})
 		lineageTag: e5b563c4-be6f-49cc-b20d-ecf36213dd57
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -19320,7 +17750,7 @@ table 'Measure Table'
 	measure Total_Account =
 			
 			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2,
+			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
 			CALCULATE(
 			    AVERAGEX(
 			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
@@ -19431,7 +17861,7 @@ table 'Measure Table'
 	measure CSD_Account_CMA_Compliance =
 			
 			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2,
+			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
 			CALCULATE(
 			    AVERAGEX(
 			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
@@ -19451,7 +17881,7 @@ table 'Measure Table'
 	measure Sports_Account_CMA_Compliance =
 			
 			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2,
+			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
 			CALCULATE(
 			    AVERAGEX(
 			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
@@ -19471,7 +17901,7 @@ table 'Measure Table'
 	measure Energy_Account_CMA_Compliance =
 			
 			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2,
+			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
 			CALCULATE(
 			    AVERAGEX(
 			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
@@ -19491,7 +17921,7 @@ table 'Measure Table'
 	measure Water_Account_CMA_Compliance = ```
 			
 			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2,
+			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
 			CALCULATE(
 			    AVERAGEX(
 			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
@@ -19512,7 +17942,7 @@ table 'Measure Table'
 	measure Tea&JC_Account_CMA_Compliance =
 			
 			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2,
+			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
 			CALCULATE(
 			    AVERAGEX(
 			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
@@ -19563,7 +17993,7 @@ table 'Measure Table'
 	measure Account_CMA_Compliance =
 			
 			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2,
+			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
 			CALCULATE(
 			    AVERAGEX(
 			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
@@ -19591,14 +18021,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -19657,14 +18087,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -19701,14 +18131,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -19745,14 +18175,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -19788,7 +18218,7 @@ table 'Measure Table'
 	measure 'ACCOUNT OPPORTUNITY' = ```
 			
 			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort]) = 12.2,
+			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
 			CALCULATE(
 			    AVERAGEX(
 			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
@@ -19900,14 +18330,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period_Op]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -20064,14 +18494,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -20109,14 +18539,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -20154,14 +18584,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -20199,14 +18629,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -20586,14 +19016,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period_Op]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -21100,14 +19530,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period_Op]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -21147,14 +19577,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -21206,14 +19636,14 @@ table 'Measure Table'
 			Var Opp = [Total_Variance]
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -21387,7 +19817,7 @@ table 'Measure Table'
 			SWITCH(
 			       TRUE(),
 			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[YearMonthDay]), _iscurrmonth_val,
+			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3]), _iscurrmonth_val,
 			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
 			        _x<=30, _isMonth_val,
 			        _x<=92, _isQuarter_val,
@@ -21471,7 +19901,7 @@ table 'Measure Table'
 			SWITCH(
 			       TRUE(),
 			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[YearMonthDay]), _iscurrmonth_val,
+			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3]), _iscurrmonth_val,
 			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
 			        _x<=30, _isMonth_val,
 			        _x<=92, _isQuarter_val,
@@ -21576,7 +20006,7 @@ table 'Measure Table'
 			SWITCH(
 			       TRUE(),
 			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[YearMonthDay]), _iscurrmonth_val,
+			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3]), _iscurrmonth_val,
 			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
 			        _x<=30, _isMonth_val,
 			        _x<=92, _isQuarter_val,
@@ -21652,7 +20082,7 @@ table 'Measure Table'
 			SWITCH(
 			       TRUE(),
 			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[YearMonthDay]), _iscurrmonth_val,
+			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3]), _iscurrmonth_val,
 			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
 			        _x<=30, _isMonth_val,
 			        _x<=92, _isQuarter_val,
@@ -21759,7 +20189,7 @@ table 'Measure Table'
 			SWITCH(
 			       TRUE(),
 			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[YearMonthDay]), _iscurrmonth_val,
+			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3]), _iscurrmonth_val,
 			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
 			        _x<=30, _isMonth_val,
 			        _x<=92, _isQuarter_val,
@@ -21843,7 +20273,7 @@ table 'Measure Table'
 			SWITCH(
 			       TRUE(),
 			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[YearMonthDay]), _iscurrmonth_val,
+			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3]), _iscurrmonth_val,
 			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
 			        _x<=30, _isMonth_val,
 			        _x<=92, _isQuarter_val,
@@ -21920,7 +20350,7 @@ table 'Measure Table'
 			SWITCH(
 			       TRUE(),
 			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[YearMonthDay]), _iscurrmonth_val,
+			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3]), _iscurrmonth_val,
 			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
 			        _x<=30, _isMonth_val,
 			        _x<=92, _isQuarter_val,
@@ -22016,14 +20446,14 @@ table 'Measure Table'
 			var _SelectedPeriod=[IM_Selected_Period]
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -22083,14 +20513,14 @@ table 'Measure Table'
 			var _SelectedPeriod=[IM_Selected_Period]
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -22150,14 +20580,14 @@ table 'Measure Table'
 			var _SelectedPeriod=[IM_Selected_Period]
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -22217,14 +20647,14 @@ table 'Measure Table'
 			var _SelectedPeriod=[IM_Selected_Period]
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -22284,14 +20714,14 @@ table 'Measure Table'
 			var _SelectedPeriod=[IM_Selected_Period]
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -22351,14 +20781,14 @@ table 'Measure Table'
 			var _SelectedPeriod=[IM_Selected_Period]
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -22469,14 +20899,14 @@ table 'Measure Table'
 			var _SelectedPeriod=[IM_Selected_Period]
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
@@ -22574,7 +21004,7 @@ table 'Measure Table'
 
 	measure %Void_Base_Calc = ```
 			
-			var _x = SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort])
+			var _x = SELECTEDVALUE(Operation_Cal_Day[Period Level Sort])
 			var _dssvoid = 
 			CALCULATE(
 			    SUM(V_Fact_FB_POGVoidDetail[IsDSSVoid]),
@@ -22730,14 +21160,14 @@ table 'Measure Table'
 			
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			    HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -25236,7 +23666,7 @@ table 'Measure Table'
 			SWITCH(
 			       TRUE(),
 			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CD])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[YearMonthDay]), _iscurrmonth_val,
+			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CD])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3]), _iscurrmonth_val,
 			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CD])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
 			        _x<=30, _isMonth_val,
 			        _x<=92, _isQuarter_val,
@@ -26031,13 +24461,13 @@ table 'Measure Table'
 			
 			
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
+			     HASONEVALUE('V_Dim_FB_CalDay'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[YearMonthDay]),"Week") &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3]), "Wk ") &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[MonthName]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
@@ -26287,14 +24717,14 @@ table 'Measure Table'
 			
 			 
 			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			     HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			     HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[YearMonthDay]),"Week") &&
-			    HASONEVALUE('Operation_Cal_Day'[YearMonthDay]) &&
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
 			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			 
@@ -26604,7 +25034,7 @@ table 'Measure Table'
 
 	measure IsDSSVoid = ```
 			
-			var _tp = SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort])
+			var _tp = SELECTEDVALUE(Operation_Cal_Day[Period Level Sort])
 			
 			var _pw = 
 			CALCULATE(
@@ -26628,7 +25058,7 @@ table 'Measure Table'
 
 	measure IsDSSVoid_NewItem = ```
 			
-			var _tp = SELECTEDVALUE(Operation_Cal_Day[YearMonthDay_Sort])
+			var _tp = SELECTEDVALUE(Operation_Cal_Day[Period Level Sort])
 			
 			var _pw = 
 			CALCULATE(
@@ -26761,6 +25191,81 @@ table 'Measure Table'
 		formatString: 0
 		displayFolder: _ Date Ref
 		lineageTag: c1f522f4-e4a5-45c9-b430-943956f66cbb
+
+	measure 'Base PL FCST Act' = ```
+			
+			
+			// Gets the Previous Month & Year
+			VAR Today = MAX('V_Dim_FB_Ref'[PM])
+			// VAR CurrentMonth = MONTH(Today)
+			VAR CurrentQtr = QUARTER(Today)
+			VAR CurrentYear = YEAR(Today)
+			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			
+			    // if this is previous years
+			    VisualYear < CurrentYear,
+			    CALCULATE(
+			        SUM('V_FB_Financial_Management'[AmtFcst93]),
+			        'V_FB_Financial_Management'[IsForecast] = "N"
+			    ) +
+			    CALCULATE(
+			        SUM('V_FB_Financial_Management'[AmtFcst93]),
+			        'V_FB_Financial_Management'[IsForecast] = "Y",
+			        'V_Dim_FB_CalDay'[MonthNumber] IN {11, 12}
+			    ),
+			
+			    // Q4: Oct–Dec → Show FCST_93 from October to Dec
+			    CurrentQtr = 4,
+			    CALCULATE(
+			        SUM('V_FB_Financial_Management'[AmtFcst93]),
+			        'V_FB_Financial_Management'[IsForecast] = "N",
+			        'V_Dim_FB_CalDay'[MonthNumber] = 10
+			    ) +
+			    CALCULATE(
+			        SUM('V_FB_Financial_Management'[AmtFcst93]),
+			        'V_FB_Financial_Management'[IsForecast] = "Y",
+			        'V_Dim_FB_CalDay'[MonthNumber] IN {11, 12}
+			    ),
+			
+			    // Curr Year Q3: Jul–Sep → Show FCST_66 from July to Dec
+			    CurrentQtr = 3,
+			    CALCULATE(
+			        SUM('V_FB_Financial_Management'[AmtFcst66]),
+			        'V_FB_Financial_Management'[IsForecast] = "N",
+			        'V_Dim_FB_CalDay'[MonthNumber] = 7
+			    ) +
+			    CALCULATE(
+			        SUM('V_FB_Financial_Management'[AmtFcst66]),
+			        'V_FB_Financial_Management'[IsForecast] = "Y",
+			        'V_Dim_FB_CalDay'[MonthNumber] >= 8
+			    ),
+			
+			    // Q2: Apr–Jun → Custom logic
+			    CurrentQtr = 4,
+			    CALCULATE(
+			        SUM('V_FB_Financial_Management'[AmtFcst39]),
+			        'V_FB_Financial_Management'[IsForecast] = "N",
+			        'V_Dim_FB_CalDay'[MonthNumber] IN {4, 5, 6}
+			    ) +
+			    CALCULATE(
+			        SUM('V_FB_Financial_Management'[AmtFcst39]),
+			        'V_FB_Financial_Management'[IsForecast] = "Y",
+			        'V_Dim_FB_CalDay'[MonthNumber] >= 7
+			    ),
+			
+			    // Q1: Jan–Mar → Show AOP for ALL months
+			    CurrentQtr = 1,
+			    SUM('V_FB_Financial_Management'[AmtAOP])
+			)
+			
+			```
+		lineageTag: 06c10aca-a8db-43f9-a252-f054c85bfec8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Column
 		formatString: 0
