@@ -1,59 +1,36 @@
 table 'Measure Table'
 	lineageTag: c6f89536-905a-4200-bcae-8ee375f17d6c
 
-	measure 'Revenue Act' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
+	measure 'Revenue Act' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
 		lineageTag: 8df3a3b9-b1e3-4818-8e0c-5703fe62e9ee
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Gross Profit Act' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"})
+	measure 'Gross Profit Act' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"})
 		lineageTag: 06e3c183-68c7-44fa-ad7c-872464c72df1
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Opex Act' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
+	measure 'Opex Act' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
 		lineageTag: 02239f83-a6a5-43fd-a1ed-17f2947c965c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Operating Income Act' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"})
+	measure 'Operating Income Act' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense", "Gross Profit","Other Income (Expense)"})
 		lineageTag: f27f68e1-3038-4ecd-8fc9-2c8ccd3f3f57
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Volume FCST Act' = CALCULATE([Base PL FCST Act], 'V_Dim_FB_PlHier'[PlSubHier] IN { "Franchise cases", "Contract cases" })
+	measure 'Volume FCST Act' = CALCULATE([Base PL FCST Act], 'V_Dim_FB_PlHier'[PlSubHier] IN {"Franchise cases", "Contract cases"})
 		formatString: 0
 		lineageTag: ddb86fb2-4cfa-48f4-9827-34ebc812f7be
 
-	measure 'Volume AOP' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
-			    V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
+	measure 'Volume AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
 		lineageTag: 2f109079-883b-497b-a746-40d85c7cfddd
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Volume PY' =
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtPY]),
-			    V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
+	measure 'Volume PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
 		lineageTag: 91f6cb9e-874c-4016-8595-dff627aef128
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -88,11 +65,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Revenue AOP' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
-			    V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
+	measure 'Revenue AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
 		lineageTag: 4c5490ef-e554-48f8-a2d8-6d5fceb8328e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -110,11 +83,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Revenue PY' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtPY]),
-			    V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
+	measure 'Revenue PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
 		lineageTag: db4649d2-e03f-4df2-a6f0-d1b6d9edc958
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -129,11 +98,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Gross Profit PY' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtPY]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"})
+	measure 'Gross Profit PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"})
 		lineageTag: 57c3c30d-b1ab-40b9-b6e9-b4fd24517c04
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -148,11 +113,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Gross Profit AOP' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"})
+	measure 'Gross Profit AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"})
 		lineageTag: eeabd864-424a-42c0-81dd-02f1cafc5ba5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -195,11 +156,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Opex AOP' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
+	measure 'Opex AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
 		lineageTag: 2bf1793e-614c-4ab3-b7c3-f5468a370398
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -214,11 +171,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Opex PY' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtPY]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
+	measure 'Opex PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
 		lineageTag: 273a3b8a-3e06-4dc2-b17f-cda65ade2b05
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -247,11 +200,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Operating Income AOP' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"})
+	measure 'Operating Income AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"})
 		lineageTag: 71d53f89-588a-46cd-acdd-d2a1b3b6b108
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -266,11 +215,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Operating Income PY' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtPY]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"})
+	measure 'Operating Income PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense", "Gross Profit", "Other Income (Expense)"})
 		lineageTag: 3de6df17-a5fd-437e-ab9a-f33107dbcb88
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1374,20 +1319,12 @@ table 'Measure Table'
 			```
 		lineageTag: 1937c55f-86cb-49b2-a625-5cfb634f4b35
 
-	measure 'Volume ActYTD' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtActYTD]),
-			    V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
+	measure 'Volume ActYTD' = CALCULATE(SUM(V_FB_Financial_Management[AmtActYTD]), V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
 		lineageTag: 035bdb85-518b-4bfa-a372-bb8080b15581
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Volume AOPYTD' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOPYTD]),
-			    V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
+	measure 'Volume AOPYTD' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOPYTD]), V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
 		lineageTag: 4301cea3-4289-4575-b9fa-5580f383b8ff
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1492,198 +1429,51 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Volume_Bar_Act =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_PlHier[PlSubHier] IN { "Franchise cases", "Contract cases" },
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM])) &&
-			        MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure Volume_Bar_Act = CALCULATE([Base_PL_Bar_Act], V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
 		formatString: 0
 		lineageTag: 90b46b1d-da35-4a88-a4e4-e8f8148136a4
 
-	measure Volume_Bar_AOP =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
-			    V_Dim_FB_PlHier[PlSubHier] IN { "Franchise cases", "Contract cases" },
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure Volume_Bar_AOP = CALCULATE([Base_PL_Bar_AOP], V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
 		lineageTag: 54226dad-75d9-4baf-8f51-53761d8caaa9
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Volume_Bar_PY =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtPY]),
-			    V_Dim_FB_PlHier[PlSubHier] IN { "Franchise cases", "Contract cases" },
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure Volume_Bar_PY = CALCULATE([Base_PL_Bar_PY], V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
 		lineageTag: 481664cb-a998-4905-ab28-3359833899e0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Volume_Bar_FCST = CALCULATE([Base PL FCST Act], 'V_Dim_FB_PlHier'[PlSubHier] IN {"Franchise cases", "Contract cases"})
+	measure Volume_Bar_FCST = CALCULATE([Base PL FCST Act], 'V_Dim_FB_PlHier'[PlSubHier] IN {"Franchise cases", "Contract cases"}, 'Time Intel'[Group] = "CL_YTD")
 		lineageTag: b371b1a7-ad4e-4028-9177-7042340fdc7b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Revenue_Bar_AOP =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
-			    V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure Revenue_Bar_AOP = CALCULATE([Base_PL_Bar_AOP], V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
 		lineageTag: c8598fd3-2ab6-4a6b-8570-cbc48595f6d1
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Revenue_Bar_PY =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtPY]),
-			    V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure Revenue_Bar_PY = CALCULATE([Base_PL_Bar_PY], V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
 		lineageTag: c8d85e4c-124b-46b0-9e19-08f131278270
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Revenue_Bar_FCST = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			VAR VisualMonth = SELECTEDVALUE('V_Dim_FB_CalDay'[MonthNumber])
-			
-			RETURN
-			IF (
-			    VisualYear = CurrentYear &&
-			    VisualMonth >= CurrentMonth,
-			    SWITCH(
-			        TRUE(),
-			
-			        // Q1: Jan–Mar → Show AOP for ALL months (from CurrentMonth onward)
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= CurrentMonth
-			        ),
-			
-			        // Q2: Apr–Jun → Custom logic (from CurrentMonth onward)
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "N",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= MAX(CurrentMonth, 4) &&
-			            'V_Dim_FB_CalDay'[MonthNumber] < 6
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= MAX(CurrentMonth, 6)
-			        ),
-			
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec (from CurrentMonth onward)
-			        CurrentMonth IN {7,8,9},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst66]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "N",
-			            'V_Dim_FB_CalDay'[MonthNumber] = 7 &&
-			            'V_Dim_FB_CalDay'[MonthNumber] >= CurrentMonth
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst66]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= MAX(CurrentMonth, 8)
-			        ),
-			
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec (from CurrentMonth onward)
-			        CurrentMonth IN {10,11,12},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst93]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "N",
-			            'V_Dim_FB_CalDay'[MonthNumber] = 10 &&
-			            'V_Dim_FB_CalDay'[MonthNumber] >= CurrentMonth
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst93]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= MAX(CurrentMonth, 11)
-			        )
-			    ),
-			    BLANK()
-			)
-			
-			```
+	measure Revenue_Bar_FCST = CALCULATE([Base PL FCST Act], V_Dim_FB_Opex[OpexLine] IN {"Net Sales"}, 'Time Intel'[Group] = "CL_YTD")
 		lineageTag: c8a70504-15fc-4658-b3d6-e395072f8168
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Revenue_Bar_Act =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM])) &&
-			        MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure Revenue_Bar_Act = CALCULATE([Base_PL_Bar_Act], V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
 		lineageTag: a5bb2d88-2dec-4440-ae28-9f0a95967481
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure GP_Bar_AOP =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure GP_Bar_AOP = CALCULATE([Base_PL_Bar_AOP], V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"})
 		lineageTag: 2a2ac366-55e9-4c07-8d72-2cbd02700f8d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure GP_Bar_PY =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtPY]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure GP_Bar_PY = CALCULATE([Base_PL_Bar_PY], V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"})
 		lineageTag: 15a5c741-303a-4450-af71-b0b6da0b72f3
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1693,45 +1483,17 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure GP_Bar_Act =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM])) &&
-			        MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure GP_Bar_Act = CALCULATE([Base_PL_Bar_Act], V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"})
 		lineageTag: e0b2bf42-bd08-43ee-874c-ceff01f3e48d
 
 		formatStringDefinition = ""
 
-	measure Opex_Bar_AOP =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure Opex_Bar_AOP = CALCULATE([Base_PL_Bar_AOP], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
 		lineageTag: 87cf71cf-a68f-4035-94cf-6861f67d2c07
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Opex_Bar_PY =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtPY]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure Opex_Bar_PY = CALCULATE([Base_PL_Bar_PY], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
 		lineageTag: c6bc81e3-4ee1-47bb-b1ad-4a90cb9f4683
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1741,45 +1503,17 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Opex_Bar_Act =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM])) &&
-			        MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure Opex_Bar_Act = CALCULATE([Base_PL_Bar_Act], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense"})
 		lineageTag: 77ab6da2-e41c-40a2-88ce-df119ed096ba
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure OI_Bar_AOP =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure OI_Bar_AOP = CALCULATE([Base_PL_Bar_AOP], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"})
 		lineageTag: df2303e2-6d60-46b9-881b-40134a56db8e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure OI_Bar_PY =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtPY]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure OI_Bar_PY = CALCULATE([Base_PL_Bar_PY], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense", "Gross Profit", "Other Income (Expense)"})
 		lineageTag: 18e895e0-b65f-48c5-b8b9-7bedf9cc4bab
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1789,17 +1523,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure OI_Bar_Act =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"},
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM])) &&
-			        MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-			)
+	measure OI_Bar_Act = CALCULATE([Base_PL_Bar_Act], V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense","Gross Profit","Other Income (Expense)"})
 		lineageTag: f7a7ca64-f14a-44a8-a0f8-8565f9067aaf
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2061,63 +1785,11 @@ table 'Measure Table'
 				RETURN _y
 				```
 
-	measure Volume_Bar_Actual_Selected =
-			
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR DataDate = MAX(V_Dim_FB_CalDay[DayDate]) -- Assuming this is the date context of the data
-			VAR UnlockDate = DATE(YEAR(DataDate), MONTH(DataDate) + 1, 7)
-			
-			RETURN
-			IF (
-			    TodayDate >= UnlockDate,
-			    SWITCH(
-			        TRUE(),
-			        SelectedToggle = "Absolute", [Volume_Bar_Act],
-			        SelectedToggle = "RPC", [Volume_Bar_Act]
-			    ),
-			    BLANK()
-			)
-			
-			
-			/*VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			
-			RETURN
-			SWITCH(
-			    TRUE(),
-			SelectedToggle = "Absolute" , [Volume_Bar_Act],
-			SelectedToggle = "RPC" , [Volume_Bar_Act]
-			)*/
+	measure Volume_Bar_Actual_Selected = CALCULATE([Volume_Bar_Act], 'Time Intel'[Group] = "PL_BAR_SEL")
 		formatString: 0.0
 		lineageTag: b14c4579-8f5d-45e1-af9c-0615dfd8cd77
 
-	measure Revenue_Bar_Actual_Selected =
-			
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR DataDate = MAX(V_Dim_FB_CalDay[DayDate]) -- Assuming this is the date context of the data
-			VAR UnlockDate = DATE(YEAR(DataDate), MONTH(DataDate) + 1, 7)
-			
-			RETURN
-			IF (
-			    TodayDate >= UnlockDate,
-			    SWITCH(
-			        TRUE(),
-			        SelectedToggle = "Absolute", [Revenue_Bar_Act],
-			        SelectedToggle = "RPC", [Revenue_Bar_RPC]
-			    ),
-			    BLANK()
-			)
-			
-			
-			/*VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			
-			RETURN
-			SWITCH(
-			    TRUE(),
-			SelectedToggle = "Absolute" , [Revenue_Bar_Act],
-			SelectedToggle = "RPC" , [Revenue_Bar_RPC]
-			)*/
+	measure Revenue_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Revenue_Bar_Act], [Revenue_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
 		lineageTag: fca33011-7f33-4f17-99c8-c23b12184d7d
 
 		formatStringDefinition = ```
@@ -2142,36 +1814,7 @@ table 'Measure Table'
 				RETURN _y
 				```
 
-	measure GP_Bar_Actual_Selected =
-			
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR DataDate = MAX(V_Dim_FB_CalDay[DayDate]) -- Assuming this is the date context of the data
-			VAR UnlockDate = DATE(YEAR(DataDate), MONTH(DataDate) + 1, 7)
-			
-			RETURN
-			IF (
-			    TodayDate >= UnlockDate,
-			    SWITCH(
-			        TRUE(),
-			        SelectedToggle = "Absolute", [GP_Bar_Act],
-			        SelectedToggle = "RPC",  [GP_Bar_RPC]
-			    ),
-			    BLANK()
-			)
-			
-			
-			
-			
-			
-			/*VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			
-			RETURN
-			SWITCH(
-			    TRUE(),
-			SelectedToggle = "Absolute" , [GP_Bar_Act],
-			SelectedToggle = "RPC" , [GP_Bar_RPC]
-			)*/
+	measure GP_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [GP_Bar_Act], [GP_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
 		lineageTag: ee16f601-7f3b-4aca-8cdf-4940322fbb51
 
 		formatStringDefinition = ```
@@ -2196,35 +1839,7 @@ table 'Measure Table'
 				RETURN _y
 				```
 
-	measure Opex_Bar_Actual_Selected =
-			
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR DataDate = MAX(V_Dim_FB_CalDay[DayDate]) -- Assuming this is the date context of the data
-			VAR UnlockDate = DATE(YEAR(DataDate), MONTH(DataDate) + 1, 7)
-			
-			RETURN
-			IF (
-			    TodayDate >= UnlockDate,
-			    SWITCH(
-			        TRUE(),
-			        SelectedToggle = "Absolute", abs([Opex_Bar_Act]),
-			        SelectedToggle = "RPC", ABS([Opex_Bar_RPC])
-			    ),
-			    BLANK()
-			)
-			
-			
-			
-			
-			/*VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			
-			RETURN
-			SWITCH(
-			    TRUE(),
-			SelectedToggle = "Absolute" , abs([Opex_Bar_Act]),
-			SelectedToggle = "RPC" , ABS([Opex_Bar_RPC])
-			)*/
+	measure Opex_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Opex_Bar_Act], [Opex_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
 		lineageTag: 6462e576-1689-48ec-9d5b-e4e63177a099
 
 		formatStringDefinition = ```
@@ -2249,37 +1864,7 @@ table 'Measure Table'
 				RETURN _y
 				```
 
-	measure OI_Bar_Actual_Selected =
-			
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR DataDate = MAX(V_Dim_FB_CalDay[DayDate]) -- Assuming this is the date context of the data
-			VAR UnlockDate = DATE(YEAR(DataDate), MONTH(DataDate) + 1, 7)
-			
-			RETURN
-			IF (
-			    TodayDate >= UnlockDate,
-			    SWITCH(
-			        TRUE(),
-			        SelectedToggle = "Absolute", [OI_Bar_Act],
-			        SelectedToggle = "RPC", [OI_Bar_RPC]
-			    ),
-			    BLANK()
-			)
-			
-			
-			
-			
-			
-			
-			/*VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			
-			RETURN
-			SWITCH(
-			    TRUE(),
-			SelectedToggle = "Absolute" , [OI_Bar_Act],
-			SelectedToggle = "RPC" , [OI_Bar_RPC]
-			)*/
+	measure OI_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [OI_Bar_Act], [OI_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
 		lineageTag: 47547e05-bfa9-41a2-88c8-04aedd9cc1bd
 
 		formatStringDefinition = ```
@@ -3078,7 +2663,7 @@ table 'Measure Table'
 			```
 		lineageTag: 9d2e8eeb-849a-48af-96be-6b8b19765aea
 
-	measure 'SG&A Fleet' = ```
+	measure 'SG&A Fleet' =
 			
 			CALCULATE(
 			    SUM(V_FB_Financial_Management[AmtAct]),
@@ -3087,8 +2672,6 @@ table 'Measure Table'
 			    NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
 			    NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			)
-			
-			```
 		lineageTag: 65825889-1662-44c0-a81a-bf9bf2613a08
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3249,33 +2832,21 @@ table 'Measure Table'
 			    SelectedQuarters,
 			    SWITCH(
 			        TRUE(),
-			        [Quarter] = 1, CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtAOP]),
-			        V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] = "1010",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			        ),
-			        [Quarter] = 2, CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst39]),
-			        V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] = "1010",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			        ),
+			        [Quarter] = 1, [SG&A Fleet],
+			        [Quarter] = 2, [SG&A Fleet AOP],
 			        [Quarter] = 3, CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst66]),
-			        V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] = "1010",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
+			            SUM('V_FB_Financial_Management'[AmtFcst66]),
+			            V_Dim_FB_Opex[OpexLine] = "SG&A",
+			            V_Dim_FB_Company[CmpnyCode] = "1010",
+			            NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
+			            NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			        ),
 			        [Quarter] = 4, CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst93]),
-			        V_Dim_FB_Opex[OpexLine] = "SG&A",
-			        V_Dim_FB_Company[CmpnyCode] = "1010",
-			        NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
-			        NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
+			            SUM('V_FB_Financial_Management'[AmtFcst93]),
+			            V_Dim_FB_Opex[OpexLine] = "SG&A",
+			            V_Dim_FB_Company[CmpnyCode] = "1010",
+			            NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
+			            NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			        ),
 			        0
 			    )
@@ -3295,7 +2866,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Fleet' = ```
+	measure 'T&W Fleet' =
 			
 			CALCULATE(
 			    SUM(V_FB_Financial_Management[AmtAct]),
@@ -3304,10 +2875,6 @@ table 'Measure Table'
 			    NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
 			    NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			)
-			
-			
-			
-			```
 		lineageTag: e741ef31-a874-4d6b-8822-9d6b37eba5ae
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -3325,7 +2892,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Labor' = ```
+	measure 'T&W Labor' =
 			
 			CALCULATE(
 			    SUM(V_FB_Financial_Management[AmtAct]),
@@ -3334,8 +2901,6 @@ table 'Measure Table'
 			    V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"},
 			    NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			)
-			
-			```
 		lineageTag: 135e0638-2506-4178-a588-0a0cdee9205d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5350,18 +4915,16 @@ table 'Measure Table'
 
 	measure 'vol bar act 2' =
 			
-			
 			DIVIDE(CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_Opex[OpexLine] = "Net Sales",
-			    DATESYTD(V_Dim_FB_CalDay[DayDate])
-			)
-			,
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_PlHier[PlSubHier] IN { "Franchise cases", "Contract cases" },
-			    DATESYTD(V_Dim_FB_CalDay[DayDate])
-			)
+					SUM(V_FB_Financial_Management[AmtAct]),
+					V_Dim_FB_Opex[OpexLine] = "Net Sales",
+					DATESYTD(V_Dim_FB_CalDay[DayDate])
+				),
+				CALCULATE(
+					SUM(V_FB_Financial_Management[AmtAct]),
+					V_Dim_FB_PlHier[PlSubHier] IN { "Franchise cases", "Contract cases" },
+					DATESYTD(V_Dim_FB_CalDay[DayDate])
+				)
 			)
 		lineageTag: 49bdf150-f4ce-449e-aec7-c8113697342e
 
@@ -6085,29 +5648,6 @@ table 'Measure Table'
 			    )
 			```
 		lineageTag: 38b8a94c-6a0b-45cd-83f7-9b5840b5ee9e
-
-	measure 'Revenue_Monthly_FCST dummy' =
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			
-			VAR ForecastMeasure =
-			    SWITCH(
-			        TRUE(),
-			        CurrentMonth <= 3, sum('V_FB_Financial_Management'[AmtAop]) ,
-			        CurrentMonth <= 6, sum('V_FB_Financial_Management'[AmtFcst39]),
-			        CurrentMonth <= 9, sum('V_FB_Financial_Management'[AmtFcst66]),
-			        TRUE, sum('V_FB_Financial_Management'[AmtFcst93])
-			    )
-			
-			RETURN
-			    CALCULATE(
-			        (ForecastMeasure),
-			        V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    )
-		lineageTag: 9f5bcb07-978e-4115-9285-ad88f68af978
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure V1T = ```
 			
@@ -9439,9 +8979,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR MaxClosedQuarter =
@@ -9519,9 +9059,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR MaxClosedQuarter =
@@ -9595,9 +9135,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR MaxClosedQuarter =
@@ -9671,9 +9211,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR MaxClosedQuarter =
@@ -9746,9 +9286,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR MaxClosedQuarter =
@@ -9860,13 +9400,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Total_CFR_PY_Card =
-			
-			CALCULATE(DIVIDE([Inv_Qty_PY_CFR],[Org_Ord_Qty_PY_CFR]))
-			/*
-			CALCULATE(DIVIDE([Inv_Qty_PY_CFR],[Org_Ord_Qty_PY_CFR]),
-			FILTER(V_Dim_FB_CustChainHeir,V_Dim_FB_CustChainHeir[NationalChainName] <> "Publix"))
-			*/
+	measure Total_CFR_PY_Card = CALCULATE(DIVIDE([Inv_Qty_PY_CFR], [Org_Ord_Qty_PY_CFR]))
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Ops
 		lineageTag: 603fabed-19db-472d-8b58-370d30dcb224
@@ -11250,11 +10784,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure 'Volume Act' =
-			
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
+	measure 'Volume Act' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
 		formatString: 0
 		lineageTag: be820c85-bbb4-4ab0-ab74-2845232011a5
 
@@ -11308,9 +10838,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR MaxClosedQuarter =
@@ -11412,9 +10942,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR MaxClosedQuarter =
@@ -11545,9 +11075,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR MaxClosedQuarter =
@@ -11786,9 +11316,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -11878,9 +11408,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -11974,9 +11504,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -12075,9 +11605,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -12172,9 +11702,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -12272,9 +11802,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -12371,9 +11901,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -12473,9 +12003,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -12575,9 +12105,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -12674,9 +12204,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -12774,9 +12304,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -12867,9 +12397,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -12969,9 +12499,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR slicerFilter =
@@ -14960,23 +14490,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Total_Breakage_ABS_RPC_Selection_Ops_Bar_Actual_TL = ```
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR DelayCutoff = MAX('V_Dim_FB_Ref'[CM]) + 6
-			
-			RETURN
-			CALCULATE(
-			    [Total_Breakage_Abs_RPC_Selection_OPs],
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(TodayDate)) && MONTH(V_Dim_FB_CalDay[DayDate]) < (MONTH(TodayDate)-1)) ||
-			        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(TodayDate) && MONTH(V_Dim_FB_CalDay[DayDate]) < MONTH(TodayDate)
-			        && TodayDate>DelayCutoff)
-			    )
-			)
-			
-			```
+	measure Total_Breakage_ABS_RPC_Selection_Ops_Bar_Actual_TL = CALCULATE([Total_Breakage_Abs_RPC_Selection_OPs], 'Time Intel'[Group] = "CL_YTD")
 		displayFolder: Ops
 		lineageTag: 1209de95-db28-4d96-a63b-f44feb8c4207
 
@@ -15140,7 +14654,6 @@ table 'Measure Table'
 
 	measure 'Opex AO FCST_new' = ```
 			
-			
 			Var a= CALCULATE(
 			                SUM(V_FB_Financial_Management[AmtAOP]),
 			                V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
@@ -15159,7 +14672,6 @@ table 'Measure Table'
 			                V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
 			            ) 
 			
-			
 			Var d= CALCULATE(
 			                SUM(V_FB_Financial_Management[AmtFcst93]),
 			                V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
@@ -15174,86 +14686,7 @@ table 'Measure Table'
 			            VALUEs('V_Dim_FB_CalDay'[Quarter]) = 3, c,
 			            VALUEs('V_Dim_FB_CalDay'[Quarter]) = 4, d,
 			           values('V_Dim_FB_CalDay'[Quarter])=1 &&  values('V_Dim_FB_CalDay'[Quarter]) =2, a+b)
-			        //     ,
-			        //     VALUEs('V_Dim_FB_CalDay'[Quarter]) IN {1,3}, a+c,
-			        //     VALUEs('V_Dim_FB_CalDay'[Quarter]) IN {1,4}, a+d,
-			        //     VALUEs('V_Dim_FB_CalDay'[Quarter]) IN {2,3}, b+c,
-			        //     VALUEs('V_Dim_FB_CalDay'[Quarter]) IN {2,4}, b+d,
-			        //     VALUEs('V_Dim_FB_CalDay'[Quarter]) IN {3,4}, c+d,
-			        //     VALUEs('V_Dim_FB_CalDay'[Quarter]) IN {1,2,3},a+b+c,
-			        //     VALUEs('V_Dim_FB_CalDay'[Quarter]) IN {1,2,3},b+c+d,
-			        //     VALUEs('V_Dim_FB_CalDay'[Quarter]) IN {1,2,3,4},a+b+c+d
-			        // )
-			// Var _month =
-			// SWITCH(
-			//     TRUE(),
-			 
-			//     // When Quarter is visible in the matrix (i.e., drilling down)
-			//     ISINSCOPE('V_Dim_FB_CalDay'[MonthNumber]),
-			//         SWITCH(
-			//             TRUE(),
-			//             SELECTEDVALUE('V_Dim_FB_CalDay'[MonthNumber]) IN {1,2,3}
-			//             , CALCULATE(
-			//                 SUM(V_FB_Financial_Management[AmtAOP]),
-			//                 V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			//                 V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			//             ),
-			//             SELECTEDVALUE('V_Dim_FB_CalDay'[MonthNumber]) IN {4,5,6}
-			//             , CALCULATE(
-			//                 SUM(V_FB_Financial_Management[AmtFcst39]),
-			//                 V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			//                 V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			//             ),
-			//             SELECTEDVALUE('V_Dim_FB_CalDay'[MonthNumber]) IN {7,8,9}
-			//             , CALCULATE(
-			//                 SUM(V_FB_Financial_Management[AmtFcst66]),
-			//                 V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			//                 V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			//             ),
-			//             SELECTEDVALUE('V_Dim_FB_CalDay'[MonthNumber]) IN {10,11,12}
-			//             , CALCULATE(
-			//                 SUM(V_FB_Financial_Management[AmtFcst93]),
-			//                 V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			//                 V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			//             )
-			//         ))
-			    // Else — at Year or multi-quarter level — sum all four quarters
-			// VAR _YEAR =
-			//     CALCULATE(
-			//         SUM(V_FB_Financial_Management[AmtAOP]) +
-			//         SUM(V_FB_Financial_Management[AmtFcst39]) +
-			//         SUM(V_FB_Financial_Management[AmtFcst66]) +
-			//         SUM(V_FB_Financial_Management[AmtFcst93]),
-			//         V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			//         V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			//     )
-			 
-			 
-			 
-			// var _SelectedPeriod=[Selected_Period]
-			 
-			// VAR _isMonth =
-			//     HASONEVALUE('V_Dim_FB_CalDay'[MonthDesc]) &&
-			//     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			//     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			// VAR _isQuarter =
-			//     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			//     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			// VAR _isYear =
-			//     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			//  Var _fcst =
-			//  SWITCH(
-			//         TRUE(),
-			       
-			//         _isMonth, _quart,
-			//         _isQuarter, _quart,
-			//         _isYear,  _YEAR
-			//          )
 			RETURN  CONCATENATEX(V_Dim_FB_CalDay,V_Dim_FB_CalDay[Quarter])
-			// VALUEs('V_Dim_FB_CalDay'[Quarter])
 			```
 		lineageTag: eaba3a5a-7c43-491f-9302-38b18d7c02d3
 
@@ -15657,80 +15090,6 @@ table 'Measure Table'
 			
 			RETURN cal
 			
-			
-			
-			
-			
-			
-			
-			/*var _y = SELECTEDVALUE(V_Dim_FB_CalDay[Year])
-			VAR SelectedQuarter =
-			CONCATENATEX(
-			    FILTER(VALUES(V_Dim_FB_CalDay[Quarter]),not ISBLANK(V_Dim_FB_CalDay[Quarter])),V_Dim_FB_CalDay[Quarter],",")&","&_y
-			 
-			Var a= CALCULATE(
-			                //SUM(V_FB_Financial_Management[AmtAOP]),
-			                SUM(V_FB_Financial_Management[AmtAOP]),
-			                V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			                V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"}
-			            )
-			Var b= CALCULATE(
-			                SUM(V_FB_Financial_Management[AmtFcst39]),
-			                V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			                V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			                'V_FB_financial_Management'[IsForecast] = "N"
-			            )
-			Var c= CALCULATE(
-			                SUM(V_FB_Financial_Management[AmtFcst66]),
-			                V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			                V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			                'V_FB_financial_Management'[IsForecast] = "N"
-			            )
-			 
-			Var d= CALCULATE(
-			                SUM(V_FB_Financial_Management[AmtFcst93]),
-			                V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			                V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			                'V_FB_financial_Management'[IsForecast] = "N"
-			            )
-			Var e= CALCULATE(
-			                //SUM(V_FB_Financial_Management[AmtAOP]),
-			                SUM(V_FB_Financial_Management[AmtAOP]),
-			                V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			                V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			                'V_FB_financial_Management'[IsForecast] = "N",
-			                V_Dim_FB_CalDay[QuarterID] = _y&"Q2")
-			Var f= CALCULATE(
-			                SUM(V_FB_Financial_Management[AmtAOP]),
-			                V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			                V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			                'V_FB_financial_Management'[IsForecast] = "N",
-			                V_Dim_FB_CalDay[QuarterID] = _y&"Q3"
-			            )
-			Var g= CALCULATE(
-			                SUM(V_FB_Financial_Management[AmtAOP]),
-			                V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
-			                V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"},
-			                'V_FB_financial_Management'[IsForecast] = "N",
-			                V_Dim_FB_CalDay[QuarterID] = _y&"Q4")
-			 var cal=          
-			        SWITCH(True(),
-			            --SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter]),
-			            SelectedQuarter = "1"&","&_y, a,
-			            SelectedQuarter = "2"&","&_y, b,
-			            SelectedQuarter = "3"&","&_y, c,
-			            SelectedQuarter = "4"&","&_y, d,
-			            SelectedQuarter ="1,2"&","&_y, a+b-e,
-			            SelectedQuarter ="2,3"&","&_y, b+c,
-			            SelectedQuarter = "1,3"&","&_y, a+c-f,
-			            SelectedQuarter = "1,4"&","&_y, a+d-g,
-			            SelectedQuarter = "2,3"&","&_y, b+c,
-			            SelectedQuarter = "2,4"&","&_y, b+d,
-			            SelectedQuarter = "3,4"&","&_y, c+d,
-			            SelectedQuarter = "1,2,3"&","&_y,a+b+c-e-f,
-			            SelectedQuarter = "2,3,4"&","&_y,b+c+d,
-			            SelectedQuarter = "1,2,3,4"&","&_y,a+b+c+d-e-f-g)
-			RETURN cal*/
 			```
 		lineageTag: d5863428-5bd2-45dd-828f-f1922980817f
 
@@ -15813,9 +15172,9 @@ table 'Measure Table'
 			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
 			
 			VAR IsDateSelected =
-			    ISFILTERED('V_Dim_FB_CalDay'[Year]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Quarter]) ||
-			    ISFILTERED('V_Dim_FB_CalDay'[Month]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L1]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L2]) ||
+			    ISFILTERED('V_Dim_FB_CalDay'[L3]) ||
 			    ISFILTERED('V_Dim_FB_CalDay'[DayDate])
 			
 			VAR MaxClosedQuarter =
@@ -16044,87 +15403,66 @@ table 'Measure Table'
 
 	measure Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_CC = ```
 			
-			VAR PMDate = MAX('V_Dim_FB_Ref'[PM])
-			RETURN
+			
 			SWITCH(
 			    TRUE(),
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPC_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPC_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Wh_CPC_Actuals_PY_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPC_Vol_Adj_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPC_Vol_Adj_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA", 
-			CALCULATE(
-			[Wh_CPC_Adj_Vol_PY_CPH],
-			 FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(PMDate)
-			        && MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(PMDate)
-			        )
-			),
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPC_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPC_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Delv_CPC_Actuals_PY_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPC_Vol_Adj_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPC_Vol_Adj_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
-			CALCULATE(
-			[Delv_CPC_Adj_Vol_PY_CPH],
-			 FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(PMDate)
-			        && MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(PMDate)
-			        )
-			),
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPC_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPC_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Mech_CPC_Actuals_PY_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPC_Vol_Adj_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPC_Vol_Adj_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
-			CALCULATE(
-			[Mech_CPC_Adj_Vol_PY_CPH],
-			FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(PMDate)
-			        && MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(PMDate)
-			        )
-			))
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPC_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPC_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Wh_CPC_Actuals_PY_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPC_Vol_Adj_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPC_Vol_Adj_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA", 
+			    CALCULATE([Wh_CPC_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD"),
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPC_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPC_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Delv_CPC_Actuals_PY_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPC_Vol_Adj_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPC_Vol_Adj_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
+			    CALCULATE([Delv_CPC_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD"),
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPC_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPC_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Mech_CPC_Actuals_PY_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPC_Vol_Adj_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPC_Vol_Adj_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
+			    CALCULATE([Mech_CPC_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD")
+			)
 			```
 		displayFolder: Ops
 		lineageTag: c1fa30f4-0713-42ae-8622-2764212269e4
@@ -16133,110 +15471,72 @@ table 'Measure Table'
 
 	measure Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC = ```
 			
-			VAR PMDate = MAX('V_Dim_FB_Ref'[PM])
-			RETURN
 			SWITCH(
 			    TRUE(),
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPH_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPH_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Wh_CPH_Actuals_PY_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPH_Vol_Adj_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPH_Vol_Adj_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA", 
-			CALCULATE(
-			    [Wh_CPH_Adj_Vol_PY_CPH],
-			 FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(PMDate)
-			        && MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(PMDate)
-			        )
-			),
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPH_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPH_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Delv_CPH_Actuals_PY_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPH_Vol_Adj_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPH_Vol_Adj_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
-			CALCULATE(
-			[Delv_CPH_Adj_Vol_PY_CPH],
-			FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(PMDate)
-			        && MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(PMDate)
-			        )
-			),
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPH_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPH_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Mech_CPH_Actuals_PY_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPH_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPH_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Wh_CPH_Actuals_PY_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPH_Vol_Adj_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPH_Vol_Adj_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA", 
+			    CALCULATE([Wh_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD"),
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPH_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPH_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Delv_CPH_Actuals_PY_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPH_Vol_Adj_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPH_Vol_Adj_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
+			    CALCULATE([Delv_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD"),
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPH_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPH_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",[Mech_CPH_Actuals_PY_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPH_Vol_Adj_AOP_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPH_Vol_Adj_Fcst_CPH],
-			 
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
-			CALCULATE(
-			[Mech_CPH_Adj_Vol_PY_CPH],
-			FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(PMDate)
-			        && MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(PMDate)
-			        )
-			))
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPH_Vol_Adj_AOP_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPH_Vol_Adj_Fcst_CPH],
+			    
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
+			    CALCULATE([Mech_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD")
+			)
 			```
 		displayFolder: Ops
 		lineageTag: 7ae4b5a9-0ac7-473c-85f7-bcd49c4d1b1a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops_Bar =
-			
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR PMDate = MAX('V_Dim_FB_Ref'[PM])
-			VAR DelayCutoff = MAX('V_Dim_FB_Ref'[CM]) + 6
-			RETURN
-			
-			CALCULATE(
-			     [Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops],
-			    FILTER(
-			        VALUES(V_Dim_FB_CalDay[DayDate]),
-			        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(PMDate) && MONTH(V_Dim_FB_CalDay[DayDate]) < (MONTH(PMDate))) ||
-			        (YEAR(V_Dim_FB_CalDay[DayDate]) = YEAR(PMDate) && MONTH(V_Dim_FB_CalDay[DayDate]) <= MONTH(PMDate)
-			        && TodayDate>DelayCutoff)
-			    )
-			)
+	measure Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops_Bar = CALCULATE([Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops], 'Time Intel'[Group] = "CL_YTD")
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Ops
 		lineageTag: d40252b3-5246-4935-9568-97a128a6545c
@@ -16453,80 +15753,12 @@ table 'Measure Table'
 
 		formatStringDefinition = ""
 
-	measure Volume_Bar_FCST_new = CALCULATE([Base PL FCST Act], 'V_Dim_FB_PlHier'[PlSubHier] IN {"Franchise cases", "Contract cases"})
+	measure Volume_Bar_FCST_new = CALCULATE([Base PL FCST Act], 'V_Dim_FB_PlHier'[PlSubHier] IN {"Franchise cases", "Contract cases"}, 'Time Intel'[Group] = "PM_Y0")
 		lineageTag: 4b8d591f-76e5-4138-b901-a439f613beeb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Revenue_Bar_FCST_new = ```
-			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
-			 
-			RETURN
-			IF (
-			    VisualYear = CurrentYear,
-			    SWITCH(
-			        TRUE(),
-			 
-			        // Q1: Jan–Mar → Show AOP for ALL months
-			        CurrentMonth IN {1,2,3},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtAOP]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"}
-			        ),
-			 
-			        // Q2: Apr–Jun → Custom logic
-			        CurrentMonth IN {4,5,6},
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 4,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 7,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_financial_Management'[AmtFcst39]),
-			           V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7
-			       ),
-			 
-			        // Q3: Jul–Sep → Show FCST_66 from July to Dec
-			        CurrentMonth IN {7,8,9},
-			       CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 7,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 8,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst66]),
-			           V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 8
-			       ),
-			 
-			        // Q4: Oct–Dec → Show FCST_93 from October to Dec
-			        CurrentMonth IN {10,11,12},
-			         CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_Dim_FB_CalDay'[MonthNumber] >= 10,
-			            'V_Dim_FB_CalDay'[MonthNumber] < 11,
-			            'V_FB_financial_Management'[IsForecast] = "N"
-			        ) +
-			        CALCULATE(
-			            SUM('V_FB_Financial_Management'[AmtFcst93]),
-			            V_Dim_FB_Opex[OpexLine] IN {"Net Sales"},
-			            'V_FB_financial_Management'[IsForecast] = "Y",
-			            'V_Dim_FB_CalDay'[MonthNumber] >=11
-			       )
-			    )
-			)
-			```
+	measure Revenue_Bar_FCST_new = CALCULATE([Base PL FCST Act], V_Dim_FB_Opex[OpexLine] IN {"Net Sales"}, 'Time Intel'[Group] = "PM_Y0")
 		lineageTag: 25de8cc1-d10f-4c7d-9d22-a5d3c9c38e12
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -16590,7 +15822,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Quarter dynamic volume AOP bar' = ```
-			        
+			
 					VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
 					VAR currentMonth = MONTH(CMDate)
 					 
@@ -19275,21 +18507,18 @@ table 'Measure Table'
 			```
 		lineageTag: e01b4cbb-0725-4b8f-b8fc-79984fd427a8
 
-	measure Opex_SC_AOP = ```
-			
+	measure Opex_SC_AOP =
 			
 			CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]),
 			V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
 			V_Dim_FB_Opex[OpexLine] IN {"A&P","DSD-T&W","SC-T&W","SG&A"},
 			V_Dim_FB_Function[FnArea] in {"Z009","Z019"}
 			)
-			
-			```
 		lineageTag: cf14cbda-60d5-4d59-a2bb-8aa54cc7cb3d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Opex_A&P_AOP ' = ```
+	measure 'Opex_A&P_AOP ' =
 			
 			ABS(
 			CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]),
@@ -19298,8 +18527,6 @@ table 'Measure Table'
 			NOT V_Dim_FB_Function[FnArea] in {"Z009","Z019"}
 			)
 			)
-			 
-			```
 		lineageTag: c5285fa3-3ec2-4bec-a106-c840d23f9175
 
 	measure Selected_AOP_RPC_Opex_SC =
@@ -19697,16 +18924,13 @@ table 'Measure Table'
 		displayFolder: CMA SKU
 		lineageTag: 22bfc53b-5333-45bd-a4e0-876f2d691fb5
 
-	measure Opex_A&P_AOP = ```
-			
+	measure Opex_A&P_AOP =
 			
 			CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]),
 			V_Dim_FB_PlHier[PlHier] = "Total Operating Expense",
 			V_Dim_FB_Opex[OpexLine] IN {"A&P"},
 			NOT V_Dim_FB_Function[FnArea] in {"Z009","Z019"}
 			)
-			
-			```
 		lineageTag: a1e66de8-3319-4f03-998d-ccaabd94945e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -23602,10 +22826,6 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'New Measure 1'
-		displayFolder: Ops - DNP
-		lineageTag: 8723587d-a89e-4353-bf17-c8c77e63ba98
-
 	measure Haulback_cases_table_prior_period_abs = ```
 			var _SelectedPeriod=[IM_Selected_Period]
 			
@@ -23865,68 +23085,67 @@ table 'Measure Table'
 	measure Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_final = ```
 			SWITCH(
 			    TRUE(),
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPC_Attainment_to_AOP_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPC_Attainment_to_AOP_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPC_Attainment_to_Fcst_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPC_Attainment_to_Fcst_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA", "",
-			--[Wh_CPC_Change_vs_YA_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA", "",
+			    --[Wh_CPC_Change_vs_YA_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPC_Vol_Adj_Attainment_to_AOP_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Wh_CPC_Vol_Adj_Attainment_to_AOP_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Wh_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA", "",
-			--[Wh_CPC_Adj_Vol_Change_vs_YA_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA", "",
+			    --[Wh_CPC_Adj_Vol_Change_vs_YA_CPH],
 			
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPC_Attainment_to_AOP_CPH],
 			
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPC_Attainment_to_Fcst_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPC_Attainment_to_AOP_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA", "",
+			    --[Delv_CPC_Change_vs_YA_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPC_Attainment_to_Fcst_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPC_Vol_Adj_Attainment_to_AOP_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA", "",
-			 --[Delv_CPC_Change_vs_YA_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPC_Vol_Adj_Attainment_to_AOP_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA", "",
+			    --[Delv_CPC_Adj_Vol_Change_vs_YA_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Delv_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPC_Attainment_to_AOP_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA", "",
-			--[Delv_CPC_Adj_Vol_Change_vs_YA_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPC_Attainment_to_Fcst_CPH],
 			
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA", "",
+			    --[Mech_CPC_Change_vs_YA_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPC_Attainment_to_AOP_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPC_Vol_Adj_Attainment_to_AOP_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPC_Attainment_to_Fcst_CPH],
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
 			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA", "",
-			--[Mech_CPC_Change_vs_YA_CPH],
-			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPC_Vol_Adj_Attainment_to_AOP_CPH],
-			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "Fcst", [Mech_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
-			
-			SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
-			SELECTEDVALUE('Metric Table'[Metrics]) = "YA", "")
-			--[Mech_CPC_Adj_Vol_Change_vs_YA_CPH])
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" && 
+			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
+			    ""
+			// [Mech_CPC_Adj_Vol_Change_vs_YA_CPH]
+			)
 			
 			```
 		displayFolder: Ops
@@ -24643,8 +23862,9 @@ table 'Measure Table'
 
 	measure Notblank = ```
 			
-			VAR CurrentMonthNumber = MONTH(MAX('V_Dim_FB_Ref'[CD]))
-			VAR SelectedMonthNumber = MONTH(MAX(V_Dim_FB_CalDay[DayDate]))
+			
+			VAR MonthBegin = MAX('V_Dim_FB_Ref'[CM])
+			VAR MaxSelection = MAX(V_Dim_FB_CalDay[DayDate])
 			VAR IsFilteredRetailer = 
 			    ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName]) 
 			    || ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
@@ -24657,7 +23877,7 @@ table 'Measure Table'
 			    TRUE(),
 			    SelectedMetric = "AOP" &&
 			    (
-			        (NOT IsFilteredRetailer || SelectedMonthNumber <= CurrentMonthNumber)
+			        (NOT IsFilteredRetailer || MonthBegin <= MaxSelection)
 			        && ( NOT ISBLANK([Quarter dynamic volume AOP bar]) || NOT ISBLANK([Quarter dynamic revenue AOP bar]))
 			    ), 1,
 			
@@ -25192,7 +24412,7 @@ table 'Measure Table'
 		displayFolder: _ Date Ref
 		lineageTag: c1f522f4-e4a5-45c9-b430-943956f66cbb
 
-	measure 'Base PL FCST Act' = ```
+	measure 'Base PL FCST Act' =
 			
 			
 			// Gets the Previous Month & Year
@@ -25262,23 +24482,22 @@ table 'Measure Table'
 			    CurrentQtr = 1,
 			    SUM('V_FB_Financial_Management'[AmtAOP])
 			)
-			
-			```
 		lineageTag: 06c10aca-a8db-43f9-a252-f054c85bfec8
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Volume_Bar_Act 0' = CALCULATE([Base_PL_Bar_Act], V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
-		lineageTag: 699a5eea-cc10-49b9-a217-57960231cd0f
+	measure Base_PL_Bar_Act = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), 'Time Intel'[Group] = "CL_YTD")
+		lineageTag: ce74e45a-f3d3-4027-8539-b32cb94a4503
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Base_PL_Bar_Act =
-			CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAct]),
-			    'Time Intel'[Group] = "PM_YTD"
-			)
-		lineageTag: ce74e45a-f3d3-4027-8539-b32cb94a4503
+	measure Base_PL_Bar_AOP = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), 'Time Intel'[Group] = "CL_YTD")
+		lineageTag: b5344e03-c204-4895-8de5-928fa43d8bb5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Base_PL_Bar_PY = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), 'Time Intel'[Group] = "CL_YTD")
+		lineageTag: 85adbfa1-2318-4e60-bf1f-f76087c45233
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 

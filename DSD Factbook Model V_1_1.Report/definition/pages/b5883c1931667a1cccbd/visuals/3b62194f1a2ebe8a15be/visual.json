@@ -1,13 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "4551f48f459f20a825a7",
+  "name": "3b62194f1a2ebe8a15be",
   "position": {
-    "x": 1056.25,
-    "y": 450,
-    "z": 1000,
-    "height": 70,
-    "width": 195,
-    "tabOrder": 1000
+    "x": 556.25,
+    "y": 0,
+    "z": 3,
+    "height": 596.25,
+    "width": 176.25
   },
   "visual": {
     "visualType": "slicer",
@@ -73,7 +72,7 @@
               },
               "queryRef": "V_Dim_FB_CalDay.Period Levels.L3",
               "nativeQueryRef": "Period Levels L3",
-              "active": true
+              "active": false
             }
           ]
         }
@@ -109,26 +108,13 @@
               "V_Dim_FB_CalDay.Period Levels.L2"
             ],
             "isCollapsed": true,
-            "identityKeys": [
-              {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "V_Dim_FB_CalDay"
-                    }
-                  },
-                  "Property": "L2"
-                }
-              }
-            ],
             "isPinned": true
           },
           {
             "queryRefs": [
               "V_Dim_FB_CalDay.Period Levels.L3"
             ],
-            "isCollapsed": true,
-            "isPinned": true
+            "isCollapsed": true
           }
         ],
         "root": {
@@ -137,54 +123,11 @@
               "identityValues": [
                 {
                   "Literal": {
-                    "Value": "'Weeks'"
-                  }
-                }
-              ],
-              "isToggled": true,
-              "children": [
-                {
-                  "identityValues": [
-                    {
-                      "Literal": {
-                        "Value": "'Prev Wk'"
-                      }
-                    }
-                  ],
-                  "isToggled": true
-                },
-                {
-                  "identityValues": [
-                    {
-                      "Literal": {
-                        "Value": "'Curr Wk'"
-                      }
-                    }
-                  ],
-                  "isToggled": true
-                }
-              ]
-            },
-            {
-              "identityValues": [
-                {
-                  "Literal": {
                     "Value": "'2025'"
                   }
                 }
               ],
-              "children": [
-                {
-                  "identityValues": [
-                    {
-                      "Literal": {
-                        "Value": "'Q1'"
-                      }
-                    }
-                  ],
-                  "isToggled": true
-                }
-              ]
+              "isToggled": true
             },
             {
               "identityValues": [
@@ -207,7 +150,7 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Dropdown'"
+                  "Value": "'Basic'"
                 }
               }
             }
@@ -315,203 +258,8 @@
             }
           }
         }
-      ],
-      "selection": [
-        {
-          "properties": {
-            "strictSingleSelect": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "header": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
-        }
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "8db2c9351b9c18ddf049",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "V_Dim_FB_CalDay"
-              }
-            },
-            "Property": "LE_CD"
-          }
-        },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "v",
-              "Entity": "V_Dim_FB_CalDay",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "v"
-                          }
-                        },
-                        "Property": "LE_CD"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "true"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        "howCreated": "User"
-      },
-      {
-        "name": "da175c8c90880d6a2f2a",
-        "field": {
-          "HierarchyLevel": {
-            "Expression": {
-              "Hierarchy": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_Dim_FB_CalDay"
-                  }
-                },
-                "Hierarchy": "Period Levels"
-              }
-            },
-            "Level": "L1"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "1f2cb8e0c50eb87cf285",
-        "field": {
-          "HierarchyLevel": {
-            "Expression": {
-              "Hierarchy": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_Dim_FB_CalDay"
-                  }
-                },
-                "Hierarchy": "Period Levels"
-              }
-            },
-            "Level": "L2"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "1283cd76704c2fabeca1",
-        "field": {
-          "HierarchyLevel": {
-            "Expression": {
-              "Hierarchy": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_Dim_FB_CalDay"
-                  }
-                },
-                "Hierarchy": "Period Levels"
-              }
-            },
-            "Level": "L3"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "0ad4637f585d8d971cee",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "V_Dim_FB_CalDay"
-              }
-            },
-            "Property": "GE_CM_Y1"
-          }
-        },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "v",
-              "Entity": "V_Dim_FB_CalDay",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "v"
-                          }
-                        },
-                        "Property": "GE_CM_Y1"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "true"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        "howCreated": "User"
-      }
-    ]
   }
 }

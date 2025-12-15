@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "9b71390443fcbf402a0b",
   "position": {
-    "x": 12.475633528265108,
-    "y": 14.97076023391813,
+    "x": 13.75,
+    "y": 15,
     "z": 0,
-    "height": 608.81091617933726,
-    "width": 753.52826510721252,
+    "height": 608.75,
+    "width": 771.25,
     "tabOrder": 0
   },
   "visual": {
@@ -93,11 +93,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Volume_Bar_Act 0"
+                  "Property": "Volume Act"
                 }
               },
-              "queryRef": "Measure Table.Volume_Bar_Act 0",
-              "nativeQueryRef": "Volume_Bar_Act 0"
+              "queryRef": "Measure Table.Volume Act",
+              "nativeQueryRef": "Volume Act"
             },
             {
               "field": {
@@ -107,11 +107,25 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Volume Act"
+                  "Property": "Volume_Bar_Actual_Selected"
                 }
               },
-              "queryRef": "Measure Table.Volume Act",
-              "nativeQueryRef": "Volume Act"
+              "queryRef": "Measure Table.Volume_Bar_Actual_Selected",
+              "nativeQueryRef": "Volume_Bar_Actual_Selected"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume_Bar_Actual_Selected"
+                }
+              },
+              "queryRef": "Measure Table.Volume_Bar_Actual_Selected",
+              "nativeQueryRef": "Volume_Bar_Actual_Selected"
             }
           ]
         }
@@ -155,13 +169,83 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "85.48537984293218D"
+                  "Value": "65.59653152958221D"
                 }
               }
             }
           },
           "selector": {
             "metadata": "Measure Table.Volume Act"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "50.250004146409154D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_FB_Financial_Management.IsForecast"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "106.00000060141616D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Base PL FCST Act"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "82.25000098804092D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume FCST Act"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "77.5D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_Bar_Act"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "97.99936808410732D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_Bar_Actual_Selected"
           }
         }
       ]
@@ -257,20 +341,6 @@
         "type": "Advanced"
       },
       {
-        "name": "3c712fa8c9bea443d831",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Volume_Bar_Act 0"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
         "name": "f0846cfa9642f5aa9e96",
         "field": {
           "Measure": {
@@ -280,6 +350,20 @@
               }
             },
             "Property": "Volume Act"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "73217e8b7507124cb749",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_Bar_Actual_Selected"
           }
         },
         "type": "Advanced"

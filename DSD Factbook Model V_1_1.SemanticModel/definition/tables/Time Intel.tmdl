@@ -68,6 +68,34 @@ table 'Time Intel'
 				
 				```
 
+		calculationItem PM_Y0 = ```
+				
+				
+				VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
+				
+				RETURN CALCULATE(SELECTEDMEASURE(),
+				    FILTER(
+				        VALUES(V_Dim_FB_CalDay[DayDate]),
+				        YEAR(V_Dim_FB_CalDay[DayDate]) = VisualYear
+				    )
+				)
+				
+				```
+
+		calculationItem PL_BAR_SEL =
+				
+				VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
+				VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
+				VAR DataDate = MAX(V_Dim_FB_CalDay[DayDate]) -- Assuming this is the date context of the data
+				VAR UnlockDate = DATE(YEAR(DataDate), MONTH(DataDate) + 1, 7)
+				
+				RETURN
+				IF (
+				    TodayDate >= UnlockDate,
+				    SELECTEDMEASURE(),
+				    BLANK()
+				)
+
 	column Group
 		dataType: string
 		lineageTag: ff940b40-f48f-4c50-b777-bad4a6107978
