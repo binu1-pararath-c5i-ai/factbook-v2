@@ -1,0 +1,88 @@
+table 'Time Intel'
+	lineageTag: 4f2f946b-9186-4ec9-b0c6-e48357dacfe3
+
+	calculationGroup
+
+		calculationItem YTD = CALCULATE(SELECTEDMEASURE(), DATESYTD(V_Dim_FB_CalDay[DayDate]))
+
+		calculationItem PM_YTD = ```
+				
+				
+				VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
+				VAR Today = MAX(V_Dim_FB_Ref[PM])
+				VAR CurrentMonth = MONTH(Today)
+				VAR CurrentYear = YEAR(Today)
+				
+				RETURN CALCULATE(SELECTEDMEASURE(),
+				    FILTER(
+				        VALUES(V_Dim_FB_CalDay[DayDate]),
+				        IF (VisualYear = CurrentYear,
+				            YEAR(V_Dim_FB_CalDay[DayDate]) = CurrentYear &&
+				            MONTH(V_Dim_FB_CalDay[DayDate]) <= CurrentMonth,
+				            YEAR(V_Dim_FB_CalDay[DayDate]) = VisualYear
+				        )
+				    )
+				)
+				
+				```
+
+		calculationItem CL_YTD = ```
+				
+				
+				VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
+				VAR Today = MAX(V_Dim_FB_Ref[CL_M_END])
+				VAR CurrentMonth = MONTH(Today)
+				VAR CurrentYear = YEAR(Today)
+				
+				RETURN CALCULATE(SELECTEDMEASURE(),
+				    FILTER(
+				        VALUES(V_Dim_FB_CalDay[DayDate]),
+				        IF (VisualYear = CurrentYear,
+				            YEAR(V_Dim_FB_CalDay[DayDate]) = CurrentYear &&
+				            MONTH(V_Dim_FB_CalDay[DayDate]) <= CurrentMonth,
+				            YEAR(V_Dim_FB_CalDay[DayDate]) = VisualYear
+				        )
+				    )
+				)
+				
+				```
+
+		calculationItem CM_YTD = ```
+				
+				
+				VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
+				VAR Today = MAX(V_Dim_FB_Ref[CD])
+				VAR CurrentMonth = MONTH(Today)
+				VAR CurrentYear = YEAR(Today)
+				
+				RETURN CALCULATE(SELECTEDMEASURE(),
+				    FILTER(
+				        VALUES(V_Dim_FB_CalDay[DayDate]),
+				        IF (VisualYear = CurrentYear,
+				            YEAR(V_Dim_FB_CalDay[DayDate]) = CurrentYear &&
+				            V_Dim_FB_CalDay[DayDate] <= Today,
+				            YEAR(V_Dim_FB_CalDay[DayDate]) = VisualYear
+				        )
+				    )
+				)
+				
+				```
+
+	column Group
+		dataType: string
+		lineageTag: ff940b40-f48f-4c50-b777-bad4a6107978
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: c87d4e79-8795-4abf-9a23-f1f4fd4d2f18
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

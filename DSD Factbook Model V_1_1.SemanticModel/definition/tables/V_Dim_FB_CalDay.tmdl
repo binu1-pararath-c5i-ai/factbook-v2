@@ -935,8 +935,7 @@ table V_Dim_FB_CalDay
 				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
 				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
 				    V_Dim_FB_CalDay_View = DSD_Schema{[Name="V_Dim_FB_CalDay",Kind="View"]}[Data],
-				    #"Filtered Rows" = Table.SelectRows(V_Dim_FB_CalDay_View, each ([CurrYearCounter] = -1 or [CurrYearCounter] = 0)),
-				    #"Changed Type" = Table.TransformColumnTypes(#"Filtered Rows",{{"Year", Int64.Type}})
+				    #"Changed Type" = Table.TransformColumnTypes(V_Dim_FB_CalDay_View,{{"Year", Int64.Type}})
 				in
 				    #"Changed Type"
 

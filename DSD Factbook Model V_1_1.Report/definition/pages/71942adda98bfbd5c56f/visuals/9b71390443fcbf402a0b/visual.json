@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "9b71390443fcbf402a0b",
   "position": {
-    "x": 14.673990924289468,
-    "y": 113.72342966324338,
+    "x": 12.475633528265108,
+    "y": 14.97076023391813,
     "z": 0,
-    "height": 456.11655122999764,
-    "width": 909.787437305947,
+    "height": 608.81091617933726,
+    "width": 753.52826510721252,
     "tabOrder": 0
   },
   "visual": {
@@ -73,98 +73,45 @@
             },
             {
               "field": {
-                "Aggregation": {
+                "Measure": {
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_FB_Financial_Management"
-                        }
-                      },
-                      "Property": "AmtAct"
+                    "SourceRef": {
+                      "Entity": "Measure Table"
                     }
                   },
-                  "Function": 0
+                  "Property": "Volume_Bar_Act"
                 }
               },
-              "queryRef": "Sum(V_FB_Financial_Management.AmtAct)",
-              "nativeQueryRef": "Sum of AmtAct"
+              "queryRef": "Measure Table.Volume_Bar_Act",
+              "nativeQueryRef": "Volume_Bar_Act"
             },
             {
               "field": {
-                "Aggregation": {
+                "Measure": {
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_FB_Financial_Management"
-                        }
-                      },
-                      "Property": "AmtAOP"
+                    "SourceRef": {
+                      "Entity": "Measure Table"
                     }
                   },
-                  "Function": 0
+                  "Property": "Volume_Bar_Act 0"
                 }
               },
-              "queryRef": "Sum(V_FB_Financial_Management.AmtAOP)",
-              "nativeQueryRef": "Sum of AmtAOP"
+              "queryRef": "Measure Table.Volume_Bar_Act 0",
+              "nativeQueryRef": "Volume_Bar_Act 0"
             },
             {
               "field": {
-                "Aggregation": {
+                "Measure": {
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_FB_Financial_Management"
-                        }
-                      },
-                      "Property": "AmtFcst39"
+                    "SourceRef": {
+                      "Entity": "Measure Table"
                     }
                   },
-                  "Function": 0
+                  "Property": "Volume Act"
                 }
               },
-              "queryRef": "Sum(V_FB_Financial_Management.AmtFcst39)",
-              "nativeQueryRef": "Sum of AmtFcst39"
-            },
-            {
-              "field": {
-                "Aggregation": {
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_FB_Financial_Management"
-                        }
-                      },
-                      "Property": "AmtFcst66"
-                    }
-                  },
-                  "Function": 0
-                }
-              },
-              "queryRef": "Sum(V_FB_Financial_Management.AmtFcst66)",
-              "nativeQueryRef": "Sum of AmtFcst66"
-            },
-            {
-              "field": {
-                "Aggregation": {
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_FB_Financial_Management"
-                        }
-                      },
-                      "Property": "AmtFcst93"
-                    }
-                  },
-                  "Function": 0
-                }
-              },
-              "queryRef": "Sum(V_FB_Financial_Management.AmtFcst93)",
-              "nativeQueryRef": "Sum of AmtFcst93"
+              "queryRef": "Measure Table.Volume Act",
+              "nativeQueryRef": "Volume Act"
             }
           ]
         }
@@ -201,6 +148,20 @@
           },
           "selector": {
             "metadata": "V_Dim_FB_CalDay.DayDate"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "85.48537984293218D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume Act"
           }
         }
       ]
@@ -254,96 +215,71 @@
         "type": "Advanced"
       },
       {
-        "name": "ba48858ccd6560dbec5b",
+        "name": "83d0664b7d369fa72fff",
         "field": {
-          "Aggregation": {
+          "Column": {
             "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_FB_Financial_Management"
-                  }
-                },
-                "Property": "AmtAct"
+              "SourceRef": {
+                "Entity": "V_FB_Financial_Management"
               }
             },
-            "Function": 0
+            "Property": "IsForecast"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "874147869cc741af08b3",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume FCST Act"
           }
         },
         "type": "Advanced"
       },
       {
-        "name": "9e8ebce6c5b7263bf80d",
+        "name": "e09f0c4a293a583ad57e",
         "field": {
-          "Aggregation": {
+          "Measure": {
             "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_FB_Financial_Management"
-                  }
-                },
-                "Property": "AmtAOP"
+              "SourceRef": {
+                "Entity": "Measure Table"
               }
             },
-            "Function": 0
+            "Property": "Volume_Bar_Act"
           }
         },
         "type": "Advanced"
       },
       {
-        "name": "3e9ef9771e8ae203de61",
+        "name": "3c712fa8c9bea443d831",
         "field": {
-          "Aggregation": {
+          "Measure": {
             "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_FB_Financial_Management"
-                  }
-                },
-                "Property": "AmtFcst39"
+              "SourceRef": {
+                "Entity": "Measure Table"
               }
             },
-            "Function": 0
+            "Property": "Volume_Bar_Act 0"
           }
         },
         "type": "Advanced"
       },
       {
-        "name": "430b72926ec264821986",
+        "name": "f0846cfa9642f5aa9e96",
         "field": {
-          "Aggregation": {
+          "Measure": {
             "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_FB_Financial_Management"
-                  }
-                },
-                "Property": "AmtFcst66"
+              "SourceRef": {
+                "Entity": "Measure Table"
               }
             },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "cf2ad0a9b0f42f3433e9",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_FB_Financial_Management"
-                  }
-                },
-                "Property": "AmtFcst93"
-              }
-            },
-            "Function": 0
+            "Property": "Volume Act"
           }
         },
         "type": "Advanced"

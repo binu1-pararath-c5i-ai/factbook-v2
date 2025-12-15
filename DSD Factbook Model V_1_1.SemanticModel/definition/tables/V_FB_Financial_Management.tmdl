@@ -1,6 +1,11 @@
 table V_FB_Financial_Management
 	lineageTag: 8d1ece1e-4b10-4919-bee3-6238116ff22b
 
+	measure 'Sum AmtAct' = SUM([AmtAct])
+		lineageTag: 94aeb2e4-367b-4560-8b09-998a3b38ed42
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column DayDate
 		dataType: dateTime
 		formatString: Long Date

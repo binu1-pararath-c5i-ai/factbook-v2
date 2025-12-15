@@ -25210,7 +25210,8 @@ table 'Measure Table'
 			    VisualYear < CurrentYear,
 			    CALCULATE(
 			        SUM('V_FB_Financial_Management'[AmtFcst93]),
-			        'V_FB_Financial_Management'[IsForecast] = "N"
+			        'V_FB_Financial_Management'[IsForecast] = "N",
+			        'V_Dim_FB_CalDay'[MonthNumber] IN {10}
 			    ) +
 			    CALCULATE(
 			        SUM('V_FB_Financial_Management'[AmtFcst93]),
@@ -25264,6 +25265,20 @@ table 'Measure Table'
 			
 			```
 		lineageTag: 06c10aca-a8db-43f9-a252-f054c85bfec8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Volume_Bar_Act 0' = CALCULATE([Base_PL_Bar_Act], V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
+		lineageTag: 699a5eea-cc10-49b9-a217-57960231cd0f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Base_PL_Bar_Act =
+			CALCULATE(
+			    SUM(V_FB_Financial_Management[AmtAct]),
+			    'Time Intel'[Group] = "PM_YTD"
+			)
+		lineageTag: ce74e45a-f3d3-4027-8539-b32cb94a4503
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
