@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "02799dd3e27417872d70",
   "position": {
     "x": 3.5551330798479062,
@@ -224,5 +224,37 @@
     },
     "drillFilterOtherVisuals": true
   },
-  "parentGroupName": "8ea90c72906b22052a6e"
+  "parentGroupName": "8ea90c72906b22052a6e",
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "e395de292d59b2ce93cc",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "SalesStatus"
+              }
+            },
+            "Property": "Status"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "87889610daa1b1234b6e",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_DonutValues"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
 }

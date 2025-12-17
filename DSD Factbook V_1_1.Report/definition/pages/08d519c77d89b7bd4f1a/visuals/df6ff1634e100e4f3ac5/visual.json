@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "df6ff1634e100e4f3ac5",
   "position": {
     "x": 31.666666666666668,
@@ -35,6 +35,21 @@
         },
         "Y": {
           "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Schema": "extension",
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "PL_BAR_SEL1"
+                }
+              },
+              "queryRef": "Measure Table.PL_BAR_SEL1",
+              "nativeQueryRef": "PL_BAR_SEL1"
+            },
             {
               "field": {
                 "Measure": {
@@ -318,60 +333,6 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "e100bf394b34cdb044bc",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "V_Dim_FB_CalDay"
-              }
-            },
-            "Property": "CurrYearCounter"
-          }
-        },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "v",
-              "Entity": "V_Dim_FB_CalDay",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "v"
-                          }
-                        },
-                        "Property": "CurrYearCounter"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "0D"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        "howCreated": "User"
-      },
-      {
         "name": "05c9378f61e18508d8a9",
         "field": {
           "Column": {
@@ -384,65 +345,57 @@
           }
         },
         "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "v",
-              "Entity": "V_Dim_FB_CalDay",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "Not": {
-                  "Expression": {
-                    "In": {
-                      "Expressions": [
-                        {
-                          "Column": {
-                            "Expression": {
-                              "SourceRef": {
-                                "Source": "v"
-                              }
-                            },
-                            "Property": "MonthName"
-                          }
-                        }
-                      ],
-                      "Values": [
-                        [
-                          {
-                            "Literal": {
-                              "Value": "null"
-                            }
-                          }
-                        ]
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        },
         "objects": {
           "general": [
             {
-              "properties": {
-                "isInvertedSelectionMode": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "true"
-                    }
-                  }
-                }
-              }
+              "properties": {}
             }
           ]
         }
+      },
+      {
+        "name": "1d8d62178b294885352d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_Bar_Actual_Selected"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "eb04a7d97ac9d004be3a",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_Bar_Selected"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "419ceafa8615fba274f2",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_Bar_Selected_graph"
+          }
+        },
+        "type": "Advanced"
       }
     ]
-  }
+  },
+  "isHidden": true
 }

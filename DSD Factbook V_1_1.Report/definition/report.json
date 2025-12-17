@@ -20,6 +20,64 @@
       "type": "RegisteredResources"
     }
   },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "1961caa9c178308b8693",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CalDay"
+              }
+            },
+            "Property": "GE_CL_Y0"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CalDay",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "GE_CL_Y0"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
   "objects": {
     "section": [
       {

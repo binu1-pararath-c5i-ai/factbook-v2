@@ -466,7 +466,7 @@ table V_Dim_FB_CalDay
 
 		annotation SummarizationSetBy = Automatic
 
-	column L3 = ```
+	column L3_ = ```
 			
 			// // Returns the completed months, Previous week & Current Running week
 			SWITCH (
@@ -485,7 +485,7 @@ table V_Dim_FB_CalDay
 			// // Returns the completed months, Previous week & Current Running week 
 			//Backup 25Aug
 			// Switch(True(),
-			// V_Dim_FB_CalDay[CurrWeekCounter_ISO] =0, "Current Week Starting "& FORMAT(V_Dim_FB_CalDay[weekstarting_ISO],"MMM-DD"),
+			// V_Dim_FB_CalDay[CurrWeekCounter__ISO] =0, "Current Week Starting "& FORMAT(V_Dim_FB_CalDay[weekstarting_ISO],"MMM-DD"),
 			// V_Dim_FB_CalDay[CurrWeekCounter_ISO] =-1, "Previous Week Starting "& FORMAT(V_Dim_FB_CalDay[weekstarting_ISO],"MMM-DD"),
 			// V_Dim_FB_CalDay[MonthName])
 			
@@ -854,42 +854,30 @@ table V_Dim_FB_CalDay
 
 		annotation SummarizationSetBy = Automatic
 
-	column L1 =
-			
-			// // Returns the completed months, Previous week & Current Running week
-			SWITCH (
-			   TRUE(),
-			   V_Dim_FB_CalDay[CurrWeekCounter_ISO] IN {0, -1},
-			   "Weeks",
-			   V_Dim_FB_CalDay[YearID]
-			)
-		lineageTag: d4387b82-0ef0-46d2-b3fc-cc7c683ac266
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column L2 =
-			
-			// // Returns the completed months, Previous week & Current Running week
-			SWITCH (
-			   TRUE(),
-			   V_Dim_FB_CalDay[CurrWeekCounter_ISO] = -1,
-			   "Prev Wk",
-			   V_Dim_FB_CalDay[CurrWeekCounter_ISO] = 0,
-			   "Curr Wk",
-			   V_Dim_FB_CalDay[Quarter_Name]
-			)
-		lineageTag: 73fef222-07c6-4009-b787-f2666f47d865
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
 	column LE_CD_21
 		dataType: boolean
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: a5f0e804-a868-45e4-8306-91457b79cade
 		summarizeBy: none
 		sourceColumn: LE_CD_21
+
+		annotation SummarizationSetBy = Automatic
+
+	column EQ_CL_Y0
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 484eccdd-286c-414b-be9c-387b9875cb39
+		summarizeBy: none
+		sourceColumn: EQ_CL_Y0
+
+		annotation SummarizationSetBy = Automatic
+
+	column EQ_CM_Y0
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3c1fa68a-3c22-4a5a-bca4-6131776eab21
+		summarizeBy: none
+		sourceColumn: EQ_CM_Y0
 
 		annotation SummarizationSetBy = Automatic
 
@@ -911,21 +899,6 @@ table V_Dim_FB_CalDay
 		level DayOfMonth
 			lineageTag: fa129df9-8d98-41b3-af4b-4dbbf2e251c2
 			column: DayOfMonth
-
-	hierarchy 'Period Levels'
-		lineageTag: 9f6abc6e-1de7-435f-9d84-b3dc3ebb7bcd
-
-		level L1
-			lineageTag: 0642e306-2af8-4212-9eef-9da922778d8b
-			column: L1
-
-		level L2
-			lineageTag: 9d8ef349-b015-4ce1-a9ad-e729b0ebcd6f
-			column: L2
-
-		level L3
-			lineageTag: efc76bd1-fd39-4096-b9d1-e206f3ff9546
-			column: L3
 
 	partition V_Dim_FB_CalDay = m
 		mode: import

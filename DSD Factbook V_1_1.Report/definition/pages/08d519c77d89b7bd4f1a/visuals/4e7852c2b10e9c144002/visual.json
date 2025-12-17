@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "4e7852c2b10e9c144002",
   "position": {
     "x": 828.33333333333337,
@@ -251,58 +251,18 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "56d5034c2cb028087cd5",
+        "name": "a812526f0b502007f055",
         "field": {
-          "Column": {
+          "Measure": {
             "Expression": {
               "SourceRef": {
-                "Entity": "V_Dim_FB_CalDay"
+                "Entity": "Measure Table"
               }
             },
-            "Property": "Showslicer_topline"
+            "Property": "Opex_KPI_NEW"
           }
         },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "v",
-              "Entity": "V_Dim_FB_CalDay",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "v"
-                          }
-                        },
-                        "Property": "Showslicer_topline"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "true"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        "howCreated": "User"
+        "type": "Advanced"
       }
     ]
   }

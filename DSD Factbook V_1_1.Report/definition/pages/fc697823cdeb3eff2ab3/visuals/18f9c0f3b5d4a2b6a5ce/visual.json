@@ -1,13 +1,12 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "18f9c0f3b5d4a2b6a5ce",
   "position": {
     "x": 0,
     "y": 34.946562747934848,
     "z": 4250,
     "height": 362.90661315163112,
-    "width": 1297.0551173752742,
-    "tabOrder": 0
+    "width": 1297.0551173752742
   },
   "visual": {
     "visualType": "pivotTable",
@@ -1135,5 +1134,183 @@
     },
     "drillFilterOtherVisuals": true
   },
-  "parentGroupName": "c6250216a43b14046ddd"
+  "parentGroupName": "c6250216a43b14046ddd",
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "f5fab35081ae8b932d21",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CustChainHeir"
+              }
+            },
+            "Property": "BUName"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9934db4822cbc14fcf22",
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "V_Dim_FB_CustChainHeir"
+                  }
+                },
+                "Hierarchy": "Topline Hierarchy"
+              }
+            },
+            "Level": "RegionName"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "b8ed3401288fd17c9bba",
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "V_Dim_FB_CustChainHeir"
+                  }
+                },
+                "Hierarchy": "Topline Hierarchy"
+              }
+            },
+            "Level": "TerritoryName"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "aca8a385fd3e8bf222f9",
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "V_Dim_FB_CustChainHeir"
+                  }
+                },
+                "Hierarchy": "Topline Hierarchy"
+              }
+            },
+            "Level": "BranchName"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9590fd4916ddb31b714c",
+        "field": {
+          "HierarchyLevel": {
+            "Expression": {
+              "Hierarchy": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "V_Dim_FB_CustChainHeir"
+                  }
+                },
+                "Hierarchy": "Topline Hierarchy"
+              }
+            },
+            "Level": "SalesGroupName"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "49b9819c6cc44a10480b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_TL_Table"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "3d9717e083182be257f3",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "VTL1"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "d14ac290a5a8205c388d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue_TL_Table"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "54560768007ab4d28eae",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "RevTL1"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "b7de332e326749844ab5",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Rate_per_Case_TL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "69d6a0368cfbd1ddcaa7",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "RPCTL1"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
 }

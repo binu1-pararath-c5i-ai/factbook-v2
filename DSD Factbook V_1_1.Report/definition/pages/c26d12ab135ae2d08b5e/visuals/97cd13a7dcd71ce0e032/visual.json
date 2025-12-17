@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "97cd13a7dcd71ce0e032",
   "position": {
     "x": 356,
@@ -142,7 +142,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'RPC'"
+                                "Value": "'Absolute'"
                               }
                             }
                           ]
@@ -333,5 +333,23 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a78cfe9769e07989ca6e",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Abs/RPC Table"
+              }
+            },
+            "Property": "Abs/RPC"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }

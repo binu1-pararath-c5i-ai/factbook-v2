@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "9a288a417531c9994206",
   "position": {
     "x": 5,
@@ -476,58 +476,18 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "f800945dc9375a01370d",
+        "name": "05c05a7e888a033d0609",
         "field": {
-          "Column": {
+          "Measure": {
             "Expression": {
               "SourceRef": {
-                "Entity": "V_Dim_FB_CalDay"
+                "Entity": "Measure Table"
               }
             },
-            "Property": "Showslicer_topline"
+            "Property": "Conditional_OI AttainmentSelected"
           }
         },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "v",
-              "Entity": "V_Dim_FB_CalDay",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "v"
-                          }
-                        },
-                        "Property": "Showslicer_topline"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "true"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        "howCreated": "User"
+        "type": "Advanced"
       }
     ]
   }

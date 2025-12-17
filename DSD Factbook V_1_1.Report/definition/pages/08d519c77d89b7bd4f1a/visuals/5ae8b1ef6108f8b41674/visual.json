@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "5ae8b1ef6108f8b41674",
   "position": {
     "x": 147.5,
@@ -153,58 +153,18 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "5480e5260d1d2c383094",
+        "name": "7d113a279a6a529aa8e1",
         "field": {
-          "Column": {
+          "Measure": {
             "Expression": {
               "SourceRef": {
-                "Entity": "V_Dim_FB_CalDay"
+                "Entity": "Measure Table"
               }
             },
-            "Property": "Showslicer_topline"
+            "Property": "Opex Margin"
           }
         },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "v",
-              "Entity": "V_Dim_FB_CalDay",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "v"
-                          }
-                        },
-                        "Property": "Showslicer_topline"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "true"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        "howCreated": "User"
+        "type": "Advanced"
       }
     ]
   }

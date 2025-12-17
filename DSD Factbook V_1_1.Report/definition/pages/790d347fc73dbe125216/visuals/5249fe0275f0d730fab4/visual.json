@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
   "name": "5249fe0275f0d730fab4",
   "position": {
     "x": 28.571428571428573,
@@ -377,49 +377,6 @@
           }
         },
         "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "v",
-              "Entity": "V_Dim_FB_CalDay",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "Not": {
-                  "Expression": {
-                    "In": {
-                      "Expressions": [
-                        {
-                          "Column": {
-                            "Expression": {
-                              "SourceRef": {
-                                "Source": "v"
-                              }
-                            },
-                            "Property": "MonthName"
-                          }
-                        }
-                      ],
-                      "Values": [
-                        [
-                          {
-                            "Literal": {
-                              "Value": "null"
-                            }
-                          }
-                        ]
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        },
         "objects": {
           "general": [
             {
@@ -435,6 +392,48 @@
             }
           ]
         }
+      },
+      {
+        "name": "9c52c993e97de7f6806a",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_Bar_Actual_TL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "02ecd4b0b565ce7c7707",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_Bar_AOP_FCST_YA"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "0e4a1786a9bfb3fd9532",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_FCST Topline bar"
+          }
+        },
+        "type": "Advanced"
       }
     ]
   }

@@ -3,10 +3,10 @@
   "name": "1a36ae086b9f76e72ae1",
   "position": {
     "x": 0,
-    "y": 0,
+    "y": 123.31071913161465,
     "z": 0,
-    "height": 596.25,
-    "width": 478.75
+    "height": 597.449118046133,
+    "width": 804.12483039348706
   },
   "visual": {
     "visualType": "tableEx",
@@ -14,6 +14,34 @@
       "queryState": {
         "Values": {
           "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Operation_Cal_Day"
+                    }
+                  },
+                  "Property": "DayDate"
+                }
+              },
+              "queryRef": "Operation_Cal_Day.DayDate",
+              "nativeQueryRef": "DayDate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Total_CFR_Card"
+                }
+              },
+              "queryRef": "Measure Table.Total_CFR_Card",
+              "nativeQueryRef": "Total_CFR_Card"
+            },
             {
               "field": {
                 "Measure": {
@@ -69,9 +97,40 @@
               },
               "queryRef": "Measure Table.Revenue AOP",
               "nativeQueryRef": "Revenue AOP"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Conditional_Revenue AttainmentSelected max per CasesOrdered"
+                }
+              },
+              "queryRef": "Measure Table.Conditional_Revenue AttainmentSelected max per CasesOrdered",
+              "nativeQueryRef": "Conditional_Revenue AttainmentSelected max per CasesOrdered"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Measure Table"
+                  }
+                },
+                "Property": "Conditional_Revenue AttainmentSelected max per CasesOrdered"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "objects": {
@@ -81,7 +140,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "163.0000040710206D"
+                  "Value": "136.94844496176367D"
                 }
               }
             }
@@ -89,9 +148,153 @@
           "selector": {
             "metadata": "Measure Table.Conditional_Revenue AttainmentSelected"
           }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "91.6874735738995D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Operation_Cal_Day.DayDate"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "169.37960482261167D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Conditional_Revenue AttainmentSelected max per CasesOrdered"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "86.9497975440273D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Revenue Varient AOP%"
+          }
         }
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "90e83a460172b2a8ddb4",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Conditional_Revenue AttainmentSelected"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "de0b14a747c889814570",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue Varient AOP%"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "0077bb49e7f587689c99",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue Act"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "c6019ae3957b7f1c990b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue AOP"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "8fa29b715c22d83e14f4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Operation_Cal_Day"
+              }
+            },
+            "Property": "DayDate"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "8363827a616ee6aa1099",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Total_CFR_Card"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "895d357ea1f639d3232b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Conditional_Revenue AttainmentSelected max per CasesOrdered"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

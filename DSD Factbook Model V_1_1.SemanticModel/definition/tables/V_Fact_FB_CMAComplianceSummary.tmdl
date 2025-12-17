@@ -45,12 +45,15 @@ table V_Fact_FB_CMAComplianceSummary
 		annotation SummarizationSetBy = Automatic
 
 	column PeriodStart
-		dataType: string
+		dataType: dateTime
+		formatString: Long Date
 		lineageTag: d1acb8c7-8279-4b20-9590-8d7d5b114a82
 		summarizeBy: none
 		sourceColumn: PeriodStart
 
 		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
 
 	column PeriodEnd
 		dataType: dateTime
@@ -58,8 +61,6 @@ table V_Fact_FB_CMAComplianceSummary
 		lineageTag: da7cebf4-175e-46b8-b559-3bfb4ff2b8ae
 		summarizeBy: none
 		sourceColumn: PeriodEnd
-
-		changedProperty = DataType
 
 		annotation SummarizationSetBy = Automatic
 

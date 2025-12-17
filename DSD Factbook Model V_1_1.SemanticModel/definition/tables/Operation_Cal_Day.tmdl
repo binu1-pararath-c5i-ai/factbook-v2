@@ -12,15 +12,6 @@ table Operation_Cal_Day
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	column L3
-		lineageTag: 6a334850-1ca1-4488-ad49-e9ab73f7af24
-		summarizeBy: none
-		isNameInferred
-		sourceColumn: V_Dim_FB_CalDay[L3]
-		sortByColumn: 'Period Level Sort'
-
-		annotation SummarizationSetBy = Automatic
-
 	column Date_flag = ```
 			
 			var _today = [CD]
@@ -87,22 +78,6 @@ table Operation_Cal_Day
 
 		annotation SummarizationSetBy = Automatic
 
-	column L1
-		lineageTag: dddc4f9c-af4f-40b2-b72b-9d8f0a79c2eb
-		summarizeBy: none
-		isNameInferred
-		sourceColumn: V_Dim_FB_CalDay[L1]
-
-		annotation SummarizationSetBy = Automatic
-
-	column L2
-		lineageTag: d457c0ac-dc9d-4167-b5c6-39e75d99f1bb
-		summarizeBy: none
-		isNameInferred
-		sourceColumn: V_Dim_FB_CalDay[L2]
-
-		annotation SummarizationSetBy = Automatic
-
 	column WeekStarting_ISO
 		formatString: General Date
 		lineageTag: 6f243b08-17d7-4f8e-9db6-961a743fd790
@@ -112,67 +87,171 @@ table Operation_Cal_Day
 
 		annotation SummarizationSetBy = Automatic
 
+	column Year
+		formatString: 0
+		lineageTag: e88101a9-35d4-4b55-91a1-953e0b914b04
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[Year]
+
+		annotation SummarizationSetBy = Automatic
+
+	column YearID
+		lineageTag: 96e84de2-e2d7-4718-bf27-12b1ad858c3a
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[YearID]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Quarter
+		lineageTag: f9d84f4a-32b2-45e2-b1cb-e4712835a08f
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[Quarter]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Quarter_Name
+		lineageTag: 58fd1647-6bff-476a-bbc5-25368a4b4676
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[Quarter_Name]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthName
+		lineageTag: d9fb2ed1-ddd2-4830-9282-ac7f884d444f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[MonthName]
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthNumber
+		lineageTag: 74846c8e-3cff-4871-9094-bdc75a738e0b
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[MonthNumber]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column CurrWeekCounter_ISO
+		lineageTag: c0898d11-d7e0-4bb6-aa8c-8750d8ca76fd
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[CurrWeekCounter_ISO]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column L1
+		lineageTag: 95341e51-9c9c-43e6-b778-55b5333ec05f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [L1]
+
+		annotation SummarizationSetBy = Automatic
+
+	column L2
+		lineageTag: 649c1f4c-ec4a-4c0a-8d9c-fc60841c0565
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [L2]
+
+		annotation SummarizationSetBy = Automatic
+
+	column L3
+		lineageTag: f4a58706-55ae-4a08-b5ae-1f99ec69f209
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [L3]
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Operation_Cal_Day = calculated
 		mode: import
 		source = ```
 				
 				
-				var x1 =
+				VAR data_normal =
 				SUMMARIZE(
 				    V_Dim_FB_CalDay,
 				    V_Dim_FB_CalDay[DayDate],
+				    V_Dim_FB_CalDay[Year],
 				    V_Dim_FB_CalDay[YearID],
+				    V_Dim_FB_CalDay[Quarter],
 				    V_Dim_FB_CalDay[Quarter_Name],
-				    V_Dim_FB_CalDay[L1],
-				    V_Dim_FB_CalDay[L2],
-				    V_Dim_FB_CalDay[L3],
 				    V_Dim_FB_CalDay[MonthName],
+				    V_Dim_FB_CalDay[MonthNumber],
 				    V_Dim_FB_CalDay[FirstDayOfYear],
 				    V_Dim_FB_CalDay[FirstDayOfQuarter],
 				    V_Dim_FB_CalDay[FirstDayOfMonth],
 				    V_Dim_FB_CalDay[WeekStarting_ISO],
-				    // V_Dim_FB_CalDay[MonthNumber],
+				    V_Dim_FB_CalDay[CurrWeekCounter_ISO],
 				    V_Dim_FB_CalDay[Period Level Sort],
-				    "Week-M", IF(SELECTEDVALUE(V_Dim_FB_CalDay[CurrWeekCounter_ISO]) IN {0, -1}, V_Dim_FB_CalDay[L3], BLANK()),
-				    "Week-Q", IF(SELECTEDVALUE(V_Dim_FB_CalDay[CurrWeekCounter_ISO]) IN {0, -1}, V_Dim_FB_CalDay[L2], BLANK()),
-				    "Week-Y", IF(SELECTEDVALUE(V_Dim_FB_CalDay[CurrWeekCounter_ISO]) IN {0, -1}, V_Dim_FB_CalDay[L1], BLANK())
+				    "L1", V_Dim_FB_CalDay[YearID],
+				    "L2", V_Dim_FB_CalDay[Quarter_Name],
+				    "L3", V_Dim_FB_CalDay[MonthName]
 				)
 				 
-				var x2 =
-				SUMMARIZE(
-				    V_Dim_FB_CalDay,
-				    V_Dim_FB_CalDay[DayDate],
-				    V_Dim_FB_CalDay[YearID],
-				    V_Dim_FB_CalDay[Quarter_Name],
-				    V_Dim_FB_CalDay[L1],
-				    V_Dim_FB_CalDay[L2],
-				    V_Dim_FB_CalDay[L3],
-				    V_Dim_FB_CalDay[MonthName],
-				    V_Dim_FB_CalDay[FirstDayOfYear],
-				    V_Dim_FB_CalDay[FirstDayOfQuarter],
-				    V_Dim_FB_CalDay[FirstDayOfMonth],
-				    V_Dim_FB_CalDay[WeekStarting_ISO],
-				    // V_Dim_FB_CalDay[MonthNumber],
-				    V_Dim_FB_CalDay[Period Level Sort],
-				    "Week-M", V_Dim_FB_CalDay[MonthName],
-				    "Week-Q", V_Dim_FB_CalDay[Quarter_Name],
-				    "Week-Y", V_Dim_FB_CalDay[L1]
+				VAR data_wk =
+				FILTER(
+				    SUMMARIZE(
+				        V_Dim_FB_CalDay,
+				        V_Dim_FB_CalDay[DayDate],
+				        V_Dim_FB_CalDay[Year],
+				        V_Dim_FB_CalDay[YearID],
+				        V_Dim_FB_CalDay[Quarter],
+				        V_Dim_FB_CalDay[Quarter_Name],
+				        V_Dim_FB_CalDay[MonthName],
+				        V_Dim_FB_CalDay[MonthNumber],
+				        V_Dim_FB_CalDay[FirstDayOfYear],
+				        V_Dim_FB_CalDay[FirstDayOfQuarter],
+				        V_Dim_FB_CalDay[FirstDayOfMonth],
+				        V_Dim_FB_CalDay[WeekStarting_ISO],
+				        V_Dim_FB_CalDay[CurrWeekCounter_ISO],
+				        V_Dim_FB_CalDay[Period Level Sort],
+				        "L1", "Weeks",
+				        "L2", SWITCH(V_Dim_FB_CalDay[CurrWeekCounter_ISO], 0, "Curr Wk", -1, "Prev Wk"),
+				        "L3", "Wk of " & FORMAT(V_Dim_FB_CalDay[Weekstarting_ISO], "MM/DD")
+				    ),
+				    V_Dim_FB_CalDay[CurrWeekCounter_ISO] IN {0, -1}
 				)
-				 
-				var data = UNION(x1,x2)
-				RETURN 
-				SUMMARIZE(
-				    data,
-				    V_Dim_FB_CalDay[DayDate],
-				    V_Dim_FB_CalDay[FirstDayOfYear],
-				    V_Dim_FB_CalDay[FirstDayOfQuarter],
-				    V_Dim_FB_CalDay[FirstDayOfMonth],
-				    V_Dim_FB_CalDay[L3],
-				    V_Dim_FB_CalDay[L1],
-				    V_Dim_FB_CalDay[L2],
-				    V_Dim_FB_CalDay[WeekStarting_ISO],
-				    V_Dim_FB_CalDay[Period Level Sort]
-				)
+				
+				RETURN UNION(data_normal, data_wk)
+				
+				
+				// VAR X = 
+				// SELECTCOLUMNS(
+				//     data,
+				//     // "DayDate",
+				//     data[DayDate],
+				//     // "Year",
+				//     data[Year],
+				//     // data[YearID],
+				//     // "Quarter",
+				//     data[Quarter],
+				//     // "Quarter_Name",
+				//     data[Quarter_Name],
+				//     // "MonthName",
+				//     data[MonthName]
+				//     // data[MonthNumber],
+				//     // data[FirstDayOfYear],
+				//     // data[FirstDayOfQuarter],
+				//     // data[FirstDayOfMonth],
+				//     // data[WeekStarting_ISO],
+				//     // data[Period Level Sort],
+				//     // data[L1],
+				//     // data[L2],
+				//     // data[L3]
+				// )
+				// RETURN X
 				```
 
 	annotation PBI_Id = a9565b9f911a4bc9b36e805a9545bd76
