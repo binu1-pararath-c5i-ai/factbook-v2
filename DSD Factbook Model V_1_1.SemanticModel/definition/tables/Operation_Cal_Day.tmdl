@@ -35,16 +35,6 @@ table Operation_Cal_Day
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Period Level Sort'
-		lineageTag: 70ade705-92ca-4654-a626-32cf66ea2fba
-		summarizeBy: none
-		isNameInferred
-		sourceColumn: V_Dim_FB_CalDay[Period Level Sort]
-
-		annotation SummarizationSetBy = User
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
 	column FirstDayOfYear
 		formatString: General Date
 		lineageTag: 3c59a3fd-1232-44ad-8f45-f282f97496bf
@@ -174,6 +164,25 @@ table Operation_Cal_Day
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Period Level Sort'
+		lineageTag: 240a3e02-0181-4995-9278-76f326eba2de
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Period Level Sort]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column LYDayDate
+		formatString: General Date
+		lineageTag: 6d0219ff-698e-4474-b4ef-dfb11ea99908
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[LYDayDate]
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Operation_Cal_Day = calculated
 		mode: import
 		source = ```
@@ -194,7 +203,9 @@ table Operation_Cal_Day
 				    V_Dim_FB_CalDay[FirstDayOfMonth],
 				    V_Dim_FB_CalDay[WeekStarting_ISO],
 				    V_Dim_FB_CalDay[CurrWeekCounter_ISO],
-				    V_Dim_FB_CalDay[Period Level Sort],
+				    V_Dim_FB_CalDay[LYDayDate],
+				    // V_Dim_FB_CalDay[Period Level Sort],
+				    "Period Level Sort", V_Dim_FB_CalDay[MonthNumber],
 				    "L1", V_Dim_FB_CalDay[YearID],
 				    "L2", V_Dim_FB_CalDay[Quarter_Name],
 				    "L3", V_Dim_FB_CalDay[MonthName]
@@ -216,7 +227,9 @@ table Operation_Cal_Day
 				        V_Dim_FB_CalDay[FirstDayOfMonth],
 				        V_Dim_FB_CalDay[WeekStarting_ISO],
 				        V_Dim_FB_CalDay[CurrWeekCounter_ISO],
-				        V_Dim_FB_CalDay[Period Level Sort],
+				        V_Dim_FB_CalDay[LYDayDate],
+				        // V_Dim_FB_CalDay[Period Level Sort],
+				        "Period Level Sort", SWITCH(V_Dim_FB_CalDay[CurrWeekCounter_ISO], 0, 12.1, -1, 12.2),
 				        "L1", "Weeks",
 				        "L2", SWITCH(V_Dim_FB_CalDay[CurrWeekCounter_ISO], 0, "Curr Wk", -1, "Prev Wk"),
 				        "L3", "Wk of " & FORMAT(V_Dim_FB_CalDay[Weekstarting_ISO], "MM/DD")
@@ -225,33 +238,6 @@ table Operation_Cal_Day
 				)
 				
 				RETURN UNION(data_normal, data_wk)
-				
-				
-				// VAR X = 
-				// SELECTCOLUMNS(
-				//     data,
-				//     // "DayDate",
-				//     data[DayDate],
-				//     // "Year",
-				//     data[Year],
-				//     // data[YearID],
-				//     // "Quarter",
-				//     data[Quarter],
-				//     // "Quarter_Name",
-				//     data[Quarter_Name],
-				//     // "MonthName",
-				//     data[MonthName]
-				//     // data[MonthNumber],
-				//     // data[FirstDayOfYear],
-				//     // data[FirstDayOfQuarter],
-				//     // data[FirstDayOfMonth],
-				//     // data[WeekStarting_ISO],
-				//     // data[Period Level Sort],
-				//     // data[L1],
-				//     // data[L2],
-				//     // data[L3]
-				// )
-				// RETURN X
 				```
 
 	annotation PBI_Id = a9565b9f911a4bc9b36e805a9545bd76

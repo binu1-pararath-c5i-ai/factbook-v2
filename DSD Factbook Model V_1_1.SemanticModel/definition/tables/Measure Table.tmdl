@@ -9573,36 +9573,17 @@ table 'Measure Table'
 
 		formatStringDefinition = "#,##0%;(#,##0%)"
 
-	measure Selected_Period = ```
+	measure Selected_Period =
 			
-			VAR _isWeek =
-			    HASONEVALUE('V_Dim_FB_CalDay'[WeekStarting_ISO]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[MonthDesc]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isMonth =
-			    HASONEVALUE('V_Dim_FB_CalDay'[MonthDesc]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			RETURN 
 			SWITCH(
-			    TRUE(),
-			    _isWeek, [Date Validation_Day],
-			    _isMonth, [Date Validation_Month],
-			    _isQuarter, [Date Validation_Quarter],
-			    _isYear, [Date Validation_Year],
+			    [PeriodLabel],
+			    "W", [Date Validation_Day],
+			    "M", [Date Validation_Month],
+			    "Q", [Date Validation_Quarter],
+			    "Y", [Date Validation_Year],
 			    BLANK()
 			)
-			```
+		formatString: General Date
 		displayFolder: Ops - DNP
 		lineageTag: 82aa499f-8fa4-4e50-bbec-c42e4ce83cff
 
@@ -11306,64 +11287,20 @@ table 'Measure Table'
 
 	measure 'POG_Comp_Prior Period' = ```
 			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			
-			var _isdsspw = 
-			CALCULATE(
-			    SUM(V_Fact_FB_POGVoidDetail[IsDSSVoid]),
-			    REMOVEFILTERS(Operation_Cal_Day),
-			    REMOVEFILTERS(V_Dim_FB_CalDay),
-			    V_Fact_FB_POGVoidDetail[Period]="PreviousWeek")
-			
-			var _dsspw = 
-			CALCULATE(
-			    SUM(V_Fact_FB_POGVoidDetail[IsDSS]),
-			    REMOVEFILTERS(Operation_Cal_Day),
-			    REMOVEFILTERS(V_Dim_FB_CalDay),
-			    V_Fact_FB_POGVoidDetail[Period]="PreviousWeek")
-			
-			var _val = DIVIDE(_isdsspw,_dsspw,BLANK()) 
-			var _voidpw = IF(ISBLANK(_val),BLANK(),1-_val)
-			
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]),"Wk") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]),"Wk") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			Var _PriorPeriod =
-			 SWITCH(
-			        TRUE(),
-			        _isWeek, _voidpw,
-			        _isMonth,CALCULATE([POG_Comp],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([POG_Comp],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3)),
-			                             FILTER(ALL(V_Fact_FB_POGVoidDetail),
-			                             V_Fact_FB_POGVoidDetail[Period]="Monthly")),
-			        _isYear,  CALCULATE([POG_Comp],
-			                            FILTER(ALL(V_Fact_FB_POGVoidDetail),
-			                             V_Fact_FB_POGVoidDetail[Period]="Monthly"),
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			         )
+			SWITCH(
+			    [PeriodLabel],
+			    "W", IF(SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, BLANK(),
+			        1 - CALCULATE(
+			            DIVIDE(SUM(V_Fact_FB_POGVoidDetail[IsDSSVoid]), SUM(V_Fact_FB_POGVoidDetail[IsDSS]), BLANK()),
+			            REMOVEFILTERS(Operation_Cal_Day),
+			            V_Fact_FB_POGVoidDetail[Period] = "PreviousWeek"
+			        )
+			    ), // _voidpw,
+			    CALCULATE([POG_Comp], 'Time Intel'[Group] = "PRIOR_ANY")
+			)
 			RETURN 
-			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, "NA",
-			([POG_Comp]-_PriorPeriod)*100)
+			IF(ISBLANK(_PriorPeriod), "NA", ([POG_Comp] - _PriorPeriod) * 100)
 			```
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: POG
@@ -11373,62 +11310,21 @@ table 'Measure Table'
 
 	measure 'LF_POG_Comp_Prior Period' = ```
 			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			
-			var _isdsspw = 
-			CALCULATE(
-			    SUM(V_Fact_FB_POGVoidDetail[IsDSSVoid]),
-			    REMOVEFILTERS(Operation_Cal_Day),
-			    REMOVEFILTERS(V_Dim_FB_CalDay),
-			    V_Fact_FB_POGVoidDetail[Period]="PreviousWeek",
-			    V_Fact_FB_POGVoidDetail[FormatDesc]="LARGE FORMAT")
-			
-			var _dsspw = 
-			CALCULATE(
-			    SUM(V_Fact_FB_POGVoidDetail[IsDSS]),
-			    REMOVEFILTERS(Operation_Cal_Day),
-			    REMOVEFILTERS(V_Dim_FB_CalDay),
-			    V_Fact_FB_POGVoidDetail[Period]="PreviousWeek",
-			    V_Fact_FB_POGVoidDetail[FormatDesc]="LARGE FORMAT")
-			
-			var _val = DIVIDE(_isdsspw,_dsspw,BLANK()) 
-			var _voidpw = IF(ISBLANK(_val),BLANK(),1-_val)
-			
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]),"Wk") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]),"Wk") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
 			Var _PriorPeriod =
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,_voidpw,
-			        _isMonth,CALCULATE([LF_POG_COMP],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([LF_POG_COMP],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
-			        _isYear,  CALCULATE([LF_POG_COMP],
-			                            FILTER(ALL(V_Dim_FB_CalDay),
-			                             V_Dim_FB_CalDay[FirstDayOfYear] = DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			         )
+			SWITCH(
+			    [PeriodLabel],
+			    "W", IF(SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, BLANK(),
+			        1 - CALCULATE(
+			            DIVIDE(SUM(V_Fact_FB_POGVoidDetail[IsDSSVoid]), SUM(V_Fact_FB_POGVoidDetail[IsDSS]), BLANK()),
+			            REMOVEFILTERS(Operation_Cal_Day),
+			            V_Fact_FB_POGVoidDetail[Period] = "PreviousWeek",
+			            V_Fact_FB_POGVoidDetail[FormatDesc] = "LARGE FORMAT"
+			        )
+			    ), // _voidpw,
+			    CALCULATE([LF_POG_COMP], 'Time Intel'[Group] = "PRIOR_ANY")
+			)
 			RETURN 
-			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, "NA",([LF_POG_COMP]-_PriorPeriod)*100)
+			IF(ISBLANK(_PriorPeriod), "NA", ([LF_POG_COMP] - _PriorPeriod) * 100)
 			```
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: POG
@@ -11438,62 +11334,21 @@ table 'Measure Table'
 
 	measure 'SF_POG_Comp_Prior Period' = ```
 			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			
-			var _isdsspw = 
-			CALCULATE(
-			    SUM(V_Fact_FB_POGVoidDetail[IsDSSVoid]),
-			    REMOVEFILTERS(Operation_Cal_Day),
-			    REMOVEFILTERS(V_Dim_FB_CalDay),
-			    V_Fact_FB_POGVoidDetail[Period]="PreviousWeek",
-			    V_Fact_FB_POGVoidDetail[FormatDesc]="SMALL FORMAT")
-			
-			var _dsspw = 
-			CALCULATE(
-			    SUM(V_Fact_FB_POGVoidDetail[IsDSS]),
-			    REMOVEFILTERS(Operation_Cal_Day),
-			    REMOVEFILTERS(V_Dim_FB_CalDay),
-			    V_Fact_FB_POGVoidDetail[Period]="PreviousWeek",
-			    V_Fact_FB_POGVoidDetail[FormatDesc]="SMALL FORMAT")
-			
-			var _val = DIVIDE(_isdsspw,_dsspw,BLANK()) 
-			var _voidpw = IF(ISBLANK(_val),BLANK(),1-_val)
-			
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]),"Wk ") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]),"Wk ") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
 			Var _PriorPeriod =
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,_voidpw,
-			        _isMonth,CALCULATE([SF_POG_COMP],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([SF_POG_COMP],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
-			        _isYear,  CALCULATE([SF_POG_COMP],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			         )
+			SWITCH(
+			    [PeriodLabel],
+			    "W", IF(SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, BLANK(),
+			        1 - CALCULATE(
+			            DIVIDE(SUM(V_Fact_FB_POGVoidDetail[IsDSSVoid]), SUM(V_Fact_FB_POGVoidDetail[IsDSS]), BLANK()),
+			            REMOVEFILTERS(Operation_Cal_Day),
+			            V_Fact_FB_POGVoidDetail[Period] = "PreviousWeek",
+			            V_Fact_FB_POGVoidDetail[FormatDesc] = "SMALL FORMAT"
+			        )
+			    ), // _voidpw,
+			    CALCULATE([SF_POG_COMP], 'Time Intel'[Group] = "PRIOR_ANY")
+			)
 			RETURN 
-			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, "NA",([SF_POG_COMP]-_PriorPeriod)*100)
+			IF(ISBLANK(_PriorPeriod), "NA", ([SF_POG_COMP] - _PriorPeriod) * 100)
 			```
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: POG
@@ -11503,61 +11358,21 @@ table 'Measure Table'
 
 	measure 'NewItem_POG_Comp_Prior Period' = ```
 			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			
-			var _isdsspw = 
-			CALCULATE(
-			    SUM(V_Fact_FB_POGVoidDetail[IsDSSVoid]),
-			    REMOVEFILTERS(Operation_Cal_Day),
-			    REMOVEFILTERS(V_Dim_FB_CalDay),
-			    V_Fact_FB_POGVoidDetail[Period]="PreviousWeek",
-			    V_Fact_FB_POGVoidDetail[POGItemType]="NEW ITEM")
-			
-			var _dsspw = 
-			CALCULATE(
-			    SUM(V_Fact_FB_POGVoidDetail[IsDSS]),
-			    REMOVEFILTERS(Operation_Cal_Day),
-			    REMOVEFILTERS(V_Dim_FB_CalDay),
-			    V_Fact_FB_POGVoidDetail[Period]="PreviousWeek",
-			    V_Fact_FB_POGVoidDetail[POGItemType]="NEW ITEM")
-			
-			var _val = DIVIDE(_isdsspw,_dsspw,BLANK()) 
-			var _voidpw = IF(ISBLANK(_val),BLANK(),1-_val)
-			
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
 			Var _PriorPeriod =
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,_voidpw,
-			        _isMonth,CALCULATE([New Item_POG_COMP],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([New Item_POG_COMP],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
-			        _isYear,  CALCULATE([New Item_POG_COMP],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			         )
+			SWITCH(
+			    [PeriodLabel],
+			    "W", IF(SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, BLANK(),
+			        1 - CALCULATE(
+			            DIVIDE(SUM(V_Fact_FB_POGVoidDetail[IsDSSVoid]), SUM(V_Fact_FB_POGVoidDetail[IsDSS]), BLANK()),
+			            REMOVEFILTERS(Operation_Cal_Day),
+			            V_Fact_FB_POGVoidDetail[Period] = "PreviousWeek",
+			            V_Fact_FB_POGVoidDetail[FormatDesc] = "NEW ITEM"
+			        )
+			    ), // _voidpw,
+			    CALCULATE([New Item_POG_COMP], 'Time Intel'[Group] = "PRIOR_ANY")
+			)
 			RETURN 
-			IF(ISBLANK(_PriorPeriod)||SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2, "NA",([New Item_POG_COMP]-_PriorPeriod)*100)
+			IF(ISBLANK(_PriorPeriod), "NA", ([New Item_POG_COMP] - _PriorPeriod) * 100)
 			```
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: POG
@@ -11743,93 +11558,14 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure '%Sold_Prior Period' = ```
-			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			Var _PriorPeriod =
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,CALCULATE([%Sold],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod - 7)),
-			        _isMonth,CALCULATE([%Sold],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([%Sold],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
-			        _isYear,  CALCULATE([%Sold],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			 )
-			 
-			RETURN ([%Sold] -_PriorPeriod)*100
-			```
+	measure '%Sold_Prior Period' = ([%Sold] - CALCULATE([%Sold], 'Time Intel'[Group] = "PRIOR_ANY")) * 100
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: Rev
 		lineageTag: 8d2d2d78-b036-42a3-965b-4a409361a4cf
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure '%Built_Prior Period' = ```
-			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			Var _PriorPeriod =
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,CALCULATE([%Built],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod - 7)),
-			        _isMonth,CALCULATE([%Built],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([%Built],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
-			        _isYear,  CALCULATE([%Built],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			         )
-			RETURN         
-			ROUND([%Built],2)*100-ROUND(_PriorPeriod,2)*100
-			```
+	measure '%Built_Prior Period' = IF(ISBLANK([%Built]), BLANK(), ROUND([%Built] - CALCULATE([%Built], 'Time Intel'[Group] = "PRIOR_ANY"), 2) * 100)
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: Rev
 		lineageTag: 79164450-3a6d-4e22-b707-7d9ec9eba5e2
@@ -11841,137 +11577,21 @@ table 'Measure Table'
 		displayFolder: Rev
 		lineageTag: 414f7c42-7dfb-46dd-b550-72258d440c78
 
-	measure '%Sold_LF_Prior Period' = ```
-			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			Var _PriorPeriod =
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,CALCULATE([%Sold_LF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod - 7)),
-			        _isMonth,CALCULATE([%Sold_LF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([%Sold_LF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
-			        _isYear,  CALCULATE([%Sold_LF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			 )
-			 
-			RETURN ([%Sold_LF] -_PriorPeriod)*100
-			```
+	measure '%Sold_LF_Prior Period' = ([%Sold_LF] - CALCULATE([%Sold_LF], 'Time Intel'[Group] = "PRIOR_ANY")) * 100
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: Rev
 		lineageTag: 8c3f0d82-338f-4e55-ae30-62fc9b3e5dd2
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure '%Sold_SF_Prior Period' = ```
-			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			Var _PriorPeriod =
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,CALCULATE([%Sold_SF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod - 7)),
-			        _isMonth,CALCULATE([%Sold_SF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([%Sold_SF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
-			        _isYear,  CALCULATE([%Sold_SF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			 )
-			 
-			RETURN ([%Sold_SF] -_PriorPeriod)*100
-			```
+	measure '%Sold_SF_Prior Period' = ([%Sold_SF] - CALCULATE([%Sold_SF], 'Time Intel'[Group] = "PRIOR_ANY")) * 100
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: Rev
 		lineageTag: de0120a8-9606-4601-b0ea-5f503014cbf5
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure '%Built_LF_Prior Period' = ```
-			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			Var _PriorPeriod =
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,CALCULATE([%Built_LF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod - 7)),
-			        _isMonth,CALCULATE([%Built_LF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([%Built_LF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
-			        _isYear,  CALCULATE([%Built_LF],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			         )
-			RETURN IF(ISBLANK([%Built_LF]), BLANK(), ([%Built_LF] - _PriorPeriod) * 100)
-			```
+	measure '%Built_LF_Prior Period' = IF(ISBLANK([%Built_LF]), BLANK(), ([%Built_LF] - CALCULATE([%Built_LF], 'Time Intel'[Group] = "PRIOR_ANY")) * 100)
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: Rev
 		lineageTag: c472a309-4b82-4de4-be99-45ead9c4fec8
@@ -12551,57 +12171,36 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure 'IM_Date Validation_Month' = CALCULATE(MAX(V_Dim_FB_CalDay[FirstDayOfMonth]),V_Dim_FB_CalDay[MonthDesc] = SELECTEDVALUE(V_Dim_FB_CalDay[MonthDesc]))
+	measure 'IM_Date Validation_Month' = CALCULATE(MAX(Operation_Cal_Day[FirstDayOfMonth]), Operation_Cal_Day[L3] = SELECTEDVALUE(Operation_Cal_Day[MonthName]))
 		formatString: General Date
 		displayFolder: CMA
 		lineageTag: a2784c50-5a2a-48ac-9588-a96875661f50
 
-	measure 'IM_Date Validation_Quarter' = CALCULATE(MAX(V_Dim_FB_CalDay[FirstDayOfQuarter]),V_Dim_FB_CalDay[QuarterID] = SELECTEDVALUE(V_Dim_FB_CalDay[QuarterID]))
+	measure 'IM_Date Validation_Quarter' = CALCULATE(MAX(Operation_Cal_Day[FirstDayOfQuarter]), Operation_Cal_Day[L2] = SELECTEDVALUE(Operation_Cal_Day[Quarter_Name]))
 		formatString: General Date
 		displayFolder: CMA
 		lineageTag: e9b1ad59-97de-4486-af01-2dd4d4615704
 
-	measure 'IM_Date Validation_Week' = CALCULATE(MAX(V_Dim_FB_CalDay[WeekStarting_ISO]),V_Dim_FB_CalDay[L3_] = SELECTEDVALUE(V_Dim_FB_CalDay[L3_]))
+	measure 'IM_Date Validation_Week' = CALCULATE(MAX(Operation_Cal_Day[WeekStarting_ISO]), Operation_Cal_Day[L1] = "Weeks", Operation_Cal_Day[L3] = SELECTEDVALUE(Operation_Cal_Day[L3]))
 		formatString: General Date
 		displayFolder: CMA
 		lineageTag: 97622526-ee69-4634-b2af-1158ad690845
 
-	measure 'IM_Date Validation_Year' = CALCULATE(MAX(V_Dim_FB_CalDay[FirstDayOfYear]),V_Dim_FB_CalDay[YearID] = SELECTEDVALUE(V_Dim_FB_CalDay[YearID]))
+	measure 'IM_Date Validation_Year' = CALCULATE(MAX(Operation_Cal_Day[FirstDayOfYear]), Operation_Cal_Day[L1] = SELECTEDVALUE(Operation_Cal_Day[YearID]))
 		formatString: General Date
 		displayFolder: CMA
 		lineageTag: 59dcc995-f2c1-46e1-a17d-9bc9ec634d59
 
-	measure IM_Selected_Period = ```
+	measure IM_Selected_Period =
 			
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3_]), "Wk ") &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(V_Dim_FB_CalDay[L3_]), "Wk ") &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			RETURN
 			SWITCH(
-			    TRUE(),
-			    _isWeek, [IM_Date Validation_Week],
-			    _isMonth, [IM_Date Validation_Month],
-			    _isQuarter, [IM_Date Validation_Quarter],
-			    _isYear, [IM_Date Validation_Year],
+			    [PeriodLabel],
+			    "W", [IM_Date Validation_Week],
+			    "M", [IM_Date Validation_Month],
+			    "Q", [IM_Date Validation_Quarter],
+			    "Y", [IM_Date Validation_Year],
 			    BLANK()
 			)
-			```
 		formatString: General Date
 		displayFolder: CMA
 		lineageTag: 3961336c-cc6b-48e1-8b7f-1c72ec7dc9d9
@@ -12863,7 +12462,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Total_Breakage_ABS_RPC_Selection_Ops_Bar_Actual_TL = CALCULATE([Total_Breakage_Abs_RPC_Selection_OPs], 'Time Intel'[Group] = "CL_YTD")
+	measure Total_Breakage_ABS_RPC_Selection_Ops_Bar_Actual_TL = CALCULATE([Total_Breakage_Abs_RPC_Selection_OPs], 'Time Intel'[Group] = "YTD_CL")
 		displayFolder: Ops
 		lineageTag: 1209de95-db28-4d96-a63b-f44feb8c4207
 
@@ -13721,7 +13320,7 @@ table 'Measure Table'
 			    
 			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
 			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA", 
-			    CALCULATE([Wh_CPC_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD"),
+			    CALCULATE([Wh_CPC_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "YTD_CL"),
 			    
 			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
 			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPC_AOP_CPH],
@@ -13740,7 +13339,7 @@ table 'Measure Table'
 			    
 			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
 			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
-			    CALCULATE([Delv_CPC_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD"),
+			    CALCULATE([Delv_CPC_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "YTD_CL"),
 			    
 			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
 			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPC_AOP_CPH],
@@ -13759,7 +13358,7 @@ table 'Measure Table'
 			    
 			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
 			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
-			    CALCULATE([Mech_CPC_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD")
+			    CALCULATE([Mech_CPC_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "YTD_CL")
 			)
 			```
 		displayFolder: Ops
@@ -13788,7 +13387,7 @@ table 'Measure Table'
 			    
 			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Warehouse" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
 			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA", 
-			    CALCULATE([Wh_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD"),
+			    CALCULATE([Wh_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "YTD_CL"),
 			    
 			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
 			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Delv_CPH_AOP_CPH],
@@ -13807,7 +13406,7 @@ table 'Measure Table'
 			    
 			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Delivery" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
 			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
-			    CALCULATE([Delv_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD"),
+			    CALCULATE([Delv_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "YTD_CL"),
 			    
 			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Actuals" &&
 			    SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", [Mech_CPH_AOP_CPH],
@@ -13826,7 +13425,7 @@ table 'Measure Table'
 			    
 			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) = "Merchandising" && SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) = "Vol.Adjusted" &&
 			    SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
-			    CALCULATE([Mech_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CL_YTD")
+			    CALCULATE([Mech_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "YTD_CL")
 			)
 			```
 		displayFolder: Ops
@@ -13834,7 +13433,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops_Bar = CALCULATE([Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops], 'Time Intel'[Group] = "CL_YTD")
+	measure Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops_Bar = CALCULATE([Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops], 'Time Intel'[Group] = "YTD_CL")
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Ops
 		lineageTag: d40252b3-5246-4935-9568-97a128a6545c
@@ -14051,12 +13650,12 @@ table 'Measure Table'
 
 		formatStringDefinition = ""
 
-	measure Volume_Bar_FCST_new = CALCULATE([Base PL FCST Act], Metric[Group] = "PL_VOL", 'Time Intel'[Group] = "PM_Y0")
+	measure Volume_Bar_FCST_new = CALCULATE([Base PL FCST Act], Metric[Group] = "PL_VOL", 'Time Intel'[Group] = "CL_FULL_YR")
 		lineageTag: 4b8d591f-76e5-4138-b901-a439f613beeb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Revenue_Bar_FCST_new = CALCULATE([Base PL FCST Act], Metric[Group] = "PL_REV", 'Time Intel'[Group] = "PM_Y0")
+	measure Revenue_Bar_FCST_new = CALCULATE([Base PL FCST Act], Metric[Group] = "PL_REV", 'Time Intel'[Group] = "CL_FULL_YR")
 		lineageTag: 25de8cc1-d10f-4c7d-9d22-a5d3c9c38e12
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -15856,45 +15455,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure 'CMA_Account_Prior Period_tgl' = ```
-			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			Var _PriorPeriod = 
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,CALCULATE([CMA_Account_Compliance_tgl],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod - 7)),
-			        _isMonth,CALCULATE([CMA_Account_Compliance_tgl],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([CMA_Account_Compliance_tgl],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
-			        _isYear,  CALCULATE([CMA_Account_Compliance_tgl],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			         )
-			RETURN IF(ISBLANK(_PriorPeriod),"NA",([CMA_Account_Compliance_tgl]-_PriorPeriod)*100)
-			```
+	measure 'CMA_Account_Prior Period_tgl' = IF(ISBLANK([CMA_Account_Compliance_tgl]), BLANK(), ([CMA_Account_Compliance_tgl] - CALCULATE([CMA_Account_Compliance_tgl], 'Time Intel'[Group] = "PRIOR_ANY") * 100))
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: CMA_Account
 		lineageTag: c29dd87b-0fb4-4287-bdb6-4ea2f84eb1a1
@@ -16543,44 +16104,8 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isCustom":true}
 
 	measure 'CMA_SKU_Prior Period_tgl' = ```
+			IF(ISBLANK([CMA_SKU_Compliance_tgl]), "NA", ([CMA_SKU_Compliance_tgl] - CALCULATE([CMA_SKU_Compliance_tgl], 'Time Intel'[Group] = "PRIOR_ANY")) * 100)
 			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			Var _PriorPeriod = 
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,CALCULATE([CMA_SKU_Compliance_tgl],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod - 7)),
-			        _isMonth,CALCULATE([CMA_SKU_Compliance_tgl],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([CMA_SKU_Compliance_tgl],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
-			        _isYear,  CALCULATE([CMA_SKU_Compliance_tgl],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			         )
-			RETURN 
-			IF(ISBLANK(_PriorPeriod),"NA",([CMA_SKU_Compliance_tgl] - _PriorPeriod)*100)
 			```
 		formatString: #,##0pts;(#,##0pts)
 		displayFolder: CMA_SKU
@@ -17028,44 +16553,7 @@ table 'Measure Table'
 				RETURN _y
 
 	measure '%Display_schdls_tobe_Built_SF_Prior Period' = ```
-			
-			var _SelectedPeriod=[IM_Selected_Period_Op]
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			Var _PriorPeriod =
-			 SWITCH(
-			        TRUE(),
-			        _isWeek,CALCULATE([Displays Schedules to be Built],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod - 7)),
-			        _isMonth,CALCULATE([Displays Schedules to be Built],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                            Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1))),
-			        _isQuarter,CALCULATE([Displays Schedules to be Built],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3))),
-			        _isYear,  CALCULATE([Displays Schedules to be Built],
-			                            FILTER(ALL(Operation_Cal_Day),
-			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
-			 )
-			 
-			RETURN ([Displays Schedules to be Built] -_PriorPeriod)*100
+			([Displays Schedules to be Built] - CALCULATE([Displays Schedules to be Built], 'Time Intel'[Group] = "PRIOR_ANY")) * 100
 			
 			```
 		formatString: #,##0pts;(#,##0pts)
@@ -17241,82 +16729,7 @@ table 'Measure Table'
 			```
 		lineageTag: b5bb2953-e7ba-4d73-aca0-7c86cbd06003
 
-	measure Requested_Deliveries_Prior_Period_abs = ```
-			
-			var _SelectedPeriod=[IM_Selected_Period]
-			
-			var _maxdate1 = MAX(V_Dim_FB_CalDay[DayDate])
-			var _mindate1 = MIN(V_Dim_FB_CalDay[DayDate])
-			var _x = DATEDIFF(_mindate1,_maxdate1,DAY)
-			
-			var 
-			_isWeek_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[TotalOrder]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[DayDate]>=_mindate1 - 7&&
-			     Operation_Cal_Day[DayDate]<=_mindate1-7+_x))
-			    // CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[TotalOrder]),
-			    //  FILTER(ALL(Operation_Cal_Day),
-			    //  Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod - 7))
-			
-			var _isMonth_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[TotalOrder]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)))
-			
-			var 
-			_iscurrmonth_val = 
-			    CALCULATE(
-			        SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[TotalOrder]),
-			         FILTER(ALL(Operation_Cal_Day),
-			         Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)),
-			         DAY(Operation_Cal_Day[DayDate])<=DAY(MAX(Operation_Cal_Day[DayDate])))
-			
-			var 
-			_isQuarter_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[TotalOrder]),
-			     FILTER(ALL(V_Dim_FB_CalDay),
-			     V_Dim_FB_CalDay[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3)),
-			     V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[DayDate]))
-			
-			// CurrentQuartercal
-			var prev_q = STARTOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var prev_q_end = ENDOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var curr_q_start = STARTOFQUARTER(V_Dim_FB_CalDay[DayDate])
-			
-			var _maxdate = MAX(V_Dim_FB_CalDay[DayDate])
-			
-			var _isquarter_curr_val = 
-			CALCULATE(
-			    SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[TotalOrder]),
-			    V_Dim_FB_CalDay[DayDate]>=prev_q && 
-			    V_Dim_FB_CalDay[DayDate] <= IF(
-			                                prev_q_end <= prev_q + DATEDIFF(curr_q_start,_maxdate,DAY),
-			                                prev_q_end,prev_q + DATEDIFF(curr_q_start,_maxdate,DAY
-			                                )
-			    ))
-			
-			var 
-			_isYear_val =  
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[TotalOrder]),
-			    FILTER(ALL(V_Dim_FB_CalDay),
-			    V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))),
-			    V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[LYDayDate]))
-			
-			var _z = 
-			SWITCH(
-			       TRUE(),
-			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3_]), _iscurrmonth_val,
-			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
-			        _x<=30, _isMonth_val,
-			        _x<=92, _isQuarter_val,
-			         _isYear_val)
-			
-			RETURN _z
-			```
+	measure Requested_Deliveries_Prior_Period_abs = CALCULATE([Requested_deliveries], 'Time Intel'[Group] = "PRIOR_RST_ANY")
 		displayFolder: Ops - DNP
 		lineageTag: ad25fc82-e730-4725-ac2b-841e4943d6ae
 
@@ -17328,79 +16741,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure '%Rolled_stops_Prior Period_abs' = ```
-			
-			var _SelectedPeriod=[IM_Selected_Period]
-			
-			var _maxdate1 = MAX(V_Dim_FB_CalDay[DayDate])
-			var _mindate1 = MIN(V_Dim_FB_CalDay[DayDate])
-			var _x = DATEDIFF(_mindate1,_maxdate1,DAY)
-			
-			var 
-			_isWeek_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[RolledStopOrder]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[DayDate]>=_mindate1 - 7&&
-			     Operation_Cal_Day[DayDate]<=_mindate1-7+_x))
-			
-			var _isMonth_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[RolledStopOrder]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)))
-			
-			var 
-			_iscurrmonth_val = 
-			    CALCULATE(
-			        SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[RolledStopOrder]),
-			         FILTER(ALL(Operation_Cal_Day),
-			         Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)),
-			         DAY(Operation_Cal_Day[DayDate])<=DAY(MAX(Operation_Cal_Day[DayDate])))
-			
-			var 
-			_isQuarter_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[RolledStopOrder]),
-			     FILTER(ALL(V_Dim_FB_CalDay),
-			     V_Dim_FB_CalDay[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3)),
-			     V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[DayDate]))
-			
-			// CurrentQuartercal
-			var prev_q = STARTOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var prev_q_end = ENDOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var curr_q_start = STARTOFQUARTER(V_Dim_FB_CalDay[DayDate])
-			
-			var _maxdate = MAX(V_Dim_FB_CalDay[DayDate])
-			
-			var _isquarter_curr_val = 
-			CALCULATE(
-			    SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[RolledStopOrder]),
-			    V_Dim_FB_CalDay[DayDate]>=prev_q && 
-			    V_Dim_FB_CalDay[DayDate] <= IF(
-			                                prev_q_end <= prev_q + DATEDIFF(curr_q_start,_maxdate,DAY),
-			                                prev_q_end,prev_q + DATEDIFF(curr_q_start,_maxdate,DAY
-			                                )
-			    ))
-			
-			var 
-			_isYear_val =  
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[RolledStopOrder]),
-			    FILTER(ALL(V_Dim_FB_CalDay),
-			    V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))),
-			    V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[LYDayDate]))
-			
-			var _z = 
-			SWITCH(
-			       TRUE(),
-			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3_]), _iscurrmonth_val,
-			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
-			        _x<=30, _isMonth_val,
-			        _x<=92, _isQuarter_val,
-			         _isYear_val)
-			
-			RETURN _z
-			```
+	measure '%Rolled_stops_Prior Period_abs' = CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[RolledStopOrder]), 'Time Intel'[Group] = "PRIOR_RST_ANY")
 		displayFolder: Ops - DNP
 		lineageTag: a033117f-a4e3-479a-955e-d618d96729ea
 
@@ -17433,155 +16774,13 @@ table 'Measure Table'
 		displayFolder: Ops - DNP
 		lineageTag: 39a952ac-feaf-4098-b6da-7fe14fe9199e
 
-	measure Schedule_Adherence_Prior_Period_num = ```
-			
-			var _SelectedPeriod=[IM_Selected_Period]
-			
-			var _maxdate1 = MAX(V_Dim_FB_CalDay[DayDate])
-			var _mindate1 = MIN(V_Dim_FB_CalDay[DayDate])
-			var _x = DATEDIFF(_mindate1,_maxdate1,DAY)
-			
-			var 
-			_isWeek_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsDNS]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[DayDate]>=_mindate1 - 7&&
-			     Operation_Cal_Day[DayDate]<=_mindate1-7+_x))
-			
-			var _isMonth_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsDNS]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)))
-			
-			var 
-			_iscurrmonth_val = 
-			    CALCULATE(
-			        SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsDNS]),
-			         FILTER(ALL(Operation_Cal_Day),
-			         Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)),
-			         DAY(Operation_Cal_Day[DayDate])<=DAY(MAX(Operation_Cal_Day[DayDate])))
-			
-			var 
-			_isQuarter_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsDNS]),
-			     FILTER(ALL(V_Dim_FB_CalDay),
-			     V_Dim_FB_CalDay[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3)),
-			     V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[DayDate]))
-			
-			// CurrentQuartercal
-			var prev_q = STARTOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var prev_q_end = ENDOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var curr_q_start = STARTOFQUARTER(V_Dim_FB_CalDay[DayDate])
-			
-			var _maxdate = MAX(V_Dim_FB_CalDay[DayDate])
-			
-			var _isquarter_curr_val = 
-			CALCULATE(
-			    SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsDNS]),
-			    V_Dim_FB_CalDay[DayDate]>=prev_q && 
-			    V_Dim_FB_CalDay[DayDate] <= IF(
-			                                prev_q_end <= prev_q + DATEDIFF(curr_q_start,_maxdate,DAY),
-			                                prev_q_end,prev_q + DATEDIFF(curr_q_start,_maxdate,DAY
-			                                )
-			    ))
-			
-			var 
-			_isYear_val =  
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsDNS]),
-			    FILTER(ALL(V_Dim_FB_CalDay),
-			    V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))),
-			    V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[LYDayDate]))
-			
-			var _z = 
-			SWITCH(
-			       TRUE(),
-			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3_]), _iscurrmonth_val,
-			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
-			        _x<=30, _isMonth_val,
-			        _x<=92, _isQuarter_val,
-			         _isYear_val)
-			
-			RETURN _z
-			```
+	measure Schedule_Adherence_Prior_Period_num = CALCULATE([Schedule_adherence_num], 'Time Intel'[Group] = "PRIOR_RST_ANY")
 		displayFolder: Ops - DNP
 		lineageTag: de05c43d-8295-49b0-a86a-2ff7feaf5765
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Schedule_Adherence_Prior_Period_den = ```
-			var _SelectedPeriod=[IM_Selected_Period]
-			
-			var _maxdate1 = MAX(V_Dim_FB_CalDay[DayDate])
-			var _mindate1 = MIN(V_Dim_FB_CalDay[DayDate])
-			var _x = DATEDIFF(_mindate1,_maxdate1,DAY)
-			
-			var 
-			_isWeek_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsServiced]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[DayDate]>=_mindate1 - 7&&
-			     Operation_Cal_Day[DayDate]<=_mindate1-7+_x))
-			var _isMonth_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsServiced]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)))
-			
-			var 
-			_iscurrmonth_val = 
-			    CALCULATE(
-			        SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsServiced]),
-			         FILTER(ALL(Operation_Cal_Day),
-			         Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)),
-			         DAY(Operation_Cal_Day[DayDate])<=DAY(MAX(Operation_Cal_Day[DayDate])))
-			
-			var 
-			_isQuarter_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsServiced]),
-			     FILTER(ALL(V_Dim_FB_CalDay),
-			     V_Dim_FB_CalDay[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3)),
-			     V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[DayDate]))
-			
-			// CurrentQuartercal
-			var prev_q = STARTOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var prev_q_end = ENDOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var curr_q_start = STARTOFQUARTER(V_Dim_FB_CalDay[DayDate])
-			
-			var _maxdate = MAX(V_Dim_FB_CalDay[DayDate])
-			
-			var _isquarter_curr_val = 
-			CALCULATE(
-			    SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsServiced]),
-			    V_Dim_FB_CalDay[DayDate]>=prev_q && 
-			    V_Dim_FB_CalDay[DayDate] <= IF(
-			                                prev_q_end <= prev_q + DATEDIFF(curr_q_start,_maxdate,DAY),
-			                                prev_q_end,prev_q + DATEDIFF(curr_q_start,_maxdate,DAY
-			                                )
-			    ))
-			
-			var 
-			_isYear_val =  
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[NumStopsServiced]),
-			    FILTER(ALL(V_Dim_FB_CalDay),
-			    V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))),
-			    V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[LYDayDate]))
-			
-			var _z = 
-			SWITCH(
-			       TRUE(),
-			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3_]), _iscurrmonth_val,
-			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
-			        _x<=30, _isMonth_val,
-			        _x<=92, _isQuarter_val,
-			         _isYear_val)
-			
-			RETURN _z
-			```
+	measure Schedule_Adherence_Prior_Period_den = CALCULATE([Schedule_adherence_den], 'Time Intel'[Group] = "PRIOR_RST_ANY")
 		displayFolder: Ops - DNP
 		lineageTag: af1df242-a496-40d1-8913-ed4f32132501
 
@@ -17618,77 +16817,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Haulback_cases_PriorPeriod_den = ```
-			var _SelectedPeriod=[IM_Selected_Period]
-			
-			var _maxdate1 = MAX(V_Dim_FB_CalDay[DayDate])
-			var _mindate1 = MIN(V_Dim_FB_CalDay[DayDate])
-			var _x = DATEDIFF(_mindate1,_maxdate1,DAY)
-			
-			var 
-			_isWeek_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[COPA_SALES_QTY]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod - 7))
-			
-			var _isMonth_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[COPA_SALES_QTY]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)))
-			
-			var 
-			_iscurrmonth_val = 
-			    CALCULATE(
-			        SUM(V_FACT_FB_OPS_ROLLEDSTOP[COPA_SALES_QTY]),
-			         FILTER(ALL(Operation_Cal_Day),
-			         Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)),
-			         DAY(Operation_Cal_Day[DayDate])<=DAY(MAX(Operation_Cal_Day[DayDate])))
-			
-			var 
-			_isQuarter_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[COPA_SALES_QTY]),
-			     FILTER(ALL(V_Dim_FB_CalDay),
-			     V_Dim_FB_CalDay[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3)),
-			     V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[DayDate]))
-			
-			// CurrentQuartercal
-			var prev_q = STARTOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var prev_q_end = ENDOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var curr_q_start = STARTOFQUARTER(V_Dim_FB_CalDay[DayDate])
-			
-			var _maxdate = MAX(V_Dim_FB_CalDay[DayDate])
-			
-			var _isquarter_curr_val = 
-			CALCULATE(
-			    SUM(V_FACT_FB_OPS_ROLLEDSTOP[COPA_SALES_QTY]),
-			    V_Dim_FB_CalDay[DayDate]>=prev_q && 
-			    V_Dim_FB_CalDay[DayDate] <= IF(
-			                                prev_q_end <= prev_q + DATEDIFF(curr_q_start,_maxdate,DAY),
-			                                prev_q_end,prev_q + DATEDIFF(curr_q_start,_maxdate,DAY
-			                                )
-			    ))
-			
-			var 
-			_isYear_val =  
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[COPA_SALES_QTY]),
-			    FILTER(ALL(V_Dim_FB_CalDay),
-			    V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))),
-			    V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[LYDayDate]))
-			
-			var _z = 
-			SWITCH(
-			       TRUE(),
-			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3_]), _iscurrmonth_val,
-			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
-			        _x<=30, _isMonth_val,
-			        _x<=92, _isQuarter_val,
-			         _isYear_val)
-			
-			RETURN _z
-			```
+	measure Haulback_cases_PriorPeriod_den = CALCULATE([Haulback_cases_KPI_den], 'Time Intel'[Group] = "PRIOR_RST_ANY")
 		displayFolder: Ops - DNP
 		lineageTag: cd0fe4df-9a34-4839-9258-fe8e4992d7ef
 
@@ -17701,155 +16830,13 @@ table 'Measure Table'
 		displayFolder: Ops - DNP
 		lineageTag: d8524e61-c385-4868-beda-e08178bd058d
 
-	measure Haulback_cases_PriorPeriod_num1 = ```
-			var _SelectedPeriod=[IM_Selected_Period]
-			
-			var _maxdate1 = MAX(V_Dim_FB_CalDay[DayDate])
-			var _mindate1 = MIN(V_Dim_FB_CalDay[DayDate])
-			var _x = DATEDIFF(_mindate1,_maxdate1,DAY)
-			
-			var 
-			_isWeek_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[DAMAGES_CASES]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[DayDate]>=_mindate1 - 7&&
-			     Operation_Cal_Day[DayDate]<=_mindate1-7+_x))
-			
-			var _isMonth_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[DAMAGES_CASES]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)))
-			
-			var 
-			_iscurrmonth_val = 
-			    CALCULATE(
-			        SUM(V_FACT_FB_OPS_ROLLEDSTOP[DAMAGES_CASES]),
-			         FILTER(ALL(Operation_Cal_Day),
-			         Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)),
-			         DAY(Operation_Cal_Day[DayDate])<=DAY(MAX(Operation_Cal_Day[DayDate])))
-			
-			var 
-			_isQuarter_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[DAMAGES_CASES]),
-			     FILTER(ALL(V_Dim_FB_CalDay),
-			     V_Dim_FB_CalDay[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3)),
-			     V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[DayDate]))
-			
-			// CurrentQuartercal
-			var prev_q = STARTOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var prev_q_end = ENDOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var curr_q_start = STARTOFQUARTER(V_Dim_FB_CalDay[DayDate])
-			
-			var _maxdate = MAX(V_Dim_FB_CalDay[DayDate])
-			
-			var _isquarter_curr_val = 
-			CALCULATE(
-			    SUM(V_FACT_FB_OPS_ROLLEDSTOP[DAMAGES_CASES]),
-			    V_Dim_FB_CalDay[DayDate]>=prev_q && 
-			    V_Dim_FB_CalDay[DayDate] <= IF(
-			                                prev_q_end <= prev_q + DATEDIFF(curr_q_start,_maxdate,DAY),
-			                                prev_q_end,prev_q + DATEDIFF(curr_q_start,_maxdate,DAY
-			                                )
-			    ))
-			
-			var 
-			_isYear_val =  
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[DAMAGES_CASES]),
-			    FILTER(ALL(V_Dim_FB_CalDay),
-			    V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))),
-			    V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[LYDayDate]))
-			
-			var _z = 
-			SWITCH(
-			       TRUE(),
-			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3_]), _iscurrmonth_val,
-			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
-			        _x<=30, _isMonth_val,
-			        _x<=92, _isQuarter_val,
-			         _isYear_val)
-			
-			RETURN _z
-			```
+	measure Haulback_cases_PriorPeriod_num1 = CALCULATE([Damages Cases], 'Time Intel'[Group] = "PRIOR_RST_ANY")
 		displayFolder: Ops - DNP
 		lineageTag: 6ba239bb-90bb-4c06-953b-4b532939f767
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Haulback_cases_PriorPeriod_num2 = ```
-			var _SelectedPeriod=[IM_Selected_Period]
-			
-			var _maxdate1 = MAX(V_Dim_FB_CalDay[DayDate])
-			var _mindate1 = MIN(V_Dim_FB_CalDay[DayDate])
-			var _x = DATEDIFF(_mindate1,_maxdate1,DAY)
-			
-			var 
-			_isWeek_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[GOOD_BUY_BACKS_CASES]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[DayDate]>=_mindate1 - 7&&
-			     Operation_Cal_Day[DayDate]<=_mindate1-7+_x))
-			
-			var _isMonth_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[GOOD_BUY_BACKS_CASES]),
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)))
-			
-			var 
-			_iscurrmonth_val = 
-			    CALCULATE(
-			        SUM(V_FACT_FB_OPS_ROLLEDSTOP[GOOD_BUY_BACKS_CASES]),
-			         FILTER(ALL(Operation_Cal_Day),
-			         Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)),
-			         DAY(Operation_Cal_Day[DayDate])<=DAY(MAX(Operation_Cal_Day[DayDate])))
-			
-			var 
-			_isQuarter_val = 
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[GOOD_BUY_BACKS_CASES]),
-			     FILTER(ALL(V_Dim_FB_CalDay),
-			     V_Dim_FB_CalDay[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3)),
-			     V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[DayDate]))
-			
-			// CurrentQuartercal
-			var prev_q = STARTOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var prev_q_end = ENDOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var curr_q_start = STARTOFQUARTER(V_Dim_FB_CalDay[DayDate])
-			
-			var _maxdate = MAX(V_Dim_FB_CalDay[DayDate])
-			
-			var _isquarter_curr_val = 
-			CALCULATE(
-			    SUM(V_FACT_FB_OPS_ROLLEDSTOP[GOOD_BUY_BACKS_CASES]),
-			    V_Dim_FB_CalDay[DayDate]>=prev_q && 
-			    V_Dim_FB_CalDay[DayDate] <= IF(
-			                                prev_q_end <= prev_q + DATEDIFF(curr_q_start,_maxdate,DAY),
-			                                prev_q_end,prev_q + DATEDIFF(curr_q_start,_maxdate,DAY
-			                                )
-			    ))
-			
-			var 
-			_isYear_val =  
-			    CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOP[GOOD_BUY_BACKS_CASES]),
-			    FILTER(ALL(V_Dim_FB_CalDay),
-			    V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))),
-			    V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[LYDayDate]))
-			
-			var _z = 
-			SWITCH(
-			       TRUE(),
-			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3_]), _iscurrmonth_val,
-			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CM])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
-			        _x<=30, _isMonth_val,
-			        _x<=92, _isQuarter_val,
-			         _isYear_val)
-			
-			RETURN _z
-			```
+	measure Haulback_cases_PriorPeriod_num2 = CALCULATE([Buyback Cases], 'Time Intel'[Group] = "PRIOR_RST_ANY")
 		displayFolder: Ops - DNP
 		lineageTag: cbfd5019-e127-4334-83d2-c4c33e89e061
 
@@ -21094,74 +20081,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Haulback_cases_table_prior_period_abs = ```
-			var _SelectedPeriod=[IM_Selected_Period]
-			
-			var _maxdate1 = MAX(V_Dim_FB_CalDay[DayDate])
-			var _mindate1 = MIN(V_Dim_FB_CalDay[DayDate])
-			var _x = DATEDIFF(_mindate1,_maxdate1,DAY)
-			
-			var 
-			_isWeek_val = 
-			    CALCULATE([Haulback_cases_table],
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[DayDate]>=_mindate1 - 7&&
-			     Operation_Cal_Day[DayDate]<=_mindate1-7+_x))
-			
-			var _isMonth_val = 
-			    CALCULATE([Haulback_cases_table],
-			     FILTER(ALL(Operation_Cal_Day),
-			     Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)))
-			
-			var 
-			_iscurrmonth_val = 
-			    CALCULATE(
-			        [Haulback_cases_table],
-			         FILTER(ALL(Operation_Cal_Day),
-			         Operation_Cal_Day[FirstDayOfMonth]=EDATE(_SelectedPeriod, -1)),
-			         DAY(Operation_Cal_Day[DayDate])<=DAY(MAX(Operation_Cal_Day[DayDate])))
-			
-			var 
-			_isQuarter_val = 
-			    CALCULATE([Haulback_cases_table],
-			     FILTER(ALL(V_Dim_FB_CalDay),
-			     V_Dim_FB_CalDay[FirstDayOfQuarter]=EDATE(_SelectedPeriod, -3)),
-			     V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[DayDate]))
-			
-			// CurrentQuartercal
-			var prev_q = STARTOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var prev_q_end = ENDOFQUARTER(DATEADD(V_Dim_FB_CalDay[DayDate],-1,QUARTER))
-			
-			var curr_q_start = STARTOFQUARTER(V_Dim_FB_CalDay[DayDate])
-			
-			var _maxdate = MAX(V_Dim_FB_CalDay[DayDate])
-			
-			var _isquarter_curr_val = 
-			CALCULATE(
-			    [Haulback_cases_table],
-			    V_Dim_FB_CalDay[DayDate]>=prev_q && 
-			    V_Dim_FB_CalDay[DayDate] <= prev_q + DATEDIFF(curr_q_start,_maxdate,DAY))
-			
-			var 
-			_isYear_val =  
-			    CALCULATE([Haulback_cases_table],
-			    FILTER(ALL(V_Dim_FB_CalDay),
-			    V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod) - 1, MONTH(_SelectedPeriod), DAY(_SelectedPeriod))),
-			    V_Dim_FB_CalDay[DayDate]<=MAX(V_Dim_FB_CalDay[LYDayDate]))
-			
-			var _z = 
-			SWITCH(
-			       TRUE(),
-			        _x<7, _isWeek_val,
-			        _x<=30&&MONTH(MAX('V_Dim_FB_Ref'[CD])) in VALUES(V_Dim_FB_CalDay[MonthNumber])&&HASONEVALUE(Operation_Cal_Day[L3_]), _iscurrmonth_val,
-			        _x<=92&&MONTH(MAX('V_Dim_FB_Ref'[CD])) in VALUES(V_Dim_FB_CalDay[MonthNumber]), _isquarter_curr_val,
-			        _x<=30, _isMonth_val,
-			        _x<=92, _isQuarter_val,
-			         _isYear_val)
-			
-			RETURN _z
-			```
+	measure Haulback_cases_table_prior_period_abs = CALCULATE([Haulback_cases_table], 'Time Intel'[Group] = "PRIOR_RST_ANY")
 		displayFolder: Ops - DNP
 		lineageTag: b02d35eb-1df5-4948-82d4-277e6ac7da57
 
@@ -22203,33 +21123,12 @@ table 'Measure Table'
 
 	measure IM_Selected_Period_Op = ```
 			
-			 
-			VAR _isWeek =
-			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			     HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			     HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3_]), "Wk ") &&
-			    HASONEVALUE('Operation_Cal_Day'[L3_]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isQuarter =
-			    HASONEVALUE('V_Dim_FB_CalDay'[QuarterID]) &&
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			VAR _isYear =
-			    HASONEVALUE('V_Dim_FB_CalDay'[YearID])
-			 
-			RETURN
 			SWITCH(
-			    TRUE(),
-			    _isWeek, [IM_Date Validation_Week],
-			    _isMonth, [IM_Date Validation_Month],
-			    _isQuarter, [IM_Date Validation_Quarter],
-			    _isYear, [IM_Date Validation_Year],
+			    [PeriodLabel],
+			    "W", [IM_Date Validation_Week],
+			    "M", [IM_Date Validation_Month],
+			    "Q", [IM_Date Validation_Quarter],
+			    "Y", [IM_Date Validation_Year],
 			    BLANK()
 			)
 			
@@ -22740,17 +21639,17 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Base_PL_Bar_Act = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), 'Time Intel'[Group] = "CL_YTD")
+	measure Base_PL_Bar_Act = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), 'Time Intel'[Group] = "YTD_CL")
 		lineageTag: ce74e45a-f3d3-4027-8539-b32cb94a4503
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Base_PL_Bar_AOP = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), 'Time Intel'[Group] = "CL_YTD")
+	measure Base_PL_Bar_AOP = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), 'Time Intel'[Group] = "YTD_CL")
 		lineageTag: b5344e03-c204-4895-8de5-928fa43d8bb5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Base_PL_Bar_PY = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), 'Time Intel'[Group] = "CL_YTD")
+	measure Base_PL_Bar_PY = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), 'Time Intel'[Group] = "YTD_CL")
 		lineageTag: 85adbfa1-2318-4e60-bf1f-f76087c45233
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -22775,6 +21674,60 @@ table 'Measure Table'
 	measure VizYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
 		formatString: 0
 		lineageTag: f67f2ed7-581f-4f4e-b027-dad9bdb6135b
+
+	measure Total_CFR_Card_TillDate =
+			
+			CALCULATE([Total_CFR_Card],
+			    KEEPFILTERS(
+			        FILTER(V_Dim_FB_CalDay,
+			            V_Dim_FB_CalDay[DayDate] <= V_Dim_FB_CalDay[CD]
+			        )
+			    )
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Ops
+		lineageTag: 96fa12d1-4f1c-43a7-b155-f5af9ec90fac
+
+	measure Total_CFR_PY_Card_TillDate =
+			
+			
+			VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
+			VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
+			RETURN //_max
+			CALCULATE(DIVIDE([Inv_Qty_CFR], [Org_Ord_Qty_CFR]),
+			    FILTER(ALL(Operation_Cal_Day),
+			        Operation_Cal_Day[DayDate] >= _min &&
+			        Operation_Cal_Day[DayDate] <= _max
+			    )
+			)
+			// CALCULATE(COUNT(Operation_Cal_Day[DayDate]), FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[DayDate] <= _max))
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Ops
+		lineageTag: 0632cdb7-1b8a-43d5-af1d-601d72641430
+
+	measure Measure = MAX(PARALLELPERIOD(V_Dim_FB_CalDay[DayDate], -1, YEAR))
+		displayFolder: Ops
+		lineageTag: 188bda90-5679-4f8e-bf58-c1cab41b976c
+
+	measure PeriodLabel =
+			
+			SWITCH (TRUE(),
+			    // Only one value selected for Week
+			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk "), "W",
+			    // Weeks selected but no sub-level selected
+			    SELECTEDVALUE(Operation_Cal_Day[L1]) = "Weeks", "",
+			    // Only Y / Q / M
+			    HASONEVALUE('Operation_Cal_Day'[L3]), "M",
+			    HASONEVALUE('Operation_Cal_Day'[L2]), "Q",
+			    "Y"
+			)
+		lineageTag: eb05cb3b-537c-4d1e-99b5-22ffc061cbce
+
+	measure 'Buyback Cases' = SUM(V_FACT_FB_OPS_ROLLEDSTOP[GOOD_BUY_BACKS_CASES])
+		displayFolder: Ops - DNP
+		lineageTag: e586e2ed-e192-42dd-971d-74c92e4cfb3b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Column
 		formatString: 0

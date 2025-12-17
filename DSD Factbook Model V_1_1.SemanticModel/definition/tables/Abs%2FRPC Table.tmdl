@@ -131,30 +131,34 @@ table 'Abs/RPC Table'
 			var _SelectedPeriod=[IM_Selected_Period]
 			VAR _isWeek =
 			    CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ")
+			
 			VAR _isMonth =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
-			    HASONEVALUE(Operation_Cal_Day[L3])
+			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L2]), "Wk") &&
+			    HASONEVALUE('Operation_Cal_Day'[L3])
+			
 			VAR _isQuarter =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L3]), "Wk ") &&
-			    HASONEVALUE(Operation_Cal_Day[L2])
+			    SELECTEDVALUE(Operation_Cal_Day[L1]) != "Weeks" &&
+			    HASONEVALUE('Operation_Cal_Day'[L2])
+			
 			VAR _isYear =
-			    Not CONTAINSSTRING(SELECTEDVALUE(Operation_Cal_Day[L1]), "Weeks")
-
+			    SELECTEDVALUE(Operation_Cal_Day[L1]) != "Weeks" &&
+			    HASONEVALUE('Operation_Cal_Day'[L1])
+			
 			Var _SelectedKPI = 
 			 SWITCH(
 			        TRUE(),
-			        _isWeek,CALCULATE([CMA_SKU_Compliance],
-			                            FILTER(ALL(V_Dim_FB_CalDay),
-			                            V_Dim_FB_CalDay[WeekStarting_ISO]=_SelectedPeriod)),
-			        _isMonth,CALCULATE([CMA_SKU_Compliance],
-			                            FILTER(ALL(V_Dim_FB_CalDay),
-			                            V_Dim_FB_CalDay[FirstDayOfMonth]=_SelectedPeriod)),
-			        _isQuarter,CALCULATE([CMA_SKU_Compliance],
-			                            FILTER(ALL(V_Dim_FB_CalDay),
-			                             V_Dim_FB_CalDay[FirstDayOfQuarter]=_SelectedPeriod)),
+			        _isWeek, CALCULATE([CMA_SKU_Compliance],
+			                            FILTER(ALL(Operation_Cal_Day),
+			                            Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod)),
+			        _isMonth, CALCULATE([CMA_SKU_Compliance],
+			                            FILTER(ALL(Operation_Cal_Day),
+			                            Operation_Cal_Day[FirstDayOfMonth]=_SelectedPeriod)),
+			        _isQuarter, CALCULATE([CMA_SKU_Compliance],
+			                            FILTER(ALL(Operation_Cal_Day),
+			                             Operation_Cal_Day[FirstDayOfQuarter]=_SelectedPeriod)),
 			        _isYear,  CALCULATE([CMA_SKU_Compliance],
-			                            FILTER(ALL(V_Dim_FB_CalDay),
-			                             V_Dim_FB_CalDay[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod), MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
+			                            FILTER(ALL(Operation_Cal_Day),
+			                             Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod), MONTH(_SelectedPeriod), DAY(_SelectedPeriod))))
 			         )
 			RETURN _SelectedKPI
 			```

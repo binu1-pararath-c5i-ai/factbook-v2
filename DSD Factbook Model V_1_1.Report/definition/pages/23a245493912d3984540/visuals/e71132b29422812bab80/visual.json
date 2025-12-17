@@ -1,0 +1,152 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "e71132b29422812bab80",
+  "position": {
+    "x": 0,
+    "y": 24.676884911845487,
+    "z": 0,
+    "height": 365.79852928147426,
+    "width": 953.68902276955794
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "Year"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.Year",
+              "nativeQueryRef": "Year"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "MonthNumber"
+                }
+              },
+              "queryRef": "V_Dim_FB_CalDay.MonthNumber",
+              "nativeQueryRef": "MonthNumber"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Total_CFR_Card"
+                }
+              },
+              "queryRef": "Measure Table.Total_CFR_Card",
+              "nativeQueryRef": "Total_CFR_Card"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Total_CFR_Card_TillDate"
+                }
+              },
+              "queryRef": "Measure Table.Total_CFR_Card_TillDate",
+              "nativeQueryRef": "Total_CFR_Card_TillDate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Total_CFR_PY_Card"
+                }
+              },
+              "queryRef": "Measure Table.Total_CFR_PY_Card",
+              "nativeQueryRef": "Total_CFR_PY_Card"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Total_CFR_PY_Card_TillDate"
+                }
+              },
+              "queryRef": "Measure Table.Total_CFR_PY_Card_TillDate",
+              "nativeQueryRef": "Total_CFR_PY_Card_TillDate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Inv_Qty_CFR"
+                }
+              },
+              "queryRef": "Measure Table.Inv_Qty_CFR",
+              "nativeQueryRef": "Inv_Qty_CFR"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Org_Ord_Qty_CFR"
+                }
+              },
+              "queryRef": "Measure Table.Org_Ord_Qty_CFR",
+              "nativeQueryRef": "Org_Ord_Qty_CFR"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "V_Dim_FB_CalDay"
+                  }
+                },
+                "Property": "Year"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
