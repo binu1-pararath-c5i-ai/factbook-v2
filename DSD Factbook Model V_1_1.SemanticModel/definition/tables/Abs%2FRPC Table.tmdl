@@ -219,6 +219,31 @@ table 'Abs/RPC Table'
 				RETURN _y
 				```
 
+	measure 'Base PL Act YTD' = SUM(V_FB_Financial_Management[AmtActYTD])
+		lineageTag: e6bf3f2f-cc89-4016-a2cc-4488990c738c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Base PL AOP YTD' = SUM(V_FB_Financial_Management[AmtAOPYTD])
+		lineageTag: 487f7aa6-524e-453e-a444-799c2e0191c6
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Base PL FCST 39 YTD' = SUM(V_FB_Financial_Management[AmtFcst39YTD])
+		lineageTag: 45468338-e159-4939-9b95-bfb25628e199
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Base PL FCST 66 YTD' = SUM(V_FB_Financial_Management[AmtFcst66YTD])
+		lineageTag: 90fe141e-cb09-4f13-bd45-3132a22a8c26
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Base PL FCST 93 YTD' = SUM(V_FB_Financial_Management[AmtFcst93YTD])
+		lineageTag: cbc56829-3da5-4aa2-a958-22f5f4002622
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column Abs/RPC
 		dataType: string
 		lineageTag: bda878d7-4da4-4451-8cf8-f539a41a1f82

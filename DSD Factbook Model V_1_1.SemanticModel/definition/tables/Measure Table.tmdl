@@ -1,22 +1,22 @@
 table 'Measure Table'
 	lineageTag: c6f89536-905a-4200-bcae-8ee375f17d6c
 
-	measure 'Revenue Act' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_REV")
+	measure 'Revenue Act' = CALCULATE([Base PL Act], Metric[Group] = "PL_REV")
 		lineageTag: 8df3a3b9-b1e3-4818-8e0c-5703fe62e9ee
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Gross Profit Act' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_GP")
+	measure 'Gross Profit Act' = CALCULATE([Base PL Act], Metric[Group] = "PL_GP")
 		lineageTag: 06e3c183-68c7-44fa-ad7c-872464c72df1
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Opex Act' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_OPEX")
+	measure 'Opex Act' = CALCULATE([Base PL Act], Metric[Group] = "PL_OPEX")
 		lineageTag: 02239f83-a6a5-43fd-a1ed-17f2947c965c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Operating Income Act' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_OI")
+	measure 'Operating Income Act' = CALCULATE([Base PL Act], Metric[Group] = "PL_OI")
 		lineageTag: f27f68e1-3038-4ecd-8fc9-2c8ccd3f3f57
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -25,12 +25,12 @@ table 'Measure Table'
 		formatString: 0
 		lineageTag: ddb86fb2-4cfa-48f4-9827-34ebc812f7be
 
-	measure 'Volume AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_VOL")
+	measure 'Volume AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_VOL")
 		lineageTag: 2f109079-883b-497b-a746-40d85c7cfddd
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Volume PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_VOL")
+	measure 'Volume PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_VOL")
 		lineageTag: 91f6cb9e-874c-4016-8595-dff627aef128
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -65,7 +65,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Revenue AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_REV")
+	measure 'Revenue AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_REV")
 		lineageTag: 4c5490ef-e554-48f8-a2d8-6d5fceb8328e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -83,7 +83,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Revenue PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_REV")
+	measure 'Revenue PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_REV")
 		lineageTag: db4649d2-e03f-4df2-a6f0-d1b6d9edc958
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -98,7 +98,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Gross Profit PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_GP")
+	measure 'Gross Profit PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_GP")
 		lineageTag: 57c3c30d-b1ab-40b9-b6e9-b4fd24517c04
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -113,7 +113,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Gross Profit AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_GP")
+	measure 'Gross Profit AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_GP")
 		lineageTag: eeabd864-424a-42c0-81dd-02f1cafc5ba5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -156,7 +156,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Opex AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_OPEX")
+	measure 'Opex AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_OPEX")
 		lineageTag: 2bf1793e-614c-4ab3-b7c3-f5468a370398
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -171,7 +171,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Opex PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_OPEX")
+	measure 'Opex PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_OPEX")
 		lineageTag: 273a3b8a-3e06-4dc2-b17f-cda65ade2b05
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -200,7 +200,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Operating Income AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_OI")
+	measure 'Operating Income AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_OI")
 		lineageTag: 71d53f89-588a-46cd-acdd-d2a1b3b6b108
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -215,7 +215,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Operating Income PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_OI")
+	measure 'Operating Income PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_OI")
 		lineageTag: 3de6df17-a5fd-437e-ab9a-f33107dbcb88
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1298,12 +1298,12 @@ table 'Measure Table'
 			```
 		lineageTag: 1937c55f-86cb-49b2-a625-5cfb634f4b35
 
-	measure 'Volume ActYTD' = CALCULATE(SUM(V_FB_Financial_Management[AmtActYTD]), Metric[Group] = "PL_VOL")
+	measure 'Volume ActYTD' = CALCULATE([Base PL Act YTD], Metric[Group] = "PL_VOL")
 		lineageTag: 035bdb85-518b-4bfa-a372-bb8080b15581
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Volume AOPYTD' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOPYTD]), Metric[Group] = "PL_VOL")
+	measure 'Volume AOPYTD' = CALCULATE([Base PL AOP YTD], Metric[Group] = "PL_VOL")
 		lineageTag: 4301cea3-4289-4575-b9fa-5580f383b8ff
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -1311,23 +1311,11 @@ table 'Measure Table'
 	measure 'Volume FCST ActYTD' =
 			
 			SWITCH(
-			    TRUE(),
-			    SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter]) = 1, CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtAOPYTD]),
-			        Metric[Group] = "PL_VOL"
-			    ),
-			    SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter]) = 2, CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst39YTD]),
-			        Metric[Group] = "PL_VOL"
-			    ),
-			    SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter]) = 3, CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst66YTD]),
-			        Metric[Group] = "PL_VOL"
-			    ),
-			    SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter]) = 4, CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst93YTD]),
-			        Metric[Group] = "PL_VOL"
-			    )
+			    SELECTEDVALUE(Operation_Cal_Day[Quarter]),
+			    1, CALCULATE([Base PL AOP YTD], Metric[Group] = "PL_VOL"),
+			    2, CALCULATE([Base PL FCST 39 YTD], Metric[Group] = "PL_VOL"),
+			    3, CALCULATE([Base PL FCST 66 YTD], Metric[Group] = "PL_VOL"),
+			    4, CALCULATE([Base PL FCST 93 YTD], Metric[Group] = "PL_VOL")
 			)
 		lineageTag: ea50a1bd-2269-4dea-ac5d-bab8af91b644
 
@@ -2639,47 +2627,47 @@ table 'Measure Table'
 			```
 		lineageTag: 9d2e8eeb-849a-48af-96be-6b8b19765aea
 
-	measure 'SG&A Fleet' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_SGA_FLEET")
+	measure 'SG&A Fleet' = CALCULATE([Base PL Act], Metric[Group] = "PL_SGA_FLEET")
 		lineageTag: 65825889-1662-44c0-a81a-bf9bf2613a08
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A Building' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_SGA_BLDG")
+	measure 'SG&A Building' = CALCULATE([Base PL Act], Metric[Group] = "PL_SGA_BLDG")
 		lineageTag: b19b6ea2-4fba-4fc6-a02d-e8d0f53b1424
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A Labor' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_SGA_LABOR")
+	measure 'SG&A Labor' = CALCULATE([Base PL Act], Metric[Group] = "PL_SGA_LABOR")
 		lineageTag: 992d0918-f3b4-4501-ad14-598d7d65ee16
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A Fleet AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_SGA_FLEET")
+	measure 'SG&A Fleet AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_SGA_FLEET")
 		lineageTag: a0bda3b1-8ca6-46d9-9234-b09ac86359e2
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A Labor AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_SGA_LABOR")
+	measure 'SG&A Labor AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_SGA_LABOR")
 		lineageTag: d67d59a0-a486-477e-b347-d694fa5989db
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A Building AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_SGA_BLDG")
+	measure 'SG&A Building AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_SGA_BLDG")
 		lineageTag: 8fd6d65f-1183-45c8-9fb1-8d8cbd7d68b6
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A Building PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_SGA_BLDG")
+	measure 'SG&A Building PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_SGA_BLDG")
 		lineageTag: 801c23f8-4a62-459f-9183-85a65e127825
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A Fleet PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_SGA_FLEET")
+	measure 'SG&A Fleet PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_SGA_FLEET")
 		lineageTag: 7d9f221d-5dfe-4e28-8a76-2110a0a01e08
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A Labor PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_SGA_LABOR")
+	measure 'SG&A Labor PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_SGA_LABOR")
 		lineageTag: c237bd38-b9a7-4306-884f-b7fb907b1862
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2692,10 +2680,10 @@ table 'Measure Table'
 			    SelectedQuarters,
 			    SWITCH(
 			        TRUE(),
-			        [Quarter] = 1, CALCULATE(SUM('V_FB_Financial_Management'[AmtAOP]), Metric[Group] = "PL_SGA_BLDG"),
-			        [Quarter] = 2, CALCULATE(SUM('V_FB_Financial_Management'[AmtFcst39]), Metric[Group] = "PL_SGA_BLDG"),
-			        [Quarter] = 3, CALCULATE(SUM('V_FB_Financial_Management'[AmtFcst66]), Metric[Group] = "PL_SGA_BLDG"),
-			        [Quarter] = 4, CALCULATE(SUM('V_FB_Financial_Management'[AmtFcst93]), Metric[Group] = "PL_SGA_BLDG"),
+			        [Quarter] = 1, CALCULATE([Base PL AOP], Metric[Group] = "PL_SGA_BLDG"),
+			        [Quarter] = 2, CALCULATE([Base PL FCST 39], Metric[Group] = "PL_SGA_BLDG"),
+			        [Quarter] = 3, CALCULATE([Base PL FCST 66], Metric[Group] = "PL_SGA_BLDG"),
+			        [Quarter] = 4, CALCULATE([Base PL FCST 93], Metric[Group] = "PL_SGA_BLDG"),
 			        0
 			    )
 			)
@@ -2713,8 +2701,8 @@ table 'Measure Table'
 			        TRUE(),
 			        [Quarter] = 1, [SG&A Fleet],
 			        [Quarter] = 2, [SG&A Fleet AOP],
-			        [Quarter] = 3, CALCULATE(SUM('V_FB_Financial_Management'[AmtFcst66]), Metric[Group] = "PL_SGA_FLEET"),
-			        [Quarter] = 4, CALCULATE(SUM('V_FB_Financial_Management'[AmtFcst93]), Metric[Group] = "PL_SGA_FLEET"),
+			        [Quarter] = 3, CALCULATE([Base PL FCST 66], Metric[Group] = "PL_SGA_FLEET"),
+			        [Quarter] = 4, CALCULATE([Base PL FCST 93], Metric[Group] = "PL_SGA_FLEET"),
 			        0
 			    )
 			)
@@ -2727,47 +2715,47 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Fleet' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_TW_FLEET")
+	measure 'T&W Fleet' = CALCULATE([Base PL Act], Metric[Group] = "PL_TW_FLEET")
 		lineageTag: e741ef31-a874-4d6b-8822-9d6b37eba5ae
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Building' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_TW_BLDG")
+	measure 'T&W Building' = CALCULATE([Base PL Act], Metric[Group] = "PL_TW_BLDG")
 		lineageTag: 5190d088-a674-4d22-b7b5-1ab433d0f662
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Labor' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_TW_LABOR")
+	measure 'T&W Labor' = CALCULATE([Base PL Act], Metric[Group] = "PL_TW_LABOR")
 		lineageTag: 135e0638-2506-4178-a588-0a0cdee9205d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Building AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_TW_BLDG")
+	measure 'T&W Building AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_TW_BLDG")
 		lineageTag: 1f2303ed-f985-4ea3-87a5-4f5d9ce83775
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Fleet AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_TW_FLEET")
+	measure 'T&W Fleet AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_TW_FLEET")
 		lineageTag: 5b87efaf-b1f8-4ea6-af12-67498422b70d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Labor AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_TW_LABOR")
+	measure 'T&W Labor AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_TW_LABOR")
 		lineageTag: 2cc717eb-b968-4687-8159-a4c751fe1c16
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Labor PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_TW_LABOR")
+	measure 'T&W Labor PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_TW_LABOR")
 		lineageTag: 1f3a7417-a20b-4cab-9838-5f23134b0688
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Fleet PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_TW_FLEET")
+	measure 'T&W Fleet PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_TW_FLEET")
 		lineageTag: ee3a9d7d-240b-42e2-8308-363131332914
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'T&W Building PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_TW_BLDG")
+	measure 'T&W Building PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_TW_BLDG")
 		lineageTag: ee991a28-5e48-4357-a80e-6cac28f823ac
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -2807,17 +2795,17 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Non Labor Opex' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_NONLABOR_OPEX")
+	measure 'Non Labor Opex' = CALCULATE([Base PL Act], Metric[Group] = "PL_NONLABOR_OPEX")
 		lineageTag: 6137dab0-1e32-4dbe-abeb-93416a241277
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Non Labor Opex AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_NONLABOR_OPEX")
+	measure 'Non Labor Opex AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_NONLABOR_OPEX")
 		lineageTag: 603a9c98-3efc-4555-8a98-1f4dd68db5bb
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Non Labor Opex PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_NONLABOR_OPEX")
+	measure 'Non Labor Opex PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_NONLABOR_OPEX")
 		lineageTag: bdfad100-1ac1-411a-8332-d2eb41817cbc
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -4651,19 +4639,7 @@ table 'Measure Table'
 			    )
 		lineageTag: 81468d2a-7375-434b-a7af-f41c0b5248ad
 
-	measure 'vol bar act 2' =
-			
-			DIVIDE(CALCULATE(
-					SUM(V_FB_Financial_Management[AmtAct]),
-					Metric[Group] = "PL_REV",
-					DATESYTD(V_Dim_FB_CalDay[DayDate])
-				),
-				CALCULATE(
-					SUM(V_FB_Financial_Management[AmtAct]),
-					Metric[Group] = "PL_VOL",
-					DATESYTD(V_Dim_FB_CalDay[DayDate])
-				)
-			)
+	measure 'vol bar act 2' = CALCULATE(DIVIDE([Revenue Act], [Volume Act]), DATESYTD(V_Dim_FB_CalDay[DayDate]))
 		lineageTag: 49bdf150-f4ce-449e-aec7-c8113697342e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5405,12 +5381,12 @@ table 'Measure Table'
 			```
 		lineageTag: c6db1b77-3cd6-4341-9e30-2b7dcc4d643c
 
-	measure 'SG&A NON Labor' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_SGA_NONLABOR")
+	measure 'SG&A NON Labor' = CALCULATE([Base PL Act], Metric[Group] = "PL_SGA_NONLABOR")
 		lineageTag: 74ec37de-a268-48af-8146-b43c44acabda
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A NON Labor AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_SGA_NONLABOR")
+	measure 'SG&A NON Labor AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_SGA_NONLABOR")
 		lineageTag: 9262cef5-be51-4a82-ae77-5af5d417984a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5420,7 +5396,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'SG&A NON Labor PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_SGA_NONLABOR")
+	measure 'SG&A NON Labor PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_SGA_NONLABOR")
 		lineageTag: afa143c5-c457-49b6-98e2-4be4a702213f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5675,17 +5651,17 @@ table 'Measure Table'
 			```
 		lineageTag: 8d174081-1e4d-40aa-9761-2b3c763e7b1e
 
-	measure 'DSD Labor' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_DSD_LABOR")
+	measure 'DSD Labor' = CALCULATE([Base PL Act], Metric[Group] = "PL_DSD_LABOR")
 		lineageTag: a4d7ae57-bc83-4731-b1b8-7b06ce34de63
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'DSD Labor AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_DSD_LABOR")
+	measure 'DSD Labor AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_DSD_LABOR")
 		lineageTag: db7d308e-644e-4755-bf9b-605ffa617e36
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'DSD Labor PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_DSD_LABOR")
+	measure 'DSD Labor PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_DSD_LABOR")
 		lineageTag: 4842fb67-82cd-4358-9dda-399ab3644456
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5966,17 +5942,17 @@ table 'Measure Table'
 			    )
 		lineageTag: 061f4ade-ef3a-46d6-886c-9fd18833590f
 
-	measure 'Opex AO' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_OPEX_AO")
+	measure 'Opex AO' = CALCULATE([Base PL Act], Metric[Group] = "PL_OPEX_AO")
 		lineageTag: bc34ab6f-1b84-4ea7-9cac-029442f33739
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Opex AO AOP' = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_OPEX_AO")
+	measure 'Opex AO AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_OPEX_AO")
 		lineageTag: e71b70e5-b188-45f7-90f9-aacb67cfea7a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Opex AO PY' = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), Metric[Group] = "PL_OPEX_AO")
+	measure 'Opex AO PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_OPEX_AO")
 		lineageTag: 6d629de2-56c4-4568-855f-076be28c11cf
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -5985,25 +5961,17 @@ table 'Measure Table'
 			
 			SWITCH(
 			    TRUE(),
-			
 			    // When Quarter is visible in the matrix (i.e., drilling down)
 			    ISINSCOPE('V_Dim_FB_CalDay'[Quarter]),
-			        SWITCH(
-			            SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter]),
-			            1, CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_OPEX_AO"),
-			            2, CALCULATE(SUM(V_FB_Financial_Management[AmtFcst39]), Metric[Group] = "PL_OPEX_AO"),
-			            3, CALCULATE(SUM(V_FB_Financial_Management[AmtFcst66]), Metric[Group] = "PL_OPEX_AO"),
-			            4, CALCULATE(SUM(V_FB_Financial_Management[AmtFcst93]), Metric[Group] = "PL_OPEX_AO")
-			        ),
-			
+			    SWITCH(
+			        SELECTEDVALUE('V_Dim_FB_CalDay'[Quarter]),
+			        1, CALCULATE([Base PL AOP], Metric[Group] = "PL_OPEX_AO"),
+			        2, CALCULATE([Base PL FCST 39], Metric[Group] = "PL_OPEX_AO"),
+			        3, CALCULATE([Base PL FCST 66], Metric[Group] = "PL_OPEX_AO"),
+			        4, CALCULATE([Base PL FCST 93], Metric[Group] = "PL_OPEX_AO")
+			    ),
 			    // Else — at Year or multi-quarter level — sum all four quarters
-			    CALCULATE(
-			        SUM(V_FB_Financial_Management[AmtAOP]) +
-			        SUM(V_FB_Financial_Management[AmtFcst39]) +
-			        SUM(V_FB_Financial_Management[AmtFcst66]) +
-			        SUM(V_FB_Financial_Management[AmtFcst93]),
-					Metric[Group] = "PL_OPEX_AO"
-			    )
+			    CALCULATE([Base PL AOP] + [Base PL FCST 39] + [Base PL FCST 66] + [Base PL FCST 93], Metric[Group] = "PL_OPEX_AO")
 			)
 		lineageTag: a0b4b1db-7f4c-420b-85a5-f6e5052bca76
 
@@ -7195,7 +7163,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Opex_SC_Act = ABS(CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_OPEX_SC"))
+	measure Opex_SC_Act = ABS(CALCULATE([Base PL Act], Metric[Group] = "PL_OPEX_SC"))
 		lineageTag: c5401782-be33-4b28-b74b-36d6ce82b8e5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -7224,7 +7192,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Opex_A&P_Act = ABS(CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_OPEX_AP"))
+	measure Opex_A&P_Act = ABS(CALCULATE([Base PL Act], Metric[Group] = "PL_OPEX_AP"))
 		lineageTag: 5447c6d1-70e3-433b-820c-36e8c4455090
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -9614,7 +9582,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure 'Volume Act' = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_VOL")
+	measure 'Volume Act' = CALCULATE([Base PL Act], Metric[Group] = "PL_VOL")
 		formatString: 0
 		lineageTag: be820c85-bbb4-4ab0-ab74-2845232011a5
 
@@ -12299,7 +12267,7 @@ table 'Measure Table'
 			
 			IF(
 			    SELECTEDVALUE('Metric Table'[Metrics]) = "FCST",
-			    IF(MAX(V_Dim_FB_CalDay[MonthNumber]) <= 6, ""
+			    IF(MAX(V_Dim_FB_CalDay[MonthNumber]) <= 6, "",
 					[Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_final]
 				),
 			    [Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_final]
@@ -12593,10 +12561,10 @@ table 'Measure Table'
 
 	measure 'Opex AO FCST_new' = ```
 			
-			Var a= CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_OPEX_AO")
-			Var b= CALCULATE(SUM(V_FB_Financial_Management[AmtFcst39]), Metric[Group] = "PL_OPEX_AO")
-			Var c= CALCULATE(SUM(V_FB_Financial_Management[AmtFcst66]), Metric[Group] = "PL_OPEX_AO") 
-			Var d= CALCULATE(SUM(V_FB_Financial_Management[AmtFcst93]), Metric[Group] = "PL_OPEX_AO")
+			Var a= CALCULATE([Base PL AOP], Metric[Group] = "PL_OPEX_AO")
+			Var b= CALCULATE([Base PL FCST 39], Metric[Group] = "PL_OPEX_AO")
+			Var c= CALCULATE([Base PL FCST 66], Metric[Group] = "PL_OPEX_AO") 
+			Var d= CALCULATE([Base PL FCST 93], Metric[Group] = "PL_OPEX_AO")
 			
 			var cal=          
 			        SWITCH(true(),
@@ -12612,10 +12580,10 @@ table 'Measure Table'
 
 	measure 'Opex AO FCST_new_Test' =
 			
-			VAR a = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_OPEX_AO")
-			VAR b = CALCULATE(SUM(V_FB_Financial_Management[AmtFcst39]), Metric[Group] = "PL_OPEX_AO")
-			VAR c = CALCULATE(SUM(V_FB_Financial_Management[AmtFcst66]), Metric[Group] = "PL_OPEX_AO")
-			VAR d = CALCULATE(SUM(V_FB_Financial_Management[AmtFcst93]), Metric[Group] = "PL_OPEX_AO")
+			VAR a = CALCULATE([Base PL AOP], Metric[Group] = "PL_OPEX_AO")
+			VAR b = CALCULATE([Base PL FCST 39], Metric[Group] = "PL_OPEX_AO")
+			VAR c = CALCULATE([Base PL FCST 66], Metric[Group] = "PL_OPEX_AO")
+			VAR d = CALCULATE([Base PL FCST 93], Metric[Group] = "PL_OPEX_AO")
 			VAR SelectedQuarters = VALUES('V_Dim_FB_CalDay'[Quarter])
 			
 			VAR Result =
@@ -12897,18 +12865,18 @@ table 'Measure Table'
 
 	measure 'Opex AO FCST_nw' =
 			
-			VAR _y = SELECTEDVALUE(V_Dim_FB_CalDay[Year])
+			VAR _y = SELECTEDVALUE(Operation_Cal_Day[Year])
 			VAR SelectedQuarter =
 			    CONCATENATEX(
 			        FILTER(
-			            VALUES(V_Dim_FB_CalDay[Quarter]),
-			            NOT ISBLANK(V_Dim_FB_CalDay[Quarter])
+			            VALUES(Operation_Cal_Day[Quarter]),
+			            NOT ISBLANK(Operation_Cal_Day[Quarter])
 			        ),
-			        V_Dim_FB_CalDay[Quarter], ","
+			        Operation_Cal_Day[Quarter], ","
 			    ) & "," & _y
 			
-			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[PM]))
+			VAR CurrentMonth = MONTH(MAX('V_Dim_FB_Ref'[CL_M_END]))
+			VAR CurrentYear = YEAR(MAX('V_Dim_FB_Ref'[CL_M_END]))
 			
 			VAR MinMonth =
 			    SWITCH(
@@ -12922,51 +12890,51 @@ table 'Measure Table'
 			VAR MaxMonth = 12
 			VAR UseForecast = NOT ISBLANK(MinMonth)
 			
-			VAR a = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_OPEX_AO")
+			VAR a = CALCULATE([Base PL AOP], Metric[Group] = "PL_OPEX_AO")
 			
 			VAR b = CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtFcst39]),
+			    [Base PL FCST 39],
 			    'V_FB_Financial_Management'[IsForecast] = "N",
 			    Metric[Group] = "PL_OPEX_AO",
-			    V_Dim_FB_CalDay[MonthNumber] >= MinMonth,
-			    V_Dim_FB_CalDay[MonthNumber] <= MaxMonth,
-			    V_Dim_FB_CalDay[Year] = CurrentYear
+			    Operation_Cal_Day[MonthNumber] >= MinMonth,
+			    Operation_Cal_Day[MonthNumber] <= MaxMonth,
+			    Operation_Cal_Day[Year] = CurrentYear
 			)
 			
 			VAR c = CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtFcst66]),
+			    [Base PL FCST 66],
 			    'V_FB_Financial_Management'[IsForecast] = "N",
 			    Metric[Group] = "PL_OPEX_AO",
-			    V_Dim_FB_CalDay[MonthNumber] >= MinMonth,
-			    V_Dim_FB_CalDay[MonthNumber] <= MaxMonth,
-			    V_Dim_FB_CalDay[Year] = CurrentYear
+			    Operation_Cal_Day[MonthNumber] >= MinMonth,
+			    Operation_Cal_Day[MonthNumber] <= MaxMonth,
+			    Operation_Cal_Day[Year] = CurrentYear
 			)
 			
 			VAR d = CALCULATE(
-			    SUM(V_FB_financial_Management[AmtFcst93]),
+			    [Base PL FCST 93],
 			    'V_FB_financial_Management'[IsForecast] = "N",
 			    Metric[Group] = "PL_OPEX_AO",
-			    V_Dim_FB_CalDay[MonthNumber] >= MinMonth,
-			    V_Dim_FB_CalDay[MonthNumber] <= MaxMonth,
-			    V_Dim_FB_CalDay[Year] = CurrentYear
+			    Operation_Cal_Day[MonthNumber] >= MinMonth,
+			    Operation_Cal_Day[MonthNumber] <= MaxMonth,
+			    Operation_Cal_Day[Year] = CurrentYear
 			)
 			
 			VAR e = CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
+			    [Base PL AOP],
 			    Metric[Group] = "PL_OPEX_AO",
-			    V_Dim_FB_CalDay[QuarterID] = _y & "Q2"
+			    Operation_Cal_Day[L2] = _y & "Q2"
 			)
 			
 			VAR f = CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
+			    [Base PL AOP],
 			    Metric[Group] = "PL_OPEX_AO",
-			    V_Dim_FB_CalDay[QuarterID] = _y & "Q3"
+			    Operation_Cal_Day[L2] = _y & "Q3"
 			)
 			
 			VAR g = CALCULATE(
-			    SUM(V_FB_Financial_Management[AmtAOP]),
+			    [Base PL AOP],
 			    Metric[Group] = "PL_OPEX_AO",
-			    V_Dim_FB_CalDay[QuarterID] = _y & "Q4"
+			    Operation_Cal_Day[L2] = _y & "Q4"
 			)
 			
 			VAR cal = SWITCH(
@@ -16328,12 +16296,12 @@ table 'Measure Table'
 	measure Opex_A&P_RPC_AOP = DIVIDE([Opex_A&P_AOP], [Volume AOP])
 		lineageTag: e01b4cbb-0725-4b8f-b8fc-79984fd427a8
 
-	measure Opex_SC_AOP = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_OPEX_SC")
+	measure Opex_SC_AOP = CALCULATE([Base PL AOP], Metric[Group] = "PL_OPEX_SC")
 		lineageTag: cf14cbda-60d5-4d59-a2bb-8aa54cc7cb3d
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Opex_A&P_AOP ' = ABS(CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_OPEX_AP"))
+	measure 'Opex_A&P_AOP ' = ABS(CALCULATE([Base PL AOP], Metric[Group] = "PL_OPEX_AP"))
 		lineageTag: c5285fa3-3ec2-4bec-a106-c840d23f9175
 
 	measure Selected_AOP_RPC_Opex_SC =
@@ -16686,7 +16654,7 @@ table 'Measure Table'
 		displayFolder: CMA SKU
 		lineageTag: 22bfc53b-5333-45bd-a4e0-876f2d691fb5
 
-	measure Opex_A&P_AOP = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_OPEX_AP")
+	measure Opex_A&P_AOP = CALCULATE([Base PL AOP], Metric[Group] = "PL_OPEX_AP")
 		lineageTag: a1e66de8-3319-4f03-998d-ccaabd94945e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -16741,7 +16709,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure '%Rolled_stops_Prior Period_abs' = CALCULATE(SUM(V_FACT_FB_OPS_ROLLEDSTOPORDERS[RolledStopOrder]), 'Time Intel'[Group] = "PRIOR_RST_ANY")
+	measure '%Rolled_stops_Prior Period_abs' = CALCULATE([%Rolled_stops_num], 'Time Intel'[Group] = "PRIOR_RST_ANY")
 		displayFolder: Ops - DNP
 		lineageTag: a033117f-a4e3-479a-955e-d618d96729ea
 
@@ -21482,12 +21450,12 @@ table 'Measure Table'
 			    )
 		lineageTag: f7694167-18af-48ac-b446-17c4bdc14183
 
-	measure Opex_Other_Income_Act = ABS(CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), Metric[Group] = "PL_OPEX_OTH_INC"))
+	measure Opex_Other_Income_Act = ABS(CALCULATE([Base PL Act], Metric[Group] = "PL_OPEX_OTH_INC"))
 		lineageTag: 22329d16-2321-41d6-84af-a892aa708d01
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Opex_Other_Income_AOP = ABS(CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), Metric[Group] = "PL_OPEX_OTH_INC"))
+	measure Opex_Other_Income_AOP = ABS(CALCULATE([Base PL AOP], Metric[Group] = "PL_OPEX_OTH_INC"))
 		lineageTag: 5631da78-11a6-4eb5-9aa1-1610e172ad88
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -21639,17 +21607,17 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Base_PL_Bar_Act = CALCULATE(SUM(V_FB_Financial_Management[AmtAct]), 'Time Intel'[Group] = "YTD_CL")
+	measure Base_PL_Bar_Act = CALCULATE([Base PL Act], 'Time Intel'[Group] = "YTD_CL")
 		lineageTag: ce74e45a-f3d3-4027-8539-b32cb94a4503
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Base_PL_Bar_AOP = CALCULATE(SUM(V_FB_Financial_Management[AmtAOP]), 'Time Intel'[Group] = "YTD_CL")
+	measure Base_PL_Bar_AOP = CALCULATE([Base PL AOP], 'Time Intel'[Group] = "YTD_CL")
 		lineageTag: b5344e03-c204-4895-8de5-928fa43d8bb5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Base_PL_Bar_PY = CALCULATE(SUM(V_FB_Financial_Management[AmtPY]), 'Time Intel'[Group] = "YTD_CL")
+	measure Base_PL_Bar_PY = CALCULATE([Base PL PY], 'Time Intel'[Group] = "YTD_CL")
 		lineageTag: 85adbfa1-2318-4e60-bf1f-f76087c45233
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -21705,10 +21673,6 @@ table 'Measure Table'
 		displayFolder: Ops
 		lineageTag: 0632cdb7-1b8a-43d5-af1d-601d72641430
 
-	measure Measure = MAX(PARALLELPERIOD(V_Dim_FB_CalDay[DayDate], -1, YEAR))
-		displayFolder: Ops
-		lineageTag: 188bda90-5679-4f8e-bf58-c1cab41b976c
-
 	measure PeriodLabel =
 			
 			SWITCH (TRUE(),
@@ -21726,6 +21690,36 @@ table 'Measure Table'
 	measure 'Buyback Cases' = SUM(V_FACT_FB_OPS_ROLLEDSTOP[GOOD_BUY_BACKS_CASES])
 		displayFolder: Ops - DNP
 		lineageTag: e586e2ed-e192-42dd-971d-74c92e4cfb3b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Base PL Act' = SUM(V_FB_Financial_Management[AmtAct])
+		lineageTag: 42b58df0-bab5-47fe-962c-ff20ebfad030
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Base PL AOP' = SUM(V_FB_Financial_Management[AmtAOP])
+		lineageTag: f7aa07de-3205-482c-8b50-75af7c919e6d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Base PL PY' = SUM(V_FB_Financial_Management[AmtPY])
+		lineageTag: 08cd4bee-88e5-4fc8-a620-c6be4a80780c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Base PL FCST 39' = SUM(V_FB_Financial_Management[AmtFcst39])
+		lineageTag: 8313476f-f111-48f7-81c0-9c6c41a0d4d0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Base PL FCST 66' = SUM(V_FB_Financial_Management[AmtFcst66])
+		lineageTag: 3d3dd4c6-f729-495d-8ec8-ea3fa97e5049
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Base PL FCST 93' = SUM(V_FB_Financial_Management[AmtFcst93])
+		lineageTag: c5f2b0ea-08b8-4e27-b21e-d60ac41cacc0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
