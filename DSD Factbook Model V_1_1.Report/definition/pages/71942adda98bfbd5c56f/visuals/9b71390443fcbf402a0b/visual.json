@@ -31,17 +31,17 @@
             },
             {
               "field": {
-                "Column": {
+                "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "V_FB_Financial_Management"
+                      "Entity": "Measure Table"
                     }
                   },
-                  "Property": "IsForecast"
+                  "Property": "Revenue_TL"
                 }
               },
-              "queryRef": "V_FB_Financial_Management.IsForecast",
-              "nativeQueryRef": "IsForecast"
+              "queryRef": "Measure Table.Revenue_TL",
+              "nativeQueryRef": "Revenue_TL"
             },
             {
               "field": {
@@ -51,11 +51,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Base PL FCST Act"
+                  "Property": "Volume_AOP_TL"
                 }
               },
-              "queryRef": "Measure Table.Base PL FCST Act",
-              "nativeQueryRef": "Base PL FCST Act"
+              "queryRef": "Measure Table.Volume_AOP_TL",
+              "nativeQueryRef": "Volume_AOP_TL"
             },
             {
               "field": {
@@ -65,11 +65,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Volume FCST Act"
+                  "Property": "Volume_TL"
                 }
               },
-              "queryRef": "Measure Table.Volume FCST Act",
-              "nativeQueryRef": "Volume FCST Act"
+              "queryRef": "Measure Table.Volume_TL",
+              "nativeQueryRef": "Volume_TL"
             },
             {
               "field": {
@@ -79,11 +79,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Volume_Bar_Act"
+                  "Property": "Revenue_Bar_Actual_TL"
                 }
               },
-              "queryRef": "Measure Table.Volume_Bar_Act",
-              "nativeQueryRef": "Volume_Bar_Act"
+              "queryRef": "Measure Table.Revenue_Bar_Actual_TL",
+              "nativeQueryRef": "Revenue_Bar_Actual_TL"
             },
             {
               "field": {
@@ -93,39 +93,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Volume Act"
+                  "Property": "Volume_Bar_Actual_TL"
                 }
               },
-              "queryRef": "Measure Table.Volume Act",
-              "nativeQueryRef": "Volume Act"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Measure Table"
-                    }
-                  },
-                  "Property": "Volume_Bar_Actual_Selected"
-                }
-              },
-              "queryRef": "Measure Table.Volume_Bar_Actual_Selected",
-              "nativeQueryRef": "Volume_Bar_Actual_Selected"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Measure Table"
-                    }
-                  },
-                  "Property": "Volume_Bar_Actual_Selected"
-                }
-              },
-              "queryRef": "Measure Table.Volume_Bar_Actual_Selected",
-              "nativeQueryRef": "Volume_Bar_Actual_Selected"
+              "queryRef": "Measure Table.Volume_Bar_Actual_TL",
+              "nativeQueryRef": "Volume_Bar_Actual_TL"
             }
           ]
         }
@@ -143,7 +115,7 @@
                 "Property": "DayDate"
               }
             },
-            "direction": "Ascending"
+            "direction": "Descending"
           }
         ]
       }
@@ -162,90 +134,6 @@
           },
           "selector": {
             "metadata": "V_Dim_FB_CalDay.DayDate"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "65.59653152958221D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Measure Table.Volume Act"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "50.250004146409154D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "V_FB_Financial_Management.IsForecast"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "106.00000060141616D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Measure Table.Base PL FCST Act"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "82.25000098804092D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Measure Table.Volume FCST Act"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "77.5D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Measure Table.Volume_Bar_Act"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "97.99936808410732D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Measure Table.Volume_Bar_Actual_Selected"
           }
         }
       ]
@@ -269,104 +157,6 @@
         "type": "Categorical",
         "howCreated": "User",
         "isHiddenInViewMode": true
-      },
-      {
-        "name": "71fb779f924e150f7d08",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "V_Dim_FB_CalDay"
-              }
-            },
-            "Property": "DayDate"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "48f751efa5dd0bcd0e70",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Base PL FCST Act"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "83d0664b7d369fa72fff",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "V_FB_Financial_Management"
-              }
-            },
-            "Property": "IsForecast"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "874147869cc741af08b3",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Volume FCST Act"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "e09f0c4a293a583ad57e",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Volume_Bar_Act"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "f0846cfa9642f5aa9e96",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Volume Act"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "73217e8b7507124cb749",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Volume_Bar_Actual_Selected"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

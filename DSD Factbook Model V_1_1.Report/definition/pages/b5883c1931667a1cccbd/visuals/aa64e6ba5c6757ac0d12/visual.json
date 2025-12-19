@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "3b62194f1a2ebe8a15be",
+  "name": "aa64e6ba5c6757ac0d12",
   "position": {
-    "x": 1035.1153324287652,
-    "y": 69.4708276797829,
-    "z": 3,
-    "height": 342.14382632293081,
-    "width": 244.88466757123473
+    "x": 1065.3515958217315,
+    "y": 595.96401152403791,
+    "z": 4000,
+    "height": 73.83624921536753,
+    "width": 196.4571630908886
   },
   "visual": {
     "visualType": "slicer",
@@ -61,6 +61,23 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Operation_Cal_Day"
+                  }
+                },
+                "Property": "L3"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "expansionStates": [
@@ -131,6 +148,16 @@
                   "identityValues": [
                     {
                       "Literal": {
+                        "Value": "'Q2'"
+                      }
+                    }
+                  ],
+                  "isToggled": true
+                },
+                {
+                  "identityValues": [
+                    {
+                      "Literal": {
                         "Value": "'Q4'"
                       }
                     }
@@ -138,6 +165,16 @@
                   "isToggled": true
                 }
               ]
+            },
+            {
+              "identityValues": [
+                {
+                  "Literal": {
+                    "Value": "'Weeks'"
+                  }
+                }
+              ],
+              "isToggled": true
             }
           ]
         }
@@ -150,7 +187,7 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Basic'"
+                  "Value": "'Dropdown'"
                 }
               }
             }
@@ -317,6 +354,13 @@
                           "Value": "true"
                         }
                       }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "false"
+                        }
+                      }
                     ]
                   ]
                 }
@@ -377,34 +421,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "2249c4e2c731d661ebb1",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Operation_Cal_Day"
-              }
-            },
-            "Property": "L2"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "34a6ce494b6c7b283efa",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Operation_Cal_Day"
-              }
-            },
-            "Property": "L3"
-          }
-        },
-        "type": "Categorical"
       }
     ]
   }

@@ -3,7 +3,7 @@ table V_FACT_FB_OPS_ROLLEDSTOPORDERS
 
 	column OriginalOrderRDD
 		dataType: dateTime
-		formatString: Long Date
+		formatString: dd MMM yyyy
 		lineageTag: 42e1b0f7-3145-4071-bf8d-d77e75204127
 		summarizeBy: none
 		sourceColumn: OriginalOrderRDD
@@ -14,7 +14,7 @@ table V_FACT_FB_OPS_ROLLEDSTOPORDERS
 
 	column WeekStartDate
 		dataType: dateTime
-		formatString: Long Date
+		formatString: dd MMM yyyy
 		lineageTag: a1f1a30d-85c0-4acd-a2da-6c324f25d532
 		summarizeBy: none
 		sourceColumn: WeekStartDate
@@ -44,7 +44,7 @@ table V_FACT_FB_OPS_ROLLEDSTOPORDERS
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column WeekStartDate1 = V_FACT_FB_OPS_ROLLEDSTOPORDERS[OriginalOrderRDD]-WEEKDAY(V_FACT_FB_OPS_ROLLEDSTOPORDERS[OriginalOrderRDD],2)+1
-		formatString: General Date
+		formatString: dd MMM yyyy
 		lineageTag: 846dd81b-c604-4a96-bc51-522abaaa17e4
 		summarizeBy: none
 

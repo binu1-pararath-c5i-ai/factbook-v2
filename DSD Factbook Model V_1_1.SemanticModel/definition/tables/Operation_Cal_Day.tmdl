@@ -27,7 +27,7 @@ table Operation_Cal_Day
 		annotation SummarizationSetBy = Automatic
 
 	column FirstDayOfMonth
-		formatString: General Date
+		formatString: dd MMM yyyy
 		lineageTag: a1277862-e3df-4733-b9c8-74db9ffb65e3
 		summarizeBy: none
 		isNameInferred
@@ -36,7 +36,7 @@ table Operation_Cal_Day
 		annotation SummarizationSetBy = Automatic
 
 	column FirstDayOfYear
-		formatString: General Date
+		formatString: dd MMM yyyy
 		lineageTag: 3c59a3fd-1232-44ad-8f45-f282f97496bf
 		summarizeBy: none
 		isNameInferred
@@ -45,7 +45,7 @@ table Operation_Cal_Day
 		annotation SummarizationSetBy = Automatic
 
 	column FirstDayOfQuarter
-		formatString: General Date
+		formatString: dd MMM yyyy
 		lineageTag: e9c14e3c-9107-4cde-a536-006d002d1553
 		summarizeBy: none
 		isNameInferred
@@ -69,7 +69,7 @@ table Operation_Cal_Day
 		annotation SummarizationSetBy = Automatic
 
 	column WeekStarting_ISO
-		formatString: General Date
+		formatString: dd MMM yyyy
 		lineageTag: 6f243b08-17d7-4f8e-9db6-961a743fd790
 		summarizeBy: none
 		isNameInferred
@@ -175,7 +175,7 @@ table Operation_Cal_Day
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column LYDayDate
-		formatString: General Date
+		formatString: dd MMM yyyy
 		lineageTag: 6d0219ff-698e-4474-b4ef-dfb11ea99908
 		summarizeBy: none
 		isNameInferred
@@ -183,10 +183,25 @@ table Operation_Cal_Day
 
 		annotation SummarizationSetBy = Automatic
 
+	column MonthDesc
+		lineageTag: 045c6f0e-56f6-4be0-bbd0-97bf92c4b00f
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[MonthDesc]
+
+		annotation SummarizationSetBy = Automatic
+
+	column QuarterDesc
+		lineageTag: 14026430-5cfa-4e36-8e96-5190a8edc8f5
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: V_Dim_FB_CalDay[QuarterDesc]
+
+		annotation SummarizationSetBy = Automatic
+
 	partition Operation_Cal_Day = calculated
 		mode: import
-		source = ```
-				
+		source =
 				
 				VAR data_normal =
 				SUMMARIZE(
@@ -196,8 +211,10 @@ table Operation_Cal_Day
 				    V_Dim_FB_CalDay[YearID],
 				    V_Dim_FB_CalDay[Quarter],
 				    V_Dim_FB_CalDay[Quarter_Name],
+				    V_Dim_FB_CalDay[QuarterDesc],
 				    V_Dim_FB_CalDay[MonthName],
 				    V_Dim_FB_CalDay[MonthNumber],
+				    V_Dim_FB_CalDay[MonthDesc],
 				    V_Dim_FB_CalDay[FirstDayOfYear],
 				    V_Dim_FB_CalDay[FirstDayOfQuarter],
 				    V_Dim_FB_CalDay[FirstDayOfMonth],
@@ -210,7 +227,6 @@ table Operation_Cal_Day
 				    "L2", V_Dim_FB_CalDay[Quarter_Name],
 				    "L3", V_Dim_FB_CalDay[MonthName]
 				)
-				 
 				VAR data_wk =
 				FILTER(
 				    SUMMARIZE(
@@ -220,8 +236,10 @@ table Operation_Cal_Day
 				        V_Dim_FB_CalDay[YearID],
 				        V_Dim_FB_CalDay[Quarter],
 				        V_Dim_FB_CalDay[Quarter_Name],
+				        V_Dim_FB_CalDay[QuarterDesc],
 				        V_Dim_FB_CalDay[MonthName],
 				        V_Dim_FB_CalDay[MonthNumber],
+				        V_Dim_FB_CalDay[MonthDesc],
 				        V_Dim_FB_CalDay[FirstDayOfYear],
 				        V_Dim_FB_CalDay[FirstDayOfQuarter],
 				        V_Dim_FB_CalDay[FirstDayOfMonth],
@@ -236,9 +254,7 @@ table Operation_Cal_Day
 				    ),
 				    V_Dim_FB_CalDay[CurrWeekCounter_ISO] IN {0, -1}
 				)
-				
 				RETURN UNION(data_normal, data_wk)
-				```
 
 	annotation PBI_Id = a9565b9f911a4bc9b36e805a9545bd76
 

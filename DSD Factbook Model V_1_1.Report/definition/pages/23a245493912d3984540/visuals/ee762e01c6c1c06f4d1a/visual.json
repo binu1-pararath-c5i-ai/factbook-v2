@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "ee762e01c6c1c06f4d1a",
   "position": {
-    "x": 984.172233543014,
-    "y": 262.7362452378843,
-    "z": 1,
-    "height": 274.34889696110571,
-    "width": 245.31726765305217
+    "x": 1065.3515958217315,
+    "y": 595.96401152403791,
+    "z": 1000,
+    "height": 73.83624921536753,
+    "width": 196.4571630908886
   },
   "visual": {
     "visualType": "slicer",
@@ -57,7 +57,7 @@
               },
               "queryRef": "Operation_Cal_Day.L31",
               "nativeQueryRef": "L31",
-              "active": false
+              "active": true
             }
           ]
         }
@@ -142,12 +142,23 @@
                   }
                 }
               ],
+              "isToggled": true,
               "children": [
                 {
                   "identityValues": [
                     {
                       "Literal": {
                         "Value": "'Q2'"
+                      }
+                    }
+                  ],
+                  "isToggled": true
+                },
+                {
+                  "identityValues": [
+                    {
+                      "Literal": {
+                        "Value": "'Q4'"
                       }
                     }
                   ],
@@ -176,7 +187,7 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Basic'"
+                  "Value": "'Dropdown'"
                 }
               }
             }
@@ -343,6 +354,13 @@
                           "Value": "true"
                         }
                       }
+                    ],
+                    [
+                      {
+                        "Literal": {
+                          "Value": "false"
+                        }
+                      }
                     ]
                   ]
                 }
@@ -403,34 +421,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "0ae8be93114d027d6a87",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Operation_Cal_Day"
-              }
-            },
-            "Property": "L2"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "e8b9827790629a55e94d",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Operation_Cal_Day"
-              }
-            },
-            "Property": "L3"
-          }
-        },
-        "type": "Categorical"
       }
     ]
   }

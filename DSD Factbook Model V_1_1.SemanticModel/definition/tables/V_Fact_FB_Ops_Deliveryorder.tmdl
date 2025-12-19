@@ -97,19 +97,7 @@ table V_Fact_FB_Ops_Deliveryorder
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	column Month_new =
-			SWITCH(TRUE(),V_Fact_FB_Ops_DeliveryOrder[Month]="1","01",
-			V_Fact_FB_Ops_DeliveryOrder[Month]="2","02",
-			V_Fact_FB_Ops_DeliveryOrder[Month]="3","03",
-			V_Fact_FB_Ops_DeliveryOrder[Month]="4","04",
-			V_Fact_FB_Ops_DeliveryOrder[Month]="5","05",
-			V_Fact_FB_Ops_DeliveryOrder[Month]="6","06",
-			V_Fact_FB_Ops_DeliveryOrder[Month]="7","07",
-			V_Fact_FB_Ops_DeliveryOrder[Month]="8","08",
-			V_Fact_FB_Ops_DeliveryOrder[Month]="9","09",
-			V_Fact_FB_Ops_DeliveryOrder[Month]="10","10",
-			V_Fact_FB_Ops_DeliveryOrder[Month]="11","11",
-			V_Fact_FB_Ops_DeliveryOrder[Month]="12","12")
+	column Month_new = V_Fact_FB_Ops_DeliveryOrder[Month]
 		lineageTag: 7f0799e8-c169-41d4-a16b-9b6af2bd0a3e
 		summarizeBy: none
 
@@ -127,7 +115,7 @@ table V_Fact_FB_Ops_Deliveryorder
 				let
 				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
 				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
-				    DSD_Schema = SOLUTIONS_DEV_Database{[Name="DSD",Kind="Schema"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
 				    V_Fact_FB_Ops_Deliveryorder_View = DSD_Schema{[Name="V_Fact_FB_Ops_Deliveryorder",Kind="View"]}[Data]
 				in
 				    V_Fact_FB_Ops_Deliveryorder_View

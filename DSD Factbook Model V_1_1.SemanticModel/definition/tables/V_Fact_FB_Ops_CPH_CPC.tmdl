@@ -929,7 +929,7 @@ table V_Fact_FB_Ops_CPH_CPC
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column DayDate = DATE(V_Fact_FB_Ops_CPH_CPC[Year],V_Fact_FB_Ops_CPH_CPC[Month],1)
-		formatString: General Date
+		formatString: dd MMM yyyy
 		lineageTag: 4ccbe907-ef07-44d4-ace3-e404d65ea2cf
 		summarizeBy: none
 
@@ -1007,7 +1007,7 @@ table V_Fact_FB_Ops_CPH_CPC
 				let
 				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
 				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
-				    DSD_Schema = SOLUTIONS_DEV_Database{[Name="DSD",Kind="Schema"]}[Data],
+				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
 				    V_Fact_FB_Ops_CPH_CPC_View = DSD_Schema{[Name="V_Fact_FB_Ops_CPH_CPC",Kind="View"]}[Data]
 				in
 				    V_Fact_FB_Ops_CPH_CPC_View

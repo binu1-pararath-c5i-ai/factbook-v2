@@ -1,13 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "de25e9350cf0e5c5574d",
+  "name": "45ec415dd15ed7c0232c",
   "position": {
-    "x": 940.25637341762047,
-    "y": 124.23415225962997,
-    "z": 1000,
-    "height": 51.001388822374409,
-    "width": 213.15965071915457,
-    "tabOrder": 1000
+    "x": 1050.8480468687128,
+    "y": 187.22763193896765,
+    "z": 7000,
+    "height": 34.281115707134923,
+    "width": 224.14575654665143
   },
   "visual": {
     "visualType": "slicer",
@@ -20,14 +19,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Time Intel"
+                      "Entity": "Act/VolAdj Table"
                     }
                   },
-                  "Property": "Group"
+                  "Property": "Act/VolAdj"
                 }
               },
-              "queryRef": "Time Intel.Group",
-              "nativeQueryRef": "Group",
+              "queryRef": "Act/VolAdj Table.Act/VolAdj",
+              "nativeQueryRef": "Act/VolAdj",
               "active": true
             }
           ]
@@ -41,7 +40,7 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Dropdown'"
+                  "Value": "'Basic'"
                 }
               }
             }
@@ -61,29 +60,23 @@
           }
         }
       ],
-      "selection": [
-        {
-          "properties": {
-            "strictSingleSelect": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
-        }
-      ],
       "general": [
         {
           "properties": {
+            "orientation": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
             "filter": {
               "filter": {
                 "Version": 2,
                 "From": [
                   {
-                    "Name": "t",
-                    "Entity": "Time Intel",
+                    "Name": "a",
+                    "Entity": "Act/VolAdj Table",
                     "Type": 0
                   }
                 ],
@@ -96,10 +89,10 @@
                             "Column": {
                               "Expression": {
                                 "SourceRef": {
-                                  "Source": "t"
+                                  "Source": "a"
                                 }
                               },
-                              "Property": "Group"
+                              "Property": "Act/VolAdj"
                             }
                           }
                         ],
@@ -107,7 +100,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'BAR_YR'"
+                                "Value": "'Vol.Adjusted'"
                               }
                             }
                           ]
@@ -116,6 +109,48 @@
                     }
                   }
                 ]
+              }
+            }
+          }
+        }
+      ],
+      "selection": [
+        {
+          "properties": {
+            "strictSingleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
               }
             }
           }

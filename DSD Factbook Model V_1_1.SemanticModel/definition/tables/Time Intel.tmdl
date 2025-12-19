@@ -3,28 +3,71 @@ table 'Time Intel'
 
 	calculationGroup
 
-		calculationItem YTD__ = CALCULATE(SELECTEDMEASURE(), DATESYTD(V_Dim_FB_CalDay[DayDate]))
-
-		calculationItem YTD_PM = ```
-				
-				VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-				VAR Today = MAX(V_Dim_FB_Ref[PM])
-				VAR CurrentMonth = MONTH(Today)
-				// VAR CurrentYear = YEAR(Today)
-				
-				RETURN CALCULATE(SELECTEDMEASURE(),
+		calculationItem BAR_YR =
+				VAR _yr_st = SELECTEDVALUE(Operation_Cal_Day[FirstDayOfYear])
+				RETURN CALCULATE(
+				    SELECTEDMEASURE(),
 				    FILTER(
-				        VALUES(V_Dim_FB_CalDay[DayDate]),
-				        YEAR(V_Dim_FB_CalDay[DayDate]) = VisualYear &&
-				        MONTH(V_Dim_FB_CalDay[DayDate]) <= CurrentMonth
+				        VALUES(Operation_Cal_Day),
+				        Operation_Cal_Day[FirstDayOfYear] = _yr_st
 				    )
 				)
-				
-				```
 
-		calculationItem YTD_CL = ```
+		calculationItem BAR_YR_CD =
 				
-				
+				VAR _yr_st = SELECTEDVALUE(Operation_Cal_Day[FirstDayOfYear])
+				RETURN CALCULATE(
+				    SELECTEDMEASURE(),
+				    FILTER(
+				        VALUES(Operation_Cal_Day),
+				        Operation_Cal_Day[FirstDayOfYear] = _yr_st
+						&& Operation_Cal_Day[DayDate] <= [CD]
+				    )
+				)
+
+		calculationItem BAR_YR_CL =
+				VAR _yr_st = SELECTEDVALUE(Operation_Cal_Day[FirstDayOfYear])
+				VAR _cl_me = MAX(V_Dim_FB_Ref[CL_M_END])
+				RETURN CALCULATE(
+				    SELECTEDMEASURE(),
+				    FILTER(
+				        VALUES(Operation_Cal_Day),
+				        Operation_Cal_Day[FirstDayOfYear] = _yr_st
+						&& Operation_Cal_Day[DayDate] <= _cl_me
+				    )
+				)
+
+		calculationItem PL_BAR_SEL =
+				VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
+				VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
+				VAR DataDate = MAX(V_Dim_FB_CalDay[DayDate]) -- Assuming this is the date context of the data
+				VAR UnlockDate = DATE(YEAR(DataDate), MONTH(DataDate) + 1, 7)
+				RETURN IF (TodayDate >= UnlockDate, SELECTEDMEASURE(), BLANK())
+
+		calculationItem YTD_PM =
+				VAR _min = MIN(Operation_Cal_Day[FirstDayOfYear])
+				VAR _max = [PM]
+				RETURN CALCULATE(SELECTEDMEASURE(),
+				    FILTER(
+				        ALLSELECTED(Operation_Cal_Day),
+				        Operation_Cal_Day[DayDate] <= MAX(Operation_Cal_Day[DayDate])
+				    ),
+				    Operation_Cal_Day[DayDate] >= _min &&
+				    Operation_Cal_Day[DayDate] <= _max
+				)
+
+		calculationItem YTD_CL =
+				VAR _min = MIN(Operation_Cal_Day[FirstDayOfYear])
+				VAR _max = MAX(V_Dim_FB_Ref[CL_M_END])
+				RETURN CALCULATE(SELECTEDMEASURE(),
+				    FILTER(
+				        ALLSELECTED(Operation_Cal_Day),
+				        Operation_Cal_Day[DayDate] <= MAX(Operation_Cal_Day[DayDate])
+				    ),
+				    Operation_Cal_Day[DayDate] >= _min &&
+				    Operation_Cal_Day[DayDate] <= _max
+				)
+				/*
 				VAR VisualYear = SELECTEDVALUE('V_Dim_FB_CalDay'[Year])
 				VAR Today = MAX(V_Dim_FB_Ref[CL_M_END])
 				VAR CurrentMonth = MONTH(Today)
@@ -37,57 +80,21 @@ table 'Time Intel'
 				        MONTH(V_Dim_FB_CalDay[DayDate]) <= CurrentMonth
 				    )
 				)
-				
-				```
+				*/
 
-		calculationItem YTD_CM = ```
-				
-				
-				VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-				VAR Today = MAX(V_Dim_FB_Ref[CD])
-				// VAR CurrentMonth = MONTH(Today)
-				// VAR CurrentYear = YEAR(Today)
-				
+		calculationItem YTD_CM =
+				VAR _min = MIN(Operation_Cal_Day[FirstDayOfYear])
+				VAR _max = MAX(V_Dim_FB_Ref[CD])
 				RETURN CALCULATE(SELECTEDMEASURE(),
 				    FILTER(
-				        VALUES(Operation_Cal_Day[DayDate]),
-				        YEAR(Operation_Cal_Day[DayDate]) = VisualYear &&
-				        Operation_Cal_Day[DayDate] <= Today
-				    )
-				)
-				
-				```
-
-		calculationItem CL_FULL_YR = ```
-				
-				
-				VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-				
-				RETURN CALCULATE(SELECTEDMEASURE(),
-				    FILTER(
-				        VALUES(Operation_Cal_Day[DayDate]),
-				        YEAR(Operation_Cal_Day[DayDate]) = VisualYear
-				    )
-				)
-				
-				```
-
-		calculationItem PL_BAR_SEL =
-				
-				VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-				VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-				VAR DataDate = MAX(V_Dim_FB_CalDay[DayDate]) -- Assuming this is the date context of the data
-				VAR UnlockDate = DATE(YEAR(DataDate), MONTH(DataDate) + 1, 7)
-				
-				RETURN
-				IF (
-				    TodayDate >= UnlockDate,
-				    SELECTEDMEASURE(),
-				    BLANK()
+				        ALLSELECTED(Operation_Cal_Day),
+				        Operation_Cal_Day[DayDate] <= MAX(Operation_Cal_Day[DayDate])
+				    ),
+				    Operation_Cal_Day[DayDate] >= _min &&
+				    Operation_Cal_Day[DayDate] <= _max
 				)
 
 		calculationItem YA_LE_CUR_RNG =
-				
 				VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
 				VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
 				RETURN
@@ -98,11 +105,10 @@ table 'Time Intel'
 				    )
 				)
 
-		calculationItem YA_LE_CL =
-				
-				VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
-				VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
-				VAR _max_cl = EOMONTH(EDATE(MAX(V_Dim_FB_Ref[CL_M_END]), -12), 0)
+		calculationItem CY_LE_CL =
+				VAR _min = MIN(Operation_Cal_Day[DayDate])
+				VAR _max = MAX(Operation_Cal_Day[DayDate])
+				VAR _max_cl = MAX(V_Dim_FB_Ref[CL_M_END])
 				RETURN
 				CALCULATE(SELECTEDMEASURE(),
 				    FILTER(ALL(Operation_Cal_Day),
@@ -112,19 +118,90 @@ table 'Time Intel'
 				    )
 				)
 
-		calculationItem YA_LE_CD =
-				
-				VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
-				VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
-				VAR _max_2 = EOMONTH(EDATE(MAX(V_Dim_FB_Ref[CD]), -12), 0)
+		calculationItem CY_LE_CD =
+				VAR _min = MIN(Operation_Cal_Day[DayDate])
+				VAR _max = MAX(Operation_Cal_Day[DayDate])
+				VAR _max_cl = [CD]
 				RETURN
 				CALCULATE(SELECTEDMEASURE(),
 				    FILTER(ALL(Operation_Cal_Day),
 				        Operation_Cal_Day[DayDate] >= _min &&
 				        Operation_Cal_Day[DayDate] <= _max &&
-				        Operation_Cal_Day[DayDate] <= _max_2
+				        Operation_Cal_Day[DayDate] <= _max_cl
 				    )
 				)
+
+		calculationItem YA_LE_CL =
+				
+				VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
+				VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
+				VAR _max_fix = IF(FORMAT(_max + 1, "DD-MMM") = "29-FEB", _max + 1, _max)
+				VAR _max_cl = EOMONTH(EDATE(MAX(V_Dim_FB_Ref[CL_M_END]), -12), 0)
+				VAR _max_cl_fix = IF(_max = _max_cl, _max_fix, _max_cl)
+				RETURN
+				CALCULATE(SELECTEDMEASURE(),
+				    FILTER(ALL(Operation_Cal_Day),
+				        Operation_Cal_Day[DayDate] >= _min &&
+				        Operation_Cal_Day[DayDate] <= _max_fix &&
+				        Operation_Cal_Day[DayDate] <= _max_cl_fix
+				    )
+				)
+
+		calculationItem YA_LE_CD =
+				
+				VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
+				VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
+				VAR _max_fix = IF(FORMAT(_max + 1, "DD-MMM") = "29-FEB", _max + 1, _max)
+				VAR _max_cd = EOMONTH(EDATE([CD], -12), 0)
+				VAR _max_cd_fix = IF(_max = _max_cd, _max_fix, _max_cd)
+				RETURN
+				CALCULATE(SELECTEDMEASURE(),
+				    FILTER(ALL(Operation_Cal_Day),
+				        Operation_Cal_Day[DayDate] >= _min &&
+				        Operation_Cal_Day[DayDate] <= _max_fix &&
+				        Operation_Cal_Day[DayDate] <= _max_cd_fix
+				    )
+				)
+
+		calculationItem CURR_W =
+				CALCULATE(SELECTEDMEASURE(), FILTER(ALL(Operation_Cal_Day),
+				    Operation_Cal_Day[WeekStarting_ISO] = [IM_Date Validation_Week]
+				))
+
+		calculationItem CURR_M =
+				CALCULATE(SELECTEDMEASURE(), FILTER(ALL(Operation_Cal_Day),
+				    Operation_Cal_Day[FirstDayOfMonth] = [IM_Date Validation_Quarter]
+				))
+
+		calculationItem CURR_M_DEV =
+				CALCULATE(SELECTEDMEASURE(), FILTER(ALL(Operation_Cal_Day),
+				    Operation_Cal_Day[FirstDayOfMonth] = [IM_Date Validation_Quarter]
+				))
+
+		calculationItem CURR_Q =
+				CALCULATE(SELECTEDMEASURE(), FILTER(ALL(Operation_Cal_Day),
+				    Operation_Cal_Day[FirstDayOfQuarter] = [IM_Date Validation_Quarter]
+				))
+
+		calculationItem CURR_Y =
+				CALCULATE(SELECTEDMEASURE(), FILTER(ALL(Operation_Cal_Day),
+				    Operation_Cal_Day[FirstDayOfYear] = DATE(YEAR([IM_Date Validation_Year]),
+				        MONTH([IM_Date Validation_Year]), DAY([IM_Date Validation_Year]))
+				))
+
+		calculationItem CURR_ANY =
+				SWITCH(
+				    [PeriodLabel],
+				    "W", CALCULATE(SELECTEDMEASURE(), 'Time Intel'[Group] = "CURR_W"),
+				    "M", CALCULATE(SELECTEDMEASURE(), 'Time Intel'[Group] = "CURR_M"),
+				    "Q", CALCULATE(SELECTEDMEASURE(), 'Time Intel'[Group] = "CURR_Q"),
+				    "Y", CALCULATE(SELECTEDMEASURE(), 'Time Intel'[Group] = "CURR_Y")
+				)
+
+		calculationItem PRIOR_W =
+				CALCULATE(SELECTEDMEASURE(), FILTER(ALL(Operation_Cal_Day),
+				    Operation_Cal_Day[WeekStarting_ISO] = [IM_Date Validation_Week] - 7
+				))
 
 		calculationItem PRIOR_M =
 				CALCULATE(SELECTEDMEASURE(), FILTER(ALL(Operation_Cal_Day),
@@ -142,25 +219,16 @@ table 'Time Intel'
 				        MONTH([IM_Date Validation_Year]), DAY([IM_Date Validation_Year]))
 				))
 
-		calculationItem PRIOR_W =
-				CALCULATE(SELECTEDMEASURE(), FILTER(ALL(Operation_Cal_Day),
-				    Operation_Cal_Day[WeekStarting_ISO] = [IM_Date Validation_Week] - 7
-				))
-
 		calculationItem PRIOR_ANY =
-				
 				SWITCH(
-				    SELECTEDMEASURE(),
-				    "W", CALCULATE([%Built_LF], 'Time Intel'[Group] = "PRIOR_W"),
-				    "M", CALCULATE([%Built_LF], 'Time Intel'[Group] = "PRIOR_M"),
-				    "Q", CALCULATE([%Built_LF], 'Time Intel'[Group] = "PRIOR_Q"),
-				    "Y", CALCULATE([%Built_LF], 'Time Intel'[Group] = "PRIOR_Y")
+				    [PeriodLabel],
+				    "W", CALCULATE(SELECTEDMEASURE(), 'Time Intel'[Group] = "PRIOR_W"),
+				    "M", CALCULATE(SELECTEDMEASURE(), 'Time Intel'[Group] = "PRIOR_M"),
+				    "Q", CALCULATE(SELECTEDMEASURE(), 'Time Intel'[Group] = "PRIOR_Q"),
+				    "Y", CALCULATE(SELECTEDMEASURE(), 'Time Intel'[Group] = "PRIOR_Y")
 				)
 
-		calculationItem PRIOR_RST_ANY = ```
-				
-				
-				// Calculation item = SELECTEDMEASURE()
+		calculationItem PRIOR_RST_ANY =
 				var _SelectedPeriod=[IM_Selected_Period]
 				var _maxdate1 = MAX(Operation_Cal_Day[DayDate])
 				var _mindate1 = MIN(Operation_Cal_Day[DayDate])
@@ -200,7 +268,7 @@ table 'Time Intel'
 				var _maxdate = MAX(Operation_Cal_Day[DayDate])
 				var _isquarter_curr_val = CALCULATE(
 				    SELECTEDMEASURE(),
-				    Operation_Cal_Day[DayDate] >= prev_q && 
+				    Operation_Cal_Day[DayDate] >= prev_q &&
 				    Operation_Cal_Day[DayDate] <= IF(
 				        prev_q_end <= prev_q + DATEDIFF(curr_q_start, _maxdate, DAY),
 				        prev_q_end, prev_q + DATEDIFF(curr_q_start, _maxdate, DAY)
@@ -224,9 +292,7 @@ table 'Time Intel'
 				    _x <= 92, _isQuarter_val,
 				    _isYear_val
 				)
-				
 				RETURN _z
-				```
 
 	column Group
 		dataType: string

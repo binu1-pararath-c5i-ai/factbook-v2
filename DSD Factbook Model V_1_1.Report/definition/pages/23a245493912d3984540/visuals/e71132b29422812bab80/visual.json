@@ -3,10 +3,10 @@
   "name": "e71132b29422812bab80",
   "position": {
     "x": 0,
-    "y": 24.676884911845487,
+    "y": 264.67467253157906,
     "z": 0,
-    "height": 365.79852928147426,
-    "width": 953.68902276955794
+    "height": 253.51369236458478,
+    "width": 1280.3238677280601
   },
   "visual": {
     "visualType": "tableEx",
@@ -19,28 +19,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "V_Dim_FB_CalDay"
+                      "Entity": "Operation_Cal_Day"
                     }
                   },
-                  "Property": "Year"
+                  "Property": "FirstDayOfMonth"
                 }
               },
-              "queryRef": "V_Dim_FB_CalDay.Year",
-              "nativeQueryRef": "Year"
-            },
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "V_Dim_FB_CalDay"
-                    }
-                  },
-                  "Property": "MonthNumber"
-                }
-              },
-              "queryRef": "V_Dim_FB_CalDay.MonthNumber",
-              "nativeQueryRef": "MonthNumber"
+              "queryRef": "Operation_Cal_Day.FirstDayOfMonth",
+              "nativeQueryRef": "FirstDayOfMonth"
             },
             {
               "field": {
@@ -50,11 +36,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Total_CFR_Card"
+                  "Property": "Volume_AOP_FCST_YA_Selection_TL"
                 }
               },
-              "queryRef": "Measure Table.Total_CFR_Card",
-              "nativeQueryRef": "Total_CFR_Card"
+              "queryRef": "Measure Table.Volume_AOP_FCST_YA_Selection_TL",
+              "nativeQueryRef": "Volume_AOP_FCST_YA_Selection_TL"
             },
             {
               "field": {
@@ -64,11 +50,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Total_CFR_Card_TillDate"
+                  "Property": "Quarter dynamic Volume YA KPICARD"
                 }
               },
-              "queryRef": "Measure Table.Total_CFR_Card_TillDate",
-              "nativeQueryRef": "Total_CFR_Card_TillDate"
+              "queryRef": "Measure Table.Quarter dynamic Volume YA KPICARD",
+              "nativeQueryRef": "Quarter dynamic Volume YA KPICARD"
             },
             {
               "field": {
@@ -78,11 +64,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Total_CFR_PY_Card"
+                  "Property": "Rate_per_Case_Bar_Actual_TL"
                 }
               },
-              "queryRef": "Measure Table.Total_CFR_PY_Card",
-              "nativeQueryRef": "Total_CFR_PY_Card"
+              "queryRef": "Measure Table.Rate_per_Case_Bar_Actual_TL",
+              "nativeQueryRef": "Rate_per_Case_Bar_Actual_TL"
             },
             {
               "field": {
@@ -92,11 +78,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Total_CFR_PY_Card_TillDate"
+                  "Property": "Revenue_Bar_Actual_TL"
                 }
               },
-              "queryRef": "Measure Table.Total_CFR_PY_Card_TillDate",
-              "nativeQueryRef": "Total_CFR_PY_Card_TillDate"
+              "queryRef": "Measure Table.Revenue_Bar_Actual_TL",
+              "nativeQueryRef": "Revenue_Bar_Actual_TL"
             },
             {
               "field": {
@@ -106,11 +92,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Inv_Qty_CFR"
+                  "Property": "Volume_Bar_Actual_TL"
                 }
               },
-              "queryRef": "Measure Table.Inv_Qty_CFR",
-              "nativeQueryRef": "Inv_Qty_CFR"
+              "queryRef": "Measure Table.Volume_Bar_Actual_TL",
+              "nativeQueryRef": "Volume_Bar_Actual_TL"
             },
             {
               "field": {
@@ -120,11 +106,123 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Org_Ord_Qty_CFR"
+                  "Property": "Volume_PY_TL"
                 }
               },
-              "queryRef": "Measure Table.Org_Ord_Qty_CFR",
-              "nativeQueryRef": "Org_Ord_Qty_CFR"
+              "queryRef": "Measure Table.Volume_PY_TL",
+              "nativeQueryRef": "Volume_PY_TL"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume_FCST_PY_TL"
+                }
+              },
+              "queryRef": "Measure Table.Volume_FCST_PY_TL",
+              "nativeQueryRef": "Volume_FCST_PY_TL"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume_Change_vs_YA_TL"
+                }
+              },
+              "queryRef": "Measure Table.Volume_Change_vs_YA_TL",
+              "nativeQueryRef": "Volume_Change_vs_YA_TL"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue_TL"
+                }
+              },
+              "queryRef": "Measure Table.Revenue_TL",
+              "nativeQueryRef": "Revenue_TL"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume_TL"
+                }
+              },
+              "queryRef": "Measure Table.Volume_TL",
+              "nativeQueryRef": "Volume_TL"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Rate_Per_Case_FCST topline bar"
+                }
+              },
+              "queryRef": "Measure Table.Rate_Per_Case_FCST topline bar",
+              "nativeQueryRef": "Rate_Per_Case_FCST topline bar"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue_PY_TL"
+                }
+              },
+              "queryRef": "Measure Table.Revenue_PY_TL",
+              "nativeQueryRef": "Revenue_PY_TL"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Quarter FCST dynamic Rate per case"
+                }
+              },
+              "queryRef": "Measure Table.Quarter FCST dynamic Rate per case",
+              "nativeQueryRef": "Quarter FCST dynamic Rate per case"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume_FCST_TL"
+                }
+              },
+              "queryRef": "Measure Table.Volume_FCST_TL",
+              "nativeQueryRef": "Volume_FCST_TL"
             }
           ]
         }
@@ -136,16 +234,216 @@
               "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "V_Dim_FB_CalDay"
+                    "Entity": "Operation_Cal_Day"
                   }
                 },
-                "Property": "Year"
+                "Property": "FirstDayOfMonth"
               }
             },
             "direction": "Descending"
           }
         ]
       }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "86.85736319255982D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_AOP_FCST_YA_Selection_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "93.28964806405018D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Quarter dynamic Volume YA KPICARD"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "69.39021033162716D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Rate_per_Case_Bar_Actual_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "108.73377658471846D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Revenue_Bar_Actual_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "96.6068042516334D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_Bar_Actual_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "75.268820528247D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_FCST_PY_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "54.6385395938436D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_Change_vs_YA_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "65.65016835672162D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Revenue_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "64.43345091798385D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "99.20588183561743D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_PY_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "61.95937815671745D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Rate_Per_Case_FCST topline bar"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "74.93036971375835D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Quarter FCST dynamic Rate per case"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "94.56583365740337D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_FCST_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "94.99953766498189D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Operation_Cal_Day.FirstDayOfMonth"
+          }
+        }
+      ]
     },
     "drillFilterOtherVisuals": true
   }
