@@ -1803,7 +1803,11 @@ table 'Measure Table'
 				RETURN _y
 				```
 
-	measure Opex_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Opex_Bar_Act], [Opex_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
+	measure Opex_Bar_Actual_Selected =
+			
+			- CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Opex_Bar_Act], [Opex_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
+			
+			/* adding (-) sign to convert negative value to positive */
 		lineageTag: 6462e576-1689-48ec-9d5b-e4e63177a099
 
 		formatStringDefinition = ```
@@ -13419,7 +13423,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure OI_Bar_FCST_new = CALCULATE([Base PL FCST Act], Metric[Group] = "PL_OPINC")
+	measure OI_Bar_FCST_new = CALCULATE([Base PL FCST Act], Metric[Group] = "PL_OI")
 		lineageTag: e5b563c4-be6f-49cc-b20d-ecf36213dd57
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -20568,71 +20572,50 @@ table 'Measure Table'
 			
 			
 			// Gets the Previous Month & Year
-			VAR Today = MAX('V_Dim_FB_Ref'[PM])
-			// VAR CurrentMonth = MONTH(Today)
+			VAR Today = MAX(V_Dim_FB_CalDay[CL_M_END])
 			VAR CurrentQtr = QUARTER(Today)
-			VAR CurrentYear = YEAR(Today)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			
 			RETURN
 			SWITCH(
-			    TRUE(),
-			
-			    // if this is previous years
-			    VisualYear < CurrentYear,
-			    CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst93]),
-			        'V_FB_Financial_Management'[IsForecast] = "N",
-			        Operation_Cal_Day[MonthNumber] IN {10}
-			    ) +
-			    CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst93]),
-			        'V_FB_Financial_Management'[IsForecast] = "Y",
-			        Operation_Cal_Day[MonthNumber] IN {11, 12}
-			    ),
-			
-			    // Q4: Oct–Dec → Show FCST_93 from October to Dec
+			    SELECTEDVALUE(Operation_Cal_Day[Year]) = YEAR(Today),
+			    // if this is previous years or in Curr Q4
 			    CurrentQtr = 4,
 			    CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst93]),
+			        [Base PL FCST 93],
 			        'V_FB_Financial_Management'[IsForecast] = "N",
-			        Operation_Cal_Day[MonthNumber] = 10
+			        V_Dim_FB_CalDay[MonthNumber] IN {10}
 			    ) +
 			    CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst93]),
+			        [Base PL FCST 93],
 			        'V_FB_Financial_Management'[IsForecast] = "Y",
-			        Operation_Cal_Day[MonthNumber] IN {11, 12}
+			        V_Dim_FB_CalDay[MonthNumber] IN {11, 12}
 			    ),
-			
 			    // Curr Year Q3: Jul–Sep → Show FCST_66 from July to Dec
 			    CurrentQtr = 3,
 			    CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst66]),
+			        [Base PL FCST 66],
 			        'V_FB_Financial_Management'[IsForecast] = "N",
 			        Operation_Cal_Day[MonthNumber] = 7
 			    ) +
 			    CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst66]),
+			        [Base PL FCST 66],
 			        'V_FB_Financial_Management'[IsForecast] = "Y",
 			        Operation_Cal_Day[MonthNumber] >= 8
 			    ),
-			
 			    // Q2: Apr–Jun → Custom logic
-			    CurrentQtr = 4,
+			    CurrentQtr = 2,
 			    CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst39]),
+			        [Base PL FCST 39],
 			        'V_FB_Financial_Management'[IsForecast] = "N",
 			        Operation_Cal_Day[MonthNumber] IN {4, 5, 6}
 			    ) +
 			    CALCULATE(
-			        SUM('V_FB_Financial_Management'[AmtFcst39]),
+			        [Base PL FCST 39],
 			        'V_FB_Financial_Management'[IsForecast] = "Y",
 			        Operation_Cal_Day[MonthNumber] >= 7
 			    ),
-			
 			    // Q1: Jan–Mar → Show AOP for ALL months
 			    CurrentQtr = 1,
-			    SUM('V_FB_Financial_Management'[AmtAOP])
+			    [Base PL AOP]
 			)
 		lineageTag: 06c10aca-a8db-43f9-a252-f054c85bfec8
 
@@ -20643,7 +20626,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Base_PL_Bar_AOP = CALCULATE([Base PL AOP], 'Time Intel'[Group] = "BAR_YR_CL")
+	measure Base_PL_Bar_AOP = CALCULATE([Base PL AOP], 'Time Intel'[Group] = "BAR_YR")
 		lineageTag: b5344e03-c204-4895-8de5-928fa43d8bb5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -20950,6 +20933,19 @@ table 'Measure Table'
 
 	measure 'Base PL FCST 93 YTD' = SUM(V_FB_Financial_Management[AmtFcst93YTD])
 		lineageTag: cbc56829-3da5-4aa2-a958-22f5f4002622
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Volume_Bar_Act_YA =
+			
+			CALCULATE(
+			    SUM(V_Fact_FB_ToplineActuals_Summary[SalesCases]),
+			    FILTER(
+			        ALL(V_Fact_FB_ToplineActuals_Summary[TimeGranularity]),
+			        V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly"),
+			    DATEADD( Operation_Cal_Day[DayDate], -1, YEAR))
+		displayFolder: Topline
+		lineageTag: e019ebad-b571-4311-9f6a-ea1591237c86
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
