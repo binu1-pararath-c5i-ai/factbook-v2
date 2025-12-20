@@ -1803,7 +1803,11 @@ table 'Measure Table'
 				RETURN _y
 				```
 
-	measure Opex_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Opex_Bar_Act], [Opex_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
+	measure Opex_Bar_Actual_Selected =
+			
+			- CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Opex_Bar_Act], [Opex_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
+			
+			/* adding (-) sign to convert negative value to positive */
 		lineageTag: 6462e576-1689-48ec-9d5b-e4e63177a099
 
 		formatStringDefinition = ```
