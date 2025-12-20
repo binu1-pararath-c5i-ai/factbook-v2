@@ -3,7 +3,10 @@ table 'Time Intel'
 
 	calculationGroup
 
+		calculationItem NONE = SELECTEDMEASURE()
+
 		calculationItem BAR_YR =
+				
 				VAR _yr_st = SELECTEDVALUE(Operation_Cal_Day[FirstDayOfYear])
 				RETURN CALCULATE(
 				    SELECTEDMEASURE(),
@@ -26,6 +29,7 @@ table 'Time Intel'
 				)
 
 		calculationItem BAR_YR_CL =
+				
 				VAR _yr_st = SELECTEDVALUE(Operation_Cal_Day[FirstDayOfYear])
 				VAR _cl_me = MAX(V_Dim_FB_Ref[CL_M_END])
 				RETURN CALCULATE(
@@ -38,11 +42,9 @@ table 'Time Intel'
 				)
 
 		calculationItem PL_BAR_SEL =
-				VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-				VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-				VAR DataDate = MAX(V_Dim_FB_CalDay[DayDate]) -- Assuming this is the date context of the data
-				VAR UnlockDate = DATE(YEAR(DataDate), MONTH(DataDate) + 1, 7)
-				RETURN IF (TodayDate >= UnlockDate, SELECTEDMEASURE(), BLANK())
+				
+				VAR LastClosure = MAX(V_Dim_FB_CalDay[CL_M_END])
+				RETURN CALCULATE(SELECTEDMEASURE(), Operation_Cal_Day[DayDate] <= LastClosure)
 
 		calculationItem YTD_PM =
 				VAR _min = MIN(Operation_Cal_Day[FirstDayOfYear])
@@ -95,14 +97,14 @@ table 'Time Intel'
 				)
 
 		calculationItem YA_LE_CUR_RNG =
+				
 				VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
 				VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
-				RETURN
-				CALCULATE(SELECTEDMEASURE(),
-				    FILTER(ALL(Operation_Cal_Day),
-				        Operation_Cal_Day[DayDate] >= _min &&
-				        Operation_Cal_Day[DayDate] <= _max
-				    )
+				VAR _max_fix = IF(FORMAT(_max + 1, "MM-DD") = "02-29", _max + 1, _max)
+				RETURN CALCULATE(SELECTEDMEASURE(),
+				    REMOVEFILTERS(Operation_Cal_Day),
+				    Operation_Cal_Day[DayDate] >= _min &&
+				    Operation_Cal_Day[DayDate] <= _max_fix
 				)
 
 		calculationItem CY_LE_CL =
@@ -135,33 +137,51 @@ table 'Time Intel'
 				
 				VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
 				VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
-				VAR _max_fix = IF(FORMAT(_max + 1, "DD-MMM") = "29-FEB", _max + 1, _max)
-				VAR _max_cl = EOMONTH(EDATE(MAX(V_Dim_FB_Ref[CL_M_END]), -12), 0)
-				VAR _max_cl_fix = IF(_max = _max_cl, _max_fix, _max_cl)
+				VAR _max_fix = IF(FORMAT(_max + 1, "MM-DD") = "02-29", _max + 1, _max)
+				VAR _max_cap = EOMONTH(EDATE(MAX(V_Dim_FB_Ref[CL_M_END]), -12), 0)
+				VAR _max_cap_fix = IF(_max = _max_cap, _max_fix, _max_cap)
 				RETURN
 				CALCULATE(SELECTEDMEASURE(),
-				    FILTER(ALL(Operation_Cal_Day),
-				        Operation_Cal_Day[DayDate] >= _min &&
-				        Operation_Cal_Day[DayDate] <= _max_fix &&
-				        Operation_Cal_Day[DayDate] <= _max_cl_fix
-				    )
+				    REMOVEFILTERS(Operation_Cal_Day),
+				    Operation_Cal_Day[DayDate] >= _min &&
+				    Operation_Cal_Day[DayDate] <= _max_fix &&
+				    Operation_Cal_Day[DayDate] <= _max_cap_fix
 				)
+				// VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
+				// VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
+				// VAR _max_fix = IF(FORMAT(_max + 1, "DD-MMM") = "29-FEB", _max + 1, _max)
+				// VAR _max_cl = EOMONTH(EDATE(MAX(V_Dim_FB_Ref[CL_M_END]), -12), 0)
+				// VAR _max_cl_fix = IF(_max = _max_cl, _max_fix, _max_cl)
+				// RETURN
+				// CALCULATE(SELECTEDMEASURE(),
+				//     FILTER(ALL(Operation_Cal_Day),
+				//         Operation_Cal_Day[DayDate] >= _min &&
+				//         Operation_Cal_Day[DayDate] <= _max_fix &&
+				//         Operation_Cal_Day[DayDate] <= _max_cl_fix
+				//     )
+				// )
 
 		calculationItem YA_LE_CD =
 				
 				VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
 				VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
-				VAR _max_fix = IF(FORMAT(_max + 1, "DD-MMM") = "29-FEB", _max + 1, _max)
-				VAR _max_cd = EOMONTH(EDATE([CD], -12), 0)
-				VAR _max_cd_fix = IF(_max = _max_cd, _max_fix, _max_cd)
+				VAR _max_fix = IF(FORMAT(_max + 1, "MM-DD") = "02-29", _max + 1, _max)
+				VAR _max_cap = EOMONTH(EDATE([CD], -12), 0)
+				VAR _max_cap_fix = IF(_max = _max_cap, _max_fix, _max_cap)
 				RETURN
 				CALCULATE(SELECTEDMEASURE(),
-				    FILTER(ALL(Operation_Cal_Day),
-				        Operation_Cal_Day[DayDate] >= _min &&
-				        Operation_Cal_Day[DayDate] <= _max_fix &&
-				        Operation_Cal_Day[DayDate] <= _max_cd_fix
-				    )
+				    REMOVEFILTERS(Operation_Cal_Day),
+				    Operation_Cal_Day[DayDate] >= _min &&
+				    Operation_Cal_Day[DayDate] <= _max_fix &&
+				    Operation_Cal_Day[DayDate] <= _max_cap_fix
 				)
+				// CALCULATE(SELECTEDMEASURE(),
+				//     FILTER(ALL(Operation_Cal_Day),
+				//         Operation_Cal_Day[DayDate] >= _min &&
+				//         Operation_Cal_Day[DayDate] <= _max_fix &&
+				//         Operation_Cal_Day[DayDate] <= _max_cap_fix
+				//     )
+				// )
 
 		calculationItem CURR_W =
 				CALCULATE(SELECTEDMEASURE(), FILTER(ALL(Operation_Cal_Day),
@@ -293,6 +313,18 @@ table 'Time Intel'
 				    _isYear_val
 				)
 				RETURN _z
+
+		calculationItem YA_FULL =
+				
+				VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
+				VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
+				VAR _max_fix = IF(FORMAT(_max + 1, "MM-DD") = "02-29", _max + 1, _max)
+				RETURN
+				CALCULATE(SELECTEDMEASURE(),
+				    REMOVEFILTERS(Operation_Cal_Day),
+				    Operation_Cal_Day[DayDate] >= _min &&
+				    Operation_Cal_Day[DayDate] <= _max_fix
+				)
 
 	column Group
 		dataType: string

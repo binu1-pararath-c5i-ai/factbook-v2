@@ -4,6 +4,8 @@ table Metric
 	calculationGroup
 		precedence: 1
 
+		calculationItem NONE = SELECTEDMEASURE()
+
 		calculationItem PL_REV = CALCULATE(SELECTEDMEASURE(), V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
 
 		calculationItem PL_GP = CALCULATE(SELECTEDMEASURE(), V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"})

@@ -1,5 +1,13 @@
 // Welcome to DAX query view! Learn more about DAX queries at https://aka.ms/dax-queries.
 // Right-click on tables, columns, or measures in the data pane to access quick queries, or ask Copilot for help writing DAX.
 
-// Select "Run" to try this sample DAX query.
-EVALUATE ([CD] + 1)
+EVALUATE
+SUMMARIZECOLUMNS(
+    Operation_Cal_Day[DayDate],
+    "CY", CALCULATE([Volume_TL], V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly"),
+    "YA", CALCULATE([Volume_TL],
+        V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly",
+        DATEADD(Operation_Cal_Day[DayDate], -1, YEAR)
+    )
+)
+ORDER BY Operation_Cal_Day[DayDate] DESC

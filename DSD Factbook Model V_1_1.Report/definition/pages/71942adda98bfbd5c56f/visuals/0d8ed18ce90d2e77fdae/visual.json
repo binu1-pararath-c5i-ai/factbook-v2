@@ -1,13 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "de25e9350cf0e5c5574d",
+  "name": "0d8ed18ce90d2e77fdae",
   "position": {
-    "x": 940.25637341762047,
-    "y": 124.23415225962997,
-    "z": 1000,
-    "height": 51.001388822374409,
-    "width": 213.15965071915457,
-    "tabOrder": 1000
+    "x": 1047.4900627364589,
+    "y": 211.85192280063214,
+    "z": 2002,
+    "height": 66.694123844643457,
+    "width": 213.15965071915457
   },
   "visual": {
     "visualType": "slicer",
@@ -20,13 +19,13 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Time Intel"
+                      "Entity": "Metric"
                     }
                   },
                   "Property": "Group"
                 }
               },
-              "queryRef": "Time Intel.Group",
+              "queryRef": "Metric.Group",
               "nativeQueryRef": "Group",
               "active": true
             }
@@ -42,19 +41,6 @@
               "expr": {
                 "Literal": {
                   "Value": "'Dropdown'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "header": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
                 }
               }
             }
@@ -82,8 +68,8 @@
                 "Version": 2,
                 "From": [
                   {
-                    "Name": "t",
-                    "Entity": "Time Intel",
+                    "Name": "m",
+                    "Entity": "Metric",
                     "Type": 0
                   }
                 ],
@@ -96,7 +82,7 @@
                             "Column": {
                               "Expression": {
                                 "SourceRef": {
-                                  "Source": "t"
+                                  "Source": "m"
                                 }
                               },
                               "Property": "Group"
@@ -107,7 +93,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'NONE'"
+                                "Value": "'PL_OI'"
                               }
                             }
                           ]
