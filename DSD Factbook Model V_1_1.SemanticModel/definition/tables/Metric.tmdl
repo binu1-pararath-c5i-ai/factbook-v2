@@ -6,6 +6,49 @@ table Metric
 
 		calculationItem NONE = SELECTEDMEASURE()
 
+		calculationItem CMA_COMP_ACC =
+				
+				IF(SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
+				    CALCULATE(
+				        AVERAGEX(VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]), SELECTEDMEASURE()),
+				        V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] = -1
+				    ),
+				    CALCULATE(
+				        AVERAGEX(VALUES(V_Fact_FB_CMAComplianceSummary[Monthnumber]), SELECTEDMEASURE()),
+				        V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] > 0
+				    )
+				)
+
+		calculationItem CMA_COMP_SKU = ```
+				
+				VAR _SelectedPeriod = [IM_Selected_Period]
+				VAR Avg_CMA = CALCULATE(
+						AVERAGEX(VALUES(V_Fact_FB_CMAComplianceSummary[Period]), SELECTEDMEASURE()
+					),
+					V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
+				)
+				VAR _SelectedKPI = 
+				SWITCH([PeriodLabel],
+					"W", CALCULATE(AVERAGEX(
+				        VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]), SELECTEDMEASURE()),
+						FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod)
+				    ),
+					"M", CALCULATE(AVERAGEX(
+				        VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]), SELECTEDMEASURE()),
+						FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[FirstDayOfMonth] = _SelectedPeriod),
+						V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
+					),
+					"Q", CALCULATE(Avg_CMA,
+						FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[FirstDayOfQuarter] = _SelectedPeriod)
+					),
+					"Y", CALCULATE(Avg_CMA,
+						FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[FirstDayOfYear] = DATE(YEAR(_SelectedPeriod),
+								MONTH(_SelectedPeriod), DAY(_SelectedPeriod)))
+					)
+				)
+				RETURN _SelectedKPI
+				```
+
 		calculationItem PL_REV = CALCULATE(SELECTEDMEASURE(), V_Dim_FB_Opex[OpexLine] IN {"Net Sales"})
 
 		calculationItem PL_GP = CALCULATE(SELECTEDMEASURE(), V_Dim_FB_PlHier[PlHier] IN {"Gross Profit"})

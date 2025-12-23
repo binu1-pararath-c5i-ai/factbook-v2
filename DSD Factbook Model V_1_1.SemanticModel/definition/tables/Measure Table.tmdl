@@ -7157,38 +7157,19 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 1Y = ```
+	measure 1Y =
 			
 			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			var _month = VALUES(Operation_Cal_Day[MonthNumber])
-			var _currentmonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			
 			var _num = [Volume_TL]
-			
-			VAR _D2 = 
-			IF(
-			    _currentmonth in _month,
-				CALCULATE(
-					[Volume_TL],
-					ALL(Operation_Cal_Day),
-					Operation_Cal_Day[Year] = _yr - 1,
-					Operation_Cal_Day[MonthNumber] = _currentmonth,
-					V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-				),
-			0)
-			
-			VAR _D3 = 
-			CALCULATE(
-			    [Volume_TL],
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]),
-			    Operation_Cal_Day[MonthNumber]<_currentmonth,
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly"
+			VAR _D2 =
+			CALCULATE([Volume_TL],
+			    REMOVEFILTERS(Operation_Cal_Day), Operation_Cal_Day[Year] = _yr - 1,
+			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
 			)
-			
+			VAR _D3 =
+			CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
 			var _den = _D2 + _D3
-			
-			RETURN MAX(-10, MIN(DIVIDE((_num - _den), _den), 10))
-			```
+			RETURN MAX(-10, MIN(DIVIDE(_num - _den, _den), 10))
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Topline
 		lineageTag: 645cc21b-ead0-4cb9-970f-a220655c6389
@@ -7262,35 +7243,18 @@ table 'Measure Table'
 	measure 2Y = ```
 			
 			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			 var _month = VALUES(Operation_Cal_Day[MonthNumber])
-			 var _currentmonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			
+			var _month = VALUES(Operation_Cal_Day[FirstDayOfMonth])
+			var _currentmonth = MAX('V_Dim_FB_Ref'[CM])
 			var _num = [Revenue_TL]
-			
-			VAR _D2 = 
-			IF(
-			    _currentmonth in _month,
-			CALCULATE(
-			    [Revenue_TL],
-			    ALL(Operation_Cal_Day),
+			VAR _D2 =
+			CALCULATE([Revenue_TL], REMOVEFILTERS(Operation_Cal_Day), 
 			    Operation_Cal_Day[Year] = _yr - 1,
-			    Operation_Cal_Day[MonthNumber] = _currentmonth,
 			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-			),
-			0)
-			
-			VAR _D3 = 
-			CALCULATE(
-			    [Revenue_TL],
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]),
-			    Operation_Cal_Day[MonthNumber]<_currentmonth,
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly"
 			)
-			
+			VAR _D3 =
+			CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
 			var _den = _D2 + _D3
-			
-			RETURN 
-			MAX(-10, MIN(DIVIDE((_num - _den), _den), 10))
+			RETURN MAX(-10, MIN(DIVIDE(_num - _den, _den), 10))
 			```
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Topline
@@ -7305,51 +7269,35 @@ table 'Measure Table'
 	measure 3Y = ```
 			
 			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			var _month = VALUES(Operation_Cal_Day[MonthNumber])
-			var _currentmonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			 
+			var _month = VALUES(Operation_Cal_Day[FirstDayOfMonth])
+			var _currentmonth = MAX('V_Dim_FB_Ref'[CM])
+			
 			var _n1 =
-			IF( _currentmonth in _month,
-			CALCULATE(
-			    [Revenue_TL],
+			CALCULATE([Revenue_TL],
+			    REMOVEFILTERS(Operation_Cal_Day),
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]),
-			    Operation_Cal_Day[MonthNumber] = MONTH(MAX('V_Dim_FB_Ref'[CM])),
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"),0)
+			    Operation_Cal_Day[Year] = _yr - 1,
+			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
+			)
 			   
 			var _n2 =
-			CALCULATE(
-			    [Revenue_TL],
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]),
-			    Operation_Cal_Day[MonthNumber] < MONTH(MAX('V_Dim_FB_Ref'[CM])),
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
+			CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
 			 
-			var _num = _n1+_n2
+			var _num = _n1 + _n2
 			 
 			VAR _D2 =
-			IF(_currentmonth in _month,
 			CALCULATE(
 			    [Volume_TL],
-			    // SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]),
-			    ALL(Operation_Cal_Day[Year]),
-			    ALL(Operation_Cal_Day[MonthName]),
-			        ALL(Operation_Cal_Day[Quarter]),
-			    Operation_Cal_Day[Year] = _yr-1,
-			    Operation_Cal_Day[MonthNumber] = _currentmonth,
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-			), 0)
-			VAR _D3 =
-			CALCULATE(
-			    [Volume_TL],
-			    ALL(Operation_Cal_Day[L1]),
-			    ALL(Operation_Cal_Day[L2]),
+			    REMOVEFILTERS(Operation_Cal_Day),
 			    Operation_Cal_Day[Year] = _yr - 1,
-			    Operation_Cal_Day[MonthNumber] < _currentmonth,
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly"
+			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
 			)
+			VAR _D3 =
+			CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
 			var _den = _D2 + _D3
+			
 			var _PY = _num / _den
-			RETURN
-			MAX(-10, MIN(DIVIDE([Rate_per_Case_TL] - _PY, _PY), 10))
+			RETURN MAX(-10, MIN(DIVIDE([Rate_per_Case_TL] - _PY, _PY), 10))
 			```
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Topline
@@ -14670,103 +14618,27 @@ table 'Measure Table'
 		displayFolder: CMA_Account
 		lineageTag: 70c86a0b-3c60-4eee-963d-4fa7a059fad3
 
-	measure CSD_Account_CMA_Compliance =
-			
-			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-			            [CSD_Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] = -1),
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[Monthnumber]),
-			            [CSD_Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] > 0))
+	measure CSD_Account_CMA_Compliance = CALCULATE([CSD_Account_CMA_Comp], Metric[Group] = "CMA_COMP_ACC")
 		formatString: 0%;-0%;0%
 		displayFolder: CMA_Account
 		lineageTag: 9816ab5d-e7b2-4c35-8f71-9526cf1ac67b
 
-	measure Sports_Account_CMA_Compliance =
-			
-			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-			            [Sports_Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] = -1),
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[Monthnumber]),
-			            [Sports_Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] > 0))
+	measure Sports_Account_CMA_Compliance = CALCULATE([Sports_Account_CMA_Comp], Metric[Group] = "CMA_COMP_ACC")
 		formatString: 0%;-0%;0%
 		displayFolder: CMA_Account
 		lineageTag: 6088f829-dbf2-423e-b9de-35f9d5aafbe3
 
-	measure Energy_Account_CMA_Compliance =
-			
-			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-			            [Energy_Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] = -1),
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[Monthnumber]),
-			            [Energy_Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] > 0))
+	measure Energy_Account_CMA_Compliance = CALCULATE([Energy_Account_CMA_Comp], Metric[Group] = "CMA_COMP_ACC")
 		formatString: 0%;-0%;0%
 		displayFolder: CMA_Account
 		lineageTag: 4200886e-0cbc-4e8c-ac50-0bde6c87f805
 
-	measure Water_Account_CMA_Compliance = ```
-			
-			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-			            [Water_Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] = -1),
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[Monthnumber]),
-			            [Water_Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] > 0))	
-			```
+	measure Water_Account_CMA_Compliance = CALCULATE([Water_Account_CMA_Comp], Metric[Group] = "CMA_COMP_ACC")
 		formatString: 0%;-0%;0%
 		displayFolder: CMA_Account
 		lineageTag: e50327a0-04dd-4ab7-bc84-a2654b1296ab
 
-	measure Tea&JC_Account_CMA_Compliance =
-			
-			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-			            [Tea&JC_Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] = -1),
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[Monthnumber]),
-			            [Tea&JC_Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] > 0))
+	measure Tea&JC_Account_CMA_Compliance = CALCULATE([Tea&JC_Account_CMA_Comp], Metric[Group] = "CMA_COMP_ACC")
 		formatString: 0%;-0%;0%
 		displayFolder: CMA_Account
 		lineageTag: a05de207-05a6-4970-bf33-1bea3ea648f3
@@ -14802,22 +14674,7 @@ table 'Measure Table'
 		displayFolder: CMA_Account
 		lineageTag: fce79485-779d-4267-b848-5220347e78a3
 
-	measure Account_CMA_Compliance =
-			
-			SWITCH(TRUE(),
-			SELECTEDVALUE(Operation_Cal_Day[Period Level Sort]) = 12.2,
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-			            [Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] = -1),
-			CALCULATE(
-			    AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[Monthnumber]),
-			            [Account_CMA_Comp]
-			                ),
-			    V_Fact_FB_CMAComplianceSummary[TimeGranularityNo] > 0))
+	measure Account_CMA_Compliance = CALCULATE([Account_CMA_Comp], Metric[Group] = "CMA_COMP_ACC")
 		formatString: 0%;-0%;0%
 		displayFolder: CMA_Account
 		lineageTag: c8293b04-2347-423b-ae7a-06f0e8db869f
@@ -16228,275 +16085,32 @@ table 'Measure Table'
 		displayFolder: CMA_SKU
 		lineageTag: e14a206c-be28-4e1d-b6ed-3d1603c2b1b5
 
-	measure CSD_SKU_CMA_Compliance = ```
-			
-			// This dax will calculate the YTD, QYD, MTD CMA based on the date slicer selected.
-			var _SelectedPeriod=[IM_Selected_Period]
-			Var Avg_CMA = CALCULATE(
-					AVERAGEX(VALUES(V_Fact_FB_CMAComplianceSummary[Period]), [CSD_SKU_CMA_Comp]
-				),
-				V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-			)
-			
-			Var _SelectedKPI = 
-			 SWITCH(
-				[PeriodLabel],
-				"W", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[CSD_SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod)
-				),
-				"M", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[CSD_SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day),
-					Operation_Cal_Day[FirstDayOfMonth] = _SelectedPeriod),
-					V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-				),
-				"Q", CALCULATE(Avg_CMA,
-					FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[FirstDayOfQuarter] = _SelectedPeriod)
-				),
-				"Y", CALCULATE(Avg_CMA,
-					FILTER(ALL(Operation_Cal_Day),
-						Operation_Cal_Day[FirstDayOfYear] = DATE(YEAR(_SelectedPeriod),
-							MONTH(_SelectedPeriod), DAY(_SelectedPeriod))
-					)
-				)
-			)
-			RETURN _SelectedKPI
-			```
+	measure CSD_SKU_CMA_Compliance = CALCULATE([CSD_SKU_CMA_Comp], Metric[Group] = "CMA_COMP_SKU")
 		formatString: 0%;-0%;0%
 		displayFolder: CMA_SKU
 		lineageTag: fe28181d-f87b-4af8-9ef6-14896289cb9c
 
-	measure Energy_SKU_CMA_Compliance = ```
-			
-			// This dax will calculate the YTD, QYD, MTD CMA based on the date slicer selected.
-			var _SelectedPeriod=[IM_Selected_Period]			
-			Var Avg_CMA =
-			CALCULATE(
-			        AVERAGEX(
-			            VALUES(V_Fact_FB_CMAComplianceSummary[Period]),
-			            [Energy_SKU_CMA_Comp]
-					),
-					V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-				)    
-			
-			Var _SelectedKPI = 
-			SWITCH(
-				[PeriodLabel],
-				"W", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[Energy_SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[WeekStarting_ISO] = _SelectedPeriod)
-				),
-				"M", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[Energy_SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day),
-					Operation_Cal_Day[FirstDayOfMonth]=_SelectedPeriod),
-					V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-				),
-				"Q", CALCULATE(Avg_CMA,
-					FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[FirstDayOfQuarter] = _SelectedPeriod)
-				),
-				"Y", CALCULATE(Avg_CMA,
-					FILTER(ALL(Operation_Cal_Day),
-						Operation_Cal_Day[FirstDayOfYear] = DATE(YEAR(_SelectedPeriod),
-							MONTH(_SelectedPeriod), DAY(_SelectedPeriod))
-					)
-				)
-			)
-			RETURN _SelectedKPI
-			```
+	measure Energy_SKU_CMA_Compliance = CALCULATE([Energy_SKU_CMA_Comp], Metric[Group] = "CMA_COMP_SKU")
 		formatString: 0%;-0%;0%
 		displayFolder: CMA_SKU
 		lineageTag: 4d5bd3ac-1cb5-4808-954e-36578113ddcd
 
-	measure Sports_SKU_CMA_Compliance = ```
-			
-			// This dax will calculate the YTD, QYD, MTD CMA based on the date slicer selected.
-			var _SelectedPeriod=[IM_Selected_Period]
-			Var Avg_CMA =
-			CALCULATE(
-				AVERAGEX(VALUES(V_Fact_FB_CMAComplianceSummary[Period]), [Sports_SKU_CMA_Comp]),
-				V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-			)
-			
-			Var _SelectedKPI = 
-			SWITCH(
-			    [PeriodLabel],
-				"W", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[Sports_SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[WeekStarting_ISO] = _SelectedPeriod)
-				),
-			
-				"M", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[Sports_SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[FirstDayOfMonth] = _SelectedPeriod),
-					V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-				),
-				"Q", CALCULATE(Avg_CMA,
-					FILTER(ALL(Operation_Cal_Day),
-						Operation_Cal_Day[FirstDayOfQuarter]=_SelectedPeriod)
-				),
-				"Y", CALCULATE(Avg_CMA,
-					FILTER(ALL(Operation_Cal_Day),
-						Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod),
-							MONTH(_SelectedPeriod), DAY(_SelectedPeriod))
-					)
-				)
-			)
-			RETURN _SelectedKPI
-			```
+	measure Sports_SKU_CMA_Compliance = CALCULATE([Sports_SKU_CMA_Comp], Metric[Group] = "CMA_COMP_SKU")
 		formatString: 0%;-0%;0%
 		displayFolder: CMA_SKU
 		lineageTag: 94324be6-29ae-4298-a84c-5ec6fee67661
 
-	measure Water_SKU_CMA_Compliance = ```
-			
-			// This dax will calculate the YTD, QYD, MTD CMA based on the date slicer selected.
-			var _SelectedPeriod=[IM_Selected_Period]
-			
-			Var Avg_CMA =
-			CALCULATE(
-				AVERAGEX(
-					VALUES(V_Fact_FB_CMAComplianceSummary[Period]),
-					[Water_SKU_CMA_Comp]
-				),
-				V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-			)    
-			
-			Var _SelectedKPI = 
-			SWITCH(
-			    [PeriodLabel],
-				"W", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[Water_SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day),
-					Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod)
-				),
-				"M", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[Water_SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day),
-					Operation_Cal_Day[FirstDayOfMonth] = _SelectedPeriod),
-					V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-				),
-									
-				"Q", CALCULATE(Avg_CMA, FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[FirstDayOfQuarter] = _SelectedPeriod)),
-				"Y", CALCULATE(Avg_CMA,
-					FILTER(ALL(Operation_Cal_Day),
-						Operation_Cal_Day[FirstDayOfYear]= DATE(YEAR(_SelectedPeriod),
-							MONTH(_SelectedPeriod), DAY(_SelectedPeriod))
-					)
-				)
-			)
-			RETURN _SelectedKPI
-			```
+	measure Water_SKU_CMA_Compliance = CALCULATE([Water_SKU_CMA_Comp], Metric[Group] = "CMA_COMP_SKU")
 		formatString: 0%;-0%;0%
 		displayFolder: CMA_SKU
 		lineageTag: 0897c7bc-1538-495f-b05f-dc16df8cbc23
 
-	measure TeanJC_SKU_CMA_Compliance = ```
-			
-			// This dax will calculate the YTD, QYD, MTD CMA based on the date slicer selected.
-			var _SelectedPeriod = [IM_Selected_Period]
-			Var Avg_CMA =
-			CALCULATE(
-				AVERAGEX(
-					VALUES(V_Fact_FB_CMAComplianceSummary[Period]),
-					[TeanJC_SKU_CMA_Comp]
-				),
-				V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-			)
-			
-			Var _SelectedKPI = 
-			SWITCH(
-			    [PeriodLabel],
-				"W", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[TeanJC_SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day),
-					Operation_Cal_Day[WeekStarting_ISO]=_SelectedPeriod)
-				),
-				"M", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[TeanJC_SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day),
-					Operation_Cal_Day[FirstDayOfMonth]=_SelectedPeriod),
-					V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-				),
-				"Q", CALCULATE(Avg_CMA,
-					FILTER(ALL(Operation_Cal_Day),
-					Operation_Cal_Day[FirstDayOfQuarter]=_SelectedPeriod)
-				),
-				"Y",  CALCULATE(Avg_CMA,
-					FILTER(ALL(Operation_Cal_Day),
-						Operation_Cal_Day[FirstDayOfYear] = DATE(YEAR(_SelectedPeriod),
-							MONTH(_SelectedPeriod), DAY(_SelectedPeriod))
-					)
-				)
-			)
-			RETURN _SelectedKPI
-			```
+	measure TeanJC_SKU_CMA_Compliance = CALCULATE([TeanJC_SKU_CMA_Comp], Metric[Group] = "CMA_COMP_SKU")
 		formatString: 0%;-0%;0%
 		displayFolder: CMA_SKU
 		lineageTag: 5d4c3330-ac6c-480b-bb7f-7e406c349c49
 
-	measure SKU_CMA_Compliance =
-			
-			// This dax will calculate the YTD, QYD, MTD CMA based on the date slicer selected.
-			var _SelectedPeriod = [IM_Selected_Period]
-			
-			Var Avg_CMA =
-			CALCULATE(
-				AVERAGEX(VALUES(V_Fact_FB_CMAComplianceSummary[Period]), [SKU_CMA_Comp]),
-				V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-			)
-			
-			Var _SelectedKPI =
-			 SWITCH(
-			    [PeriodLabel],
-				"W", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day),
-					Operation_Cal_Day[WeekStarting_ISO] = _SelectedPeriod)
-				),
-				"M", CALCULATE(AVERAGEX(
-						VALUES(V_Fact_FB_CMAComplianceSummary[TimeGranularity]),
-						[SKU_CMA_Comp]
-					),
-					FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[FirstDayOfMonth] = _SelectedPeriod),
-					V_Fact_FB_CMAComplianceSummary[TimeGranularity] IN {"Monthly", "Current Week"}
-				),
-				"Q", CALCULATE(Avg_CMA,
-					FILTER(ALL(Operation_Cal_Day),
-						Operation_Cal_Day[FirstDayOfQuarter] = _SelectedPeriod
-					)
-				),
-				"Y", CALCULATE(Avg_CMA,
-					FILTER(ALL(Operation_Cal_Day),
-						Operation_Cal_Day[FirstDayOfYear] = DATE(YEAR(_SelectedPeriod),
-							MONTH(_SelectedPeriod), DAY(_SelectedPeriod))
-					)
-				)
-			)
-			RETURN _SelectedKPI
+	measure SKU_CMA_Compliance = CALCULATE([SKU_CMA_Comp], Metric[Group] = "CMA_COMP_SKU")
 		formatString: #,##0%;(#,##0%)
 		displayFolder: CMA_SKU
 		lineageTag: 81629d51-bf70-4a41-a022-9bbacc3bc9ae
