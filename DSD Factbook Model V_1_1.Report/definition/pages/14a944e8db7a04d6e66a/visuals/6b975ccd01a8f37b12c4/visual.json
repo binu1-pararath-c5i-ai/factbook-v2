@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "b14b04f0abed53fa8600",
+  "name": "6b975ccd01a8f37b12c4",
   "position": {
-    "x": 1072.1776157535371,
-    "y": 150.54548714347612,
-    "z": 9000,
+    "x": 663.34943488918236,
+    "y": 35.836136466698,
+    "z": 2,
     "height": 31.822623298620965,
-    "width": 208.07099849098324
+    "width": 176.24837519236226
   },
   "visual": {
     "visualType": "slicer",
@@ -19,14 +19,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Metric Table"
+                      "Entity": "SKU_Category_Selector"
                     }
                   },
-                  "Property": "Metrics"
+                  "Property": "Selector"
                 }
               },
-              "queryRef": "Metric Table.Metrics",
-              "nativeQueryRef": "Metrics",
+              "queryRef": "SKU_Category_Selector.Selector",
+              "nativeQueryRef": "Selector",
               "active": true
             }
           ]
@@ -62,8 +62,8 @@
                 "Version": 2,
                 "From": [
                   {
-                    "Name": "m",
-                    "Entity": "Metric Table",
+                    "Name": "s",
+                    "Entity": "SKU_Category_Selector",
                     "Type": 0
                   }
                 ],
@@ -76,10 +76,10 @@
                             "Column": {
                               "Expression": {
                                 "SourceRef": {
-                                  "Source": "m"
+                                  "Source": "s"
                                 }
                               },
-                              "Property": "Metrics"
+                              "Property": "Selector"
                             }
                           }
                         ],
@@ -87,7 +87,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'YA'"
+                                "Value": "'SKU'"
                               }
                             }
                           ]
@@ -96,6 +96,19 @@
                     }
                   }
                 ]
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
               }
             }
           }
@@ -113,14 +126,37 @@
             }
           }
         }
-      ],
-      "header": [
+      ]
+    },
+    "visualContainerObjects": {
+      "padding": [
         {
           "properties": {
-            "show": {
+            "top": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }

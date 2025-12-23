@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "b14b04f0abed53fa8600",
+  "name": "8c6567b8399fab4734cf",
   "position": {
-    "x": 1072.1776157535371,
-    "y": 150.54548714347612,
-    "z": 9000,
-    "height": 31.822623298620965,
-    "width": 208.07099849098324
+    "x": 1027.513023905901,
+    "y": 80.29768927774046,
+    "z": 1000,
+    "height": 32.713873409449818,
+    "width": 252.78902180029405
   },
   "visual": {
     "visualType": "slicer",
@@ -19,14 +19,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Metric Table"
+                      "Entity": "Act/VolAdj Table"
                     }
                   },
-                  "Property": "Metrics"
+                  "Property": "Act/VolAdj"
                 }
               },
-              "queryRef": "Metric Table.Metrics",
-              "nativeQueryRef": "Metrics",
+              "queryRef": "Act/VolAdj Table.Act/VolAdj",
+              "nativeQueryRef": "Act/VolAdj",
               "active": true
             }
           ]
@@ -62,8 +62,8 @@
                 "Version": 2,
                 "From": [
                   {
-                    "Name": "m",
-                    "Entity": "Metric Table",
+                    "Name": "a",
+                    "Entity": "Act/VolAdj Table",
                     "Type": 0
                   }
                 ],
@@ -76,10 +76,10 @@
                             "Column": {
                               "Expression": {
                                 "SourceRef": {
-                                  "Source": "m"
+                                  "Source": "a"
                                 }
                               },
-                              "Property": "Metrics"
+                              "Property": "Act/VolAdj"
                             }
                           }
                         ],
@@ -87,7 +87,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'YA'"
+                                "Value": "'Actuals'"
                               }
                             }
                           ]
@@ -96,6 +96,19 @@
                     }
                   }
                 ]
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
               }
             }
           }
@@ -113,14 +126,37 @@
             }
           }
         }
-      ],
-      "header": [
+      ]
+    },
+    "visualContainerObjects": {
+      "padding": [
         {
           "properties": {
-            "show": {
+            "top": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }

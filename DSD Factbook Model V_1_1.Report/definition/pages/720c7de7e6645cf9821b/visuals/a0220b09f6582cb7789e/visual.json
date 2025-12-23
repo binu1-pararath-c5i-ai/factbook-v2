@@ -3,10 +3,10 @@
   "name": "a0220b09f6582cb7789e",
   "position": {
     "x": 0,
-    "y": 350.9529496059231,
+    "y": 350.93064202864349,
     "z": 0,
-    "height": 337.50179125865776,
-    "width": 432.88273226653928
+    "height": 337.54769381568673,
+    "width": 892.19654753044961
   },
   "visual": {
     "visualType": "tableEx",
@@ -69,6 +69,90 @@
               },
               "queryRef": "Measure Table.Volume_AOP_TL",
               "nativeQueryRef": "Volume_AOP_TL"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume_TL"
+                }
+              },
+              "queryRef": "Measure Table.Volume_TL",
+              "nativeQueryRef": "Volume_TL"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue_TL"
+                }
+              },
+              "queryRef": "Measure Table.Revenue_TL",
+              "nativeQueryRef": "Revenue_TL"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue_TL_Table"
+                }
+              },
+              "queryRef": "Measure Table.Revenue_TL_Table",
+              "nativeQueryRef": "Revenue_TL_Table"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "RevTL1"
+                }
+              },
+              "queryRef": "Measure Table.RevTL1",
+              "nativeQueryRef": "RevTL1"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "VTL1"
+                }
+              },
+              "queryRef": "Measure Table.VTL1",
+              "nativeQueryRef": "VTL1"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue_Bar_AOP_FCST_YA"
+                }
+              },
+              "queryRef": "Measure Table.Revenue_Bar_AOP_FCST_YA",
+              "nativeQueryRef": "Revenue_Bar_AOP_FCST_YA"
             }
           ]
         }
@@ -131,69 +215,65 @@
           "selector": {
             "metadata": "Operation_Cal_Day.FirstDayOfMonth"
           }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "48.34912985267248D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "68.30955557796773D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Revenue_TL_Table"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "62.88033194285228D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Revenue_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "99.13728099049649D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Revenue_Bar_AOP_FCST_YA"
+          }
         }
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "58c2e974b239970ed335",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Revenue_FCST_TL"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "2f04478ec0279f6805bc",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Volume_FCST_TL"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "bd0130e1d15a3e029983",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Volume_AOP_TL"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "c55aa8017cf06526beb1",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Operation_Cal_Day"
-              }
-            },
-            "Property": "FirstDayOfMonth"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

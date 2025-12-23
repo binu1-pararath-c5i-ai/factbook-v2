@@ -6646,28 +6646,23 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
-	measure Revenue_Bar_AOP_FCST_YA = ```
+	measure Revenue_Bar_AOP_FCST_YA =
 			
-			SWITCH(
-			    TRUE(),
-				SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", 
-				CALCULATE([Quarter dynamic revenue AOP bar],
-					FILTER(VALUES(Operation_Cal_Day[DayDate]), YEAR(Operation_Cal_Day[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[CM])))
-				),
-				SELECTEDVALUE('Metric Table'[Metrics]) = "FCST",
-				CALCULATE([Quarter FCST dynamic Revenue Bar],
-			    	FILTER(VALUES(Operation_Cal_Day[DayDate]), YEAR(Operation_Cal_Day[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[CM])))
-				),
-				SELECTEDVALUE('Metric Table'[Metrics]) = "YA", 
-				CALCULATE([Revenue_TL],
+			VAR _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
+			RETURN SWITCH(
+			    SELECTEDVALUE('Metric Table'[Metrics]),
+			    "AOP", CALCULATE([Quarter dynamic revenue AOP bar], 'Time Intel'[Group] = "BAR_YR"),
+				"FCST", CALCULATE([Quarter FCST dynamic Revenue Bar], 'Time Intel'[Group] = "BAR_YR"),
+				"YA", CALCULATE([Revenue_TL],
 					V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly",
-					FILTER((Operation_Cal_Day), YEAR(Operation_Cal_Day[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[CM])) - 1)
+			        REMOVEFILTERS(Operation_Cal_Day),
+					Operation_Cal_Day[Year] = _yr - 1
 				)
 			)
-			```
-		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
 		displayFolder: Topline
 		lineageTag: de85365d-e467-4719-9a8e-25fddebf602b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Rate_per_Case_Bar_Actual_TL = CALCULATE([Rate_per_Case_TL], 'Time Intel'[Group] = "TL_BAR_CD")
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
@@ -8453,13 +8448,13 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Inv_Qty_PY_CFR = CALCULATE(SUM(V_FACT_FB_OPS_CFR[CasesInvoiced]), FILTER(ALL(Operation_Cal_Day), Operation_Cal_Day[DayDate] in VALUES(Operation_Cal_Day[LYDayDate])))
+	measure Inv_Qty_PY_CFR = CALCULATE(SUM(V_FACT_FB_OPS_CFR[CasesInvoiced]), REMOVEFILTERS(Operation_Cal_Day), Operation_Cal_Day[DayDate] in VALUES(Operation_Cal_Day[LYDayDate]))
 		displayFolder: Ops
 		lineageTag: 69713633-ba86-4a56-9d30-61842331eb0a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Org_Ord_Qty_PY_CFR = CALCULATE(SUM(V_FACT_FB_OPS_CFR[CasesOrdered]), FILTER(ALL(Operation_Cal_Day),Operation_Cal_Day[DayDate] in VALUES(Operation_Cal_Day[LYDayDate])))
+	measure Org_Ord_Qty_PY_CFR = CALCULATE(SUM(V_FACT_FB_OPS_CFR[CasesOrdered]), REMOVEFILTERS(Operation_Cal_Day),Operation_Cal_Day[DayDate] in VALUES(Operation_Cal_Day[LYDayDate]))
 		displayFolder: Ops
 		lineageTag: 304b611b-dd80-4636-b04f-0bc7cb46a58d
 
@@ -8572,7 +8567,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_CPH_Actuals_PY_CPH = CALCULATE([Wh_CPH_Actuals_CPH], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Wh_CPH_Actuals_PY_CPH = CALCULATE([Wh_CPH_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 6be2e0fd-c151-40ae-a652-b889c403ab55
 
@@ -8634,9 +8629,11 @@ table 'Measure Table'
 		displayFolder: Ops
 		lineageTag: e352b1e3-0516-4fd7-9620-6b3319d19664
 
-	measure Delv_CPH_Actuals_PY_CPH = CALCULATE([Delv_CPH_Actuals_CPH],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Delv_CPH_Actuals_PY_CPH = CALCULATE([Delv_CPH_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 5263639d-913d-4c79-aa5c-752b91db1847
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Delv_CPH_Change_vs_YA_CPH = DIVIDE([Delv_CPH_Actuals_CPH]-[Delv_CPH_Actuals_PY_CPH], [Delv_CPH_Actuals_PY_CPH],0)
 		displayFolder: Ops
@@ -8686,9 +8683,11 @@ table 'Measure Table'
 		displayFolder: Ops
 		lineageTag: a11d0334-a5a5-413d-9c7f-cc7076c649ec
 
-	measure Mech_CPH_Actuals_PY_CPH = CALCULATE([Mech_CPH_Actuals_CPH], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Mech_CPH_Actuals_PY_CPH = CALCULATE([Mech_CPH_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 3171e961-1573-4396-9012-af9669732a93
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Mech_CPH_Attainment_to_AOP_CPH = DIVIDE([Mech_CPH_Actuals_CPH] - [Mech_CPH_AOP_CPH], [Mech_CPH_AOP_CPH], 0)
 		displayFolder: Ops
@@ -8716,7 +8715,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_CPC_Actuals_PY_CPH = CALCULATE([Wh_CPC_Actuals_CPH],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Wh_CPC_Actuals_PY_CPH = CALCULATE([Wh_CPC_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: a98824d1-2548-48d7-8fa6-bf516a9ba379
 
@@ -8778,9 +8777,11 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Delv_CPC_Actuals_PY_CPH = CALCULATE([Delv_CPC_Actuals_CPH],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Delv_CPC_Actuals_PY_CPH = CALCULATE([Delv_CPC_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 975a170a-81ad-403b-87f6-caf2671e6a61
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Delv_CPC_AOP_CPH = DIVIDE(SUM(V_Fact_FB_Ops_CPH_CPC[DelvAOPCost]), SUM(V_Fact_FB_Ops_CPH_CPC[DelvAOPCases]), 0)
 		displayFolder: Ops
@@ -8828,7 +8829,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Mech_CPC_Actuals_PY_CPH = CALCULATE([Mech_CPC_Actuals_CPH], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Mech_CPC_Actuals_PY_CPH = CALCULATE([Mech_CPC_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: a3bf3399-993c-457e-afa3-48a09a35c3e5
 
@@ -11706,19 +11707,22 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isCustom":true}
 
 	measure Delv_CPC_Adj_Vol_PY_CPH = ```
+			
 			var g5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[DelvCost]),
+			    REMOVEFILTERS(Operation_Cal_Day),
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 			var c4 = SUM(V_Fact_FB_Ops_CPH_CPC[DelvConvertedCases])
 			var c5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[DelvConvertedCases]),
+			    REMOVEFILTERS(Operation_Cal_Day),
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[DelvElasticity])
 			
 			var _val = DIVIDE(g5 * (((c4 - c5) / c5 * _e) + 1), c4, BLANK())
-			RETURN _val			
+			RETURN _val
 			```
 		displayFolder: Ops
 		lineageTag: f1293f45-ab14-4ba7-88a3-f2ce4e3f427b
@@ -11743,11 +11747,13 @@ table 'Measure Table'
 			var g5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[WhseCost]),
+			    REMOVEFILTERS(Operation_Cal_Day),
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 			var c4 = SUM(V_Fact_FB_Ops_CPH_CPC[WhseConvertedCases])
 			var c5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[WhseConvertedCases]),
+			    REMOVEFILTERS(Operation_Cal_Day),
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[WhseElasticity])
 			
@@ -11764,24 +11770,25 @@ table 'Measure Table'
 			var g5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[MechCost]),
+			    REMOVEFILTERS(Operation_Cal_Day),
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
-			    )
+			)
 			var c4 = SUM(V_Fact_FB_Ops_CPH_CPC[MechHandledCases])
 			var c5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[MechHandledCases]),
+			    REMOVEFILTERS(Operation_Cal_Day),
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
-			    )
+			)
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[MechElasticity])
 			
 			var _val = DIVIDE(
 			((g5)*((((c4-c5)/c5)*_e)+1)),c4,BLANK())
 			
-			RETURN CALCULATE(
-			    _val, 
-			    YEAR(Operation_Cal_Day[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[PM]))
-			    && MONTH(Operation_Cal_Day[DayDate]) <= MONTH(MAX('V_Dim_FB_Ref'[PM]))
-			)
+			RETURN CALCULATE(_val, 'Time Intel'[Group] = "CY_LE_CL") 
+			//     YEAR(Operation_Cal_Day[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[CL_M_END]))
+			//     && MONTH(Operation_Cal_Day[DayDate]) <= MONTH(MAX('V_Dim_FB_Ref'[CL_M_END]))
+			// )
 			```
 		displayFolder: Ops
 		lineageTag: b7fae2b3-37de-41f2-8fa0-0a05a6d3b6e4
@@ -11793,24 +11800,29 @@ table 'Measure Table'
 		lineageTag: 0f1668b4-5e83-4d61-8577-d0d85fd2a3a6
 
 	measure Delv_CPH_Adj_Vol_PY_CPH = ```
+			
 			var c22 = SUM(V_Fact_FB_Ops_CPH_CPC[DelvConvertedCases])
 			var d5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[DelvWorkedHours]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var f5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[DelvTempHours]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var c5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[DelvConvertedCases]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[DelvElasticity])
-			
 			var _val = 
-			c22/((d5+f5)*((((c22-c5)/c5)*_e)+1))
-			
+			c22 / ((d5 + f5) * ((((c22-c5) / c5) * _e) + 1))
 			return _val
 			```
 		displayFolder: Ops
@@ -11856,17 +11868,22 @@ table 'Measure Table'
 			var d5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[MechWorkedHours]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var f5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[MechTempHours]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var c5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[MechHandledCases]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[MechElasticity])
-			
 			var _val = DIVIDE(c22, (d5 + f5) * (((c22 - c5) / c5 * _e) + 1), BLANK())
 			return _val
 			```
@@ -14214,74 +14231,37 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 1T = ```
+	measure 1T =
 			
 			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			var _month = VALUES(Operation_Cal_Day[MonthNumber])
-			var _currentmonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			
 			var _num = [Volume_TL]
-			
-			VAR _D2 = 
-			IF(
-			    _currentmonth in _month,
-				CALCULATE(
-					[Volume_TL],
-					ALL(Operation_Cal_Day),
-					Operation_Cal_Day[Year] = _yr - 1,
-					Operation_Cal_Day[MonthNumber] = _currentmonth,
-					V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-				), 0
+			VAR _D2 =
+			CALCULATE([Volume_TL],
+			    REMOVEFILTERS(Operation_Cal_Day), Operation_Cal_Day[Year] = _yr - 1,
+			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
 			)
-			
-			VAR _D3 = 
-			CALCULATE(
-			    [Volume_TL],
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]),
-			    Operation_Cal_Day[MonthNumber] < _currentmonth,
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly"
-			)
-			
+			VAR _D3 =
+			CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
 			var _den = _D2 + _D3
-			
 			RETURN DIVIDE(_num - _den, _den)
-			```
 		displayFolder: Topline
 		lineageTag: ea8754d8-0f1d-45dd-97ba-cf492fe0b862
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 2T = ```
+	measure 2T =
 			
 			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			var _month = VALUES(Operation_Cal_Day[MonthNumber])
-			var _currentmonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			
-			var _num = [Revenue_TL]
-			
-			VAR _D2 = 
-			IF(
-			    _currentmonth in _month,
-				CALCULATE(
-					[Revenue_TL],
-					ALL(Operation_Cal_Day),
-					Operation_Cal_Day[Year] = _yr-1,
-					Operation_Cal_Day[MonthNumber] = _currentmonth,
-					V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-				), 0
+			var _num = [Volume_TL]
+			VAR _D2 =
+			CALCULATE([Volume_TL],
+			    REMOVEFILTERS(Operation_Cal_Day), Operation_Cal_Day[Year] = _yr - 1,
+			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
 			)
-			
-			VAR _D3 = 
-			CALCULATE(
-			    [Revenue_TL],
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]),
-			    Operation_Cal_Day[MonthNumber] < _currentmonth,
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly"
-			)
+			VAR _D3 =
+			CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
 			var _den = _D2+_D3
-			
 			RETURN DIVIDE(_num - _den, _den)
-			```
 		displayFolder: Topline
 		lineageTag: 016fca24-a492-4a5d-8d56-c3d9094b01fc
 

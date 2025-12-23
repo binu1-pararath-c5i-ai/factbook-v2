@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "aac51bd30faf94b05612",
+  "name": "aea43ecdfb09f1828371",
   "position": {
-    "x": 907.34177215189879,
-    "y": 158.96823501313591,
-    "z": 7,
-    "height": 228.66969190351088,
-    "width": 150.40840697396703
+    "x": 892.19654753044961,
+    "y": 153.16040732606052,
+    "z": 4000,
+    "height": 37.174856147102062,
+    "width": 388.10549817574554
   },
   "visual": {
     "visualType": "slicer",
@@ -19,14 +19,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "CMA_Category_Selector"
+                      "Entity": "Whse/Delv/Mech Table"
                     }
                   },
-                  "Property": "CMA_SKU_Category"
+                  "Property": "Whse/Delv/Mech"
                 }
               },
-              "queryRef": "CMA_Category_Selector.CMA_SKU_Category",
-              "nativeQueryRef": "CMA_SKU_Category",
+              "queryRef": "Whse/Delv/Mech Table.Whse/Delv/Mech",
+              "nativeQueryRef": "Whse/Delv/Mech",
               "active": true
             }
           ]
@@ -50,13 +50,20 @@
       "general": [
         {
           "properties": {
+            "orientation": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
             "filter": {
               "filter": {
                 "Version": 2,
                 "From": [
                   {
-                    "Name": "c",
-                    "Entity": "CMA_Category_Selector",
+                    "Name": "w",
+                    "Entity": "Whse/Delv/Mech Table",
                     "Type": 0
                   }
                 ],
@@ -69,10 +76,10 @@
                             "Column": {
                               "Expression": {
                                 "SourceRef": {
-                                  "Source": "c"
+                                  "Source": "w"
                                 }
                               },
-                              "Property": "CMA_SKU_Category"
+                              "Property": "Whse/Delv/Mech"
                             }
                           }
                         ],
@@ -80,7 +87,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Total CMA'"
+                                "Value": "'Merchandising'"
                               }
                             }
                           ]
@@ -89,6 +96,19 @@
                     }
                   }
                 ]
+              }
+            }
+          }
+        }
+      ],
+      "selection": [
+        {
+          "properties": {
+            "strictSingleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
               }
             }
           }
