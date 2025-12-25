@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "aea43ecdfb09f1828371",
+  "name": "08242898ea5fa32727bd",
   "position": {
-    "x": 892.19654753044961,
-    "y": 153.16040732606052,
-    "z": 4000,
-    "height": 37.174856147102062,
-    "width": 388.10549817574554
+    "x": 978.44221379172632,
+    "y": 646.8424969595759,
+    "z": 4002,
+    "height": 69.88872955655188,
+    "width": 138.29046486721967
   },
   "visual": {
     "visualType": "slicer",
@@ -19,14 +19,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Whse/Delv/Mech Table"
+                      "Entity": "Act/VolAdj Table"
                     }
                   },
-                  "Property": "Whse/Delv/Mech"
+                  "Property": "Act/VolAdj"
                 }
               },
-              "queryRef": "Whse/Delv/Mech Table.Whse/Delv/Mech",
-              "nativeQueryRef": "Whse/Delv/Mech",
+              "queryRef": "Act/VolAdj Table.Act/VolAdj",
+              "nativeQueryRef": "Act/VolAdj",
               "active": true
             }
           ]
@@ -53,7 +53,7 @@
             "orientation": {
               "expr": {
                 "Literal": {
-                  "Value": "1D"
+                  "Value": "0D"
                 }
               }
             },
@@ -62,8 +62,8 @@
                 "Version": 2,
                 "From": [
                   {
-                    "Name": "w",
-                    "Entity": "Whse/Delv/Mech Table",
+                    "Name": "a",
+                    "Entity": "Act/VolAdj Table",
                     "Type": 0
                   }
                 ],
@@ -76,10 +76,10 @@
                             "Column": {
                               "Expression": {
                                 "SourceRef": {
-                                  "Source": "w"
+                                  "Source": "a"
                                 }
                               },
-                              "Property": "Whse/Delv/Mech"
+                              "Property": "Act/VolAdj"
                             }
                           }
                         ],
@@ -87,7 +87,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Delivery'"
+                                "Value": "'Actuals'"
                               }
                             }
                           ]
@@ -101,6 +101,19 @@
           }
         }
       ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
       "selection": [
         {
           "properties": {
@@ -108,6 +121,42 @@
               "expr": {
                 "Literal": {
                   "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }

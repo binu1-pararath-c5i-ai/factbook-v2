@@ -1,13 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "48477c131b311e4dda11",
+  "name": "fc9f400398ea1f2163b3",
   "position": {
     "x": 0,
-    "y": 568.03180192771958,
-    "z": 4001,
-    "height": 135.31647637545151,
-    "width": 373.23555571690474,
-    "tabOrder": 4001
+    "y": 0,
+    "z": 6001,
+    "height": 284.01590096385979,
+    "width": 331.59971683215042
   },
   "visual": {
     "visualType": "tableEx",
@@ -20,28 +19,28 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "V_Dim_FB_CalDay"
+                      "Entity": "Operation_Cal_Day"
                     }
                   },
                   "Property": "DayDate"
                 }
               },
-              "queryRef": "V_Dim_FB_CalDay.DayDate",
+              "queryRef": "Operation_Cal_Day.DayDate",
               "nativeQueryRef": "DayDate"
             },
             {
               "field": {
-                "Measure": {
+                "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Measure Table"
+                      "Entity": "V_Fact_FB_ToplineActuals_Summary"
                     }
                   },
-                  "Property": "Quarter FCST dynamic Revenue"
+                  "Property": "TimeGranularity"
                 }
               },
-              "queryRef": "Measure Table.Quarter FCST dynamic Revenue",
-              "nativeQueryRef": "Quarter FCST dynamic Revenue"
+              "queryRef": "V_Fact_FB_ToplineActuals_Summary.TimeGranularity",
+              "nativeQueryRef": "TimeGranularity"
             },
             {
               "field": {
@@ -51,11 +50,25 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Quarter FCST dynamic Volume"
+                  "Property": "Revenue_TL_Table"
                 }
               },
-              "queryRef": "Measure Table.Quarter FCST dynamic Volume",
-              "nativeQueryRef": "Quarter FCST dynamic Volume"
+              "queryRef": "Measure Table.Revenue_TL_Table",
+              "nativeQueryRef": "Revenue_TL_Table"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume_TL"
+                }
+              },
+              "queryRef": "Measure Table.Volume_TL",
+              "nativeQueryRef": "Volume_TL"
             }
           ]
         }
@@ -67,13 +80,13 @@
               "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "V_Dim_FB_CalDay"
+                    "Entity": "Operation_Cal_Day"
                   }
                 },
                 "Property": "DayDate"
               }
             },
-            "direction": "Descending"
+            "direction": "Ascending"
           }
         ]
       }
@@ -85,13 +98,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "93.95547600266092D"
+                  "Value": "74.36416681605701D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "V_Dim_FB_CalDay.DayDate"
+            "metadata": "Measure Table.Revenue_TL_Table"
           }
         },
         {
@@ -99,13 +112,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "105.78037639109823D"
+                  "Value": "51.695086653693146D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "Measure Table.Quarter FCST dynamic Revenue"
+            "metadata": "Measure Table.Volume_TL"
           }
         },
         {
@@ -113,37 +126,17 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "91.85837977165055D"
+                  "Value": "71.28612873171063D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "Measure Table.Quarter FCST dynamic Volume"
+            "metadata": "V_Fact_FB_ToplineActuals_Summary.TimeGranularity"
           }
         }
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "18337efe42ba068d6f1b",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "V_Dim_FB_CalDay"
-              }
-            },
-            "Property": "GE_CL_Y0"
-          }
-        },
-        "type": "Categorical",
-        "howCreated": "User",
-        "isHiddenInViewMode": true
-      }
-    ]
   }
 }

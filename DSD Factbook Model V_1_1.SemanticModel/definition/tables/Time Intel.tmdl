@@ -235,7 +235,7 @@ table 'Time Intel'
 
 		calculationItem PRIOR_Y =
 				
-				VAR _im = EDATE([IM_Date Validation_Year], -1)
+				VAR _im = EDATE([IM_Date Validation_Year], -12)
 				RETURN CALCULATE(SELECTEDMEASURE(), REMOVEFILTERS(Operation_Cal_Day), Operation_Cal_Day[FirstDayOfYear] = _im)
 
 		calculationItem PRIOR_ANY =

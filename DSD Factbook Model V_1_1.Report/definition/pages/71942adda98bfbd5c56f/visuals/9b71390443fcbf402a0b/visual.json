@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "9b71390443fcbf402a0b",
   "position": {
-    "x": 0,
-    "y": 75.836706540088215,
+    "x": 28.252890671797569,
+    "y": 86.2456662612768,
     "z": 0,
-    "height": 202.23121744023524,
-    "width": 880.30059356337688,
+    "height": 318.21676861919366,
+    "width": 1252.0491550343975,
     "tabOrder": 0
   },
   "visual": {
@@ -28,6 +28,20 @@
               },
               "queryRef": "V_Dim_FB_CalDay.DayDate",
               "nativeQueryRef": "DayDate"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_FB_Financial_Management"
+                    }
+                  },
+                  "Property": "IsForecast"
+                }
+              },
+              "queryRef": "V_FB_Financial_Management.IsForecast",
+              "nativeQueryRef": "IsForecast"
             },
             {
               "field": {
@@ -107,11 +121,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Inv_Qty_PY_CFR"
+                  "Property": "GP_Bar_FCST_new"
                 }
               },
-              "queryRef": "Measure Table.Inv_Qty_PY_CFR",
-              "nativeQueryRef": "Inv_Qty_PY_CFR"
+              "queryRef": "Measure Table.GP_Bar_FCST_new",
+              "nativeQueryRef": "GP_Bar_FCST_new"
             },
             {
               "field": {
@@ -121,11 +135,67 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Quarter FCST dynamic Revenue"
+                  "Property": "Volume_Bar_FCST_new"
                 }
               },
-              "queryRef": "Measure Table.Quarter FCST dynamic Revenue",
-              "nativeQueryRef": "Quarter FCST dynamic Revenue"
+              "queryRef": "Measure Table.Volume_Bar_FCST_new",
+              "nativeQueryRef": "Volume_Bar_FCST_new"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume FCST Act"
+                }
+              },
+              "queryRef": "Measure Table.Volume FCST Act",
+              "nativeQueryRef": "Volume FCST Act"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "GP_Bar_Selected"
+                }
+              },
+              "queryRef": "Measure Table.GP_Bar_Selected",
+              "nativeQueryRef": "GP_Bar_Selected"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "GP_Bar_Selected graph"
+                }
+              },
+              "queryRef": "Measure Table.GP_Bar_Selected graph",
+              "nativeQueryRef": "GP_Bar_Selected graph"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "OI_Bar_Selected graph"
+                }
+              },
+              "queryRef": "Measure Table.OI_Bar_Selected graph",
+              "nativeQueryRef": "OI_Bar_Selected graph"
             }
           ]
         }
@@ -169,13 +239,139 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "105.78037639109823D"
+                  "Value": "94.80520532098454D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "Measure Table.Quarter FCST dynamic Revenue"
+            "metadata": "Measure Table.Base_PL_Bar_PY"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "91.09627769667098D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Base PL FCST 39"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "90.46820967863542D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_Bar_FCST_new"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "68.66183300605957D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume FCST Act"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "82.58214693124995D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.GP_Bar_Selected graph"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "59.44792463657242D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.GP_Bar_Selected"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "73.93646986564073D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.OI_Bar_Selected graph"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "35.81281992457266D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "V_FB_Financial_Management.IsForecast"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "93.12997801668317D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Base PL FCST Act"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "96.85355119113491D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.GP_Bar_FCST_new"
           }
         }
       ]

@@ -7668,7 +7668,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Obsolescence_Rate_Per_Case_Act_PY_Ops = CALCULATE([Obsolescence_Rate_per_Case_Act_Ops], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Obsolescence_Rate_Per_Case_Act_PY_Ops = CALCULATE([Obsolescence_Rate_per_Case_Act_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 11f383de-b354-471a-b221-8c695c248fce
 
@@ -7716,7 +7716,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Shrinklescence_Rate_Per_Case_Act_PY_Ops = CALCULATE([Shrinklescence_Rate_per_Case_Act_Ops], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Shrinklescence_Rate_Per_Case_Act_PY_Ops = CALCULATE([Shrinklescence_Rate_per_Case_Act_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: a624f631-aca2-4abd-9b49-4a2b3d2a7c87
 
@@ -7764,7 +7764,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure TradeBreaklescence_Rate_Per_Case_Act_PY_Ops = CALCULATE([TradeBreaklescence_Rate_per_Case_Act_Ops], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure TradeBreaklescence_Rate_Per_Case_Act_PY_Ops = CALCULATE([TradeBreaklescence_Rate_per_Case_Act_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 40b65ce4-5bc9-4012-b5d1-e9940e483a6a
 
@@ -7810,7 +7810,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure WhseBreaklescence_Rate_Per_Case_Act_PY_Ops = CALCULATE([WhseBreaklescence_Rate_per_Case_Act_Ops], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure WhseBreaklescence_Rate_Per_Case_Act_PY_Ops = CALCULATE([WhseBreaklescence_Rate_per_Case_Act_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: fbd553df-9307-499a-a073-db1b9c76b096
 
@@ -8073,344 +8073,34 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table =
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month
-			
-			VAR MaxClosedMonth =
-			    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))
-			
-			VAR CurrentYear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR IsCurrentYear = VisualYear = CurrentYear
-			
-			VAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR MaxClosedQuarter =
-			    CALCULATE(
-			        MAX(Operation_Cal_Day[Quarter]),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth,
-			        Operation_Cal_Day[Year] = CurrentYear
-			    )
-			
-			VAR IsClosedQuarter =
-			    VisualYear < CurrentYear ||
-			    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			VAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])
-			VAR BaseMeasure = [Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]
-			VAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)
-			
-			RETURN
-			    IF (
-			        MetricSelected = "FCST",
-			        IF (
-			            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,
-			            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),
-			            BLANK()
-			        ),
-			        BaseMeasure
-			    )
+	measure Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table = CALCULATE([Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Ops
 		lineageTag: a97eddce-2579-4cca-be3e-18c1c92f9d99
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table =
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month
-			
-			VAR MaxClosedMonth =
-			    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))
-			
-			VAR CurrentYear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR IsCurrentYear = VisualYear = CurrentYear
-			
-			VAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR MaxClosedQuarter =
-			    CALCULATE(
-			        MAX(Operation_Cal_Day[Quarter]),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth,
-			        Operation_Cal_Day[Year] = CurrentYear
-			    )
-			
-			VAR IsClosedQuarter =
-			    VisualYear < CurrentYear ||
-			    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			VAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])
-			VAR BaseMeasure = [TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]
-			VAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)
-			
-			RETURN
-			    IF (
-			        MetricSelected = "FCST",
-			        IF (
-			            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,
-			            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),
-			            BLANK()
-			        ),
-			        BaseMeasure
-			    )
+	measure TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table = CALCULATE([TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Ops
 		lineageTag: d1e6dd1b-0857-49b8-87d8-60c0c4be03eb
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table =
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month
-			
-			VAR MaxClosedMonth =
-			    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))
-			
-			VAR CurrentYear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR IsCurrentYear = VisualYear = CurrentYear
-			
-			VAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR MaxClosedQuarter =
-			    CALCULATE(
-			        MAX(Operation_Cal_Day[Quarter]),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth,
-			        Operation_Cal_Day[Year] = CurrentYear
-			    )
-			
-			VAR IsClosedQuarter =
-			    VisualYear < CurrentYear ||
-			    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			VAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])
-			VAR BaseMeasure = [WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final]
-			VAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)
-			
-			RETURN
-			    IF (
-			        MetricSelected = "FCST",
-			        IF (
-			            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,
-			            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),
-			            BLANK()
-			        ),
-			        BaseMeasure
-			    )
+	measure WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table = CALCULATE([WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Ops
 		lineageTag: e35edeee-e64c-4463-b02e-2a8173ae5e31
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table =
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month
-			
-			VAR MaxClosedMonth =
-			    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))
-			
-			VAR CurrentYear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR IsCurrentYear = VisualYear = CurrentYear
-			
-			VAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR MaxClosedQuarter =
-			    CALCULATE(
-			        MAX(Operation_Cal_Day[Quarter]),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth,
-			        Operation_Cal_Day[Year] = CurrentYear
-			    )
-			
-			VAR IsClosedQuarter =
-			    VisualYear < CurrentYear ||
-			    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			VAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])
-			VAR BaseMeasure = MAX(-10, MIN([Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], 10))
-			VAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)
-			
-			RETURN
-			    IF (
-			        MetricSelected = "FCST",
-			        IF (
-			            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,
-			            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),
-			            BLANK()
-			        ),
-			        BaseMeasure
-			    )
+	measure Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table = CALCULATE([Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
 		displayFolder: Ops
 		lineageTag: 1b272d56-4e3f-45b9-9325-6be845d19f42
 
 		formatStringDefinition = "#,##0%;(#,##0%)"
 
-	measure Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table =
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month
-			
-			VAR MaxClosedMonth =
-			    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))
-			
-			VAR CurrentYear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR IsCurrentYear = VisualYear = CurrentYear
-			
-			VAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR MaxClosedQuarter =
-			    CALCULATE(
-			        MAX(Operation_Cal_Day[Quarter]),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth,
-			        Operation_Cal_Day[Year] = CurrentYear
-			    )
-			
-			VAR IsClosedQuarter =
-			    VisualYear < CurrentYear ||
-			    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			VAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])
-			VAR BaseMeasure = MAX(-10, MIN([Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], 10))
-			VAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)
-			
-			RETURN
-			    IF (
-			        MetricSelected = "FCST",
-			        IF (
-			            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,
-			            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),
-			            BLANK()
-			        ),
-			        BaseMeasure
-			    )
+	measure Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table = CALCULATE([Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
 		displayFolder: Ops
 		lineageTag: ba788a00-5ed5-4ac3-938d-f2f880fbfad7
 
@@ -19883,12 +19573,9 @@ table 'Measure Table'
 			RETURN
 			SWITCH(
 			    TRUE(),
-			SelectedToggle = "Absolute" && SelectedScenario = "AOP", [OI_Bar_FCST_new],
-			SelectedToggle = "Absolute" && SelectedScenario = "FCST","",
-			SelectedToggle = "Absolute" && SelectedScenario = "YA", [OI_Bar_FCST_new],
-			SelectedToggle = "RPC" && SelectedScenario = "AOP", [OI_Bar_RPC FCST],
-			SelectedToggle = "RPC" && SelectedScenario = "FCST", "",
-			SelectedToggle = "RPC" && SelectedScenario = "YA", [OI_Bar_RPC FCST]
+			    SelectedScenario = "FCST", "",
+			    SelectedToggle = "RPC", [OI_Bar_RPC FCST],
+			    SelectedToggle = "Absolute", [OI_Bar_FCST_new]
 			)
 		lineageTag: 9c77b857-2bc0-48c5-bd37-0b08d9dbc9cf
 
@@ -20534,6 +20221,16 @@ table 'Measure Table'
 		lineageTag: d1fdbf0d-57f0-4213-b4b6-9f0e4bf8c331
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure %Sold_PP = CALCULATE([%Sold], 'Time Intel'[Group] = "PRIOR_ANY")
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Rev
+		lineageTag: b3ad739f-112c-4e6f-b11a-e28d2274a78b
+
+	measure %Built_PP = CALCULATE([%Built], 'Time Intel'[Group] = "PRIOR_ANY")
+		formatString: 0.00%;-0.00%;0.00%
+		displayFolder: Rev
+		lineageTag: c4917e27-19fa-4d17-84f5-d88da3021e83
 
 	column Column
 		formatString: 0
