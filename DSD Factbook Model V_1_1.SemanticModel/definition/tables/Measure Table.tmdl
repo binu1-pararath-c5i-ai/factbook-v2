@@ -1177,7 +1177,7 @@ table 'Measure Table'
 			)
 		lineageTag: 0cadca40-3463-467b-857e-2ed5f829a6e6
 
-		formatStringDefinition = CALCULATE([Revenue_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Revenue_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure Opex_Bar_Selected =
 			
@@ -1196,7 +1196,7 @@ table 'Measure Table'
 			)
 		lineageTag: c2816e44-6484-40e5-a546-d4fd34f3f167
 
-		formatStringDefinition = CALCULATE([Opex_Bar_Selected], Formatter[Group] = "NUM_NEG1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Opex_Bar_Selected], Formatter[Group] = "NUM_NEG1_ABS_RPC"), STRING)
 
 	measure OI_Bar_Selected =
 			
@@ -1215,7 +1215,7 @@ table 'Measure Table'
 			)
 		lineageTag: 21681a42-711f-4149-809f-c48c1f62a647
 
-		formatStringDefinition = CALCULATE([OI_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([OI_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure GP_Bar_Selected =
 			
@@ -1234,7 +1234,7 @@ table 'Measure Table'
 			)
 		lineageTag: ae6f4312-7f79-453a-af8f-b401ffa738be
 
-		formatStringDefinition = CALCULATE([], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([GP_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure Volume_Bar_Actual_Selected = CALCULATE([Volume_Bar_Act], 'Time Intel'[Group] = "PL_BAR_SEL")
 		formatString: 0.0
@@ -1243,22 +1243,22 @@ table 'Measure Table'
 	measure Revenue_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Revenue_Bar_Act], [Revenue_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
 		lineageTag: fca33011-7f33-4f17-99c8-c23b12184d7d
 
-		formatStringDefinition = CALCULATE([Revenue_Bar_Actual_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Revenue_Bar_Actual_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure GP_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [GP_Bar_Act], [GP_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
 		lineageTag: ee16f601-7f3b-4aca-8cdf-4940322fbb51
 
-		formatStringDefinition = CALCULATE([Revenue_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Revenue_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure Opex_Bar_Actual_Selected = ABS(CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Opex_Bar_Act], [Opex_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL"))
 		lineageTag: 6462e576-1689-48ec-9d5b-e4e63177a099
 
-		formatStringDefinition = CALCULATE([Opex_Bar_Actual_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Opex_Bar_Actual_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure OI_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [OI_Bar_Act], [OI_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
 		lineageTag: 47547e05-bfa9-41a2-88c8-04aedd9cc1bd
 
-		formatStringDefinition = CALCULATE([OI_Bar_Actual_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([OI_Bar_Actual_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure 'Scenario Label Bar' =
 			
@@ -2732,7 +2732,7 @@ table 'Measure Table'
 			```
 		lineageTag: e3396608-7374-4cc4-8bc9-ca7af9cf8431
 
-		formatStringDefinition = CALCULATE([Non Labor opex_KPI], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Non Labor opex_KPI], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure 'Colour Format Total Labor' =
 			
@@ -3307,7 +3307,7 @@ table 'Measure Table'
 		lineageTag: 3cd0b0be-eb5a-4cd4-bc55-6bb74fd22510
 
 	measure NSGT =
-
+			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute"),
 				"Absolute", FORMAT(ABS([SG&A NON Labor])/1000, "$#,##0"),
@@ -3501,7 +3501,7 @@ table 'Measure Table'
 			```
 		lineageTag: 93e18615-03fb-4520-93ce-b7a083fa3118
 
-		formatStringDefinition = CALCULATE([DSD Labor_KPI], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([DSD Labor_KPI], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure 'Colour Format DSD Labor' =
 			
@@ -3529,10 +3529,12 @@ table 'Measure Table'
 
 	measure 'Opex AO' = CALCULATE([Base PL Act], Metric[Group] = "PL_OPEX_AO")
 		lineageTag: bc34ab6f-1b84-4ea7-9cac-029442f33739
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Opex AO AOP' = CALCULATE([Base PL AOP], Metric[Group] = "PL_OPEX_AO")
 		lineageTag: e71b70e5-b188-45f7-90f9-aacb67cfea7a
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Opex AO PY' = CALCULATE([Base PL PY], Metric[Group] = "PL_OPEX_AO")
@@ -3689,7 +3691,7 @@ table 'Measure Table'
 			```
 		lineageTag: 96cf7529-36f8-48ef-b051-bba7b94f59d8
 
-		formatStringDefinition = CALCULATE([Opex AO_KPI], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Opex AO_KPI], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure 'Colour Format Opex AO' =
 			
@@ -3721,42 +3723,34 @@ table 'Measure Table'
 		displayFolder: Topline
 		lineageTag: c1661eec-896e-4761-bbf9-f86fe1414d42
 
-		formatStringDefinition = CALCULATE([Volume_TL], Formatter[Group] = "NUM_POS1")
+		formatStringDefinition = CONVERT(CALCULATE([Volume_TL], Formatter[Group] = "NUM_POS1"), STRING)
 
 	measure Revenue_TL = SUM(V_Fact_FB_ToplineActuals_Summary[RevenueDeadNet])
 		displayFolder: Topline
 		lineageTag: 476ec004-43e0-4cc5-8a36-749942f9100f
 
-		formatStringDefinition = CALCULATE(ABS([Revenue_TL]), Formatter[Group] = "NUM_POS1")
+		formatStringDefinition = CONVERT(CALCULATE([Revenue_TL], Formatter[Group] = "NUM_POS1"), STRING)
 
 	measure Rate_per_Case_TL = DIVIDE([Revenue_TL], [Volume_TL], 0)
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Topline
 		lineageTag: 8bc21bb9-e970-47de-97c2-f51e5b4ff341
 
-	measure Volume_AOP_TL = ```
+	measure Volume_AOP_TL =
 			
-			IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
+			IF([IsFiltered_NC_to_SG],
 			    "",
 			    CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[SalesCasesBudget]), FILTER(
 			        V_Fact_FB_Topline_Budget_All, V_Fact_FB_Topline_Budget_All[ISFC] = False
 			    ))
 			)
-			
-			```
 		formatString: 0
 		displayFolder: Topline
 		lineageTag: d6b1a1bb-d29f-4e8e-9bee-dd4109aed7e2
 
 	measure Revenue_AOP_TL =
 			
-			IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
+			IF([IsFiltered_NC_to_SG],
 			    "",
 			    CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetBudget]), FILTER(
 			        V_Fact_FB_Topline_Budget_All, V_Fact_FB_Topline_Budget_All[ISFC] = False
@@ -3767,26 +3761,13 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Rate_Per_Case_AOP_TL = ```
+	measure Rate_Per_Case_AOP_TL =
 			
-			VAR IsFilteredRetailer = 
-			    ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName]) 
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName])
-			
-			RETURN
 			IF (
-			    IsFilteredRetailer,
+			    [IsFiltered_NC_to_SG],
 			    BLANK(),
 			    DIVIDE([Quarter dynamic revenue AOP bar], [Quarter dynamic volume AOP bar], 0)
 			)
-			
-			/*VAR Revenue = VALUE([Quarter dynamic revenue AOP bar])
-			VAR Volume = VALUE([Quarter dynamic volume AOP bar])
-			RETURN DIVIDE(Revenue, Volume, 0)*/
-			//DIVIDE([Quarter dynamic revenue AOP bar], [Quarter dynamic volume AOP bar],0) 
-			```
 		displayFolder: Topline
 		lineageTag: a7df5e82-ffc2-4a93-a6fa-e2f1e67900f2
 
@@ -3794,13 +3775,8 @@ table 'Measure Table'
 
 	measure Volume_FCST_TL =
 			
-			IF (ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-			    "",
-			    CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[SalesCasesFC]), V_Fact_FB_Topline_Budget_All[ISFC] = TRUE())
-			)
+			IF ([IsFiltered_NC_to_SG], "", CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[SalesCasesFC]),
+				V_Fact_FB_Topline_Budget_All[ISFC] = TRUE()))
 		displayFolder: Topline
 		lineageTag: 302ab3ab-1d6e-402e-94bd-35aac8913f5a
 
@@ -3808,14 +3784,8 @@ table 'Measure Table'
 
 	measure Revenue_FCST_TL =
 			
-			IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-			|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName]) || ISFILTERED(V_Dim_FB_CustChainHeir[BranchName]) || ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),"",
-			CALCULATE
-			(
-			      Sum(V_Fact_FB_Topline_Budget_All[RevenueDeadNetFC]),
-			    Filter(
-			        V_Fact_FB_Topline_Budget_All, V_Fact_FB_Topline_Budget_All[ISFC] = True
-			    )
+			IF([IsFiltered_NC_to_SG], "", CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetFC]),
+			    FILTER(V_Fact_FB_Topline_Budget_All, V_Fact_FB_Topline_Budget_All[ISFC] = TRUE())
 			))
 		displayFolder: Topline
 		lineageTag: 7fa9e8dd-43dc-4134-adb8-95789fc754e9
@@ -4108,11 +4078,11 @@ table 'Measure Table'
 		displayFolder: Topline
 		lineageTag: 2580d8ba-a950-4f50-a832-3790d03f08d4
 
-	measure Rate_Per_Case_Bar_AOP_FCST_YA = ```
+	measure Rate_Per_Case_Bar_AOP_FCST_YA =
 			
 			SWITCH(
-				SELECTEDVALUE('Metric Table'[Metrics])
-			    AOP", CALCULATE([Rate_Per_Case_AOP_TL],
+				SELECTEDVALUE('Metric Table'[Metrics]),
+			    "AOP", CALCULATE([Rate_Per_Case_AOP_TL],
 					FILTER(
 						VALUES(Operation_Cal_Day[DayDate]),
 						YEAR(Operation_Cal_Day[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[CM]))
@@ -4132,8 +4102,6 @@ table 'Measure Table'
 					)
 				)
 			)
-			
-			```
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Topline
 		lineageTag: 47f3e9bb-bc46-48eb-ab25-f8d3c58b2e34
@@ -4222,7 +4190,7 @@ table 'Measure Table'
 			)
 		lineageTag: a6c7b315-c0e2-4a5c-809b-8087621b8086
 
-		formatStringDefinition = CALCULATE(ABS([Opex_Waterfall_Value]), Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Opex_Waterfall_Value], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure PnL_Selected_Measure_Act_CC =
 			
@@ -4376,14 +4344,13 @@ table 'Measure Table'
 			    )
 		lineageTag: 0ecd4dbf-d74d-46ef-b0eb-dec7dd133426
 
-	measure DSD_Labor_ChangevsYA = ```
+	measure DSD_Labor_ChangevsYA =
 			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute"),
 				"Absolute" , [DSD Labor Varient PY%],
 				"RPC", [DSD Labor Varient RPC PY%]
 			)
-			```
 		formatString: (#,##0%);#,##0%
 		lineageTag: 074dee34-9e96-4251-a491-5b7189e69a16
 
@@ -4409,29 +4376,30 @@ table 'Measure Table'
 			```
 		formatString: (#,##0%);#,##0%
 		lineageTag: 1ac9853b-54e1-48ba-9265-0026da4dcdf6
+
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure DSD_Opex_AO_ChangevsYA = ```
+	measure DSD_Opex_AO_ChangevsYA =
 			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute"),
 				"Absolute" , [Opex AO Varient PY%],
 				"RPC", [Opex AO Varient RPC PY%]
 			)
-			```
 		formatString: (#,##0%);#,##0%
 		lineageTag: 322baa7a-e98c-4027-aed6-82a396923305
+
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure SG&A_PeopleCost_WF = ```
+	measure SG&A_PeopleCost_WF =
 			
 			ABS(SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute"),
 				"Absolute", [SG&A Labor],
 				"RPC", [SG&A Labor RPC]
 			))
-			```
 		lineageTag: 60fdb75d-8027-4607-89b2-01002997ac7f
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure T&W_People_Cost_WF =
@@ -4558,18 +4526,8 @@ table 'Measure Table'
 			
 			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-				"AOP", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"", [Quarter dynamic volume attainment aop]
-				),
-				"FCST", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"", [Quarter dynamic volume FCST Attainment BLANK logic]
-				),
+				"AOP", IF([IsFiltered_NC_to_SG], "", [Quarter dynamic volume attainment aop]),
+				"FCST", IF([IsFiltered_NC_to_SG], "", [Quarter dynamic volume FCST Attainment BLANK logic]),
 				"YA", " "
 			)
 		formatString: #,##0%;(#,##0%)
@@ -4586,18 +4544,8 @@ table 'Measure Table'
 			
 			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-				"AOP", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"", [Quarter dynamic Revenue attainment aop]
-				),
-				"FCST", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"", [Quarter dynamic revenue FCST Attainment BLANK logic]
-				),
+				"AOP", IF([IsFiltered_NC_to_SG], "", [Quarter dynamic Revenue attainment aop]),
+				"FCST", IF([IsFiltered_NC_to_SG], "", [Quarter dynamic revenue FCST Attainment BLANK logic]),
 				"YA", ""
 			)
 		formatString: #,##0%;(#,##0%)
@@ -4614,18 +4562,8 @@ table 'Measure Table'
 			
 			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-				"AOP", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"", [Rate_Per_Case_Attainment_to_AOP_TL]
-				),
-				"FCST", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"", [Rate_Per_Case_Attainment_to_FCST_TL]
-				),
+				"AOP", IF([IsFiltered_NC_to_SG], "", [Rate_Per_Case_Attainment_to_AOP_TL]),
+				"FCST", IF([IsFiltered_NC_to_SG], "", [Rate_Per_Case_Attainment_to_FCST_TL]),
 				"YA", ""
 			)
 		formatString: #,##0%;(#,##0%)
@@ -5238,7 +5176,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Obsolescence_Abs_RPC_Selection_Ops =
-
+			
 			SWITCH(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 				"Absolute", [Obsolescence_Ops],
 				"RPC", [Obsolescence_Rate_per_Case_Act_Ops]
@@ -5250,7 +5188,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isDecimal":true}
 
 	measure Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops =
-
+			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 				"Absolute", [Obsolescence_Change_vs_YA_Ops],
@@ -5261,7 +5199,7 @@ table 'Measure Table'
 		lineageTag: ee74d091-ec90-4fc4-abfa-2971f65f89bd
 
 	measure Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -5279,7 +5217,7 @@ table 'Measure Table'
 		lineageTag: 8bd29a4a-dd19-4489-a0f2-c40f14ae17ba
 
 	measure Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -5297,7 +5235,7 @@ table 'Measure Table'
 		lineageTag: ab18d1b9-e562-4868-982b-04d418bc503e
 
 	measure Shrinklescence_Abs_RPC_Change_vs_YA_Selection_Ops =
-
+			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 				"Absolute", [Shrinklescence_Change_vs_YA_Ops],
@@ -5308,7 +5246,7 @@ table 'Measure Table'
 		lineageTag: 76d68f2c-ca06-4289-a426-bdcc640fed92
 
 	measure Shrinklescence_Abs_RPC_Selection_Ops =
-
+			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 				"Absolute", [Shrinklescence_Ops],
@@ -5318,14 +5256,15 @@ table 'Measure Table'
 		lineageTag: 723e7018-9865-4749-bb8c-2b9b2aba089e
 
 		formatStringDefinition =
-
+				
 				SWITCH(
 				    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 				    "Absolute","$0.0",
 				    "RPC", "$0.000"
 				)
-	measure TradeBreaklescence_Abs_RPC_Selection_Ops =
 
+	measure TradeBreaklescence_Abs_RPC_Selection_Ops =
+			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 				"Absolute", [TradeBreaklescence_Ops ],
@@ -5337,7 +5276,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure WhseBreaklescence_Abs_RPC_Selection_Ops =
-
+			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 				"Absolute", [WhseBreaklescence_Ops ],
@@ -5349,7 +5288,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure WhseBreaklescence_Abs_RPC_Change_vs_YA_Selection_Ops =
-
+			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 				"Absolute", [WhseBreaklescence_Change_vs_YA_Ops],
@@ -5360,7 +5299,7 @@ table 'Measure Table'
 		lineageTag: e837feeb-cf78-4535-ade9-4bf8ace51d42
 
 	measure TradeBreaklescence_Abs_RPC_Change_vs_YA_Selection_Ops =
-
+			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 				"Absolute", [TradeBreaklescence_Change_vs_YA_Ops],
@@ -5371,7 +5310,7 @@ table 'Measure Table'
 		lineageTag: a03efa5a-b3bb-4ca2-b88d-87c1761c27e0
 
 	measure TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -5390,7 +5329,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -5412,15 +5351,15 @@ table 'Measure Table'
 		displayFolder: Ops
 		lineageTag: e78c4cd1-849f-4210-a95a-e0b6f113a810
 
-		formatStringDefinition = ```
-
+		formatStringDefinition =
+				
 				SWITCH(
 				    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute"),
 					"Absolute", "$0.0",
 				    "RPC", "$0.000",
 					"$0.000"
 				)
-				```
+
 	measure Total_Breakage_Abs_RPC_Change_vs_YA_Selection_OPs = DIVIDE([Total_Breakage_Abs_RPC_Selection_OPs] - [Total_Breakage_Abs_RPC_Selection_Py_OPs], [Total_Breakage_Abs_RPC_Selection_Py_OPs])
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Ops
@@ -5433,7 +5372,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Selection_Ops =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -5452,7 +5391,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Shrinklescence_Abs_RPC_Aops_FCST_YA_Selection_Ops =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -5471,7 +5410,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Obsolescence_Abs_RPC_Aops_FCST_YA_Selection_Ops =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -5490,7 +5429,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Selection_Ops =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -5548,7 +5487,7 @@ table 'Measure Table'
 		formatStringDefinition = "#,##0%;(#,##0%)"
 
 	measure Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops =
-
+			
 			IF(SELECTEDVALUE('Metric Table'[Metrics])="YA","",
 			    DIVIDE([Total_Breakage_Abs_RPC_Selection_OPs]-[Total_Breakage_Abs_RPC_AOP_Fcst_YA_Selection_OPs], [Total_Breakage_Abs_RPC_AOP_Fcst_YA_Selection_OPs]))
 		displayFolder: Ops
@@ -6464,7 +6403,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_OT_Actuals_VolAdj_Selection_Ops =
-
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			RETURN
@@ -6495,8 +6434,8 @@ table 'Measure Table'
 
 		formatStringDefinition = "#,##0pts;(#,##0pts)"
 
-	measure Wh_Delv_Mech_TempLab_Actuals_VolAdj_Selection_Ops = ```
-
+	measure Wh_Delv_Mech_TempLab_Actuals_VolAdj_Selection_Ops =
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			RETURN
@@ -6509,7 +6448,6 @@ table 'Measure Table'
 				_wdm = "Merchandising" && _av = "Actuals", [Mech_%TempLab_Actuals_CPH],
 				_wdm = "Merchandising" && _av = "Vol.Adjusted", [Mech_%TempLab_Actuals_CPH]
 			)
-			```
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: Ops
 		lineageTag: 6001e136-43d6-4095-b449-cfc6694afe41
@@ -6764,11 +6702,12 @@ table 'Measure Table'
 		lineageTag: 7f91b910-e4a6-49b8-a716-ee04a1e74f52
 
 		formatStringDefinition =
-
+				
 				SWITCH(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 					"Absolute","$0.0",
 				    "RPC", "$0.000"
 				)
+
 	measure Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops_UI = [Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops]
 		displayFolder: Ops
 		lineageTag: fca59527-df1a-420d-835b-f5321e4e60ca
@@ -6844,7 +6783,7 @@ table 'Measure Table'
 		formatStringDefinition = "#,##0%;(#,##0%)"
 
 	measure %Change_target_CFR_UI =
-
+			
 			var _x = [%Change_target_CFR]
 			RETURN IF(_x > 0, _x, IF(_x < 0, _x * -1, _X))
 		formatString: 0.00%;-0.00%;0.00%
@@ -6878,27 +6817,29 @@ table 'Measure Table'
 		lineageTag: 0ed029c7-e142-48e4-89b2-fecfe1ab637f
 
 		formatStringDefinition =
-
+				
 				SWITCH(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 					"Absolute", "$#,##0",
 					"RPC", "$0.000"
 				)
+
 	measure WhseBreaklescence_Abs_RPC_Selection_Ops_UI = IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute", [WhseBreaklescence_Abs_RPC_Selection_Ops] / 1000, [WhseBreaklescence_Abs_RPC_Selection_Ops])
 		displayFolder: Ops
 		lineageTag: 9e331331-f75f-47ad-b3b8-7cb0f7f4d32b
 
 		formatStringDefinition =
-
+				
 				SWITCH(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 					"Absolute", "$#,##0",
 					"RPC", "$0.000"
 				)
+
 	measure TradeBreaklescence_Abs_RPC_Selection_Ops_UI = IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute", [TradeBreaklescence_Abs_RPC_Selection_Ops]/1000, [TradeBreaklescence_Abs_RPC_Selection_Ops])
 		displayFolder: Ops
 		lineageTag: 3698f8a2-39e6-48b6-83ba-27201ca741ea
 
 		formatStringDefinition =
-
+				
 				SWITCH(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 					"Absolute", "$#,##0",
 					"RPC", "$0.000"
@@ -6909,21 +6850,23 @@ table 'Measure Table'
 		lineageTag: 109d3126-6689-4419-bb13-bca4b13c28b8
 
 		formatStringDefinition =
-
+				
 				SWITCH(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 					"Absolute", "$#,##0",
 					"RPC", "$0.000"
 				)
+
 	measure Obsolescence_Abs_RPC_Selection_Ops_UI1 = IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute", [Obsolescence_Abs_RPC_Selection_Ops]/1000, [Obsolescence_Abs_RPC_Selection_Ops])
 		displayFolder: Ops
 		lineageTag: b3502cc8-5137-448b-8240-db852a7c9aa7
 
 		formatStringDefinition =
-
+				
 				SWITCH(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
 					"Absolute", "$#,##0",
 					"RPC", "$0.000"
 				)
+
 	measure Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_UI = [Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table]
 		displayFolder: Ops
 		lineageTag: ce9f9a95-280f-4bdf-9763-d965a0fc7fce
@@ -8172,7 +8115,7 @@ table 'Measure Table'
 
 		changedProperty = Name
 
-	measure TSV = ```
+	measure TSV =
 			
 			VAR Actual = [Volume_TL]
 			VAR Target = SWITCH(
@@ -8183,7 +8126,6 @@ table 'Measure Table'
 			)
 			VAR PerformancePct = DIVIDE(Actual, Target)
 			RETURN IF( ISBLANK(Target), BLANK(), IF(PerformancePct >= 1, "On Track", "Off Track"))
-			```
 		lineageTag: 1040f6c6-3112-4638-a52e-50316b0c2a27
 
 		changedProperty = Name
@@ -8743,7 +8685,7 @@ table 'Measure Table'
 		displayFolder: CMA
 		lineageTag: d9d0e37e-9e0b-45a6-93a4-238e5393cf4c
 
-	measure Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops = ```
+	measure Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops =
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			RETURN
@@ -8756,7 +8698,6 @@ table 'Measure Table'
 				_wdm = "Merchandising" && _av = "Actuals", [Mech_CPC_Actuals_CPH],
 				_wdm = "Merchandising" && _av = "Vol.Adjusted", [Mech_CPC_Actuals_CPH]
 			)
-			```
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Ops
 		lineageTag: f926dade-9a9a-478e-a403-3bfa00983215
@@ -8775,7 +8716,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isCustom":true}
 
 	measure Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops = ```
-
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			RETURN
@@ -9083,7 +9024,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPC_Selection_Ops =
-
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			RETURN
@@ -9103,7 +9044,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isCustom":true}
 
 	measure Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPH_Selection_Ops =
-
+			
 			IF(SELECTEDVALUE('Metric Table'[Metrics]) = "FCST",
 			    IF(MAX(Operation_Cal_Day[MonthNumber]) >= 6, "",
 					[Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPH_Selection_Ops_final]
@@ -9186,7 +9127,7 @@ table 'Measure Table'
 		formatStringDefinition = "#,##0%;(#,##0%)"
 
 	measure Wh_Delv_Mech_CPD_CPO_CPV_Actuals_VolAdj_Selection_OpsWh_Delv_Mech_CPD_CPO_CPV_Actuals_VolAdj_Selection_Ops =
-
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			RETURN
@@ -9523,7 +9464,7 @@ table 'Measure Table'
 		formatStringDefinition = "#,##0%;(#,##0%)"
 
 	measure metric_wh_merch_delv =
-
+			
 			Var SelectedMetric = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			RETURN
 			    SWITCH(
@@ -9544,7 +9485,7 @@ table 'Measure Table'
 			)
 		lineageTag: 9d9c44b8-bfff-4b0b-9dd6-d64705168893
 
-		formatStringDefinition = CALCULATE([REVENUE_KPI_NEW], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([REVENUE_KPI_NEW], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 		changedProperty = Name
 
@@ -9559,7 +9500,7 @@ table 'Measure Table'
 			```
 		lineageTag: 495ef3eb-8740-4b5b-9ef5-95f228b059c4
 
-		formatStringDefinition = CALCULATE([OI_KPI_NEW], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([OI_KPI_NEW], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 		changedProperty = Name
 
@@ -9571,94 +9512,71 @@ table 'Measure Table'
 				"RPC",ABS([Opex RPC])
 			)
 		lineageTag: b1af7202-3d06-429e-9688-048634c1c8e9
-		formatStringDefinition = CALCULATE([Opex_KPI_NEW], Formatter[Group] = "NUM_POS1_ABS_RPC")
+
+		formatStringDefinition = CONVERT(CALCULATE([Opex_KPI_NEW], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
+
 		changedProperty = Name
 
 	measure GP_KPI_new =
-
+			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute"),
 				"Absolute", [Gross Profit Act],
 				"RPC", [GP RPC]
 			)
 		lineageTag: e8e2c110-aabc-46c2-9aaa-0d088b05ede7
-		formatStringDefinition = CALCULATE([GP_KPI_new], Formatter[Group] = "NUM_POS1_ABS_RPC")
+
+		formatStringDefinition = CONVERT(CALCULATE([GP_KPI_new], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
+
 		changedProperty = Name
 
 	measure VTL1 =
 			
 			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-				"AOP", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"",
-					MAX(-10, MIN([Quarter dynamic volume attainment aop], 10))
-				),
-				"FCST", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"",
-					MAX(-10, MIN([Quarter dynamic volume FCST Attainment BLANK logic], 10))
-				),
+				"AOP", IF([IsFiltered_NC_to_SG], "", MAX(-10, MIN([Quarter dynamic volume attainment aop], 10))),
+				"FCST", IF([IsFiltered_NC_to_SG], "", MAX(-10, MIN([Quarter dynamic volume FCST Attainment BLANK logic], 10))),
 				"YA", MAX(-10, MIN([1T], 10))
 			)
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Topline
 		lineageTag: 4951d55b-4b02-49d9-a0d9-141fc20affcc
+
 		changedProperty = DisplayFolder
+
 		changedProperty = Name
+
 		changedProperty = FormatString
+
 		annotation PBI_FormatHint = {"isCustom":true}
 
 	measure RevTL1 =
 			
 			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-				"AOP", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]), "",
-					MAX(-10, MIN([Quarter dynamic Revenue attainment aop], 10))
-				),
-				"FCST", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]), "",
-					MAX(-10, MIN([Quarter dynamic revenue FCST Attainment BLANK logic], 10))
-				),
-				"YA", MAX(-10,MIN([2T], 10))
+				"AOP", IF([IsFiltered_NC_to_SG], "", MAX(-10, MIN([Quarter dynamic Revenue attainment aop], 10))),
+				"FCST", IF([IsFiltered_NC_to_SG], "", MAX(-10, MIN([Quarter dynamic revenue FCST Attainment BLANK logic], 10))),
+				"YA", MAX(-10, MIN([2T], 10))
 			)
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Topline
 		lineageTag: d5f34585-abd4-4af3-ba0f-c71abf00417c
+
 		changedProperty = DisplayFolder
+
 		changedProperty = Name
+
 		changedProperty = FormatString
+
 		annotation PBI_FormatHint = {"isCustom":true}
 
 	measure RPCTL1 =
 			
 			SWITCH(
-			    TRUE(),
-				SELECTEDVALUE('Metric Table'[Metrics]) = "AOP",
-				IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]), "",
-					[Rate_Per_Case_Attainment_to_AOP_TL]
-				),
-				SELECTEDVALUE('Metric Table'[Metrics]) = "FCST",
-				IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]), "",
-					[Rate_Per_Case_Attainment_to_FCST_TL]
-				),
-				SELECTEDVALUE('Metric Table'[Metrics]) = "YA",
-				[Rate_Per_Case_Attainment_to_PY_TL]
+			    SELECTEDVALUE('Metric Table'[Metrics]),
+				"AOP", IF([IsFiltered_NC_to_SG], "", [Rate_Per_Case_Attainment_to_AOP_TL]),
+				"FCST", IF([IsFiltered_NC_to_SG], "", [Rate_Per_Case_Attainment_to_FCST_TL]),
+				"YA", [Rate_Per_Case_Attainment_to_PY_TL]
 			)
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Topline
@@ -12542,7 +12460,7 @@ table 'Measure Table'
 			Selectedvalue('Abs/RPC Table'[Abs/RPC])="RPC", [OPex_SC_RPC_AOP])
 		lineageTag: 039d52d4-b6ea-4090-9b24-80e331334821
 
-		formatStringDefinition = CALCULATE(ABS([Selected_AOP_RPC_Opex_SC]), Formatter[Group] = "NUM_POS2_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Selected_AOP_RPC_Opex_SC], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 
 	measure Selected_AOP_RPC_Opex_A&P =
 			
@@ -12551,7 +12469,7 @@ table 'Measure Table'
 			Selectedvalue('Abs/RPC Table'[Abs/RPC])="RPC", [Opex_A&P_RPC_AOP])
 		lineageTag: 04d8bc1d-a251-49e3-b8dc-f7dda64b5abf
 
-		formatStringDefinition = CALCULATE(ABS([Selected_AOP_RPC_Opex_A]), Formatter[Group] = "NUM_POS2_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Selected_AOP_RPC_Opex_A&P], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 
 	measure 'Selected_AOP_RPC_SG&A NON Labor' =
 			
@@ -12560,7 +12478,7 @@ table 'Measure Table'
 			Selectedvalue('Abs/RPC Table'[Abs/RPC])="RPC", [SG&A NON Labor RPC AOP])
 		lineageTag: df6521f5-3675-4887-a2b1-f3a6a7fd06d6
 
-		formatStringDefinition = CALCULATE(ABS([Selected_AOP_RPC_SG&A NON Labor]), Formatter[Group] = "NUM_POS2_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Selected_AOP_RPC_SG&A NON Labor], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 
 	measure 'Selected_AOP_RPC_T&W Fleet' =
 			
@@ -12569,7 +12487,7 @@ table 'Measure Table'
 			Selectedvalue('Abs/RPC Table'[Abs/RPC])="RPC", [T&W Fleet RPC AOP])
 		lineageTag: 6be209ea-c8c7-44ca-86c2-a992ed3540ad
 
-		formatStringDefinition = CALCULATE(ABS([Selected_AOP_RPC_T&W Fleet]), Formatter[Group] = "NUM_POS2_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Selected_AOP_RPC_T&W Fleet], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 
 	measure 'Selected_AOP_RPC_T&W Building ' =
 			
@@ -12578,7 +12496,7 @@ table 'Measure Table'
 			Selectedvalue('Abs/RPC Table'[Abs/RPC])="RPC", [T&W Building RPC AOP])
 		lineageTag: dc656f8e-25cf-464a-8866-3d4600b8dd57
 
-		formatStringDefinition = CALCULATE(ABS([Selected_AOP_RPC_T&W Building ]), Formatter[Group] = "NUM_POS2_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Selected_AOP_RPC_T&W Building ], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 
 	measure 'Selected_AOP_RPC_T&W Labor' =
 			
@@ -12587,7 +12505,7 @@ table 'Measure Table'
 			Selectedvalue('Abs/RPC Table'[Abs/RPC])="RPC", [T&W Labor RPC AOP])
 		lineageTag: fdf6e5e6-f45d-4b4f-9b6e-b5e7b79b6c31
 
-		formatStringDefinition = CALCULATE(ABS([Selected_AOP_RPC_T&W Labor]), Formatter[Group] = "NUM_POS2_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Selected_AOP_RPC_T&W Labor], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 
 	measure Selected_AOP_RPC_SG&A_Labor =
 			
@@ -12596,7 +12514,7 @@ table 'Measure Table'
 			Selectedvalue('Abs/RPC Table'[Abs/RPC])="RPC", [SG&A Labor RPC AOP])
 		lineageTag: 8db3c0c6-2397-48eb-8a36-7e0172ddcff4
 
-		formatStringDefinition = CALCULATE(ABS([Selected_AOP_RPC_SG&A_Labor]), Formatter[Group] = "NUM_POS2_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Selected_AOP_RPC_SG&A_Labor], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 
 	measure '%Display_schdls_tobe_Built_SF_Prior Period' = ```
 			([Displays Schedules to be Built] - CALCULATE([Displays Schedules to be Built], 'Time Intel'[Group] = "PRIOR_ANY")) * 100
@@ -15492,7 +15410,7 @@ table 'Measure Table'
 			```
 		lineageTag: a2f77464-fe60-4e72-8806-f83e3af6fc05
 
-		formatStringDefinition = CALCULATE([Opex_KPI_NEW], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Opex_KPI_NEW], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure 'New Measure'
 		displayFolder: Stack Rank
@@ -15572,7 +15490,7 @@ table 'Measure Table'
 		lineageTag: fb000b6f-0ade-4a4b-8b8c-7b5d3dea5755
 
 	measure CMA_Dynamic_Rank_Order =
-
+			
 			VAR RankValue = [CMA_Dynamic_Vs_Target]
 			RETURN
 			SWITCH(
@@ -15593,7 +15511,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Label vs Selected Metric P&L' =
-
+			
 			SWITCH(
 				SELECTEDVALUE('Metric Table'[Metrics]),
 				"AOP",  "vs AOP",
@@ -15629,19 +15547,9 @@ table 'Measure Table'
 			RETURN
 			SWITCH(
 				SelectedMetric,
-				"AOP", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"",  "AOP"
-				),
+				"AOP", IF([IsFiltered_NC_to_SG], "",  "AOP"),
 				"FCST", IF(ISBLANK([Quarter dynamic Volume FCST KPICARD BLANK logic])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"", "FCST"
-				),
+					|| [IsFiltered_NC_to_SG], "", "FCST"),
 				"YA", "YA"
 			)
 		lineageTag: d955c80d-08b1-45a2-8d73-0d3384b1b6e9
@@ -15650,18 +15558,9 @@ table 'Measure Table'
 			
 			SWITCH(
 				SELECTEDVALUE('Metric Table'[Metrics]),
-				"AOP", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"",  "vs AOP"
-				),
+				"AOP", IF([IsFiltered_NC_to_SG], "",  "vs AOP"),
 				"FCST", IF(ISBLANK([Quarter dynamic revenue FCST Attainment BLANK logic])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-					"", "vs FCST"
+					|| [IsFiltered_NC_to_SG], "", "vs FCST"
 				),
 				"YA", ""
 			)
@@ -15719,15 +15618,9 @@ table 'Measure Table'
 			
 			SWITCH(
 				SELECTEDVALUE('Metric Table'[Metrics]),
-				"AOP", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]), "",  "AOP"),
+				"AOP", IF([IsFiltered_NC_to_SG], "",  "AOP"),
 				"FCST", IF(ISBLANK([Quarter dynamic revenue FCST KPICARD BLANK logic])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-					|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]), "", "FCST"),
+					|| [IsFiltered_NC_to_SG], "", "FCST"),
 				"YA", "YA"
 			)
 		lineageTag: 41fbfa22-090f-4664-a882-4c83319264a8
@@ -15736,25 +15629,18 @@ table 'Measure Table'
 			
 			SWITCH(
 				SELECTEDVALUE('Metric Table'[Metrics]),
-			        "AOP", IF(ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-						|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-						|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-						|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-						"", "vs AOP"
-					),
-			        "FCST", IF(ISBLANK([Quarter dynamic volume FCST Attainment BLANK logic])
-						|| ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-						|| ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-						|| ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-						|| ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName]),
-						"", "vs FCST"
-					),
-			        "YA", ""
-			    )
+			    "AOP", IF([IsFiltered_NC_to_SG], "", "vs AOP"),
+			    "FCST", IF(ISBLANK([Quarter dynamic volume FCST Attainment BLANK logic])
+			        || [IsFiltered_NC_to_SG], "", "vs FCST"
+			    ),
+			    "YA", ""
+			)
 		lineageTag: f5efca6c-cefc-4736-b1f5-678049afd8dc
 
-	measure Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_final = ```
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_final =
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
@@ -15786,14 +15672,13 @@ table 'Measure Table'
 			    _wdm = "Merchandising" && _av = "Vol.Adjusted" && _metric = "YA",
 			    ""
 			)
-			```
 		displayFolder: Ops
 		lineageTag: 84950795-7921-49e4-bb66-d32295a2dbad
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPH_Selection_Ops_final = ```
-
+	measure Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPH_Selection_Ops_final =
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			RETURN
@@ -15806,14 +15691,13 @@ table 'Measure Table'
 				_wdm = "Merchandising" && _av = "Actuals" , [Mech_CPH_Change_vs_YA_CPH],
 				_wdm = "Merchandising" && _av = "Vol.Adjusted", [Mech_CPH_Adj_Vol_Change_vs_YA_CPH]
 			)
-			```
 		displayFolder: Ops
 		lineageTag: ca392652-1e9a-487e-9e09-1f44d47dec43
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_final = ```
-
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
@@ -15884,7 +15768,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_OT_Selection_Ops_final = ```
-
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
@@ -15917,7 +15801,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_TempLab_Selection_Ops_final = ```
-
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
@@ -15952,7 +15836,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_final = ```
-
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
@@ -16025,7 +15909,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Table_final = ```
-
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
@@ -16094,7 +15978,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_final = ```
-
+			
 			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
 			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
 			RETURN
@@ -16115,7 +15999,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_final =
-
+			
 			IF(SELECTEDVALUE('Metric Table'[Metrics])="YA","",
 			    DIVIDE([Breakage_Abs_RPC_Selection_OPs]-[Breakage_Abs_RPC_AOP_Fcst_YA_Selection_OPs], [Breakage_Abs_RPC_AOP_Fcst_YA_Selection_OPs]))
 		displayFolder: Ops
@@ -16145,7 +16029,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -16164,7 +16048,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -16183,7 +16067,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -16202,7 +16086,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final =
-
+			
 			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
 			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
 			RETURN
@@ -16308,13 +16192,13 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_stackrank =
-	
-				IF(SELECTEDVALUE('Metric Table'[Metrics]) = "FCST",
-					IF(MAX(Operation_Cal_Day[MonthNumber]) <= 6, BLANK(),
-						[Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_final_stackrank]
-					),
+			
+			IF(SELECTEDVALUE('Metric Table'[Metrics]) = "FCST",
+				IF(MAX(Operation_Cal_Day[MonthNumber]) <= 6, BLANK(),
 					[Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_final_stackrank]
-				)
+				),
+				[Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_final_stackrank]
+			)
 		displayFolder: Stack Rank
 		lineageTag: 2162578a-9c8e-41d8-8e16-234f53cc5506
 
@@ -16354,11 +16238,7 @@ table 'Measure Table'
 			
 			VAR MonthBegin = MAX('V_Dim_FB_Ref'[CM])
 			VAR MaxSelection = MAX(Operation_Cal_Day[DayDate])
-			VAR IsFilteredRetailer = 
-			    ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName]) 
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-			    || ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName])
+			VAR IsFilteredRetailer = [IsFiltered_NC_to_SG]
 			VAR SelectedMetric = SELECTEDVALUE('Metric Table'[Metrics])
 			
 			RETURN
@@ -16476,6 +16356,7 @@ table 'Measure Table'
 				SelectedToggle = "RPC" && SelectedScenario = "YA", [Volume_Bar_FCST_new]
 			)
 		lineageTag: 6b4fcf4c-20ba-48c0-a132-6c9e23b4776c
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Revenue_Bar_Selected graph' =
@@ -16494,7 +16375,7 @@ table 'Measure Table'
 			)
 		lineageTag: 0a2b7fb2-0857-490c-8bf8-a26f19f179dc
 
-		formatStringDefinition = CALCULATE([Revenue_Bar_Selected graph], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([Revenue_Bar_Selected graph], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure 'GP_Bar_Selected graph' =
 			
@@ -16512,7 +16393,7 @@ table 'Measure Table'
 			)
 		lineageTag: 71bc82ec-7470-45a1-99b4-e46c92a9c43c
 
-		formatStringDefinition = CALCULATE([GP_Bar_Selected graph], Formatter[Group] = "NUM_POS1_ABS_RPC")
+		formatStringDefinition = CONVERT(CALCULATE([GP_Bar_Selected graph], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure 'OI_Bar_Selected graph' =
 			
@@ -16526,7 +16407,8 @@ table 'Measure Table'
 			    SelectedToggle = "Absolute", [OI_Bar_FCST_new]
 			)
 		lineageTag: 9c77b857-2bc0-48c5-bd37-0b08d9dbc9cf
-		formatStringDefinition = CALCULATE([OI_Bar_Selected graph], Formatter[Group] = "NUM_POS1_ABS_RPC")
+
+		formatStringDefinition = CONVERT(CALCULATE([OI_Bar_Selected graph], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure 'Opex_Bar_Selected graph' =
 			
@@ -16543,11 +16425,13 @@ table 'Measure Table'
 				SelectedToggle = "RPC" && SelectedScenario = "YA",  ABS([Opex_Bar_RPC FCST])
 			)
 		lineageTag: 6f89766c-c2f0-484c-bd51-cf48b501b86a
-		formatStringDefinition = CALCULATE([Opex_Bar_Selected graph], Formatter[Group] = "NUM_NEG1_ABS_RPC")
+
+		formatStringDefinition = CONVERT(CALCULATE([Opex_Bar_Selected graph], Formatter[Group] = "NUM_NEG1_ABS_RPC"), STRING)
 
 	measure 'Volume_Changevs YA' = IF(ISBLANK([Conditional_Volume AttainmentSelected]), BLANK(), [Volume Varient PY%])
 		displayFolder: Stack Rank
 		lineageTag: 843b687c-e4f5-4cf2-aeb7-9802757a0588
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Total_Breakage_YA = IF(ISBLANK([Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops]), BLANK(), [Breakage_Abs_RPC_Change_vs_YA_Selection_OPs])
@@ -16559,6 +16443,7 @@ table 'Measure Table'
 	measure SHIRINKAGE_YA = IF(ISBLANK([Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table]), BLANK(), [Shrinklescence_Abs_RPC_Change_vs_YA_Selection_Ops_UI])
 		displayFolder: Stack Rank
 		lineageTag: a4540cc4-efdd-4804-8eed-5533eb37ca90
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure OBSO_YA = IF(ISBLANK([Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table]), BLANK(), [Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops_UI])
@@ -16568,7 +16453,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_final_YA =
-
+			
 			IF(SELECTEDVALUE('Metric Table'[Metrics])="YA",
 				[Breakage_Abs_RPC_Change_vs_YA_Selection_OPs],
 			    DIVIDE([Breakage_Abs_RPC_Selection_OPs] - [Breakage_Abs_RPC_AOP_Fcst_YA_Selection_OPs],
@@ -16588,6 +16473,7 @@ table 'Measure Table'
 			)
 		displayFolder: Ops
 		lineageTag: 95001d74-752c-4d9e-bdc9-6b989ffd4fd8
+
 		formatStringDefinition = "#,##0%;(#,##0%)"
 
 	measure IsDSSVoid = ```
@@ -16670,6 +16556,7 @@ table 'Measure Table'
 				"RPC", [Opex_Other_Income_RPC]
 			))
 		lineageTag: 30ab702f-9df4-4998-902b-27cc7a1f3d49
+
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Selected_AOP_RPC_Opex_Other_Income =
@@ -16895,11 +16782,13 @@ table 'Measure Table'
 		lineageTag: 463ae77b-d54a-498f-8a71-b7f1d9b40fed
 
 		formatStringDefinition =
-
-				SWITCH(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
-				    "Absolute","$0.0",
-				    "RPC", "$0.000"
+				SWITCH(
+				    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute"),
+				    "Absolute", "$0.0",
+				    "RPC", "$0.000",
+				    "$0.000"
 				)
+
 	measure Breakage_Abs_RPC_Selection_Py_OPs = CALCULATE([Breakage_Abs_RPC_Selection_OPs],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: OPS
 		lineageTag: b3af9c63-f93d-4b61-8749-8d8f10378f90
@@ -16938,17 +16827,17 @@ table 'Measure Table'
 			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Operating Income",[OI_Bar_Selected])
 		lineageTag: 6b4dd194-bf3d-4d66-aff9-4affeabd8f88
 
-		formatStringDefinition = IF(SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Volume", CALCULATE([Sel_Vol_Rev_GP_OI_bar_CC], Formatter[Group] = "NUM_POS1"), CALCULATE([Sel_Vol_Rev_GP_OI_bar_CC], Formatter[Group] = "NUM_POS1_ABS_RPC"))
+		formatStringDefinition = IF(SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Volume", CONVERT(CALCULATE([Sel_Vol_Rev_GP_OI_bar_CC], Formatter[Group] = "NUM_POS1"), STRING), CONVERT(CALCULATE([Sel_Vol_Rev_GP_OI_bar_CC], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING))
 
 	measure Sel_Vol_Rev_GP_OI_Actual_RPC_bar_CC =
-
+			
 			Switch(TRUE(),SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Volume",[Volume_Bar_Actual_Selected],
 			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Revenue",[Revenue_Bar_Actual_Selected],
 			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Gross Profit",[GP_Bar_Actual_Selected],
 			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Operating Income",[OI_Bar_Actual_Selected])
 		lineageTag: 9d8d3877-fc96-4c0d-8488-18daa801a1f5
 
-		formatStringDefinition = IF(SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Volume", CALCULATE([Sel_Vol_Rev_GP_OI_Actual_RPC_bar_CC], Formatter[Group] = "NUM_POS1"), CALCULATE([Sel_Vol_Rev_GP_OI_Actual_RPC_bar_CC], Formatter[Group] = "NUM_POS1_ABS_RPC"))
+		formatStringDefinition = IF(SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Volume", CONVERT(CALCULATE([Sel_Vol_Rev_GP_OI_Actual_RPC_bar_CC], Formatter[Group] = "NUM_POS1"), STRING), CONVERT(CALCULATE([Sel_Vol_Rev_GP_OI_Actual_RPC_bar_CC], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING))
 
 	measure 'SKU_CMA_Selected Period' = CALCULATE([CMA_SKU_Compliance], 'Time Intel'[Group] = "CURR_ANY")
 		lineageTag: 224e9a06-4264-48ef-978f-d1a546a24881
@@ -16970,7 +16859,7 @@ table 'Measure Table'
 			SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Operating Income",[OI_Bar_Selected graph])
 		lineageTag: 40664b89-e655-413a-a7b0-173c8d2af7c5
 
-		formatStringDefinition = IF(SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Volume", CALCULATE([Sel_Vol_Rev_GP_OI_bar_CC_3rd graph], Formatter[Group] = "NUM_POS1"), CALCULATE([Sel_Vol_Rev_GP_OI_bar_CC_3rd graph], Formatter[Group] = "NUM_POS1_ABS_RPC"))
+		formatStringDefinition = IF(SELECTEDVALUE(PnL_KPI_Selector[KPI_Name]) = "Volume", CONVERT(CALCULATE([Sel_Vol_Rev_GP_OI_bar_CC_3rd graph], Formatter[Group] = "NUM_POS1"), STRING), CONVERT(CALCULATE([Sel_Vol_Rev_GP_OI_bar_CC_3rd graph], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING))
 
 	measure 'Base PL Act YTD' = SUM(V_FB_Financial_Management[AmtActYTD])
 		lineageTag: e6bf3f2f-cc89-4016-a2cc-4488990c738c
@@ -17018,6 +16907,15 @@ table 'Measure Table'
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Rev
 		lineageTag: c4917e27-19fa-4d17-84f5-d88da3021e83
+
+	measure IsFiltered_NC_to_SG =
+			
+			ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
+			    || ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
+			    || ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
+			    || ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName])
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: fd1eeaea-2abc-40a1-b6b8-bb2061ac760e
 
 	column Column
 		formatString: 0

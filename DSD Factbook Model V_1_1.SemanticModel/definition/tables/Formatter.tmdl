@@ -10,8 +10,8 @@ table Formatter
 				
 				SWITCH(
 					TRUE(),
-					SELECTEDMEASURE() >= 1e6, "$#,##0,,.0M",
-					SELECTEDMEASURE() >= 1e3, "$#,##0,.0K",
+					ABS(SELECTEDMEASURE()) >= 1e6, "$#,##0,,.0M",
+					ABS(SELECTEDMEASURE()) >= 1e3, "$#,##0,.0K",
 					"$#,##0.0"
 				)
 
@@ -19,8 +19,8 @@ table Formatter
 				
 				SWITCH(
 					TRUE(),
-					SELECTEDMEASURE() >= 1e6, "$#,##0,,.00M",
-					SELECTEDMEASURE() >= 1e3, "$#,##0,.00K",
+					ABS(SELECTEDMEASURE()) >= 1e6, "$#,##0,,.00M",
+					ABS(SELECTEDMEASURE()) >= 1e3, "$#,##0,.00K",
 					"$#,##0.00"
 				)
 
@@ -28,8 +28,8 @@ table Formatter
 				
 				SWITCH(
 					TRUE(),
-					SELECTEDMEASURE() >= 1e6, "($#,##0,,.0M)",
-					SELECTEDMEASURE() >= 1e3, "($#,##0,.0K)",
+					ABS(SELECTEDMEASURE()) >= 1e6, "($#,##0,,.0M)",
+					ABS(SELECTEDMEASURE()) >= 1e3, "($#,##0,.0K)",
 					"($#,##0.0)"
 				)
 
@@ -37,8 +37,8 @@ table Formatter
 				
 				SWITCH(
 					TRUE(),
-					SELECTEDMEASURE() >= 1e6, "($#,##0,,.00M)",
-					SELECTEDMEASURE() >= 1e3, "($#,##0,.00K)",
+					ABS(SELECTEDMEASURE()) >= 1e6, "($#,##0,,.00M)",
+					ABS(SELECTEDMEASURE()) >= 1e3, "($#,##0,.00K)",
 					"($#,##0.00)"
 				)
 
