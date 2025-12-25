@@ -1,0 +1,98 @@
+table Formatter
+	lineageTag: 7b9c8986-cfbe-49e9-85dc-3b6ca3d569e5
+
+	calculationGroup
+		precedence: 3
+
+		calculationItem NONE = SELECTEDMEASURE()
+
+		calculationItem NUM_POS1 =
+				
+				SWITCH(
+					TRUE(),
+					SELECTEDMEASURE() >= 1e6, "$#,##0,,.0M",
+					SELECTEDMEASURE() >= 1e3, "$#,##0,.0K",
+					"$#,##0.0"
+				)
+
+		calculationItem NUM_POS2 =
+				
+				SWITCH(
+					TRUE(),
+					SELECTEDMEASURE() >= 1e6, "$#,##0,,.00M",
+					SELECTEDMEASURE() >= 1e3, "$#,##0,.00K",
+					"$#,##0.00"
+				)
+
+		calculationItem NUM_NEG1 =
+				
+				SWITCH(
+					TRUE(),
+					SELECTEDMEASURE() >= 1e6, "($#,##0,,.0M)",
+					SELECTEDMEASURE() >= 1e3, "($#,##0,.0K)",
+					"($#,##0.0)"
+				)
+
+		calculationItem NUM_NEG2 =
+				
+				SWITCH(
+					TRUE(),
+					SELECTEDMEASURE() >= 1e6, "($#,##0,,.00M)",
+					SELECTEDMEASURE() >= 1e3, "($#,##0,.00K)",
+					"($#,##0.00)"
+				)
+
+		calculationItem NUM_POS1_ABS_RPC =
+				
+				SWITCH(
+					SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute"),
+					"Absolute", CALCULATE(SELECTEDMEASURE(), Formatter[Group] = "NUM_POS1"),
+					"RPC", "$#,##0.00",
+					BLANK()
+				)
+
+		calculationItem NUM_POS2_ABS_RPC =
+				
+				SWITCH(
+					SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute"),
+					"Absolute", CALCULATE(SELECTEDMEASURE(), Formatter[Group] = "NUM_POS2"),
+					"RPC", "$#,##0.00",
+					BLANK()
+				)
+
+		calculationItem NUM_NEG1_ABS_RPC =
+				
+				SWITCH(
+					SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute"),
+					"Absolute", CALCULATE(SELECTEDMEASURE(), Formatter[Group] = "NUM_NEG1"),
+					"RPC", "($#,##0.00)",
+					BLANK()
+				)
+
+		calculationItem NUM_NEG2_ABS_RPC =
+				
+				SWITCH(
+					SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute"),
+					"Absolute", CALCULATE(SELECTEDMEASURE(), Formatter[Group] = "NUM_NEG2"),
+					"RPC", "($#,##0.00)",
+					BLANK()
+				)
+
+	column Group
+		dataType: string
+		lineageTag: 3da06004-e2c5-48f5-ac98-609a5e9e3bf9
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: c9954e73-3e11-4e31-b6db-177075b1a58a
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+

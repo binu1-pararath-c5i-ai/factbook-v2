@@ -1,0 +1,66 @@
+table Formatted
+	lineageTag: 2d77b301-dbcc-4d20-a576-b93d5b52e779
+
+	calculationGroup
+		precedence: 2
+
+		calculationItem NONE = SELECTEDMEASURE()
+
+		calculationItem ARROW_NEG =
+				
+				VAR VarPercent = SELECTEDMEASURE()
+				VAR FormattedPercent = IF(
+					VarPercent < 0,
+					"(" & FORMAT(ABS(VarPercent), "0%") & ")",
+					FORMAT(VarPercent, "0%")
+				)
+				VAR Arrow = IF(VarPercent > 0, UNICHAR(9650), IF(VarPercent < 0, UNICHAR(9660)))
+				RETURN FormattedPercent & " " & Arrow
+
+		calculationItem ARROW_POS =
+				
+				VAR VarPercent = SELECTEDMEASURE()
+				VAR Arrow = IF(VarPercent > 0, UNICHAR(9650), IF(VarPercent < 0, UNICHAR(9660)))
+				VAR FormattedPercent = IF(VarPercent < 0, FORMAT(ABS(VarPercent), "0%"), FORMAT(VarPercent, "0%"))
+				RETURN FormattedPercent & " " & Arrow
+
+		calculationItem ARROW_POS_00 =
+				
+				VAR VarPercent = SELECTEDMEASURE()
+				VAR FormattedPercent = IF(
+					VarPercent < 0,
+					"(" & FORMAT(ABS(VarPercent), "0.00%") & ")",
+					FORMAT(VarPercent, "0.00%")
+				)
+				VAR Arrow = IF(VarPercent < 0, " " & UNICHAR(9660))
+				RETURN FormattedPercent & Arrow
+
+		calculationItem TBL_ARROW =
+				
+				VAR VarPercent = SELECTEDMEASURE()
+				VAR FormattedPercent = IF(
+					VarPercent < 0,
+					"(" & FORMAT(ABS(VarPercent), "0%") & ")",
+					FORMAT(VarPercent, "0%")
+				)
+				VAR Arrow = IF(VarPercent < 0, " " & UNICHAR(9660))
+				RETURN FormattedPercent & Arrow
+
+	column Group
+		dataType: string
+		lineageTag: bc79fbc1-7047-433e-aafa-52519e77e70c
+		summarizeBy: none
+		sourceColumn: Name
+		sortByColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
+	column Ordinal
+		dataType: int64
+		formatString: 0
+		lineageTag: 06f0cb21-1aa2-4ca2-8b39-80106ae240b3
+		summarizeBy: sum
+		sourceColumn: Ordinal
+
+		annotation SummarizationSetBy = Automatic
+
