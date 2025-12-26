@@ -15352,6 +15352,380 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure Total_BSO_UI_New = ```
+			
+			VAR TotalBreaklescence_Abs = 
+			SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + 
+			SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) +
+			SUM(V_FACT_FB_OPS_BSO[ShrinkDollars]) +
+			SUM(V_FACT_FB_OPS_BSO[OBSODollars])
+			
+			VAR TotalBreaklescence_RPC = 
+			DIVIDE(
+			    SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) +
+			    SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) +
+			    SUM(V_FACT_FB_OPS_BSO[ShrinkDollars]) +
+			    SUM(V_FACT_FB_OPS_BSO[OBSODollars]), 
+			    CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			)
+			RETURN
+			SWITCH(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
+			    "Absolute", FORMAT(TRUNC(DIVIDE(TotalBreaklescence_Abs, 1000)), "$#,##0"),
+			    "RPC", IF(VALUE(TotalBreaklescence_RPC) = 0, "$0" , FORMAT(TotalBreaklescence_RPC,"$0.000"))
+			)
+			```
+		displayFolder: Ops
+		lineageTag: db72c3ec-4a2f-4be2-bac8-41d3d1b30573
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = CALCULATE([Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New], Metric[Group] = "BSO_AOP_FCST_YA")
+		displayFolder: Ops
+		lineageTag: c18695d3-fb25-4371-af31-9e2cf0d199b9
+
+	measure WhBreakage_UI_New =
+			
+			VAR WhBreaklescence_RPC = DIVIDE(
+			    SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]),
+			    CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			)
+			RETURN SWITCH(
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
+			    "Absolute", FORMAT(TRUNC(DIVIDE(SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]), 1000)), "$#,##0"),
+			    "RPC", IF(VALUE(WhBreaklescence_RPC) = 0, "$0", FORMAT(WhBreaklescence_RPC, "$0.000"))
+			)
+		displayFolder: Ops
+		lineageTag: 87e3ab15-cff6-4d7b-ae43-16825a3c73da
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = ```
+			
+			VAR _Act = SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[ShrinkDollars]) + SUM(V_FACT_FB_OPS_BSO[OBSODollars])
+			VAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Plan = SUM(V_FACT_FB_OPS_BSO[PlanWhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[PlanTradeBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[PlanShrinkDollars]) + SUM(V_FACT_FB_OPS_BSO[PlanOBSODollars])
+			VAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstWhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[FcstTradeBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[FcstShrinkDollars]) + SUM(V_FACT_FB_OPS_BSO[FcstOBSODollars])
+			VAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			
+			VAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)
+			VAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)
+			VAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)
+			VAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)
+			 
+			VAR _PY_Ops = CALCULATE([WhseBreaklescence_Ops ] + [TradeBreaklescence_Ops ] + [Shrinklescence_Ops] + [Obsolescence_Ops],REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			VAR _RPC_Act_PY_Ops = CALCULATE([WhseBreaklescence_Rate_per_Case_Act_Ops] + [TradeBreaklescence_Rate_per_Case_Act_Ops] + [Shrinklescence_Rate_per_Case_Act_Ops] + [Obsolescence_Rate_per_Case_Act_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			
+			RETURN SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", _Attainment_to_AOP_Ops,
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "FCST", DIVIDE((_Act - _Fcst), _Fcst),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "FCST", DIVIDE((_RPC_ACT_AOP - _RPC_FCST), _RPC_FCST),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "YA", DIVIDE((_Act - _PY_Ops), _PY_Ops),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "YA", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops)
+			)
+			```
+		displayFolder: Ops
+		lineageTag: ecc77442-af8b-444c-aa84-e7b5b300e58b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = CALCULATE([WhBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+		displayFolder: Ops
+		lineageTag: 0481ad7d-e549-4470-b51f-bfb2935f36af
+
+	measure WhBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final = ```
+			
+			VAR _Act = Sum(V_FACT_FB_OPS_BSO[WhseBreakDollars])
+			VAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Plan = Sum(V_FACT_FB_OPS_BSO[PlanWhseBreakDollars])
+			VAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstWhseBreakDollars])
+			VAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			 
+			VAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)
+			VAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)
+			VAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)
+			VAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)
+			 
+			VAR _PY_Ops = CALCULATE([WhseBreaklescence_Ops ], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			VAR _RPC_Act_PY_Ops = CALCULATE([WhseBreaklescence_Rate_per_Case_Act_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", _Attainment_to_AOP_Ops,
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "FCST", DIVIDE((_Act - _Fcst), _Fcst),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "FCST", DIVIDE((_RPC_ACT_AOP - _RPC_FCST), _RPC_FCST),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "YA", DIVIDE((_Act - _PY_Ops), _PY_Ops),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "YA", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops)
+			)
+			```
+		displayFolder: Ops
+		lineageTag: c33da6a3-4208-4b18-b1ce-109e679bea9f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TradeBreakage_UI_New = ```
+			
+			VAR TradeBreaklescence_Abs = 
+			SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) 
+			VAR TradeBreaklescence_RPC =
+			    DIVIDE(Sum(V_FACT_FB_OPS_BSO[TradeBreakDollars]),
+			    CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner])))
+			        
+			RETURN SWITCH(
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
+			    "Absolute", FORMAT(TRUNC(DIVIDE(TradeBreaklescence_Abs, 1000)), "$#,##0"),
+			    "RPC", IF(VALUE(TradeBreaklescence_RPC) = 0, "$0" , FORMAT(TradeBreaklescence_RPC, "$0.000"))
+			)
+			```
+		displayFolder: Ops
+		lineageTag: b59bb96e-b4b3-4331-969c-e66868fd459f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = CALCULATE([TradeBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+		displayFolder: Ops
+		lineageTag: cfadb37f-31a4-4e04-b99c-3eca7e24e918
+
+	measure TradeBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final = ```
+			
+			VAR _Act = Sum(V_FACT_FB_OPS_BSO[TradeBreakDollars])
+			VAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Plan = Sum(V_FACT_FB_OPS_BSO[PlanTradeBreakDollars])
+			VAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstTradeBreakDollars])
+			VAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			
+			VAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)
+			VAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)
+			VAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)
+			--VAR _RPC_AOP_Ops = DIVIDE(_Plan, _Act_Vol)
+			VAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)
+			 
+			VAR _PY_Ops = CALCULATE([TradeBreaklescence_Ops ], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			VAR _RPC_Act_PY_Ops = CALCULATE([TradeBreaklescence_Rate_per_Case_Act_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			VAR _ar = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC])
+			VAR _ref = SELECTEDVALUE('Metric Table'[Metrics])
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    _ar = "Absolute" && _ref = "AOP", _Attainment_to_AOP_Ops,
+			    _ar = "RPC" && _ref = "AOP", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),
+			    _ar = "Absolute" && _ref = "FCST", DIVIDE((_Act - _Fcst), _Fcst),
+			    _ar = "RPC" && _ref = "FCST", DIVIDE((_RPC_ACT_AOP - _RPC_FCST), _RPC_FCST),
+			    _ar = "Absolute" && _ref = "YA", DIVIDE((_Act - _PY_Ops), _PY_Ops),
+			    _ar = "RPC" && _ref = "YA", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops)
+			)
+			```
+		displayFolder: Ops
+		lineageTag: 3c0ac628-d911-4ef2-9e05-e66d9c30c7b3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = CALCULATE([Shrinkage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+		displayFolder: Ops
+		lineageTag: 9aac576c-2427-40d0-a6bd-c4a4c060919d
+
+	measure Shrinkage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final = ```
+			
+			VAR _Act = Sum(V_FACT_FB_OPS_BSO[ShrinkDollars])
+			VAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Plan = Sum(V_FACT_FB_OPS_BSO[PlanShrinkDollars])
+			VAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstShrinkDollars])
+			VAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			
+			VAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)
+			VAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)
+			VAR RPC_Act_Op = DIVIDE(_Act, _Act_Vol)
+			VAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)
+			--VAR _RPC_AOP_Ops = DIVIDE(_Plan, _Act_Vol)
+			VAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)
+			
+			VAR _PY_Ops = CALCULATE([Shrinklescence_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			VAR _RPC_Act_PY_Ops = CALCULATE([Shrinklescence_Rate_per_Case_Act_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			 
+			RETURN SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", _Attainment_to_AOP_Ops,
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "FCST", DIVIDE((_Act - _Fcst), _Fcst),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "FCST", DIVIDE((RPC_Act_Op - _RPC_FCST), _RPC_FCST),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "YA", DIVIDE((_Act - _PY_Ops), _PY_Ops),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "YA", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops)
+			) 
+			```
+		displayFolder: Ops
+		lineageTag: 81506c25-4f7b-4f57-84e3-921f6f5e54ac
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Obsolescence_UI_New = ```
+			
+			VAR Obslescence_Abs = SUM(V_FACT_FB_OPS_BSO[OBSODollars])
+			VAR Obsolescence_RPC = 
+			    DIVIDE(Sum(V_FACT_FB_OPS_BSO[OBSODollars]),
+			    CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner])))
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute", 
+			    FORMAT(TRUNC(DIVIDE(Obslescence_Abs, 1000)), "$#,##0"),
+			
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC", 
+			    IF(VALUE(Obsolescence_RPC) = 0, "$0", FORMAT(Obsolescence_RPC,"$0.000"))
+			)
+			```
+		displayFolder: Ops
+		lineageTag: f19ad150-d35a-4bc6-9083-ccb34edc248c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = CALCULATE([OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+		displayFolder: Ops
+		lineageTag: 03d4b35d-8d24-47e4-b394-4f7fcff5cbc5
+
+	measure OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final = ```
+			
+			VAR _Act = Sum(V_FACT_FB_OPS_BSO[OBSODollars])
+			VAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Plan = Sum(V_FACT_FB_OPS_BSO[PlanOBSODollars])
+			VAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstOBSODollars])
+			VAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			 
+			VAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)
+			VAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)
+			VAR RPC_Act_Op = DIVIDE(_Act, _Act_Vol)
+			VAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)
+			--VAR _RPC_AOP_Ops = DIVIDE(_Plan, _Act_Vol)
+			VAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)
+			 
+			VAR _PY_Ops = CALCULATE([Obsolescence_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			VAR _RPC_Act_PY_Ops = CALCULATE([Obsolescence_Rate_per_Case_Act_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			
+			RETURN SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", _Attainment_to_AOP_Ops,
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "FCST", DIVIDE((_Act - _Fcst), _Fcst),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "FCST", DIVIDE((RPC_Act_Op - _RPC_FCST), _RPC_FCST),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "YA", DIVIDE((_Act - _PY_Ops), _PY_Ops),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "YA", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops)
+			)
+			```
+		displayFolder: Ops
+		lineageTag: 0c65f630-0b2e-4f92-8697-88cfb901471f
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_BSO_New = ```
+			
+			VAR val = 
+			SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + 
+			SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) +
+			SUM(V_FACT_FB_OPS_BSO[ShrinkDollars]) +
+			SUM(V_FACT_FB_OPS_BSO[OBSODollars])
+			
+			VAR RPC_val = 
+			DIVIDE(
+			SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + 
+			SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) +
+			SUM(V_FACT_FB_OPS_BSO[ShrinkDollars]) +
+			SUM(V_FACT_FB_OPS_BSO[OBSODollars]), 
+			CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO)))
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute", 
+			    IF(val > 1000000, 
+			    "$" & FORMAT(val / 1000000, "0.0") & "M",
+			    "$" & FORMAT(val / 1000, "0.0") & "K"),
+			
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC", 
+			    IF(VALUE(val) = 0, 0 , (FORMAT(RPC_val,"$0.000")))
+			)
+			```
+		displayFolder: Ops
+		lineageTag: ce0d0994-deb7-45e3-9c2a-6ef47777943d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure TotalBreaklescence_Abs_RPC_Selection_Ops_New = ```
+			
+			VAR TotalBreaklescence_Abs = 
+			SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars])
+			
+			VAR TotalBreaklescence_RPC =
+			DIVIDE
+			(SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]),
+			CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO)))
+			RETURN
+			SWITCH(
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
+			    "Absolute", 
+			    IF(TotalBreaklescence_Abs > 1000000,
+			    "$" & FORMAT(TotalBreaklescence_Abs / 1000000, "#,##0.0") & "M",
+			    "$" & FORMAT(TotalBreaklescence_Abs / 1000, "#,##0.0") & "K"),
+			
+			    "RPC", 
+			    IF(VALUE(TotalBreaklescence_RPC) = 0, 0 , (FORMAT(TotalBreaklescence_RPC,"$0.000")))
+			)
+			```
+		displayFolder: Ops
+		lineageTag: 8981e814-10b8-4c92-82f6-79c92f63ea7d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Shrinklescence_Abs_RPC_Selection_Ops_New = ```
+			
+			VAR Shrinklescence_Abs = SUM(V_FACT_FB_OPS_BSO[ShrinkDollars])
+			
+			VAR Shrinklescence_RPC = 
+			    DIVIDE(Sum(V_FACT_FB_OPS_BSO[ShrinkDollars]),
+			    CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO)))
+			
+			RETURN SWITCH(
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
+			    "Absolute", 
+			    "$" & FORMAT(Shrinklescence_Abs / 1000, "#,##0.0") & "K",
+			
+			    "RPC", 
+			    IF(VALUE(Shrinklescence_RPC) = 0, 0, FORMAT(Shrinklescence_RPC,"$0.000"))
+			)
+			```
+		displayFolder: Ops
+		lineageTag: 576199e0-a59e-49b3-93ef-1808f96f2861
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Obsolescence_Abs_RPC_Selection_Ops_New = ```
+			
+			VAR Obsolescence_Abs = SUM(V_FACT_FB_OPS_BSO[OBSODollars])
+			
+			VAR Obsolescence_RPC = 
+			DIVIDE(Sum(V_FACT_FB_OPS_BSO[OBSODollars]),
+			CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO)))
+			
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute",
+			    "$" & FORMAT(Obsolescence_Abs / 1000, "0.0") & "K",
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC", 
+			    IF(VALUE(Obsolescence_RPC) = 0, 0, FORMAT(Obsolescence_RPC, "$0.000"))
+			)
+			```
+		displayFolder: Ops
+		lineageTag: afd6a6c6-1bfa-483d-ac28-7c2a24f912e9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column Column
 		formatString: 0
 		lineageTag: b9c5de01-352f-4f30-84c8-f82395997b29
