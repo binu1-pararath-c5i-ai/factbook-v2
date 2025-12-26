@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "60819982dee03332b919",
   "position": {
-    "x": 589.40530212562692,
-    "y": 568.61714831621691,
+    "x": 571.00579041948777,
+    "y": 400.00145214281821,
     "z": 8000,
-    "height": 151.63123955099115,
-    "width": 690.90040601862916
+    "height": 319.70376286507775,
+    "width": 709.29625528670738
   },
   "visual": {
     "visualType": "tableEx",
@@ -14,6 +14,20 @@
       "queryState": {
         "Values": {
           "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Operation_Cal_Day"
+                    }
+                  },
+                  "Property": "FirstDayOfMonth"
+                }
+              },
+              "queryRef": "Operation_Cal_Day.FirstDayOfMonth",
+              "nativeQueryRef": "FirstDayOfMonth"
+            },
             {
               "field": {
                 "Measure": {
@@ -125,6 +139,104 @@
               },
               "queryRef": "Measure Table.volume_Sales%_W.r.t_AOP_FCST_YA_Selection_TL",
               "nativeQueryRef": "volume_Sales%_W.r.t_AOP_FCST_YA_Selection_TL"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue_FCST_TL_nw"
+                }
+              },
+              "queryRef": "Measure Table.Revenue_FCST_TL_nw",
+              "nativeQueryRef": "Revenue_FCST_TL_nw"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume_FCST_TL_nw"
+                }
+              },
+              "queryRef": "Measure Table.Volume_FCST_TL_nw",
+              "nativeQueryRef": "Volume_FCST_TL_nw"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Rate per case_FCST_TL_nw"
+                }
+              },
+              "queryRef": "Measure Table.Rate per case_FCST_TL_nw",
+              "nativeQueryRef": "Rate per case_FCST_TL_nw"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Quarter FCST dynamic Volume"
+                }
+              },
+              "queryRef": "Measure Table.Quarter FCST dynamic Volume",
+              "nativeQueryRef": "Quarter FCST dynamic Volume"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Quarter FCST dynamic volume Bar"
+                }
+              },
+              "queryRef": "Measure Table.Quarter FCST dynamic volume Bar",
+              "nativeQueryRef": "Quarter FCST dynamic volume Bar"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Quarter dynamic volume AOP bar"
+                }
+              },
+              "queryRef": "Measure Table.Quarter dynamic volume AOP bar",
+              "nativeQueryRef": "Quarter dynamic volume AOP bar"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Quarter dynamic Revenue YA KPICARD"
+                }
+              },
+              "queryRef": "Measure Table.Quarter dynamic Revenue YA KPICARD",
+              "nativeQueryRef": "Quarter dynamic Revenue YA KPICARD"
             }
           ]
         }
@@ -154,7 +266,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "73.74528402175591D"
+                  "Value": "51.364346247607095D"
                 }
               }
             }
@@ -168,7 +280,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "66.59065038421805D"
+                  "Value": "42.64182742071576D"
                 }
               }
             }
@@ -182,7 +294,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "91.93313818461787D"
+                  "Value": "57.7043654566271D"
                 }
               }
             }
@@ -196,7 +308,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "78.53353890161267D"
+                  "Value": "62.07765566482689D"
                 }
               }
             }
@@ -210,7 +322,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "83.76539732510705D"
+                  "Value": "62.90132998766002D"
                 }
               }
             }
@@ -224,7 +336,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "92.14808276169171D"
+                  "Value": "66.90691069987125D"
                 }
               }
             }
@@ -238,7 +350,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "69.91900913827021D"
+                  "Value": "59.54095958691761D"
                 }
               }
             }
@@ -252,13 +364,111 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "83.84036646654545D"
+                  "Value": "64.47195760694098D"
                 }
               }
             }
           },
           "selector": {
             "metadata": "Measure Table.volume_Sales%_W.r.t_AOP_FCST_YA_Selection_TL"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "58.0604368632232D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Revenue_FCST_TL_nw"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "52.30165985458827D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_FCST_TL_nw"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "52.00166346399136D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Rate per case_FCST_TL_nw"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "72.46439412177855D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Quarter FCST dynamic Volume"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "55.77422441966088D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Quarter FCST dynamic volume Bar"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "58.81354529528306D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Quarter dynamic volume AOP bar"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "93.7332540365893D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Quarter dynamic Revenue YA KPICARD"
           }
         }
       ]

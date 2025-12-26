@@ -153,9 +153,40 @@
               },
               "queryRef": "Measure Table.Revenue_Bar_AOP_FCST_YA",
               "nativeQueryRef": "Revenue_Bar_AOP_FCST_YA"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Volume_FCST Topline bar"
+                }
+              },
+              "queryRef": "Measure Table.Volume_FCST Topline bar",
+              "nativeQueryRef": "Volume_FCST Topline bar"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "Operation_Cal_Day"
+                  }
+                },
+                "Property": "FirstDayOfMonth"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "objects": {

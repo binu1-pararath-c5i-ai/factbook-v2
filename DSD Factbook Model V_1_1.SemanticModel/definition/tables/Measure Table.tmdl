@@ -4082,24 +4082,12 @@ table 'Measure Table'
 			
 			SWITCH(
 				SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", CALCULATE([Rate_Per_Case_AOP_TL],
-					FILTER(
-						VALUES(Operation_Cal_Day[DayDate]),
-						YEAR(Operation_Cal_Day[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[CM]))
-					)
-				),
-				"FCST", CALCULATE([Quarter FCST dynamic Rate per case],
-					FILTER(
-						VALUES(Operation_Cal_Day[DayDate]),
-						YEAR(Operation_Cal_Day[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[CM]))
-					)
-				),
+			    "AOP", [Rate_Per_Case_AOP_TL],
+				"FCST", [Quarter FCST dynamic Rate per case],
 				"YA", CALCULATE([Rate_Per_Case_TL],
 					V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly",
-					FILTER(
-						(Operation_Cal_Day),
-						YEAR(Operation_Cal_Day[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[CM])) - 1
-					)
+			        REMOVEFILTERS(Operation_Cal_Day),
+			        SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
 				)
 			)
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
@@ -4576,22 +4564,17 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure 2Y = ```
+	measure 2Y =
 			
 			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			var _month = VALUES(Operation_Cal_Day[FirstDayOfMonth])
-			var _currentmonth = MAX('V_Dim_FB_Ref'[CM])
 			var _num = [Revenue_TL]
-			VAR _D2 =
-			CALCULATE([Revenue_TL], REMOVEFILTERS(Operation_Cal_Day), 
+			VAR _D2 = CALCULATE([Revenue_TL], REMOVEFILTERS(Operation_Cal_Day),
 			    Operation_Cal_Day[Year] = _yr - 1,
 			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
 			)
-			VAR _D3 =
-			CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
+			VAR _D3 = CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
 			var _den = _D2 + _D3
 			RETURN MAX(-10, MIN(DIVIDE(_num - _den, _den), 10))
-			```
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Topline
 		lineageTag: 197ee833-065f-4c38-becc-3ea17d3a3bdd
@@ -4602,39 +4585,30 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure 3Y = ```
+	measure 3Y =
 			
 			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			var _month = VALUES(Operation_Cal_Day[FirstDayOfMonth])
-			var _currentmonth = MAX('V_Dim_FB_Ref'[CM])
-			
 			var _n1 =
 			CALCULATE([Revenue_TL],
 			    REMOVEFILTERS(Operation_Cal_Day),
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]),
-			    Operation_Cal_Day[Year] = _yr - 1,
 			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
 			)
-			   
 			var _n2 =
 			CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
-			 
 			var _num = _n1 + _n2
-			 
 			VAR _D2 =
 			CALCULATE(
 			    [Volume_TL],
 			    REMOVEFILTERS(Operation_Cal_Day),
-			    Operation_Cal_Day[Year] = _yr - 1,
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]),
 			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
 			)
 			VAR _D3 =
 			CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
 			var _den = _D2 + _D3
-			
 			var _PY = _num / _den
 			RETURN MAX(-10, MIN(DIVIDE([Rate_per_Case_TL] - _PY, _PY), 10))
-			```
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Topline
 		lineageTag: cbc93dec-ef5b-4282-845d-fd50f7ef7e87
@@ -4985,7 +4959,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Obsolescence_PY_Ops = CALCULATE([Obsolescence_Ops], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Obsolescence_PY_Ops = CALCULATE([Obsolescence_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: db87f047-f88c-493f-903c-b3c3900047ee
 
@@ -5033,7 +5007,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Shrinklescence_PY_Ops = CALCULATE([Shrinklescence_Ops], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Shrinklescence_PY_Ops = CALCULATE([Shrinklescence_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 2a1795cc-e82d-4b38-91b5-fdad4c003757
 
@@ -5081,7 +5055,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure TradeBreaklescence_PY_Ops = CALCULATE([TradeBreaklescence_Ops ], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure TradeBreaklescence_PY_Ops = CALCULATE([TradeBreaklescence_Ops ], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 6ddff712-9e8c-4bbd-bfad-eaecc02d2fc2
 
@@ -5127,7 +5101,7 @@ table 'Measure Table'
 		displayFolder: Ops
 		lineageTag: f73a35e4-be7c-46ad-9838-ff1360284222
 
-	measure WhseBreaklescence_PY_Ops = CALCULATE([WhseBreaklescence_Ops ], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure WhseBreaklescence_PY_Ops = CALCULATE([WhseBreaklescence_Ops ], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 73e56ca1-a720-48e0-83f9-4a83456b7549
 
@@ -5365,7 +5339,7 @@ table 'Measure Table'
 		displayFolder: Ops
 		lineageTag: 5998da34-7c1d-4c01-9866-cf0da9faf464
 
-	measure Total_Breakage_Abs_RPC_Selection_Py_OPs = CALCULATE([Total_Breakage_Abs_RPC_Selection_OPs], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Total_Breakage_Abs_RPC_Selection_Py_OPs = CALCULATE([Total_Breakage_Abs_RPC_Selection_OPs], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: de1a2d37-ef14-4bf1-8080-a388b6eafc7f
 
@@ -5569,7 +5543,7 @@ table 'Measure Table'
 
 		formatStringDefinition = "#,##0%;(#,##0%)"
 
-	measure Adj_Order_Qty_PY_CFR = CALCULATE([Adj_Order_Qty_CFR],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Adj_Order_Qty_PY_CFR = CALCULATE([Adj_Order_Qty_CFR], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		formatString: 0
 		displayFolder: Ops
 		lineageTag: 749ba445-893c-4833-8adb-9488aaf08671
@@ -5962,7 +5936,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_%OT_Actuals_PY_CPH = CALCULATE([Wh_%OT_Actuals_CPH], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Wh_%OT_Actuals_PY_CPH = CALCULATE([Wh_%OT_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 10c00c91-0b4e-4583-8366-1a1bb8de055c
 
@@ -6028,9 +6002,11 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Delv_%OT_Actuals_PY_CPH = CALCULATE([Delv_%OT_Actuals_CPH],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Delv_%OT_Actuals_PY_CPH = CALCULATE([Delv_%OT_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: df41479c-f09b-451c-aa7c-bd06a98efd91
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Delv_OT_AOP_CPH = DIVIDE(SUM(V_Fact_FB_Ops_CPH_CPC[DelvAOPOvertimeHour]), [DelvAOPRegularHours])
 		displayFolder: Ops
@@ -6176,9 +6152,11 @@ table 'Measure Table'
 		displayFolder: Ops
 		lineageTag: f42e7698-0263-4109-b25b-ef505058fd8f
 
-	measure Mech_%OT_Actuals_PY_CPH = CALCULATE([Mech_%OT_Actuals_CPH], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Mech_%OT_Actuals_PY_CPH = CALCULATE([Mech_%OT_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 10eb8cec-0701-449c-9385-261965070920
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Mech_OT_AOP_CPH = DIVIDE(SUM(V_Fact_FB_Ops_CPH_CPC[MechAOPOvertimeHours]), [MechAOPRegularHours])
 		displayFolder: Ops
@@ -6236,7 +6214,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_%TempLab_Actuals_PY_CPH = CALCULATE([Wh_%TempLab_Actuals_CPH], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Wh_%TempLab_Actuals_PY_CPH = CALCULATE([Wh_%TempLab_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 9d08bf19-7dce-4271-8050-5479ee6d694f
 
@@ -6300,9 +6278,11 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Delv_%TempLab_Actuals_PY_CPH = CALCULATE([Delv_%TempLab_Actuals_CPH], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Delv_%TempLab_Actuals_PY_CPH = CALCULATE([Delv_%TempLab_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 536fd9b1-3877-42d2-965f-0d5636a86569
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Delv_TempLab_AOP_CPH = DIVIDE(SUM(V_Fact_FB_Ops_CPH_CPC[DelvAOPTempHours]), SUM(V_Fact_FB_Ops_CPH_CPC[DelvAOPWorkedHours]) + SUM(V_Fact_FB_Ops_CPH_CPC[DelvAOPTempHours]))
 		displayFolder: Ops
@@ -6352,9 +6332,11 @@ table 'Measure Table'
 		displayFolder: Ops
 		lineageTag: 68821176-dfba-404c-93d9-4704409b098d
 
-	measure Mech_%TempLab_Actuals_PY_CPH = CALCULATE([Mech_%TempLab_Actuals_CPH], SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Mech_%TempLab_Actuals_PY_CPH = CALCULATE([Mech_%TempLab_Actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 667463a8-ba59-4cfa-9b84-6d95c283e438
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Mech_TempLab_AOP_CPH = DIVIDE(SUM(V_Fact_FB_Ops_CPH_CPC[MechAOPTempHours]), SUM(V_Fact_FB_Ops_CPH_CPC[MechAOPHours]) + SUM(V_Fact_FB_Ops_CPH_CPC[MechAOPTempHours]))
 		displayFolder: Ops
@@ -6550,69 +6532,7 @@ table 'Measure Table'
 
 		formatStringDefinition = "#,##0%;(#,##0%)"
 
-	measure Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_UI =
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month
-			
-			VAR MaxClosedMonth =
-			    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))
-			
-			VAR CurrentYear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR IsCurrentYear = VisualYear = CurrentYear
-			
-			VAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR MaxClosedQuarter =
-			    CALCULATE(
-			        MAX(Operation_Cal_Day[Quarter]),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth,
-			        Operation_Cal_Day[Year] = CurrentYear
-			    )
-			
-			VAR IsClosedQuarter =
-			    VisualYear < CurrentYear ||
-			    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			VAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])
-			VAR BaseMeasure = [Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops]
-			VAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)
-			
-			RETURN
-			    IF (
-			        MetricSelected = "FCST",
-			        IF (
-			            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,
-			            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),
-			            BLANK()
-			        ),
-			        BaseMeasure
-			    )
+	measure Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_UI = CALCULATE([Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops], Metric[Group] = "BSO_AOP_FCST_YA")
 		displayFolder: Ops
 		lineageTag: 495eb4eb-db22-44f6-8441-693c4f559d36
 
@@ -6624,69 +6544,7 @@ table 'Measure Table'
 
 		formatStringDefinition = "#,##0%;(#,##0%)"
 
-	measure Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_UI =
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month
-			
-			VAR MaxClosedMonth =
-			    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))
-			
-			VAR CurrentYear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR IsCurrentYear = VisualYear = CurrentYear
-			
-			VAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR MaxClosedQuarter =
-			    CALCULATE(
-			        MAX(Operation_Cal_Day[Quarter]),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth,
-			        Operation_Cal_Day[Year] = CurrentYear
-			    )
-			
-			VAR IsClosedQuarter =
-			    VisualYear < CurrentYear ||
-			    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			VAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])
-			VAR BaseMeasure = [Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops]
-			VAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)
-			
-			RETURN
-			    IF (
-			        MetricSelected = "FCST",
-			        IF (
-			            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,
-			            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),
-			            BLANK()
-			        ),
-			        BaseMeasure
-			    )
+	measure Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_UI = CALCULATE([Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops], Metric[Group] = "BSO_AOP_FCST_YA")
 		displayFolder: Ops
 		lineageTag: 85182619-c7f0-4009-9a22-ad32e9198761
 
@@ -6714,69 +6572,7 @@ table 'Measure Table'
 
 		formatStringDefinition = "#,##0%;(#,##0%)"
 
-	measure Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_UI =
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month
-			
-			VAR MaxClosedMonth =
-			    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))
-			
-			VAR CurrentYear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR IsCurrentYear = VisualYear = CurrentYear
-			
-			VAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR MaxClosedQuarter =
-			    CALCULATE(
-			        MAX(Operation_Cal_Day[Quarter]),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth,
-			        Operation_Cal_Day[Year] = CurrentYear
-			    )
-			
-			VAR IsClosedQuarter =
-			    VisualYear < CurrentYear ||
-			    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			VAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])
-			VAR BaseMeasure = [Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops]
-			VAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)
-			
-			RETURN
-			    IF (
-			        MetricSelected = "FCST",
-			        IF (
-			            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,
-			            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),
-			            BLANK()
-			        ),
-			        BaseMeasure
-			    )
+	measure Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_UI = CALCULATE([Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops], Metric[Group] = "BSO_AOP_FCST_YA")
 		displayFolder: Ops
 		lineageTag: ed7b30c4-1345-49d1-bb03-8d955d013927
 
@@ -6880,89 +6676,53 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
-	measure 'Conditional_Volume AttainmentSelected' = ```
+	measure 'Conditional_Volume AttainmentSelected' =
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			RETURN
-			SWITCH(
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
+			RETURN SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([Volume Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([Volume Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([Volume Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([Volume Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([Volume Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([Volume Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([Volume Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([Volume Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([Volume Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([Volume Varient PY%], slicerFilter),
 			
 			    BLANK()
 			)
-			
-			```
 		formatString: #,##0%;(#,##0%)
 		lineageTag: 7e9380ce-03e3-4d64-9769-ad1afff3d55a
 
@@ -6976,85 +6736,50 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
 			RETURN
-			MAX(-10,MIN(
-			SWITCH(
+			MAX(-10, MIN(SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([Revenue Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([Revenue Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([Revenue Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([Revenue Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([Revenue Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([Revenue Varient RPC AOP%], slicerFilter)
-			    ),
+			    CALCULATE([Revenue Varient RPC AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([Revenue Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([Revenue Varient RPC PY%], slicerFilter)
-			    ),
+			    CALCULATE([Revenue Varient RPC PY%], slicerFilter),
 			
 			    BLANK()
-			),
-			10))
+			), 10))
 		formatString: #,##0%;(#,##0%)
 		lineageTag: c3234e8e-1e38-43b7-8073-bef7e4d04799
 
@@ -7068,84 +6793,49 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			RETURN
-			MAX(-10,MIN(
-			SWITCH(
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
+			RETURN MAX(-10, MIN(SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([OPex Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([OPex Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([OPex Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([OPex Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([OPex Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([Opex Varient RPC AOP%], slicerFilter)
-			    ),
+			    CALCULATE([Opex Varient RPC AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([Opex Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([Opex Varient RPC PY%], slicerFilter)
-			    ),
+			    CALCULATE([Opex Varient RPC PY%], slicerFilter),
 			
 			    BLANK()
-			),
-			10))
+			), 10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: 43189af4-864f-46c7-a772-272b12373c3a
 
@@ -7159,80 +6849,46 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			RETURN
-			SWITCH(
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
+			RETURN SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([GP Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([GP Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([GP Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([GP Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([GP Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([GP Varient RPC AOP%], slicerFilter)
-			    ),
+			    CALCULATE([GP Varient RPC AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([GP Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([GP Varient RPC PY%], slicerFilter)
-			    ),
+			    CALCULATE([GP Varient RPC PY%], slicerFilter),
 			
 			    BLANK()
 			)
@@ -7249,85 +6905,49 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			RETURN
-			MAX(-10,MIN(
-			SWITCH(
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
+			RETURN MAX(-10, MIN(SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([OI Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([OI Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([OI Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([OI Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([OI Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([OI Varient RPC AOP%], slicerFilter)
-			    ),
+			    CALCULATE([OI Varient RPC AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([OI Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([OI Varient RPC PY%], slicerFilter)
-			    ),
+			    CALCULATE([OI Varient RPC PY%], slicerFilter),
 			
 			    BLANK()
-			),
-			10))
+			), 10))
 		formatString: #,##0%;(#,##0%)
 		lineageTag: 823842a0-46f1-468f-8be9-1e12ce774a2e
 
@@ -7341,85 +6961,43 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
 			RETURN
-			MAX(-10,MIN(
-			SWITCH(
+			MAX(-10,MIN(SWITCH(
 			    TRUE(),
-			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([DSD Labor Varient AOP%], slicerFilter)
-			    ),
-			
+			    CALCULATE([DSD Labor Varient AOP%], slicerFilter),
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([DSD Labor Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
-			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([DSD Labor Varient PY%], slicerFilter)
-			    ),
-			
+			    CALCULATE([DSD Labor Varient PY%], slicerFilter),
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([DSD Labor Varient RPC AOP%], slicerFilter)
-			    ),
-			
+			    CALCULATE([DSD Labor Varient RPC AOP%], slicerFilter),
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([DSD Labor Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
-			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([DSD Labor Varient RPC PY%], slicerFilter)
-			    ),
-			
+			    CALCULATE([DSD Labor Varient RPC PY%], slicerFilter),
 			    BLANK()
-			),
-			10))
+			), 10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: dc4efeaf-4bff-4aeb-9f87-ef204f2aac4e
 
@@ -7433,85 +7011,49 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			RETURN
-			MAX(-10,MIN(
-			SWITCH(
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
+			RETURN MAX(-10, MIN(SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([Non Labor Opex Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([Non Labor Opex Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([Non Labor Opex Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([Non Labor Opex Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([Non Labor Opex Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([Non Labor Opex Varient RPC AOP%], slicerFilter)
-			    ),
+			    CALCULATE([Non Labor Opex Varient RPC AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([Non Labor OPex Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([Non Labor OPex Varient RPC PY%], slicerFilter)
-			    ),
+			    CALCULATE([Non Labor OPex Varient RPC PY%], slicerFilter),
 			
 			    BLANK()
-			),
-			10))
+			), 10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: 824f82f3-8678-4ba4-9c67-8630e5686831
 
@@ -7525,80 +7067,46 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			RETURN
-			SWITCH(
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
+			RETURN SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([Opex AO Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([Opex AO Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([Opex AO Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([Opex AO Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([Opex AO Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([Opex AO Varient RPC AOP%], slicerFilter)
-			    ),
+			    CALCULATE([Opex AO Varient RPC AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([Opex AO Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([Opex AO Varient RPC PY%], slicerFilter)
-			    ),
+			    CALCULATE([Opex AO Varient RPC PY%], slicerFilter),
 			
 			    BLANK()
 			)
@@ -7615,80 +7123,46 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			RETURN
-			SWITCH(
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
+			RETURN SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([SG&A Labor Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([SG&A Labor Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([SG&A Labor Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([SG&A Labor Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([SG&A Labor Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([SG&A Labor Varient RPC AOP%], slicerFilter)
-			    ),
+			    CALCULATE([SG&A Labor Varient RPC AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([SG&A Labor Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([SG&A Labor Varient RPC PY%], slicerFilter)
-			    ),
+			    CALCULATE([SG&A Labor Varient RPC PY%], slicerFilter),
 			
 			    BLANK()
 			)
@@ -7705,80 +7179,46 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			RETURN
-			SWITCH(
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
+			RETURN SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Labor Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Labor Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([T&W Labor Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Labor Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Labor Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Labor Varient RPC AOP%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Labor Varient RPC AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([T&W Labor Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Labor Varient RPC PY%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Labor Varient RPC PY%], slicerFilter),
 			
 			    BLANK()
 			)
@@ -7795,80 +7235,46 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			RETURN
-			SWITCH(
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
+			RETURN SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Building Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Building Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([T&W Building Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Building Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Building Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Building Varient RPC AOP%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Building Varient RPC AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([T&W Building Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Building Varient RPC PY%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Building Varient RPC PY%], slicerFilter),
 			
 			    BLANK()
 			)
@@ -7885,80 +7291,46 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			RETURN
-			SWITCH(
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
+			RETURN SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Fleet Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Fleet Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([T&W Fleet Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Fleet Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Fleet Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Fleet Varient RPC AOP%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Fleet Varient RPC AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([T&W Fleet Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([T&W Fleet Varient RPC PY%], slicerFilter)
-			    ),
+			    CALCULATE([T&W Fleet Varient RPC PY%], slicerFilter),
 			
 			    BLANK()
 			)
@@ -7975,80 +7347,46 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  -- 7th of current month
-			VAR MaxClosedMonth =
-			    IF(
-			        TodayDate < DelayCutoff,
-			        EOMONTH(TodayDate, -2),  // Treat two months ago as last closed
-			        EOMONTH(TodayDate, -1)   // Otherwise, use last month
-			    )
-			
-			VAR Currentyear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
+			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
+			VAR CurrentYear = YEAR(_cl_day)
+			VAR CurrentMonth = MONTH(_cl_day)
 			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR IsCurrentYear = VisualYear = YEAR(MaxClosedMonth)
-			
-			VAR ExpectedMonths =
-			    IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			RETURN
-			SWITCH(
+			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
+			VAR SelectedMonths = CALCULATETABLE(
+				VALUES(Operation_Cal_Day[MonthNumber]),
+				Operation_Cal_Day[Year] = VisualYear
+			)
+			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
+			VAR slicerFilter = FILTER(
+				ALLSELECTED(Operation_Cal_Day),
+				Operation_Cal_Day[DayDate] <= _cl_day
+			)
+			RETURN SWITCH(
 			    TRUE(),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([SG&A NON Labor Varient AOP%], slicerFilter)
-			    ),
+			    CALCULATE([SG&A NON Labor Varient AOP%], slicerFilter),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([SG&A NON Labor Varient FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([SG&A NON Labor Varient PY%], slicerFilter)
-			    ),
+			    CALCULATE([SG&A NON Labor Varient PY%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    IF(IsDateSelected,
-			        CALCULATE([SG&A NON Labor Varient RPC AOP%], slicerFilter)
-			    ),
+			    CALCULATE([SG&A NON Labor Varient RPC AOP%], slicerFilter),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(IsDateSelected && NOT IsFullPeriod,
+			    IF(NOT IsFullPeriod,
 			        CALCULATE([SG&A NON Labor Varient RPC FCST%], slicerFilter),
 			        BLANK()
 			    ),
 			
 			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    IF(IsDateSelected,
-			        CALCULATE([SG&A NON Labor Varient RPC PY%], slicerFilter)
-			    ),
+			    CALCULATE([SG&A NON Labor Varient RPC PY%], slicerFilter),
 			
 			    BLANK()
 			)
@@ -8877,19 +8215,21 @@ table 'Measure Table'
 			var d5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[WhseWorkedHours]),
+			    REMOVEFILTERS(Operation_Cal_Day),
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 			var f5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[WhseTempHours]),
+			    REMOVEFILTERS(Operation_Cal_Day),
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 			var c5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[WhseConvertedCases]),
+			    REMOVEFILTERS(Operation_Cal_Day),
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[WhseElasticity])
 			
-			var _val = 
-			c22/((d5+f5)*((((c22-c5)/c5)*_e)+1))
+			var _val = c22 / ((d5 + f5) * (((c22 - c5) / c5) * _e + 1))
 			
 			RETURN _val
 			```
@@ -8994,6 +8334,7 @@ table 'Measure Table'
 					SUMX(V_Fact_FB_Ops_CPH_CPC, V_Fact_FB_Ops_CPH_CPC[DelvtempHours] * V_Fact_FB_Ops_CPH_CPC[DelvVolVariance] * V_Fact_FB_Ops_CPH_CPC[DelvElasticity]),
 					SUM(V_Fact_FB_Ops_CPH_CPC[DelvWorkedHours])
 				),
+			    REMOVEFILTERS(Operation_Cal_Day),
 				SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
 			)
 		formatString: 0
@@ -9012,10 +8353,13 @@ table 'Measure Table'
 					SUMX(V_Fact_FB_Ops_CPH_CPC,V_Fact_FB_Ops_CPH_CPC[Mech_OvertimeHours] * V_Fact_FB_Ops_CPH_CPC[MechTempHours] * V_Fact_FB_Ops_CPH_CPC[MechElasticity]),
 					SUM(V_Fact_FB_Ops_CPH_CPC[MechWorkedHours])
 				),
+			    REMOVEFILTERS(Operation_Cal_Day),
 				SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
 			)
 		displayFolder: Ops
 		lineageTag: 7a794edb-6ac5-4fbd-8ec6-60588a31af31
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Mech_%TempLab_Adj_Vol_Change_vs_YA_CPH = [Mech_%TempLab_Actuals_CPH]-[Mech_%TempLab_Actuals_PY_CPH]
 		displayFolder: Ops
@@ -9151,7 +8495,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Cases_Per_Deliver_actuals_PY_CPH = CALCULATE([Cases_Per_Deliver_actuals_CPH],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Cases_Per_Deliver_actuals_PY_CPH = CALCULATE([Cases_Per_Deliver_actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 468ed102-3bda-43a7-a8fe-165e28cf2b7c
 
@@ -9168,12 +8512,15 @@ table 'Measure Table'
 			var d5 =
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[DelvTotalOrder]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
-			
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var c5 =
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[DelvInvoicedQty]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[DelvElasticity])
 			
 			var _val = c22/((d5)*((((c22-c5)/c5)*_e)+1))
@@ -9195,7 +8542,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Cases_Per_Order_actuals_PY_CPH = CALCULATE([Cases_Per_Order_actuals_CPH],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Cases_Per_Order_actuals_PY_CPH = CALCULATE([Cases_Per_Order_actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: b152b541-7efc-4dc9-9b55-f3afadbc8e72
 
@@ -9210,14 +8557,16 @@ table 'Measure Table'
 			var d5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[whseTotalOrder]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
-			
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var c5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[WhseAdjOrderQty]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[whseElasticity])
-			
 			var _val = 
 			c22/((d5)*((((c22-c5)/c5)*_e)+1))
 			
@@ -9240,7 +8589,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Cases_Per_Visit_actuals_PY_CPH = CALCULATE([Cases_Per_Visit_actuals_CPH],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Cases_Per_Visit_actuals_PY_CPH = CALCULATE([Cases_Per_Visit_actuals_CPH], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 28af5575-2489-48d1-b294-3e5037a0c97f
 
@@ -9255,12 +8604,15 @@ table 'Measure Table'
 			var d5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[MechNumberOfVisit]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
-			
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var c5 = 
 			CALCULATE(
 			    SUM(V_Fact_FB_Ops_CPH_CPC[MechHandledCases]),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+			    REMOVEFILTERS(Operation_Cal_Day),
+			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
+			)
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[MechElasticity])
 			
 			var _val = 
@@ -9377,31 +8729,21 @@ table 'Measure Table'
 		displayFolder: Ops - DNP
 		lineageTag: 2cc1eb4f-b62e-47cd-aaf5-01ed66d68912
 
-	measure Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Bar = ```
+	measure Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Bar =
 			
-			Var TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			 
-			Var Current_Qtr = Quarter(TodayDate)
-			Var Current_Year= Year(TodayDate)
+			VAR TodayDate = [CL_M_END]
+			VAR Current_Qtr = Quarter([CL_M_END])
+			VAR Current_Year = [CL_Y0]
 			RETURN
-			IF(
-			SELECTEDVALUE('Metric Table'[Metrics]) = "FCST",
-			CALCULATE([Total_Breakage_Abs_RPC_AOP_Fcst_YA_Selection_OPs],
-			    FILTER(
-			        VALUES(Operation_Cal_Day[DayDate]),
-			        YEAR(Operation_Cal_Day[DayDate]) = YEAR(TodayDate)),
-			        FILTER(
-						VALUES(Operation_Cal_Day[DayDate]),
-						QUARTER(Operation_Cal_Day[DayDate])>=Current_Qtr
-					)
-				),
-			CALCULATE([Total_Breakage_Abs_RPC_AOP_Fcst_YA_Selection_OPs],
-			    FILTER(
-			        VALUES(Operation_Cal_Day[DayDate]),
-			        YEAR(Operation_Cal_Day[DayDate]) = YEAR(TodayDate))
+			IF(SELECTEDVALUE('Metric Table'[Metrics]) = "FCST",
+			    CALCULATE([Total_Breakage_Abs_RPC_AOP_Fcst_YA_Selection_OPs],
+			        Operation_Cal_Day[Year] = Current_Year,
+			        Operation_Cal_Day[Quarter] >= Current_Qtr
+			    ),
+			    CALCULATE([Total_Breakage_Abs_RPC_AOP_Fcst_YA_Selection_OPs],
+			        Operation_Cal_Day[Year] = Current_Year
 				)
 			)
-			```
 		displayFolder: Ops
 		lineageTag: e442ccba-7a80-46c0-ba24-b1966f2a2ab0
 
@@ -9698,71 +9040,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops = ```
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6  // 7th of the current month
-			
-			VAR MaxClosedMonth =
-			    EOMONTH(TodayDate, IF(TodayDate < DelayCutoff, -2, -1))
-			
-			VAR CurrentYear = YEAR(MaxClosedMonth)
-			VAR CurrentMonth = MONTH(MaxClosedMonth)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR IsCurrentYear = VisualYear = CurrentYear
-			
-			VAR ExpectedMonths = IF(IsCurrentYear, CurrentMonth, 12)
-			
-			VAR SelectedMonths =
-			    CALCULATETABLE(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        Operation_Cal_Day[Year] = VisualYear
-			    )
-			
-			VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-			VAR IsFullPeriod = TotalMonthsSelected = ExpectedMonths
-			
-			VAR IsDateSelected =
-			    ISFILTERED(Operation_Cal_Day[L1]) ||
-			    ISFILTERED(Operation_Cal_Day[L2]) ||
-			    ISFILTERED(Operation_Cal_Day[L3]) ||
-			    ISFILTERED(Operation_Cal_Day[DayDate])
-			
-			VAR MaxClosedQuarter =
-			    CALCULATE(
-			        MAX(Operation_Cal_Day[Quarter]),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth,
-			        Operation_Cal_Day[Year] = CurrentYear
-			    )
-			
-			VAR IsClosedQuarter =
-			    VisualYear < CurrentYear ||
-			    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)
-			
-			VAR slicerFilter =
-			    FILTER(
-			        ALLSELECTED(Operation_Cal_Day),
-			        Operation_Cal_Day[DayDate] <= MaxClosedMonth
-			    )
-			
-			VAR MetricSelected = SELECTEDVALUE('Metric Table'[Metrics])
-			VAR BaseMeasure = [Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_final]
-			VAR FilteredMeasure = CALCULATE(BaseMeasure, slicerFilter)
-			
-			RETURN
-			    IF (
-			        MetricSelected = "FCST",
-			        IF (
-			            IsDateSelected && NOT IsFullPeriod && NOT IsClosedQuarter,
-			            IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),
-			            BLANK()
-			        ),
-			        BaseMeasure
-			    )
-			    
-			```
+	measure Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops = CALCULATE([Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_final], Metric[Group] = "BSO_AOP_FCST_YA")
 		displayFolder: Ops
 		lineageTag: 64d44bc2-7e23-4898-8d80-3782f8ed9aeb
 
@@ -9847,59 +9125,28 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops_Bar = ```
-			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR PMDate = MAX('V_Dim_FB_Ref'[PM])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6
-			RETURN
+	measure Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops_Bar =
 			
 			CALCULATE(
 			    [Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops],
-			    FILTER(
-			        VALUES(Operation_Cal_Day[DayDate]),
-			        (YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) <= (MONTH(PMDate))) ||
-			        (YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) < MONTH(PMDate)
-			        && TodayDate>DelayCutoff)
-			    )
+			    Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_CalDay[CL_M_END])
 			)
-			
-			```
 		lineageTag: 58cb14c5-e7b2-4e3b-bfe8-63d2e09d3f32
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Bar =
 			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR PMDate = MAX('V_Dim_FB_Ref'[PM])
-			VAR DelayCutoff = MAX('V_Dim_FB_Ref'[CM]) + 6
+			VAR _cl_day = [CL_M_END]
 			RETURN
 			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
 				"AOP", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC],
-					FILTER(
-						VALUES(Operation_Cal_Day[DayDate]),
-						(YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) < (MONTH(PMDate))) ||
-						(YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) <= MONTH(PMDate)
-						&& TodayDate>DelayCutoff)
-					)
-				),
+			        Operation_Cal_Day[DayDate] <= _cl_day),
 				"FCST", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC],
-					FILTER(
-						VALUES(Operation_Cal_Day[DayDate]),
-						(YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) < MONTH(PMDate)) ||
-						(YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) <= MONTH(PMDate)
-						&& TodayDate>DelayCutoff)
-					)
-				),
+					Operation_Cal_Day[DayDate] <= _cl_day),
 				"YA", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC],
-					FILTER(
-						VALUES(Operation_Cal_Day[DayDate]),
-						YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate)
-					)
-				)
+			        Operation_Cal_Day[Year] = YEAR(_cl_day))
 			)
 		lineageTag: b4f97c2e-7104-4c7e-b5af-88f5864cd73e
 
@@ -9907,35 +9154,16 @@ table 'Measure Table'
 
 	measure Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Bar =
 			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR PMDate = MAX('V_Dim_FB_Ref'[PM])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6
+			VAR _cl_day = [CL_M_END]
 			RETURN
 			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
 				"AOP", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_CC],
-					FILTER(
-						VALUES(Operation_Cal_Day[DayDate]),
-						(YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) < (MONTH(PMDate))) ||
-						(YEAR(Operation_Cal_Day[DayDate]) = YEAR(MAX('V_Dim_FB_Ref'[CM])) && MONTH(Operation_Cal_Day[DayDate]) <= MONTH(MAX('V_Dim_FB_Ref'[CM]))
-						&& TodayDate>DelayCutoff)
-			    	)
-				),
+			        Operation_Cal_Day[DayDate] <= _cl_day),
 				"FCST", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_CC],
-					FILTER(
-						VALUES(Operation_Cal_Day[DayDate]),
-						(YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) < (MONTH(PMDate))) ||
-						(YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) <= MONTH(PMDate)
-						&& TodayDate>DelayCutoff)
-			    	)
-				),
+					Operation_Cal_Day[DayDate] <= _cl_day),
 				"YA", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_CC],
-					FILTER(
-						VALUES(Operation_Cal_Day[DayDate]),
-						YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate)
-					)
-				)
+			        Operation_Cal_Day[Year] = YEAR(_cl_day))
 			)
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Ops
@@ -10036,8 +9264,7 @@ table 'Measure Table'
 			    _metric = "Fcst", [Wh_CPH_Vol_Adj_Fcst_CPH],
 			    
 			    _wdm = "Warehouse" && _av = "Vol.Adjusted" &&
-			    _metric = "YA", 
-			    CALCULATE([Wh_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CY_LE_CL"),
+			    _metric = "YA", [Wh_CPH_Adj_Vol_PY_CPH],
 			    
 			    _wdm = "Delivery" && _av = "Actuals" &&
 			    _metric = "AOP", [Delv_CPH_AOP_CPH],
@@ -10055,8 +9282,7 @@ table 'Measure Table'
 			    _metric = "Fcst", [Delv_CPH_Vol_Adj_Fcst_CPH],
 			    
 			    _wdm = "Delivery" && _av = "Vol.Adjusted" &&
-			    _metric = "YA",
-			    CALCULATE([Delv_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CY_LE_CL"),
+			    _metric = "YA", [Delv_CPH_Adj_Vol_PY_CPH],
 			    
 			    _wdm = "Merchandising" && _av = "Actuals" &&
 			    _metric = "AOP", [Mech_CPH_AOP_CPH],
@@ -10074,8 +9300,7 @@ table 'Measure Table'
 			    _metric = "Fcst", [Mech_CPH_Vol_Adj_Fcst_CPH],
 			    
 			    _wdm = "Merchandising" && _av = "Vol.Adjusted" &&
-			    _metric = "YA",
-			    CALCULATE([Mech_CPH_Adj_Vol_PY_CPH], 'Time Intel'[Group] = "CY_LE_CL")
+			    _metric = "YA", [Mech_CPH_Adj_Vol_PY_CPH]
 			)
 			```
 		displayFolder: Ops
@@ -10138,14 +9363,13 @@ table 'Measure Table'
 
 	measure Volume_FCST_TL_nw =
 			
-			
+			VAR _vy = SELECTEDVALUE(Operation_Cal_Day[Year])
 			VAR _cmd = [CM]
 			VAR _cy = YEAR(_cmd)
 			RETURN SUMX(
-			    Operation_Cal_Day,
-			    SWITCH(TRUE(),
-			        Operation_Cal_Day[Year] = _cy && MONTH(_cmd) IN {2, 3}, [Volume_AOP_TL],
-			        [Volume_FCST_TL]
+			    VALUES(Operation_Cal_Day[Quarter]),
+			    IF((_vy = _cy && MONTH([CM]) IN {1, 2, 3}) || Operation_Cal_Day[Quarter] = 1,
+			        [Volume_AOP_TL], [Volume_FCST_TL]
 			    )
 			)
 		displayFolder: Topline
@@ -10153,23 +9377,18 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter FCST dynamic Volume' = ```
+	measure 'Quarter FCST dynamic Volume' =
 			
-			VAR currentMonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			 
-			RETURN
 			CALCULATE(
 			    [Volume_FCST_TL_nw],
+			    V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly",
 			    KEEPFILTERS(
 			        FILTER(
 			            ALL(Operation_Cal_Day),
-			            Operation_Cal_Day[MonthNumber] >= currentMonth
-			                && Operation_Cal_Day[Year] = YEAR(MAX('V_Dim_FB_Ref'[CM]))
+			            Operation_Cal_Day[DayDate] >= [CM] || SELECTEDVALUE(Operation_Cal_Day[Year]) < [CM_Y0]
 			        )
-			    ),FILTER(ALL(V_Fact_FB_Topline_Budget_All[TimeGranularity]),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			))
-			```
+			    )
+			)
 		displayFolder: Topline
 		lineageTag: 0fed7bc9-c6f7-4f58-8462-2dc1c1259eeb
 
@@ -10177,14 +9396,13 @@ table 'Measure Table'
 
 	measure Revenue_FCST_TL_nw =
 			
+			VAR _vy = SELECTEDVALUE(Operation_Cal_Day[Year])
 			VAR _cmd = [CM]
 			VAR _cy = YEAR(_cmd)
 			RETURN SUMX(
-			    Operation_Cal_Day,
-			    SWITCH(
-			        TRUE(),
-			        Operation_Cal_Day[Year] = _cy && MONTH(_cmd) IN {2, 3}, [Revenue_AOP_TL],
-			        [Revenue_FCST_TL]
+			    VALUES(Operation_Cal_Day[Quarter]),
+			    IF((_vy = _cy && MONTH([CM]) IN {1, 2, 3}) || Operation_Cal_Day[Quarter] = 1,
+			        [Revenue_AOP_TL], [Revenue_FCST_TL]
 			    )
 			)
 		displayFolder: Topline
@@ -10192,43 +9410,46 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter FCST dynamic Revenue' = ```
+	measure 'Quarter FCST dynamic Revenue' =
 			
-			VAR currentMonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			 
-			RETURN
 			CALCULATE(
 			    [Revenue_FCST_TL_nw],
+			    V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly",
 			    KEEPFILTERS(
 			        FILTER(
 			            ALL(Operation_Cal_Day),
-			            Operation_Cal_Day[MonthNumber] >= currentMonth
-			                && Operation_Cal_Day[Year] = YEAR(MAX('V_Dim_FB_Ref'[CM]))
+			            Operation_Cal_Day[DayDate] >= [CM] || SELECTEDVALUE(Operation_Cal_Day[Year]) < [CM_Y0]
 			        )
-			    ),FILTER(ALL(V_Fact_FB_Topline_Budget_All[TimeGranularity]),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			))
-			```
+			    )
+			)
 		displayFolder: Topline
 		lineageTag: e1363643-b914-4e41-8213-16c909a8cd30
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Rate per case_FCST_TL_nw' =
-			
-			
-			VAR SelectedQuarters = VALUES(Operation_Cal_Day[Quarter])
-			RETURN
-			SUMX(
-			    SelectedQuarters,
-			    VAR CurrentQuarter = Operation_Cal_Day[Quarter]
-			    RETURN
-			    SWITCH(
-			        TRUE(),
-			        CurrentQuarter = 1, [Rate_Per_Case_AOP_TL],
-			        [Rate_Per_Case_FCST_TL]  // Default case
-			    )
-			)
+			DIVIDE([Revenue_FCST_TL_nw], [Volume_FCST_TL_nw])
+			// VAR _vy = SELECTEDVALUE(Operation_Cal_Day[Year])
+			// VAR _cmd = [CM]
+			// VAR _cy = YEAR(_cmd)
+			// RETURN SUMX(
+			//     VALUES(Operation_Cal_Day[Quarter]),
+			//     IF((_vy = _cy && MONTH([CM]) IN {1, 2, 3}) || Operation_Cal_Day[Quarter] = 1,
+			//         [Rate_Per_Case_AOP_TL], [Rate_Per_Case_FCST_TL]
+			//     )
+			// )
+			// VAR SelectedQuarters = VALUES(Operation_Cal_Day[Quarter])
+			// RETURN
+			// SUMX(
+			//     SelectedQuarters,
+			//     VAR CurrentQuarter = Operation_Cal_Day[Quarter]
+			//     RETURN
+			//     SWITCH(
+			//         TRUE(),
+			//         CurrentQuarter = 1, [Rate_Per_Case_AOP_TL],
+			//         [Rate_Per_Case_FCST_TL]  // Default case
+			//     )
+			// )
 		displayFolder: Topline
 		lineageTag: e7097ea3-d99d-47c9-aa32-e7896bb56e89
 
@@ -10288,445 +9509,53 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter FCST dynamic volume Bar' = ```
-			        
-					VAR CMDate = MAX('V_Dim_FB_Ref'[PM])
-					VAR currentMonth = MONTH(CMDate)
-					 
-					RETURN
-					SWITCH(
-					    true(),
-					    MAX(Operation_Cal_Day[MonthNumber])<>currentMonth &&
-					    MAX(Operation_Cal_Day[Year]) = YEAR(CMDate)
-					,
-					CALCULATE(
-					    [Volume_FCST_TL_nw],
-					    KEEPFILTERS(
-					        FILTER(
-					            ALL(Operation_Cal_Day),
-					            Operation_Cal_Day[MonthNumber] <> currentMonth &&
-					            Operation_Cal_Day[Year] = YEAR(CMDate)
-					        )
-					    ),FILTER(ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-					        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-					)),
-					 
-					MAX(Operation_Cal_Day[MonthNumber])=currentMonth
-					     && MAX(Operation_Cal_Day[Year]) = YEAR(CMDate),
-					     CALCULATE(
-					    [Volume_FCST_TL_nw],
-					    KEEPFILTERS(
-					        FILTER(
-					            ALL(Operation_Cal_Day),
-					            Operation_Cal_Day[MonthNumber] = currentMonth
-					                && Operation_Cal_Day[Year] = YEAR(CMDate)
-					        )
-					    ),FILTER(ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-					        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-					       &&  V_Fact_FB_Topline_Budget_All[RYBkt] IN {"RCY"}
-					)))
-			```
+	measure 'Quarter FCST dynamic volume Bar' = CALCULATE([Volume_FCST_TL_nw], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
 		displayFolder: Topline
 		lineageTag: b9dc7c2d-b454-4d56-a50f-56a5164a735c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic volume AOP bar' = ```
-			
-					VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-					VAR currentMonth = MONTH(CMDate)
-					 
-					RETURN
-					SWITCH(
-					    true(),
-					    MAX(Operation_Cal_Day[MonthNumber])>currentMonth
-					     && MAX(Operation_Cal_Day[Year]) = YEAR(CMDate)
-					,
-					CALCULATE(
-					    [Volume_AOP_TL],
-					    KEEPFILTERS(
-					        FILTER(
-					            ALL(Operation_Cal_Day),
-					            Operation_Cal_Day[MonthNumber] > currentMonth
-					                && Operation_Cal_Day[Year] = YEAR(CMDate)
-					        )
-					    ),FILTER(ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-					        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"      
-					)),
-					 MAX(Operation_Cal_Day[MonthNumber])<currentMonth
-					     && MAX(Operation_Cal_Day[Year]) = YEAR(CMDate),
-					     CALCULATE(
-					    [Volume_AOP_TL],
-					    KEEPFILTERS(
-					        FILTER(
-					            ALL(Operation_Cal_Day),
-					            Operation_Cal_Day[MonthNumber] < currentMonth
-					                && Operation_Cal_Day[Year] = YEAR(CMDate)
-					        )
-					    ),FILTER(ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-					        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-					        && V_Fact_FB_Topline_Budget_All[RYBkt] = "RCY"
-					)),
-					MAX(Operation_Cal_Day[MonthNumber])=currentMonth
-					     && MAX(Operation_Cal_Day[Year]) = YEAR(CMDate),
-					     CALCULATE(
-					    [Volume_AOP_TL],
-					    KEEPFILTERS(
-					        FILTER(
-					            ALL(Operation_Cal_Day),
-					            Operation_Cal_Day[MonthNumber] = currentMonth
-					                && Operation_Cal_Day[Year] = YEAR(CMDate)
-					        )
-					    ),FILTER(ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-					        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-					        && V_Fact_FB_Topline_Budget_All[RYBkt] IN {"RCY"}
-					)))
-			```
+	measure 'Quarter dynamic volume AOP bar' = CALCULATE([Volume_AOP_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
 		displayFolder: Topline
 		lineageTag: 4e0a4f13-068b-4d56-84c1-da3d4b01326f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic revenue AOP bar' = ```
-			
-			VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-			VAR currentMonth = MONTH(CMDate)
-			 
-			RETURN
-			SWITCH(
-			    true(),
-			    MAX(Operation_Cal_Day[MonthNumber])>currentMonth
-			     && MAX(Operation_Cal_Day[Year]) = YEAR(CMDate)
-			,
-			CALCULATE(
-			    [Revenue_AOP_TL],
-			    KEEPFILTERS(
-			        FILTER(
-			            ALL(Operation_Cal_Day),
-			            Operation_Cal_Day[MonthNumber] > currentMonth
-			                && Operation_Cal_Day[Year] = YEAR(CMDate)
-			        )
-			    ),FILTER(ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			)),
-			 MAX(Operation_Cal_Day[MonthNumber])<currentMonth
-			     && MAX(Operation_Cal_Day[Year]) = YEAR(CMDate),
-			     CALCULATE(
-			    [Revenue_AOP_TL],
-			    KEEPFILTERS(
-			        FILTER(
-			            ALL(Operation_Cal_Day),
-			            Operation_Cal_Day[MonthNumber] < currentMonth
-			                && Operation_Cal_Day[Year] = YEAR(CMDate)
-			        )
-			    ),FILTER(ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			        && V_Fact_FB_Topline_Budget_All[RYBkt] = "RCY"
-			)),
-			MAX(Operation_Cal_Day[MonthNumber])=currentMonth
-			     && MAX(Operation_Cal_Day[Year]) = YEAR(CMDate),
-			     CALCULATE(
-			    [Revenue_AOP_TL],
-			    KEEPFILTERS(
-			        FILTER(
-			            ALL(Operation_Cal_Day),
-			            Operation_Cal_Day[MonthNumber] = currentMonth
-			                && Operation_Cal_Day[Year] = YEAR(CMDate)
-			        )
-			    ),FILTER(ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			       &&  V_Fact_FB_Topline_Budget_All[RYBkt] IN {"RCY"}
-			)))
-			```
+	measure 'Quarter dynamic revenue AOP bar' = CALCULATE([Revenue_AOP_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_CalDay[CD]))
 		displayFolder: Topline
 		lineageTag: d70b188e-65f7-4765-8beb-76d90d9b9054
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter FCST dynamic Revenue Bar' = ```
-			
-			VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-			VAR currentMonth = MONTH(CMDate)
-			 
-			RETURN
-			SWITCH(
-			    true(),
-			    MAX(Operation_Cal_Day[MonthNumber])<>currentMonth &&
-			    MAX(Operation_Cal_Day[Year]) = YEAR(CMDate)
-			,
-			CALCULATE(
-			    [Revenue_FCST_TL_nw],
-			    KEEPFILTERS(
-			        FILTER(
-			            ALL(Operation_Cal_Day),
-			            Operation_Cal_Day[MonthNumber] <> currentMonth &&
-			            Operation_Cal_Day[Year] = YEAR(CMDate)
-			        )
-			    ),FILTER(ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			)),
-			 
-			MAX(Operation_Cal_Day[MonthNumber])=currentMonth
-			     && MAX(Operation_Cal_Day[Year]) = YEAR(CMDate),
-			     CALCULATE(
-			    [Revenue_FCST_TL_nw],
-			    KEEPFILTERS(
-			        FILTER(
-			            ALL(Operation_Cal_Day),
-			            Operation_Cal_Day[MonthNumber] = currentMonth
-			                && Operation_Cal_Day[Year] = YEAR(CMDate)
-			        )
-			    ),FILTER(ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			       &&  V_Fact_FB_Topline_Budget_All[RYBkt] IN {"RCY"}
-			)))
-			 
-			```
+	measure 'Quarter FCST dynamic Revenue Bar' = CALCULATE([Revenue_FCST_TL_nw], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_CalDay[CD]))
 		displayFolder: Topline
 		lineageTag: 58989984-c4e1-4490-8368-b65ce01b8494
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic volume FCST KPICARD' = ```
-			
-			VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-			VAR currentMonth = MONTH(CMDate)
-			VAR currentYear = YEAR(CMDate)
-			 
-			RETURN
-			SUMX(
-			    FILTER(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        CALCULATE(MAX(Operation_Cal_Day[Year])) = currentYear &&
-			        Operation_Cal_Day[MonthNumber] <= currentMonth
-			    ),
-			    VAR selectedMonth = Operation_Cal_Day[MonthNumber]
-			    VAR isCurrentMonth = selectedMonth = currentMonth
-			 
-			    RETURN
-			    IF(
-			        isCurrentMonth,
-			        // ✅ CURRENT MONTH → MTD + RYBKT
-			        CALCULATE(
-			            [Volume_FCST_TL_nw],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER(
-			                 ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			                'V_Fact_FB_Topline_Budget_All'[TimeGranularity] = "MTD" &&
-			                'V_Fact_FB_Topline_Budget_All'[RYBKT] = "RCY"
-			            )
-			        ),
-			        // ✅ CLOSED MONTH → Monthly, no RYBKT
-			        CALCULATE(
-			            [Volume_FCST_TL_nw],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER(
-			                ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			                'V_Fact_FB_Topline_Budget_All'[TimeGranularity] = "Monthly" &&
-			                'V_Fact_FB_Topline_Budget_All'[RYBKT] = "RCY"
-			            )
-			        )
-			    )
-			)
-			 
-			```
+	measure 'Quarter dynamic volume FCST KPICARD' = CALCULATE([Volume_FCST_TL_nw], Operation_Cal_Day[DayDate] < MAX(V_Dim_FB_CalDay[CD]))
 		displayFolder: Topline
 		lineageTag: d37de0b7-e189-4ec2-94e1-0418b141a24b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic revenue FCST KPICARD' = ```
-			
-			VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-			VAR currentMonth = MONTH(CMDate)
-			VAR currentYear = YEAR(CMDate)
-			 
-			RETURN
-			SUMX(
-			    FILTER(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        CALCULATE(MAX(Operation_Cal_Day[Year])) = currentYear &&
-			        Operation_Cal_Day[MonthNumber] <= currentMonth
-			    ),
-			    VAR selectedMonth = Operation_Cal_Day[MonthNumber]
-			    VAR isCurrentMonth = selectedMonth = currentMonth
-			 
-			    RETURN
-			    IF(
-			        isCurrentMonth,
-			        // ✅ CURRENT MONTH → MTD + RYBKT
-			        CALCULATE(
-			            [Revenue_FCST_TL_nw],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER(
-			                 ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			                'V_Fact_FB_Topline_Budget_All'[TimeGranularity] = "MTD" &&
-			                'V_Fact_FB_Topline_Budget_All'[RYBKT] = "RCY"
-			            )
-			        ),
-			        // ✅ CLOSED MONTH → Monthly, no RYBKT
-			        CALCULATE(
-			            [Revenue_FCST_TL_nw],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER(
-			                ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			                'V_Fact_FB_Topline_Budget_All'[TimeGranularity] = "Monthly" &&
-			                'V_Fact_FB_Topline_Budget_All'[RYBKT] = "RCY"
-			            )
-			        )
-			    )
-			)
-			 
-			```
+	measure 'Quarter dynamic revenue FCST KPICARD' = CALCULATE([Revenue_FCST_TL_nw], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
 		displayFolder: Topline
 		lineageTag: 3713e5c9-dd99-4136-be79-d84b5b725b08
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic volume aop KPICARD' = ```
-			
-			VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-			VAR currentMonth = MONTH(CMDate)
-			VAR currentYear = YEAR(CMDate)
-			 
-			RETURN
-			SUMX(
-			    FILTER(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        CALCULATE(MAX(Operation_Cal_Day[Year])) = currentYear &&
-			        Operation_Cal_Day[MonthNumber] <= currentMonth
-			    ),
-			    VAR selectedMonth = Operation_Cal_Day[MonthNumber]
-			    VAR isCurrentMonth = selectedMonth = currentMonth
-			 
-			    RETURN
-			    IF(
-			        isCurrentMonth,
-			        // ✅ CURRENT MONTH → MTD + RYBKT
-			        CALCULATE(
-			            [Volume_AOP_TL],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER( 
-			                
-			                ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			                'V_Fact_FB_Topline_Budget_All'[TimeGranularity] = "MTD" &&
-			                'V_Fact_FB_Topline_Budget_All'[RYBKT] = "RCY"
-			            )
-			        ),
-			        // ✅ CLOSED MONTH → Monthly, no RYBKT
-			        CALCULATE(
-			            [Volume_AOP_TL],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER(
-			                ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			                'V_Fact_FB_Topline_Budget_All'[TimeGranularity] = "Monthly" &&
-			                'V_Fact_FB_Topline_Budget_All'[RYBKT] = "RCY"
-			            )
-			        )
-			    )
-			)
-			 
-			```
+	measure 'Quarter dynamic volume aop KPICARD' = CALCULATE([Volume_AOP_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
 		displayFolder: Topline
 		lineageTag: c5d1e68a-a7f2-4325-91b1-5b824b5cb5aa
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic Revenue aop KPICARD' = ```
-			
-			VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-			VAR currentMonth = MONTH(CMDate)
-			VAR currentYear = YEAR(CMDate)
-			 
-			RETURN
-			SUMX(
-			    FILTER(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        CALCULATE(MAX(Operation_Cal_Day[Year])) = currentYear &&
-			        Operation_Cal_Day[MonthNumber] <= currentMonth
-			    ),
-			    VAR selectedMonth = Operation_Cal_Day[MonthNumber]
-			    VAR isCurrentMonth = selectedMonth = currentMonth
-			 
-			    RETURN
-			    IF(
-			        isCurrentMonth,
-			        // ✅ CURRENT MONTH → MTD + RYBKT
-			        CALCULATE(
-			            [Revenue_AOP_TL],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER( 
-			                
-			                ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			                'V_Fact_FB_Topline_Budget_All'[TimeGranularity] = "MTD" &&
-			                'V_Fact_FB_Topline_Budget_All'[RYBKT] = "RCY"
-			            )
-			        ),
-			        // ✅ CLOSED MONTH → Monthly, no RYBKT
-			        CALCULATE(
-			            [Revenue_AOP_TL],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER(
-			                ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity],V_Fact_FB_Topline_Budget_All[RYBkt]),
-			                'V_Fact_FB_Topline_Budget_All'[TimeGranularity] = "Monthly" &&
-			                'V_Fact_FB_Topline_Budget_All'[RYBKT] = "RCY"
-			            )
-			        )
-			    )
-			)
-			 
-			```
-		formatString: 0
+	measure 'Quarter dynamic Revenue aop KPICARD' = CALCULATE([Revenue_AOP_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
 		displayFolder: Topline
 		lineageTag: 78a0dc81-1a9f-40c5-95d7-4f66a8ed0199
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Rate_Per_Case_AOP_TL KPICard' = ```
 			DIVIDE([Quarter dynamic Revenue aop KPICARD], [Quarter dynamic volume aop KPICARD],0) 
@@ -10752,53 +9581,12 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic volume attainment aop' = ```
-			
-			VAR _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR _month = VALUES(Operation_Cal_Day[MonthNumber])
-			VAR _currentmonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
+	measure 'Quarter dynamic volume attainment aop' =
 			
 			-- Actuals
 			VAR _num = [Volume_TL]
-			-- AOP for current month (if selected)
-			VAR _D2 =
-			    CALCULATE (
-			        SUM(V_Fact_FB_Topline_Budget_All[SalesCasesBudget]),
-			        REMOVEFILTERS(Operation_Cal_Day),
-			        FILTER (Operation_Cal_Day,
-			            Operation_Cal_Day[Year] = _yr &&
-			            Operation_Cal_Day[MonthNumber] = _currentmonth &&
-			            _currentmonth IN _month
-			        ),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "MTD",
-			        V_Fact_FB_Topline_Budget_All[RYBkt] = "RCY"
-			    )
-			
-			-- AOP for closed months (excluding current month)
-			VAR _D3 =
-			    CALCULATE (
-			        SUM(V_Fact_FB_Topline_Budget_All[SalesCasesBudget]),
-			        REMOVEFILTERS(Operation_Cal_Day),
-			        FILTER (
-			            (Operation_Cal_Day),
-			            Operation_Cal_Day[Year] = _yr &&
-			            Operation_Cal_Day[MonthNumber] < _currentmonth &&
-			            Operation_Cal_Day[MonthNumber] IN _month
-			        ),
-			        
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			        
-			    )
-			
-			VAR _den = _D2 + _D3
-			
-			RETURN
-			if (_den = 0, BLANK(),
-			
-			DIVIDE(_num - _den, _den))
-			
-			    //DIVIDE((_num - _den), _den)
-			```
+			VAR _den = CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[SalesCasesBudget]), Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+			RETURN if (_den = 0, BLANK(), DIVIDE(_num - _den, _den))
 		displayFolder: Topline
 		lineageTag: dd0769ca-0d77-44dc-ba4e-6ebabdf97b78
 
@@ -10806,43 +9594,9 @@ table 'Measure Table'
 
 	measure 'Quarter dynamic volume attainment FCST' =
 			
-			VAR _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR _month = VALUES(Operation_Cal_Day[MonthNumber])
-			VAR _currentmonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			
 			-- Actuals
 			VAR _num = [Volume_TL]
-			
-			-- AOP for current month (if selected)
-			VAR _D2 =
-			    CALCULATE (
-			       [Volume_FCST_TL_nw],
-			        REMOVEFILTERS(Operation_Cal_Day),
-			        FILTER (Operation_Cal_Day,
-			            Operation_Cal_Day[Year] = _yr &&
-			            Operation_Cal_Day[MonthNumber] = _currentmonth &&
-			            _currentmonth IN _month
-			        ),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "MTD",
-			        V_Fact_FB_Topline_Budget_All[RYBkt] = "RCY"
-			    )
-			
-			-- AOP for closed months (excluding current month)
-			VAR _D3 =
-			    CALCULATE (
-			        [Volume_FCST_TL_nw],
-			       REMOVEFILTERS(Operation_Cal_Day),
-			        FILTER (
-			            Operation_Cal_Day,
-			            Operation_Cal_Day[Year] = _yr &&
-			            Operation_Cal_Day[MonthNumber] < _currentmonth &&
-			            Operation_Cal_Day[MonthNumber] IN _month
-			        ),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			    )
-			
-			VAR _den = _D2 + _D3
-			
+			VAR _den = CALCULATE([Volume_FCST_TL_nw], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
 			RETURN IF(_den = 0, BLANK(), DIVIDE(_num - _den, _den))
 		formatString: 0.00
 		displayFolder: Topline
@@ -10850,43 +9604,8 @@ table 'Measure Table'
 
 	measure 'Quarter dynamic Revenue attainment aop' =
 			
-			VAR _yr = SELECTEDVALUE('Operation_Cal_Day'[Year])
-			VAR _month = VALUES(Operation_Cal_Day[MonthNumber])
-			VAR _currentmonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			
-			-- Actuals
-			VAR _num = [Revenue_TL]
-			
-			-- AOP for current month (if selected)
-			VAR _D2 =
-			    CALCULATE (
-			        SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetBudget]),
-			        REMOVEFILTERS(Operation_Cal_Day),
-			        FILTER (Operation_Cal_Day,
-			            Operation_Cal_Day[Year] = _yr &&
-			            Operation_Cal_Day[MonthNumber] = _currentmonth &&
-			            _currentmonth IN _month
-			        ),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "MTD",
-			        V_Fact_FB_Topline_Budget_All[RYBkt] = "RCY"
-			    )
-			
-			-- AOP for closed months (excluding current month)
-			VAR _D3 =
-			    CALCULATE (
-			        SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetBudget]),
-			        REMOVEFILTERS(Operation_Cal_Day),
-			        FILTER (
-			            Operation_Cal_Day,
-			            Operation_Cal_Day[Year] = _yr &&
-			            Operation_Cal_Day[MonthNumber] < _currentmonth &&
-			            Operation_Cal_Day[MonthNumber] IN _month
-			        ),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			    )
-			
-			VAR _den = _D2 + _D3
-			RETURN DIVIDE(_num - _den, _den)
+			VAR _den = CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetBudget]), Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+			RETURN DIVIDE([Revenue_TL] - _den, _den)
 		displayFolder: Topline
 		lineageTag: 7f9ce54e-d03f-4ffd-9228-0adef1d9a36c
 
@@ -10894,43 +9613,8 @@ table 'Measure Table'
 
 	measure 'Quarter dynamic Revenue attainment FCST' =
 			
-			VAR _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR _month = VALUES(Operation_Cal_Day[MonthNumber])
-			VAR _currentmonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			
-			-- Actuals
 			VAR _num = [Revenue_TL]
-			
-			-- AOP for current month (if selected)
-			VAR _D2 =
-			    CALCULATE (
-			       [Revenue_FCST_TL_nw],
-			        REMOVEFILTERS(Operation_Cal_Day),
-			        FILTER (Operation_Cal_Day,
-			            Operation_Cal_Day[Year] = _yr &&
-			            Operation_Cal_Day[MonthNumber] = _currentmonth &&
-			            _currentmonth IN _month
-			        ),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "MTD",
-			        V_Fact_FB_Topline_Budget_All[RYBkt] = "RCY"
-			    )
-			
-			-- AOP for closed months (excluding current month)
-			VAR _D3 =
-			    CALCULATE (
-			        [Revenue_FCST_TL_nw],
-			       REMOVEFILTERS(Operation_Cal_Day),
-			        FILTER (
-			            Operation_Cal_Day,
-			            Operation_Cal_Day[Year] = _yr &&
-			            Operation_Cal_Day[MonthNumber] < _currentmonth &&
-			            Operation_Cal_Day[MonthNumber] IN _month
-			        ),
-			        V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			    )
-			
-			VAR _den = _D2 + _D3
-			
+			VAR _den = CALCULATE([Revenue_FCST_TL_nw], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
 			RETURN IF(_den = 0, BLANK(), DIVIDE(_num - _den, _den))
 		formatString: 0.00
 		displayFolder: Topline
@@ -10942,191 +9626,23 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic Revenue YA KPICARD' = ```
-			
-			VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-			VAR currentMonth = MONTH(CMDate)
-			VAR currentYear = YEAR(CMDate)
-			 
-			RETURN
-			SUMX(
-			    FILTER(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        CALCULATE(MAX(Operation_Cal_Day[Year])) = currentYear &&
-			        Operation_Cal_Day[MonthNumber] <= currentMonth
-			    ),
-			    VAR selectedMonth = Operation_Cal_Day[MonthNumber]
-			    VAR isCurrentMonth = selectedMonth = currentMonth
-			 
-			    RETURN
-			    IF(
-			        isCurrentMonth,
-			        // ✅ CURRENT MONTH → MTD + RYBKT
-			        CALCULATE(
-			            [Revenue_PY_TL],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER( 
-			                
-			                ALL(V_Fact_FB_ToplineActuals_Summary[TimeGranularity]),
-			                V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD" 
-			            )
-			        ),
-			        // ✅ CLOSED MONTH → Monthly, no RYBKT
-			        CALCULATE(
-			            [Revenue_PY_TL],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER(
-			                ALL(V_Fact_FB_ToplineActuals_Summary[TimeGranularity]),
-			                V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly" 
-			            )
-			        )
-			    )
-			)
-			 
-			```
+	measure 'Quarter dynamic Revenue YA KPICARD' = CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD")
 		displayFolder: Topline
 		lineageTag: a8c66add-2437-41bc-b95e-192c563d5e8e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic Volume YA KPICARD' = ```
-			
-			VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-			VAR currentMonth = MONTH(CMDate)
-			VAR currentYear = YEAR(CMDate)
-			 
-			RETURN
-			SUMX(
-			    FILTER(
-			        VALUES(Operation_Cal_Day[MonthNumber]),
-			        CALCULATE(MAX(Operation_Cal_Day[Year])) = currentYear &&
-			        Operation_Cal_Day[MonthNumber] <= currentMonth
-			    ),
-			    VAR selectedMonth = Operation_Cal_Day[MonthNumber]
-			    VAR isCurrentMonth = selectedMonth = currentMonth
-			 
-			    RETURN
-			    IF(
-			        isCurrentMonth,
-			        // ✅ CURRENT MONTH → MTD + RYBKT
-			        CALCULATE(
-			            [Volume_PY_TL],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER( 
-			                
-			                ALL(V_Fact_FB_ToplineActuals_Summary[TimeGranularity]),
-			                V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD" 
-			            )
-			        ),
-			        // ✅ CLOSED MONTH → Monthly, no RYBKT
-			        CALCULATE(
-			            [Volume_PY_TL],
-			            KEEPFILTERS(
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = currentYear
-			                )
-			            ),
-			            FILTER(
-			                ALL(V_Fact_FB_ToplineActuals_Summary[TimeGranularity]),
-			                V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly" 
-			            )
-			        )
-			    )
-			)
-			 
-			```
+	measure 'Quarter dynamic Volume YA KPICARD' = CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD")
 		displayFolder: Topline
 		lineageTag: 49148cc8-c6a3-4c27-a624-bc5cc6709eb8
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic Revenue attainment YA' = ```
+	measure 'Quarter dynamic Revenue attainment YA' =
 			
-			//Quarter_Dynamic_Revenue_Variance :=
-			VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-			VAR currentMonth = MONTH(CMDate)
-			VAR currentYear = YEAR(CMDate)
-			
-			RETURN
-			SUMX(
-			    FILTER(
-			        ADDCOLUMNS(
-			            VALUES(Operation_Cal_Day[MonthNumber]),
-			            "YearVal", CALCULATE(MAX(Operation_Cal_Day[Year]))
-			        ),
-			        [YearVal] = currentYear &&
-			        Operation_Cal_Day[MonthNumber] <= currentMonth
-			    ),
-			    VAR selectedMonth = Operation_Cal_Day[MonthNumber]
-			    VAR selectedYear = currentYear
-			    VAR isCurrentMonth = selectedMonth = currentMonth
-			
-			    // ✅ Actuals
-			    VAR actual =
-			        CALCULATE(
-			            [Revenue_TL],
-			            FILTER(
-			                ALL(Operation_Cal_Day),
-			                Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                Operation_Cal_Day[Year] = selectedYear
-			            )
-			        )
-			
-			    // ✅ Budget
-			    VAR budget =
-			        IF(
-			            isCurrentMonth,
-			            CALCULATE(
-			                [Revenue_PY_TL],
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = selectedYear
-			                ),
-			                FILTER(
-			                    ALL(V_Fact_FB_ToplineActuals_Summary[TimeGranularity]),
-			                    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-			                )
-			            ),
-			            CALCULATE(
-			                [Revenue_PY_TL],
-			                FILTER(
-			                    ALL(Operation_Cal_Day),
-			                    Operation_Cal_Day[MonthNumber] = selectedMonth &&
-			                    Operation_Cal_Day[Year] = selectedYear
-			                ),
-			                FILTER(
-			                    ALL(V_Fact_FB_ToplineActuals_Summary[TimeGranularity]),
-			                    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly"
-			                )
-			            )
-			        )
-			
-			    // ✅ Return % variance: (Actual - Budget) / Budget
-			    RETURN DIVIDE(actual - budget, budget)
-			)
-			
-			```
+			VAR actual = CALCULATE([Revenue_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+			VAR budget = CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD")
+			RETURN DIVIDE(actual - budget, budget)
 		displayFolder: Topline
 		lineageTag: c6f04de1-b679-4da2-aa76-b72e190108c7
 
@@ -11168,61 +9684,12 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure '3y dummy' = ```
+	measure '3y dummy' =
 			
-			VAR _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR _selectedMonths = VALUES(Operation_Cal_Day[MonthNumber])
-			VAR _currentMonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			
-			VAR _num = [Rate_per_Case_TL]
-			
-			-- Pv MTD for Current Month Last Year
-			VAR _D2 =
-			IF (
-			    _currentMonth IN _selectedMonths,
-			    CALCULATE(
-			        [Rate_per_Case_TL],
-			        FILTER(
-			            ALL(Operation_Cal_Day),
-			            Operation_Cal_Day[Year] = _yr - 1 &&
-			            Operation_Cal_Day[MonthNumber] = _currentMonth
-			        ),
-			        V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-			    ),
-			    0
-			)
-			
-			-- Closed Months from Selection
-			VAR _closedMonths =
-			    FILTER(
-			        _selectedMonths,
-			        Operation_Cal_Day[MonthNumber] < _currentMonth
-			    )
-			
-			-- Monthly for Closed Months Last Year
-			VAR _D3 =
-			IF (
-			    COUNTROWS(_closedMonths) > 0,
-			    CALCULATE(
-			        [Rate_per_Case_TL],
-			        FILTER(
-			            ALL(Operation_Cal_Day),
-			            Operation_Cal_Day[Year] = _yr - 1 &&
-			            Operation_Cal_Day[MonthNumber] IN _closedMonths
-			        ),
-			        V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly"
-			    ),
-			    0
-			)
-			
-			-- Combine Denominator
-			VAR _den = _D2 + _D3
-			
+			VAR _den = CALCULATE([Rate_per_Case_TL], 'Time Intel'[Group] = "YA_LE_CD")
+			VAR _num = CALCULATE([Rate_per_Case_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
 			-- Final Output
-			RETURN
-			DIVIDE((_num - _den), _den)
-			
-			```
+			RETURN DIVIDE((_num - _den), _den)
 		displayFolder: Topline
 		lineageTag: 1a22923c-6848-4e69-8a05-1db1c558fb3d
 
@@ -11238,17 +9705,7 @@ table 'Measure Table'
 
 		formatStringDefinition = "#,(##0%);#,##0%"
 
-	measure Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_LP_CC =
-			
-			VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-			RETURN CALCULATE(
-			    [Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops],
-			    FILTER(
-			        VALUES(Operation_Cal_Day[DayDate]),
-			        YEAR(Operation_Cal_Day[DayDate]) = YEAR(CMDate)
-			&& MONTH(Operation_Cal_Day[DayDate]) <= MONTH(CMDate)
-			    )
-			)
+	measure Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_LP_CC = CALCULATE(    [Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops], Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_Ref'[CL_M_END]))
 		lineageTag: 785e0085-fe36-4adb-a02a-76e73e17cb9d
 
 		formatStringDefinition =
@@ -12997,28 +11454,18 @@ table 'Measure Table'
 		displayFolder: Ops
 		lineageTag: ec2d2322-0185-47d4-9759-f8f66896a589
 
-	measure Cases_Per_Deliver_actuals_PY_CPH_matrix_LP = ```
-			 CALCULATE([Cases_Per_Deliver_actuals_CPH_matrix_LP],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
-			```
+	measure Cases_Per_Deliver_actuals_PY_CPH_matrix_LP = CALCULATE([Cases_Per_Deliver_actuals_CPH_matrix_LP], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: 53999514-52c6-43ef-ac81-9568d4a4c7db
 
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	measure Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP =
 			
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR PMDate = MAX('V_Dim_FB_Ref'[PM])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6
-			RETURN
-			CALCULATE(
-			IF([Cases_Per_Deliver_actuals_CPH_matrix_LP]<>0 ,
-			DIVIDE([Cases_Per_Deliver_actuals_CPH_matrix_LP]-[Cases_Per_Deliver_actuals_PY_CPH_matrix_LP], [Cases_Per_Deliver_actuals_PY_CPH_matrix_LP],0)," "),
-			    FILTER(
-			        VALUES(Operation_Cal_Day[DayDate]),
-			        (YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) < (MONTH(PMDate))) ||
-			        (YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) <= MONTH(PMDate)
-			        && TodayDate>DelayCutoff)
-			    )
+			CALCULATE(IF([Cases_Per_Deliver_actuals_CPH_matrix_LP] <> 0,
+			    DIVIDE([Cases_Per_Deliver_actuals_CPH_matrix_LP] - [Cases_Per_Deliver_actuals_PY_CPH_matrix_LP],
+			    [Cases_Per_Deliver_actuals_PY_CPH_matrix_LP], 0), " "),
+			    Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END])
 			)
 		formatString: (#,##0%);#,##0%
 		displayFolder: Ops
@@ -13036,21 +11483,9 @@ table 'Measure Table'
 
 	measure Cases_Per_Visit_Change_vs_YA_CPH_matrix_LP =
 			
-			VAR PMDate = MAX('V_Dim_FB_Ref'[PM])
-			VAR TodayDate = MAX('V_Dim_FB_Ref'[CD])
-			VAR CurrentMonthStart = DATE(YEAR(TodayDate), MONTH(TodayDate), 1)
-			VAR DelayCutoff = CurrentMonthStart + 6
-			RETURN
-			CALCULATE(
-			IF([Cases_Per_Visit_actuals_CPH_matrix_LP] <> 0,
-			DIVIDE([Cases_Per_Visit_actuals_CPH_matrix_LP]-[Cases_Per_Visit_actuals_PY_CPH_matrix_LP], [Cases_Per_Visit_actuals_PY_CPH_matrix_LP],0), ""),
-			    FILTER(
-			        VALUES(Operation_Cal_Day[DayDate]),
-			        (YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) < (MONTH(PMDate))) ||
-			        (YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate) && MONTH(Operation_Cal_Day[DayDate]) <= MONTH(PMDate)
-			        && TodayDate>DelayCutoff)
-			    )
-			
+			CALCULATE(IF([Cases_Per_Visit_actuals_CPH_matrix_LP] <> 0,
+			    DIVIDE([Cases_Per_Visit_actuals_CPH_matrix_LP] - [Cases_Per_Visit_actuals_PY_CPH_matrix_LP], [Cases_Per_Visit_actuals_PY_CPH_matrix_LP],0), ""),
+			    Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END])
 			)
 		formatString: (#,##0%);#,##0%
 		displayFolder: Ops
@@ -13058,38 +11493,20 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure Cases_Per_Visit_actuals_PY_CPH_matrix_LP = CALCULATE([Cases_Per_Visit_actuals_CPH_matrix_LP],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Cases_Per_Visit_actuals_PY_CPH_matrix_LP = CALCULATE([Cases_Per_Visit_actuals_CPH_matrix_LP], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: Ops
 		lineageTag: bef38020-6676-4c92-aeb6-6d2f58aa2b2e
 
-	measure Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP_month_sel =
-			
-			VAR CMDate = MAX('V_Dim_FB_Ref'[CM])
-			RETURN CALCULATE(
-			    [Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP],
-			    FILTER(
-			        VALUES(Operation_Cal_Day[DayDate]),
-			        YEAR(Operation_Cal_Day[DayDate]) = YEAR(CMDate)
-			        && MONTH(Operation_Cal_Day[DayDate]) < MONTH(CMDate)
-			    )
-			)
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP_month_sel = CALCULATE([Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END]))
 		formatString: (#,##0%);#,##0%
 		displayFolder: Ops
 		lineageTag: 260e8320-0971-4381-902a-cdca99b56244
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure Cases_Per_Visit_Change_vs_YA_CPH_matrix_LP_Month_sel =
-			
-			VAR PMDate = MAX('V_Dim_FB_Ref'[PM])
-			RETURN CALCULATE(
-			    [Cases_Per_Visit_Change_vs_YA_CPH_matrix_LP],
-			    FILTER(
-			        VALUES(Operation_Cal_Day[DayDate]),
-			        YEAR(Operation_Cal_Day[DayDate]) = YEAR(PMDate)
-			        && MONTH(Operation_Cal_Day[DayDate]) <= MONTH(PMDate)
-			    )
-			)
+	measure Cases_Per_Visit_Change_vs_YA_CPH_matrix_LP_Month_sel = CALCULATE([Cases_Per_Visit_Change_vs_YA_CPH_matrix_LP], Operation_Cal_Day[DayDate]) <= MAX('V_Dim_FB_Ref'[CL_M_END])
 		formatString: (#,##0%);#,##0%
 		displayFolder: Ops
 		lineageTag: 6a725d85-f749-487a-ad6c-c825fa810365
@@ -16234,57 +14651,47 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Notblank = ```
+	measure Notblank =
 			
-			VAR MonthBegin = MAX('V_Dim_FB_Ref'[CM])
-			VAR MaxSelection = MAX(Operation_Cal_Day[DayDate])
-			VAR IsFilteredRetailer = [IsFiltered_NC_to_SG]
 			VAR SelectedMetric = SELECTEDVALUE('Metric Table'[Metrics])
-			
-			RETURN
-			SWITCH(
+			RETURN SWITCH(
 			    TRUE(),
-			    SelectedMetric = "AOP" &&
-			    (
-			        (NOT IsFilteredRetailer || MonthBegin <= MaxSelection)
-			        && ( NOT ISBLANK([Quarter dynamic volume AOP bar]) || NOT ISBLANK([Quarter dynamic revenue AOP bar]))
+			    SelectedMetric = "AOP"
+			        && (NOT [IsFiltered_NC_to_SG] || MAX('V_Dim_FB_Ref'[CM]) <= MAX(Operation_Cal_Day[DayDate]))
+			        && (NOT ISBLANK([Quarter dynamic volume AOP bar])
+			            || NOT ISBLANK([Quarter dynamic revenue AOP bar])
 			    ), 1,
-			
-			    SelectedMetric IN {"FCST", "YA"} &&
-			    ( NOT ISBLANK([Quarter dynamic volume AOP bar]) || NOT ISBLANK([Quarter dynamic revenue AOP bar])), 1,
-			
+			    SelectedMetric IN {"FCST", "YA"}
+			        && (NOT ISBLANK([Quarter dynamic volume AOP bar])
+			            || NOT ISBLANK([Quarter dynamic revenue AOP bar])
+			    ), 1,
 			    0
 			)
-			
-			```
 		formatString: 0
 		displayFolder: Topline
 		lineageTag: 1a819a90-11d8-4420-baf2-52c93bebf28c
 
-	measure ForecastType = ```
+	measure ForecastType =
 			
-			VAR CMMonth = MONTH(MAX('V_Dim_FB_Ref'[CM]))
-			RETURN SWITCH(
-			    TRUE(),
-			    CMMonth IN {2, 3, 4}, "The forecast is based on AOP",
-			    CMMonth IN {5, 6, 7}, "The forecast is based on FCST39",
-			    CMMonth IN {8, 9, 10}, "The forecast is based on FCST66",
-			    CMMonth IN {11, 12, 1}, "The forecast is based on FCST93"
+			SWITCH(
+			    QUARTER(MAX('V_Dim_FB_Ref'[PM])),
+			    1, "The forecast is based on AOP",
+			    2, "The forecast is based on FCST39",
+			    3, "The forecast is based on FCST66",
+			    4, "The forecast is based on FCST93"
 			)
-			
-			```
 		lineageTag: 5ccbfe0e-3d5f-4743-a4b3-ca56dd92aa84
 
-	measure 'Volume_FCST Topline bar' = ```
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Volume_FCST Topline bar' =
 			
-			VAR CMYear = YEAR(MAX('V_Dim_FB_Ref'[CD]))
-			RETURN SWITCH(
+			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", CALCULATE([Quarter FCST dynamic volume Bar], 'Time Intel'[Group] = "BAR_YR"),
+			    "AOP", [Quarter FCST dynamic volume Bar],
 			    "FCST", "",
-			    "YA", CALCULATE([Quarter FCST dynamic volume Bar], 'Time Intel'[Group] = "BAR_YR") 
+			    "YA", [Quarter FCST dynamic volume Bar]
 			)
-			```
 		displayFolder: Topline
 		lineageTag: 68ca4353-2a63-4639-a890-2f49d2cfac20
 
@@ -16304,24 +14711,14 @@ table 'Measure Table'
 		displayFolder: CMA
 		lineageTag: 719a1d8a-6923-442d-8a89-ce96ac66bf05
 
-	measure 'Revenue_FCST topline bar' = ```
+	measure 'Revenue_FCST topline bar' =
 			
-			VAR CMYear = YEAR(MAX('V_Dim_FB_Ref'[CD]))
-			RETURN SWITCH(
+			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", CALCULATE([Quarter FCST dynamic Revenue Bar],
-					FILTER(
-						VALUES(Operation_Cal_Day[DayDate]),
-						YEAR(Operation_Cal_Day[DayDate]) = CMYear)
-				),
+			    "AOP", [Quarter FCST dynamic Revenue Bar],
 				"FCST", "",
-				"YA", CALCULATE([Quarter FCST dynamic Revenue Bar],
-					FILTER(
-						VALUES(Operation_Cal_Day[DayDate]),
-						YEAR(Operation_Cal_Day[DayDate]) = CMYear)
-				) 
+				"YA", [Quarter FCST dynamic Revenue Bar]
 			)
-			```
 		displayFolder: Topline
 		lineageTag: 77bfb708-cb56-4ee6-944c-cc235f353652
 
@@ -16692,15 +15089,7 @@ table 'Measure Table'
 		formatString: 0
 		lineageTag: f67f2ed7-581f-4f4e-b027-dad9bdb6135b
 
-	measure Total_CFR_Card_TillDate =
-			
-			CALCULATE([Total_CFR_Card],
-			    KEEPFILTERS(
-			        FILTER(Operation_Cal_Day,
-			            Operation_Cal_Day[DayDate] <= [CD]
-			        )
-			    )
-			)
+	measure Total_CFR_Card_TillDate = CALCULATE([Total_CFR_Card], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Ops
 		lineageTag: 96fa12d1-4f1c-43a7-b155-f5af9ec90fac
@@ -16789,7 +15178,7 @@ table 'Measure Table'
 				    "$0.000"
 				)
 
-	measure Breakage_Abs_RPC_Selection_Py_OPs = CALCULATE([Breakage_Abs_RPC_Selection_OPs],SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
+	measure Breakage_Abs_RPC_Selection_Py_OPs = CALCULATE([Breakage_Abs_RPC_Selection_OPs], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 		displayFolder: OPS
 		lineageTag: b3af9c63-f93d-4b61-8749-8d8f10378f90
 
@@ -16916,6 +15305,52 @@ table 'Measure Table'
 			    || ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName])
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: fd1eeaea-2abc-40a1-b6b8-bb2061ac760e
+
+	measure CL_M_END = MAX(V_Dim_FB_Ref[CL_M_END])
+		displayFolder: _ Date Ref
+		lineageTag: 575300a9-2e62-450c-a93b-3024a3b8c89c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure CL_Y0 = MAX(V_Dim_FB_Ref[CL_Y0])
+		displayFolder: _ Date Ref
+		lineageTag: 9f5226ae-3f56-4d0e-a962-1ae1c8cd6bf3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure CL_M0 = MONTH([CL_M_END])
+		displayFolder: _ Date Ref
+		lineageTag: fa002d57-f896-46eb-9739-fe5d7ec38fa4
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure CL_Q0 =
+			
+			VAR _cl_day = [CL_M_END]
+			RETURN CALCULATE(MAX(Operation_Cal_Day[Quarter]), Operation_Cal_Day[DayDate] <= _cl_day)
+		displayFolder: _ Date Ref
+		lineageTag: 7614da5f-2cce-48d9-bd89-b1a598a2ef25
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure IsClosedQuarter =
+			
+			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
+			RETURN VisualYear < [CL_Y0] || (VisualYear = [CL_Y0] && SELECTEDVALUE(Operation_Cal_Day[Quarter]) < [CL_Q0])
+		displayFolder: _ Date Ref
+		lineageTag: 15b1b28f-8911-478a-8cdd-d8daedf9a9a3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure IsFullPeriod =
+			
+			IF([CL_Y0] <> SELECTEDVALUE(Operation_Cal_Day[Year]), TRUE(),
+			    [CL_M0] = COUNTROWS(VALUES(Operation_Cal_Day[MonthNumber]))
+			)
+		displayFolder: _ Date Ref
+		lineageTag: 2b28aa02-fc8e-40f7-9386-b8cc01d03e0d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Column
 		formatString: 0

@@ -200,6 +200,26 @@ table Operation_Cal_Day
 
 		annotation SummarizationSetBy = Automatic
 
+	column YrQtr
+		lineageTag: b9ea0537-e5d4-4762-a9aa-2607c879f006
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [YrQtr]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column YrMth
+		lineageTag: ecbc779d-3c58-4174-9e51-3b93fb4b7dd9
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [YrMth]
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition Operation_Cal_Day = calculated
 		mode: import
 		source =
@@ -222,7 +242,8 @@ table Operation_Cal_Day
 				    V_Dim_FB_CalDay[WeekStarting_ISO],
 				    V_Dim_FB_CalDay[CurrWeekCounter_ISO],
 				    V_Dim_FB_CalDay[LYDayDate],
-				    // V_Dim_FB_CalDay[Period Level Sort],
+				    "YrQtr", V_Dim_FB_CalDay[Year] * 100 + V_Dim_FB_CalDay[Quarter],
+				    "YrMth", V_Dim_FB_CalDay[Year] * 100 + V_Dim_FB_CalDay[MonthNumber],
 				    "Period Level Sort", V_Dim_FB_CalDay[MonthNumber],
 				    "L1", V_Dim_FB_CalDay[YearID],
 				    "L2", V_Dim_FB_CalDay[Quarter_Name],
@@ -247,7 +268,8 @@ table Operation_Cal_Day
 				        V_Dim_FB_CalDay[WeekStarting_ISO],
 				        V_Dim_FB_CalDay[CurrWeekCounter_ISO],
 				        V_Dim_FB_CalDay[LYDayDate],
-				        // V_Dim_FB_CalDay[Period Level Sort],
+				        "YrQtr", 999901, // Not relevant
+				        "YrMth", 999902, // Not relevant
 				        "Period Level Sort", SWITCH(V_Dim_FB_CalDay[CurrWeekCounter_ISO], 0, 12.1, -1, 12.2),
 				        "L1", "Weeks",
 				        "L2", SWITCH(V_Dim_FB_CalDay[CurrWeekCounter_ISO], 0, "Curr Wk", -1, "Prev Wk"),
