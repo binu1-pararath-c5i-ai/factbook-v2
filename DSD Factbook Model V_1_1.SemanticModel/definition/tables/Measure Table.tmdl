@@ -9078,7 +9078,7 @@ table 'Measure Table'
 			
 			CALCULATE(
 			    [Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops],
-			    Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_CalDay[CL_M_END])
+			    KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_CalDay[CL_M_END]))
 			)
 		lineageTag: 58cb14c5-e7b2-4e3b-bfe8-63d2e09d3f32
 
@@ -9478,7 +9478,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic Revenue aop KPICARD' = CALCULATE([Revenue_AOP_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+	measure 'Quarter dynamic Revenue aop KPICARD' = CALCULATE([Revenue_AOP_TL], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 		displayFolder: Topline
 		lineageTag: 78a0dc81-1a9f-40c5-95d7-4f66a8ed0199
 
@@ -9595,8 +9595,7 @@ table 'Measure Table'
 	measure '3y dummy' =
 			
 			VAR _den = CALCULATE([Rate_per_Case_TL], 'Time Intel'[Group] = "YA_LE_CD")
-			VAR _num = CALCULATE([Rate_per_Case_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
-			-- Final Output
+			VAR _num = CALCULATE([Rate_per_Case_TL], 'Time Intel'[Group] = "CY_LE_CD")
 			RETURN DIVIDE((_num - _den), _den)
 		displayFolder: Topline
 		lineageTag: 1a22923c-6848-4e69-8a05-1db1c558fb3d
@@ -9613,7 +9612,7 @@ table 'Measure Table'
 
 		formatStringDefinition = "#,(##0%);#,##0%"
 
-	measure Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_LP_CC = CALCULATE(    [Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops], V_Dim_FB_CalDay[DayDate] <= MAX('V_Dim_FB_Ref'[CL_M_END]))
+	measure Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_LP_CC = CALCULATE(    [Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops], KEEPFILTERS(V_Dim_FB_CalDay[DayDate] <= MAX('V_Dim_FB_Ref'[CL_M_END])))
 		lineageTag: 785e0085-fe36-4adb-a02a-76e73e17cb9d
 
 		formatStringDefinition =
@@ -11363,7 +11362,7 @@ table 'Measure Table'
 			CALCULATE(IF([Cases_Per_Deliver_actuals_CPH_matrix_LP] <> 0,
 			    DIVIDE([Cases_Per_Deliver_actuals_CPH_matrix_LP] - [Cases_Per_Deliver_actuals_PY_CPH_matrix_LP],
 			    [Cases_Per_Deliver_actuals_PY_CPH_matrix_LP], 0), " "),
-			    Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END])
+			    KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END]))
 			)
 		formatString: (#,##0%);#,##0%
 		displayFolder: Ops
@@ -11383,7 +11382,7 @@ table 'Measure Table'
 			
 			CALCULATE(IF([Cases_Per_Visit_actuals_CPH_matrix_LP] <> 0,
 			    DIVIDE([Cases_Per_Visit_actuals_CPH_matrix_LP] - [Cases_Per_Visit_actuals_PY_CPH_matrix_LP], [Cases_Per_Visit_actuals_PY_CPH_matrix_LP],0), ""),
-			    Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END])
+			    KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END]))
 			)
 		formatString: (#,##0%);#,##0%
 		displayFolder: Ops
@@ -11397,14 +11396,14 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP_month_sel = CALCULATE([Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP], V_Dim_FB_CalDay[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END]))
+	measure Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP_month_sel = CALCULATE([Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP], KEEPFILTERS(V_Dim_FB_CalDay[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END])))
 		formatString: (#,##0%);#,##0%
 		displayFolder: Ops
 		lineageTag: 260e8320-0971-4381-902a-cdca99b56244
 
 		annotation PBI_FormatHint = {"isCustom":true}
 
-	measure Cases_Per_Visit_Change_vs_YA_CPH_matrix_LP_Month_sel = CALCULATE([Cases_Per_Visit_Change_vs_YA_CPH_matrix_LP], Operation_Cal_Day[DayDate]) <= MAX('V_Dim_FB_Ref'[CL_M_END])
+	measure Cases_Per_Visit_Change_vs_YA_CPH_matrix_LP_Month_sel = CALCULATE([Cases_Per_Visit_Change_vs_YA_CPH_matrix_LP], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_Ref'[CL_M_END])))
 		formatString: (#,##0%);#,##0%
 		displayFolder: Ops
 		lineageTag: 6a725d85-f749-487a-ad6c-c825fa810365
@@ -14983,7 +14982,7 @@ table 'Measure Table'
 		formatString: 0
 		lineageTag: f67f2ed7-581f-4f4e-b027-dad9bdb6135b
 
-	measure Total_CFR_Card_TillDate = CALCULATE([Total_CFR_Card], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+	measure Total_CFR_Card_TillDate = CALCULATE([Total_CFR_Card], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Ops
 		lineageTag: 96fa12d1-4f1c-43a7-b155-f5af9ec90fac
