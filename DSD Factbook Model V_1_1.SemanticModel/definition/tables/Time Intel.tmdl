@@ -10,10 +10,10 @@ table 'Time Intel'
 				VAR _yr_st = SELECTEDVALUE(Operation_Cal_Day[FirstDayOfYear])
 				RETURN CALCULATE(
 				    SELECTEDMEASURE(),
-				    FILTER(
+				    KEEPFILTERS(FILTER(
 				        VALUES(Operation_Cal_Day),
 				        Operation_Cal_Day[FirstDayOfYear] = _yr_st
-				    )
+				    ))
 				)
 
 		calculationItem BAR_YR_CD =
@@ -21,11 +21,11 @@ table 'Time Intel'
 				VAR _yr_st = SELECTEDVALUE(Operation_Cal_Day[FirstDayOfYear])
 				RETURN CALCULATE(
 				    SELECTEDMEASURE(),
-				    FILTER(
+				    KEEPFILTERS(FILTER(
 				        VALUES(Operation_Cal_Day),
 				        Operation_Cal_Day[FirstDayOfYear] = _yr_st
 						&& Operation_Cal_Day[DayDate] <= [CD]
-				    )
+				    ))
 				)
 
 		calculationItem BAR_YR_CL =
@@ -34,17 +34,17 @@ table 'Time Intel'
 				VAR _cl_me = MAX(V_Dim_FB_Ref[CL_M_END])
 				RETURN CALCULATE(
 				    SELECTEDMEASURE(),
-				    FILTER(
+				    KEEPFILTERS(FILTER(
 				        VALUES(Operation_Cal_Day),
 				        Operation_Cal_Day[FirstDayOfYear] = _yr_st
 						&& Operation_Cal_Day[DayDate] <= _cl_me
-				    )
+				    ))
 				)
 
 		calculationItem PL_BAR_SEL =
 				
 				VAR LastClosure = MAX(V_Dim_FB_CalDay[CL_M_END])
-				RETURN CALCULATE(SELECTEDMEASURE(), Operation_Cal_Day[DayDate] <= LastClosure)
+				RETURN CALCULATE(SELECTEDMEASURE(), KEEPFILTERS(Operation_Cal_Day[DayDate] <= LastClosure))
 
 		calculationItem YTD_PM =
 				VAR _min = MIN(Operation_Cal_Day[FirstDayOfYear])
@@ -108,16 +108,17 @@ table 'Time Intel'
 				)
 
 		calculationItem CY_LE_CL =
+				
 				VAR _min = MIN(Operation_Cal_Day[DayDate])
 				VAR _max = MAX(Operation_Cal_Day[DayDate])
 				VAR _max_cl = MAX(V_Dim_FB_Ref[CL_M_END])
 				RETURN
 				CALCULATE(SELECTEDMEASURE(),
-				    FILTER(ALL(Operation_Cal_Day),
+				    KEEPFILTERS(FILTER(ALL(Operation_Cal_Day),
 				        Operation_Cal_Day[DayDate] >= _min &&
 				        Operation_Cal_Day[DayDate] <= _max &&
-				        Operation_Cal_Day[DayDate] <= _max_cl
-				    )
+						Operation_Cal_Day[DayDate] <= _max_cl
+				    ))
 				)
 
 		calculationItem CY_LE_CD =
@@ -126,11 +127,11 @@ table 'Time Intel'
 				VAR _max_cl = [CD]
 				RETURN
 				CALCULATE(SELECTEDMEASURE(),
-				    FILTER(ALL(Operation_Cal_Day),
+				    KEEPFILTERS(FILTER(ALL(Operation_Cal_Day),
 				        Operation_Cal_Day[DayDate] >= _min &&
 				        Operation_Cal_Day[DayDate] <= _max &&
-				        Operation_Cal_Day[DayDate] <= _max_cl
-				    )
+						Operation_Cal_Day[DayDate] <= _max_cl
+				    ))
 				)
 
 		calculationItem YA_LE_CL =
@@ -143,45 +144,25 @@ table 'Time Intel'
 				RETURN
 				CALCULATE(SELECTEDMEASURE(),
 				    REMOVEFILTERS(Operation_Cal_Day),
-				    Operation_Cal_Day[DayDate] >= _min &&
-				    Operation_Cal_Day[DayDate] <= _max_fix &&
+				    Operation_Cal_Day[DayDate] >= _min,
+				    Operation_Cal_Day[DayDate] <= _max_fix,
 				    Operation_Cal_Day[DayDate] <= _max_cap_fix
 				)
-				// VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
-				// VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
-				// VAR _max_fix = IF(FORMAT(_max + 1, "DD-MMM") = "29-FEB", _max + 1, _max)
-				// VAR _max_cl = EOMONTH(EDATE(MAX(V_Dim_FB_Ref[CL_M_END]), -12), 0)
-				// VAR _max_cl_fix = IF(_max = _max_cl, _max_fix, _max_cl)
-				// RETURN
-				// CALCULATE(SELECTEDMEASURE(),
-				//     FILTER(ALL(Operation_Cal_Day),
-				//         Operation_Cal_Day[DayDate] >= _min &&
-				//         Operation_Cal_Day[DayDate] <= _max_fix &&
-				//         Operation_Cal_Day[DayDate] <= _max_cl_fix
-				//     )
-				// )
 
 		calculationItem YA_LE_CD =
 				
 				VAR _min = EDATE(MIN(Operation_Cal_Day[DayDate]), -12)
 				VAR _max = EDATE(MAX(Operation_Cal_Day[DayDate]), -12)
 				VAR _max_fix = IF(FORMAT(_max + 1, "MM-DD") = "02-29", _max + 1, _max)
-				VAR _max_cap = EOMONTH(EDATE([CD], -12), 0)
+				VAR _max_cap = EDATE([CD], -12)
 				VAR _max_cap_fix = IF(_max = _max_cap, _max_fix, _max_cap)
 				RETURN
 				CALCULATE(SELECTEDMEASURE(),
 				    REMOVEFILTERS(Operation_Cal_Day),
-				    Operation_Cal_Day[DayDate] >= _min &&
+				    Operation_Cal_Day[DayDate] >= _min,
 				    Operation_Cal_Day[DayDate] <= _max_fix &&
 				    Operation_Cal_Day[DayDate] <= _max_cap_fix
 				)
-				// CALCULATE(SELECTEDMEASURE(),
-				//     FILTER(ALL(Operation_Cal_Day),
-				//         Operation_Cal_Day[DayDate] >= _min &&
-				//         Operation_Cal_Day[DayDate] <= _max_fix &&
-				//         Operation_Cal_Day[DayDate] <= _max_cap_fix
-				//     )
-				// )
 
 		calculationItem CURR_W =
 				CALCULATE(SELECTEDMEASURE(), FILTER(ALL(Operation_Cal_Day),

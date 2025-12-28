@@ -56,13 +56,17 @@ table Metric
 				CALCULATE(
 				    SELECTEDMEASURE(),
 				    V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-				    V_FB_Financial_Management[IsForecast] = "Y",
-				    V_Dim_FB_Opex[OpexLine] = "Total COGS"
+				    V_Dim_FB_Opex[OpexLine] = "Total COGS",
+				    KEEPFILTERS(
+				        FILTER(V_FB_Financial_Management, V_FB_Financial_Management[IsForecast] = "Y")
+				    )
 				) +
 				CALCULATE(
 				    SELECTEDMEASURE(),
 				    V_Dim_FB_PlHier[PlHier] = "Gross Profit",
-				    V_FB_Financial_Management[IsForecast] = "N"
+				    KEEPFILTERS(
+				        FILTER(V_FB_Financial_Management, V_FB_Financial_Management[IsForecast] = "N")
+				    )
 				)
 
 		calculationItem PL_VOL = CALCULATE(SELECTEDMEASURE(), V_Dim_FB_PlHier[PlSubHier] IN {"Franchise cases", "Contract cases"})
@@ -84,13 +88,17 @@ table Metric
 				CALCULATE(
 				    SELECTEDMEASURE(),
 				    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense", "Gross Profit", "Other Income (Expense)"},
-				    V_FB_Financial_Management[IsForecast] = "Y",
-				    V_Dim_FB_Opex[OpexLine] IN {"Total COGS", "DSD-T&W"}
+				    V_Dim_FB_Opex[OpexLine] IN {"Total COGS", "DSD-T&W"},
+				    KEEPFILTERS(
+				        FILTER(V_FB_Financial_Management, V_FB_Financial_Management[IsForecast] = "Y")
+				    )
 				) +
 				CALCULATE(
 				    SELECTEDMEASURE(),
 				    V_Dim_FB_PlHier[PlHier] IN {"Total Operating Expense", "Gross Profit", "Other Income (Expense)"},
-				    V_FB_Financial_Management[IsForecast] = "N"
+				    KEEPFILTERS(
+				        FILTER(V_FB_Financial_Management, V_FB_Financial_Management[IsForecast] = "N")
+				    )
 				)
 
 		calculationItem PL_SGA_FLEET = CALCULATE(SELECTEDMEASURE(), V_Dim_FB_Opex[OpexLine] = "SG&A", V_Dim_FB_Company[CmpnyCode] = "1010", NOT V_Dim_FB_PlHier[PlSubHier] IN {"Labor", "Benefits"}, NOT V_Dim_FB_Function[FnArea] IN {"Z009", "Z019"})

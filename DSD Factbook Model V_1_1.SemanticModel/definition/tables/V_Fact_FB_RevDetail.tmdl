@@ -396,6 +396,16 @@ table V_Fact_FB_RevDetail
 
 		annotation SummarizationSetBy = Automatic
 
+	column PromoDateFilter =
+			
+			VAR _cd = [CD]
+			RETURN [PromotionStartDate] >= _cd && [PromotionStartDate] < _cd + 14
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 13f0e306-4222-4a11-868c-783e8855168d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition V_Fact_FB_RevDetail = m
 		mode: import
 		source =

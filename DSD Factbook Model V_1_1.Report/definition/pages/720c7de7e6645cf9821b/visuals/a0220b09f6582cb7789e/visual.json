@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "a0220b09f6582cb7789e",
   "position": {
-    "x": 0,
-    "y": 350.76000856347679,
+    "x": 1.27009721080947,
+    "y": 472.47616242112281,
     "z": 0,
-    "height": 337.26923900334305,
-    "width": 984.82617788976165
+    "height": 247.66895610784664,
+    "width": 1030.04883796648
   },
   "visual": {
     "visualType": "tableEx",
@@ -22,11 +22,11 @@
                       "Entity": "Operation_Cal_Day"
                     }
                   },
-                  "Property": "FirstDayOfMonth"
+                  "Property": "DayDate"
                 }
               },
-              "queryRef": "Operation_Cal_Day.FirstDayOfMonth",
-              "nativeQueryRef": "FirstDayOfMonth"
+              "queryRef": "Operation_Cal_Day.DayDate",
+              "nativeQueryRef": "DayDate"
             },
             {
               "field": {
@@ -167,6 +167,20 @@
               },
               "queryRef": "Measure Table.Volume_FCST Topline bar",
               "nativeQueryRef": "Volume_FCST Topline bar"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue_Bar_Actual_TL"
+                }
+              },
+              "queryRef": "Measure Table.Revenue_Bar_Actual_TL",
+              "nativeQueryRef": "Revenue_Bar_Actual_TL"
             }
           ]
         }
@@ -181,7 +195,7 @@
                     "Entity": "Operation_Cal_Day"
                   }
                 },
-                "Property": "FirstDayOfMonth"
+                "Property": "DayDate"
               }
             },
             "direction": "Descending"
@@ -238,21 +252,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "96.10317729319873D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Operation_Cal_Day.FirstDayOfMonth"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "55.04741704240009D"
+                  "Value": "62.03110221469192D"
                 }
               }
             }
@@ -294,13 +294,41 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "99.13728099049649D"
+                  "Value": "114.49247918630863D"
                 }
               }
             }
           },
           "selector": {
             "metadata": "Measure Table.Revenue_Bar_AOP_FCST_YA"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "93.3085707203522D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Volume_FCST Topline bar"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "109.26235150938692D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Revenue_Bar_Actual_TL"
           }
         }
       ]

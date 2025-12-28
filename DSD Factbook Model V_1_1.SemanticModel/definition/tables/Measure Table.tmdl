@@ -3739,10 +3739,8 @@ table 'Measure Table'
 	measure Volume_AOP_TL =
 			
 			IF([IsFiltered_NC_to_SG],
-			    "",
-			    CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[SalesCasesBudget]), FILTER(
-			        V_Fact_FB_Topline_Budget_All, V_Fact_FB_Topline_Budget_All[ISFC] = False
-			    ))
+			    BLANK(),
+			    SUM(V_Fact_FB_Topline_Budget_All[SalesCasesBudget])
 			)
 		formatString: 0
 		displayFolder: Topline
@@ -3750,11 +3748,8 @@ table 'Measure Table'
 
 	measure Revenue_AOP_TL =
 			
-			IF([IsFiltered_NC_to_SG],
-			    "",
-			    CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetBudget]), FILTER(
-			        V_Fact_FB_Topline_Budget_All, V_Fact_FB_Topline_Budget_All[ISFC] = False
-			    ))
+			IF(NOT [IsFiltered_NC_to_SG],
+			    SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetBudget])
 			)
 		displayFolder: Topline
 		lineageTag: b989a16e-0768-44f7-8d98-885071a41b88
@@ -3763,9 +3758,7 @@ table 'Measure Table'
 
 	measure Rate_Per_Case_AOP_TL =
 			
-			IF (
-			    [IsFiltered_NC_to_SG],
-			    BLANK(),
+			IF (NOT [IsFiltered_NC_to_SG],
 			    DIVIDE([Quarter dynamic revenue AOP bar], [Quarter dynamic volume AOP bar], 0)
 			)
 		displayFolder: Topline
@@ -3985,7 +3978,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Volume_Bar_Actual_TL = CALCULATE([Volume_TL], 'Time Intel'[Group] = "TL_BAR_CD")
+	measure Volume_Bar_Actual_TL = CALCULATE([Volume_TL])
 		displayFolder: Topline
 		lineageTag: 8725d8cd-8f3c-4802-b127-2e00b692b3f0
 
@@ -3995,8 +3988,8 @@ table 'Measure Table'
 			
 			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", CALCULATE([Quarter dynamic volume AOP bar], 'Time Intel'[Group] = "BAR_YR"),
-			    "FCST", CALCULATE([Quarter FCST dynamic volume Bar], 'Time Intel'[Group] = "BAR_YR"),
+			    "AOP", CALCULATE([Volume_AOP_TL]),
+			    "FCST", CALCULATE([Volume_FCST_TL]),
 				"YA", [Volume_Bar_Act_YA]
 			)
 		displayFolder: Topline
@@ -4048,7 +4041,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Revenue_Bar_Actual_TL = CALCULATE([Revenue_TL], 'Time Intel'[Group] = "BAR_YR_CD")
+	measure Revenue_Bar_Actual_TL = CALCULATE([Revenue_TL])
 		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
 		displayFolder: Topline
 		lineageTag: 3c555a93-c8b5-4e6a-a9ef-f3505d50c753
@@ -4057,23 +4050,18 @@ table 'Measure Table'
 
 	measure Revenue_Bar_AOP_FCST_YA =
 			
-			VAR _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			RETURN SWITCH(
+			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", CALCULATE([Quarter dynamic revenue AOP bar], 'Time Intel'[Group] = "BAR_YR"),
-				"FCST", CALCULATE([Quarter FCST dynamic Revenue Bar], 'Time Intel'[Group] = "BAR_YR"),
-				"YA", CALCULATE([Revenue_TL],
-					V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly",
-			        REMOVEFILTERS(Operation_Cal_Day),
-					Operation_Cal_Day[Year] = _yr - 1
-				)
+			    "AOP", CALCULATE([Revenue_AOP_TL]),
+				"FCST", CALCULATE([Revenue_FCST_TL]),
+				"YA", CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD")
 			)
 		displayFolder: Topline
 		lineageTag: de85365d-e467-4719-9a8e-25fddebf602b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Rate_per_Case_Bar_Actual_TL = CALCULATE([Rate_per_Case_TL], 'Time Intel'[Group] = "TL_BAR_CD")
+	measure Rate_per_Case_Bar_Actual_TL = CALCULATE([Rate_per_Case_TL])
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Topline
 		lineageTag: 2580d8ba-a950-4f50-a832-3790d03f08d4
@@ -4083,12 +4071,8 @@ table 'Measure Table'
 			SWITCH(
 				SELECTEDVALUE('Metric Table'[Metrics]),
 			    "AOP", [Rate_Per_Case_AOP_TL],
-				"FCST", [Quarter FCST dynamic Rate per case],
-				"YA", CALCULATE([Rate_Per_Case_TL],
-					V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly",
-			        REMOVEFILTERS(Operation_Cal_Day),
-			        SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
-				)
+				"FCST", [Rate_Per_Case_FCST_TL],
+				"YA", DIVIDE([Revenue_PY_TL], [Volume_PY_TL])
 			)
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Topline
@@ -4489,17 +4473,8 @@ table 'Measure Table'
 
 	measure 1Y =
 			
-			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			var _num = [Volume_TL]
-			VAR _D2 =
-			CALCULATE([Volume_TL],
-			    REMOVEFILTERS(Operation_Cal_Day), Operation_Cal_Day[Year] = _yr - 1,
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-			)
-			VAR _D3 =
-			CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
-			var _den = _D2 + _D3
-			RETURN MAX(-10, MIN(DIVIDE(_num - _den, _den), 10))
+			VAR _den = CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD")
+			RETURN MAX(-10, MIN(DIVIDE([Volume_TL] - _den, _den), 10))
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Topline
 		lineageTag: 645cc21b-ead0-4cb9-970f-a220655c6389
@@ -4566,15 +4541,8 @@ table 'Measure Table'
 
 	measure 2Y =
 			
-			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			var _num = [Revenue_TL]
-			VAR _D2 = CALCULATE([Revenue_TL], REMOVEFILTERS(Operation_Cal_Day),
-			    Operation_Cal_Day[Year] = _yr - 1,
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-			)
-			VAR _D3 = CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
-			var _den = _D2 + _D3
-			RETURN MAX(-10, MIN(DIVIDE(_num - _den, _den), 10))
+			VAR _den = CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD")
+			RETURN MAX(-10, MIN(DIVIDE([Revenue_TL] - _den, _den), 10))
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Topline
 		lineageTag: 197ee833-065f-4c38-becc-3ea17d3a3bdd
@@ -4587,27 +4555,8 @@ table 'Measure Table'
 
 	measure 3Y =
 			
-			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			var _n1 =
-			CALCULATE([Revenue_TL],
-			    REMOVEFILTERS(Operation_Cal_Day),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]),
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-			)
-			var _n2 =
-			CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
-			var _num = _n1 + _n2
-			VAR _D2 =
-			CALCULATE(
-			    [Volume_TL],
-			    REMOVEFILTERS(Operation_Cal_Day),
-			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]),
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-			)
-			VAR _D3 =
-			CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
-			var _den = _D2 + _D3
-			var _PY = _num / _den
+			VAR _PY = CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD")
+			    / CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD")
 			RETURN MAX(-10, MIN(DIVIDE([Rate_per_Case_TL] - _PY, _PY), 10))
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Topline
@@ -9363,13 +9312,14 @@ table 'Measure Table'
 
 	measure Volume_FCST_TL_nw =
 			
-			VAR _vy = SELECTEDVALUE(Operation_Cal_Day[Year])
 			VAR _cmd = [CM]
-			VAR _cy = YEAR(_cmd)
-			RETURN SUMX(
-			    VALUES(Operation_Cal_Day[Quarter]),
-			    IF((_vy = _cy && MONTH([CM]) IN {1, 2, 3}) || Operation_Cal_Day[Quarter] = 1,
-			        [Volume_AOP_TL], [Volume_FCST_TL]
+			VAR _qtr = QUARTER(_cmd)
+			
+			RETURN IF(SELECTEDVALUE(Operation_Cal_Day[Year]) < YEAR(_cmd), [Volume_FCST_TL],
+			    SWITCH(_qtr,
+			        1, CALCULATE([Volume_AOP_TL], V_Dim_FB_CalDay[Quarter] = 1) +
+			            CALCULATE([Volume_FCST_TL], V_Dim_FB_CalDay[Quarter] > 1),
+			        CALCULATE([Volume_AOP_TL], V_Dim_FB_CalDay[Quarter] >= _qtr)
 			    )
 			)
 		displayFolder: Topline
@@ -9381,7 +9331,6 @@ table 'Measure Table'
 			
 			CALCULATE(
 			    [Volume_FCST_TL_nw],
-			    V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly",
 			    KEEPFILTERS(
 			        FILTER(
 			            ALL(Operation_Cal_Day),
@@ -9399,11 +9348,12 @@ table 'Measure Table'
 			VAR _vy = SELECTEDVALUE(Operation_Cal_Day[Year])
 			VAR _cmd = [CM]
 			VAR _cy = YEAR(_cmd)
-			RETURN SUMX(
-			    VALUES(Operation_Cal_Day[Quarter]),
-			    IF((_vy = _cy && MONTH([CM]) IN {1, 2, 3}) || Operation_Cal_Day[Quarter] = 1,
-			        [Revenue_AOP_TL], [Revenue_FCST_TL]
-			    )
+			RETURN SWITCH(TRUE(),
+			    _vy < _cy,
+			    [Revenue_FCST_TL],
+			    QUARTER(_cmd) = 1,
+			    CALCULATE([Revenue_AOP_TL], Operation_Cal_Day[Quarter] = 1) + [Revenue_FCST_TL],
+			    CALCULATE([Revenue_FCST_TL], Operation_Cal_Day[Quarter] >= QUARTER(_cmd))
 			)
 		displayFolder: Topline
 		lineageTag: 121c3597-d1c5-4f4e-abd7-e71c7c90de10
@@ -9414,7 +9364,6 @@ table 'Measure Table'
 			
 			CALCULATE(
 			    [Revenue_FCST_TL_nw],
-			    V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly",
 			    KEEPFILTERS(
 			        FILTER(
 			            ALL(Operation_Cal_Day),
@@ -9427,29 +9376,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Rate per case_FCST_TL_nw' =
-			DIVIDE([Revenue_FCST_TL_nw], [Volume_FCST_TL_nw])
-			// VAR _vy = SELECTEDVALUE(Operation_Cal_Day[Year])
-			// VAR _cmd = [CM]
-			// VAR _cy = YEAR(_cmd)
-			// RETURN SUMX(
-			//     VALUES(Operation_Cal_Day[Quarter]),
-			//     IF((_vy = _cy && MONTH([CM]) IN {1, 2, 3}) || Operation_Cal_Day[Quarter] = 1,
-			//         [Rate_Per_Case_AOP_TL], [Rate_Per_Case_FCST_TL]
-			//     )
-			// )
-			// VAR SelectedQuarters = VALUES(Operation_Cal_Day[Quarter])
-			// RETURN
-			// SUMX(
-			//     SelectedQuarters,
-			//     VAR CurrentQuarter = Operation_Cal_Day[Quarter]
-			//     RETURN
-			//     SWITCH(
-			//         TRUE(),
-			//         CurrentQuarter = 1, [Rate_Per_Case_AOP_TL],
-			//         [Rate_Per_Case_FCST_TL]  // Default case
-			//     )
-			// )
+	measure 'Rate per case_FCST_TL_nw' = DIVIDE([Revenue_FCST_TL_nw], [Volume_FCST_TL_nw])
 		displayFolder: Topline
 		lineageTag: e7097ea3-d99d-47c9-aa32-e7896bb56e89
 
@@ -9509,43 +9436,43 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter FCST dynamic volume Bar' = CALCULATE([Volume_FCST_TL_nw], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+	measure 'Quarter FCST dynamic volume Bar' = CALCULATE([Volume_FCST_TL_nw], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 		displayFolder: Topline
 		lineageTag: b9dc7c2d-b454-4d56-a50f-56a5164a735c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic volume AOP bar' = CALCULATE([Volume_AOP_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+	measure 'Quarter dynamic volume AOP bar' = CALCULATE([Volume_AOP_TL], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 		displayFolder: Topline
 		lineageTag: 4e0a4f13-068b-4d56-84c1-da3d4b01326f
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic revenue AOP bar' = CALCULATE([Revenue_AOP_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_CalDay[CD]))
+	measure 'Quarter dynamic revenue AOP bar' = CALCULATE([Revenue_AOP_TL], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 		displayFolder: Topline
 		lineageTag: d70b188e-65f7-4765-8beb-76d90d9b9054
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter FCST dynamic Revenue Bar' = CALCULATE([Revenue_FCST_TL_nw], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_CalDay[CD]))
+	measure 'Quarter FCST dynamic Revenue Bar' = CALCULATE([Revenue_FCST_TL_nw], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_CalDay[CD])))
 		displayFolder: Topline
 		lineageTag: 58989984-c4e1-4490-8368-b65ce01b8494
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic volume FCST KPICARD' = CALCULATE([Volume_FCST_TL_nw], Operation_Cal_Day[DayDate] < MAX(V_Dim_FB_CalDay[CD]))
+	measure 'Quarter dynamic volume FCST KPICARD' = CALCULATE([Volume_FCST_TL_nw], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CM])))
 		displayFolder: Topline
 		lineageTag: d37de0b7-e189-4ec2-94e1-0418b141a24b
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic revenue FCST KPICARD' = CALCULATE([Revenue_FCST_TL_nw], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+	measure 'Quarter dynamic revenue FCST KPICARD' = CALCULATE([Revenue_FCST_TL_nw], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 		displayFolder: Topline
 		lineageTag: 3713e5c9-dd99-4136-be79-d84b5b725b08
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic volume aop KPICARD' = CALCULATE([Volume_AOP_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+	measure 'Quarter dynamic volume aop KPICARD' = CALCULATE([Volume_AOP_TL], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 		displayFolder: Topline
 		lineageTag: c5d1e68a-a7f2-4325-91b1-5b824b5cb5aa
 
@@ -9583,10 +9510,9 @@ table 'Measure Table'
 
 	measure 'Quarter dynamic volume attainment aop' =
 			
-			-- Actuals
 			VAR _num = [Volume_TL]
-			VAR _den = CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[SalesCasesBudget]), Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
-			RETURN if (_den = 0, BLANK(), DIVIDE(_num - _den, _den))
+			VAR _den = CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[SalesCasesBudget]), KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
+			RETURN IF(_den = 0, BLANK(), DIVIDE(_num - _den, _den))
 		displayFolder: Topline
 		lineageTag: dd0769ca-0d77-44dc-ba4e-6ebabdf97b78
 
@@ -9594,9 +9520,8 @@ table 'Measure Table'
 
 	measure 'Quarter dynamic volume attainment FCST' =
 			
-			-- Actuals
 			VAR _num = [Volume_TL]
-			VAR _den = CALCULATE([Volume_FCST_TL_nw], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+			VAR _den = CALCULATE([Volume_FCST_TL_nw], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 			RETURN IF(_den = 0, BLANK(), DIVIDE(_num - _den, _den))
 		formatString: 0.00
 		displayFolder: Topline
@@ -9604,7 +9529,7 @@ table 'Measure Table'
 
 	measure 'Quarter dynamic Revenue attainment aop' =
 			
-			VAR _den = CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetBudget]), Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+			VAR _den = CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetBudget]), KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 			RETURN DIVIDE([Revenue_TL] - _den, _den)
 		displayFolder: Topline
 		lineageTag: 7f9ce54e-d03f-4ffd-9228-0adef1d9a36c
@@ -9614,7 +9539,7 @@ table 'Measure Table'
 	measure 'Quarter dynamic Revenue attainment FCST' =
 			
 			VAR _num = [Revenue_TL]
-			VAR _den = CALCULATE([Revenue_FCST_TL_nw], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+			VAR _den = CALCULATE([Revenue_FCST_TL_nw], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 			RETURN IF(_den = 0, BLANK(), DIVIDE(_num - _den, _den))
 		formatString: 0.00
 		displayFolder: Topline
@@ -9640,7 +9565,7 @@ table 'Measure Table'
 
 	measure 'Quarter dynamic Revenue attainment YA' =
 			
-			VAR actual = CALCULATE([Revenue_TL], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD]))
+			VAR actual = CALCULATE([Revenue_TL], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 			VAR budget = CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD")
 			RETURN DIVIDE(actual - budget, budget)
 		displayFolder: Topline
@@ -9650,17 +9575,8 @@ table 'Measure Table'
 
 	measure 1T =
 			
-			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			var _num = [Volume_TL]
-			VAR _D2 =
-			CALCULATE([Volume_TL],
-			    REMOVEFILTERS(Operation_Cal_Day), Operation_Cal_Day[Year] = _yr - 1,
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-			)
-			VAR _D3 =
-			CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
-			var _den = _D2 + _D3
-			RETURN DIVIDE(_num - _den, _den)
+			VAR _den = CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD")
+			RETURN DIVIDE([Volume_TL] - _den, _den)
 		displayFolder: Topline
 		lineageTag: ea8754d8-0f1d-45dd-97ba-cf492fe0b862
 
@@ -9668,16 +9584,8 @@ table 'Measure Table'
 
 	measure 2T =
 			
-			var _yr = SELECTEDVALUE(Operation_Cal_Day[Year])
-			var _num = [Volume_TL]
-			VAR _D2 =
-			CALCULATE([Volume_TL],
-			    REMOVEFILTERS(Operation_Cal_Day), Operation_Cal_Day[Year] = _yr - 1,
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Pv MTD"
-			)
-			VAR _D3 =
-			CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD", V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly")
-			var _den = _D2+_D3
+			VAR _num = [Volume_TL]
+			VAR _den = CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD")
 			RETURN DIVIDE(_num - _den, _den)
 		displayFolder: Topline
 		lineageTag: 016fca24-a492-4a5d-8d56-c3d9094b01fc
@@ -9705,7 +9613,7 @@ table 'Measure Table'
 
 		formatStringDefinition = "#,(##0%);#,##0%"
 
-	measure Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_LP_CC = CALCULATE(    [Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops], Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_Ref'[CL_M_END]))
+	measure Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops_LP_CC = CALCULATE(    [Wh_Delv_Mech_Change_VS_YA_Actuals_VolAdj_CPD_CPO_CPV_Selection_Ops], V_Dim_FB_CalDay[DayDate] <= MAX('V_Dim_FB_Ref'[CL_M_END]))
 		lineageTag: 785e0085-fe36-4adb-a02a-76e73e17cb9d
 
 		formatStringDefinition =
@@ -11341,21 +11249,12 @@ table 'Measure Table'
 
 	measure %Sold_Selected = ```
 			
-			// This dax will calculate the YTD, QYD, MTD CMA based on the date slicer selected.
-			var _SelectedPeriod=[IM_Selected_Period]
-			
-			Var Avg_Sold =
-			CALCULATE(
-				AVERAGEX(
-					VALUES(V_Fact_FB_RevDetail[Time Granularity]),
-					[%Sold_Base_Calc]
-				),
-				CONTAINSSTRING(V_Fact_FB_RevDetail[Time Granularity],"Monthly")||
-				CONTAINSSTRING(V_Fact_FB_RevDetail[Time Granularity],"Current Week")
+			VAR _SelectedPeriod = [IM_Selected_Period]
+			VAR Avg_Sold = CALCULATE(
+				AVERAGEX(VALUES(V_Fact_FB_RevDetail[Time Granularity]), [%Sold_Base_Calc]),
+				V_Fact_FB_RevDetail[Time Granularity] IN {"Monthly", "Current Week"}
 			)    
-			
-			Var _SelectedKPI = 
-			SWITCH(
+			RETURN SWITCH(
 				[PeriodLabel],
 				"W", CALCULATE([%Sold_Base_Calc], 'Time Intel'[Group] = "CURR_W"),
 				"M", CALCULATE([%Sold_Base_Calc], 'Time Intel'[Group] = "CURR_M",
@@ -11364,7 +11263,6 @@ table 'Measure Table'
 				"Q", CALCULATE(Avg_Sold, 'Time Intel'[Group] = "CURR_Q"),
 				"Y", CALCULATE(Avg_Sold, 'Time Intel'[Group] = "CURR_Y")
 			)
-			RETURN _SelectedKPI
 			```
 		lineageTag: f2efa5ab-0a8c-434f-aeaf-28b014bfa420
 
@@ -11499,7 +11397,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP_month_sel = CALCULATE([Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP], Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END]))
+	measure Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP_month_sel = CALCULATE([Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP], V_Dim_FB_CalDay[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END]))
 		formatString: (#,##0%);#,##0%
 		displayFolder: Ops
 		lineageTag: 260e8320-0971-4381-902a-cdca99b56244
@@ -13997,12 +13895,11 @@ table 'Measure Table'
 
 	measure 'Quarter dynamic Volume FCST KPICARD BLANK logic' =
 			
-			VAR SelectedMonthCount = CALCULATE(DISTINCTCOUNT(Operation_Cal_Day[MonthName]),
-			    Operation_Cal_Day[Year] = SELECTEDVALUE(Operation_Cal_Day[Year]))
-			RETURN IF(SelectedMonthCount = 12,
-			    BLANK(),
-			    [Quarter dynamic volume FCST KPICARD] // This your actual forecast logic if all months are not selected
+			VAR SelectedMonthCount = CALCULATE(
+			    DISTINCTCOUNT(Operation_Cal_Day[MonthName]),
+			    KEEPFILTERS(Operation_Cal_Day[Year] = SELECTEDVALUE(Operation_Cal_Day[Year]))
 			)
+			RETURN IF(SelectedMonthCount = 12, BLANK(), [Quarter dynamic volume FCST KPICARD])
 		formatString: 0.00
 		displayFolder: Topline
 		lineageTag: 6ce21a3c-6263-48a5-9723-61995453ad7d
@@ -14022,11 +13919,9 @@ table 'Measure Table'
 	measure 'Quarter dynamic volume FCST Attainment BLANK logic' =
 			
 			VAR SelectedMonthCount = CALCULATE(DISTINCTCOUNT(Operation_Cal_Day[MonthName]),
-			    Operation_Cal_Day[Year] = SELECTEDVALUE(Operation_Cal_Day[Year]))
-			RETURN IF(SelectedMonthCount = 12,
-			    BLANK(),
-			    [Quarter dynamic volume attainment FCST] // This your actual forecast logic if all months are not selected
+			    KEEPFILTERS(Operation_Cal_Day[Year] = SELECTEDVALUE(Operation_Cal_Day[Year]))
 			)
+			RETURN IF(SelectedMonthCount = 12, BLANK(), [Quarter dynamic volume attainment FCST])
 		formatString: 0.00
 		displayFolder: Topline
 		lineageTag: 3ac7abc8-b37c-45fa-90ee-388aec37e20f
@@ -14728,9 +14623,9 @@ table 'Measure Table'
 			
 			SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", CALCULATE([Quarter FCST dynamic Rate per case], 'Time Intel'[Group] = "BAR_YR"),
-			    "FCST", "",
-			    "YA", CALCULATE([Quarter FCST dynamic Rate per case], 'Time Intel'[Group] = "BAR_YR") 
+			    "AOP", CALCULATE([Quarter FCST dynamic Rate per case], 'Time Intel'[Group] = "CY_LE_CD"),
+			    "FCST", BLANK(),
+			    "YA", CALCULATE([Quarter FCST dynamic Rate per case], 'Time Intel'[Group] = "YA_LE_CD") 
 			)
 			```
 		displayFolder: Topline
@@ -15004,49 +14899,48 @@ table 'Measure Table'
 	measure 'Base PL FCST Act' =
 			
 			// Gets the Previous Month & Year
-			VAR Today = MAX(V_Dim_FB_CalDay[CL_M_END])
-			VAR CurrentQtr = QUARTER(Today)
+			VAR _cl_day = MAX(V_Dim_FB_CalDay[CL_M_END])
+			VAR _qtr = QUARTER(_cl_day)
 			RETURN
 			SWITCH(
-			    SELECTEDVALUE(Operation_Cal_Day[Year]) = YEAR(Today),
+			    TRUE(),
 			    // if this is previous years or in Curr Q4
-			    CurrentQtr = 4,
+			    _qtr = 4 || SELECTEDVALUE(Operation_Cal_Day[Year]) < YEAR(_cl_day),
 			    CALCULATE(
 			        [Base PL FCST 93],
-			        'V_FB_Financial_Management'[IsForecast] = "N",
+			        V_FB_Financial_Management[IsForecast] = "N",
 			        V_Dim_FB_CalDay[MonthNumber] IN {10}
 			    ) +
 			    CALCULATE(
 			        [Base PL FCST 93],
-			        'V_FB_Financial_Management'[IsForecast] = "Y",
+			        V_FB_Financial_Management[IsForecast] = "Y",
 			        V_Dim_FB_CalDay[MonthNumber] IN {11, 12}
 			    ),
 			    // Curr Year Q3: Jul–Sep → Show FCST_66 from July to Dec
-			    CurrentQtr = 3,
+			    _qtr = 3,
 			    CALCULATE(
 			        [Base PL FCST 66],
-			        'V_FB_Financial_Management'[IsForecast] = "N",
-			        Operation_Cal_Day[MonthNumber] = 7
+			        V_FB_Financial_Management[IsForecast] = "N",
+			        V_Dim_FB_CalDay[MonthNumber] = 7
 			    ) +
 			    CALCULATE(
 			        [Base PL FCST 66],
-			        'V_FB_Financial_Management'[IsForecast] = "Y",
-			        Operation_Cal_Day[MonthNumber] >= 8
+			        V_FB_Financial_Management[IsForecast] = "Y",
+			        V_Dim_FB_CalDay[MonthNumber] >= 8
 			    ),
 			    // Q2: Apr–Jun → Custom logic
-			    CurrentQtr = 2,
+			    _qtr = 2,
 			    CALCULATE(
 			        [Base PL FCST 39],
-			        'V_FB_Financial_Management'[IsForecast] = "N",
-			        Operation_Cal_Day[MonthNumber] IN {4, 5, 6}
+			        V_FB_Financial_Management[IsForecast] = "N",
+			        V_Dim_FB_CalDay[MonthNumber] IN {4, 5, 6}
 			    ) +
 			    CALCULATE(
 			        [Base PL FCST 39],
-			        'V_FB_Financial_Management'[IsForecast] = "Y",
-			        Operation_Cal_Day[MonthNumber] >= 7
+			        V_FB_Financial_Management[IsForecast] = "Y",
+			        V_Dim_FB_CalDay[MonthNumber] >= 7
 			    ),
 			    // Q1: Jan–Mar → Show AOP for ALL months
-			    CurrentQtr = 1,
 			    [Base PL AOP]
 			)
 		lineageTag: 06c10aca-a8db-43f9-a252-f054c85bfec8
@@ -15275,13 +15169,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Volume_Bar_Act_YA =
-			
-			CALCULATE([Volume_TL],
-			    V_Fact_FB_ToplineActuals_Summary[TimeGranularity] = "Monthly",
-			    REMOVEFILTERS(Operation_Cal_Day),
-			    DATEADD(Operation_Cal_Day[DayDate], -1, YEAR)
-			)
+	measure Volume_Bar_Act_YA = CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD")
 		displayFolder: Topline
 		lineageTag: d1fdbf0d-57f0-4213-b4b6-9f0e4bf8c331
 
@@ -15380,6 +15268,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = CALCULATE([Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New], Metric[Group] = "BSO_AOP_FCST_YA")
+		formatString: CONVERT(CALCULATE([Total_Breakage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 		displayFolder: Ops
 		lineageTag: c18695d3-fb25-4371-af31-9e2cf0d199b9
 
@@ -15432,6 +15321,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = CALCULATE([WhBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+		formatString: CONVERT(CALCULATE([WhseBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 		displayFolder: Ops
 		lineageTag: 0481ad7d-e549-4470-b51f-bfb2935f36af
 
@@ -15488,6 +15378,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure TradeBreaklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = CALCULATE([TradeBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+		formatString: CONVERT(CALCULATE([TradeBrk_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 		displayFolder: Ops
 		lineageTag: cfadb37f-31a4-4e04-b99c-3eca7e24e918
 
@@ -15527,6 +15418,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = CALCULATE([Shrinkage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+		formatString: CONVERT(CALCULATE([Shrinklescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 		displayFolder: Ops
 		lineageTag: 9aac576c-2427-40d0-a6bd-c4a4c060919d
 
@@ -15586,6 +15478,7 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Obsolescence_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = CALCULATE([OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+		formatString: CONVERT(CALCULATE([OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 		displayFolder: Ops
 		lineageTag: 03d4b35d-8d24-47e4-b394-4f7fcff5cbc5
 
@@ -15618,6 +15511,7 @@ table 'Measure Table'
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "YA", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops)
 			)
 			```
+		formatString: CONVERT(CALCULATE([OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Formatter[Group] = "NUM_POS2_ABS_RPC"), STRING)
 		displayFolder: Ops
 		lineageTag: 0c65f630-0b2e-4f92-8697-88cfb901471f
 
@@ -15723,6 +15617,83 @@ table 'Measure Table'
 			```
 		displayFolder: Ops
 		lineageTag: afd6a6c6-1bfa-483d-ac28-7c2a24f912e9
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Shrink_KPI = CALCULATE([Shrinkage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+		formatString: #,##0%;(#,##0%)
+		displayFolder: Ops
+		lineageTag: 2ef820ac-c0ca-45f4-b8ae-aee053f0a662
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_BSO_KPI = CALCULATE([Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New], Metric[Group] = "BSO_AOP_FCST_YA")
+		formatString: #,##0%;(#,##0%)
+		displayFolder: Ops
+		lineageTag: c92cf2d0-2895-43a1-824a-7177521bf018
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Obso_KPI = CALCULATE([OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+		formatString: #,##0%;(#,##0%)
+		displayFolder: Ops
+		lineageTag: 0dff1e17-cb08-42d3-a281-428877614f04
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Break_KPI = CALCULATE([Total_Break_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New], Metric[Group] = "BSO_AOP_FCST_YA")
+		formatString: #,##0%;(#,##0%)
+		displayFolder: Ops
+		lineageTag: c34aa98d-9814-4f4f-91e0-95199a9bd873
+
+	measure Shrinkage_UI_New = ```
+			
+			VAR Shrinklescence_Abs = SUM(V_FACT_FB_OPS_BSO[ShrinkDollars])
+			VAR Shrinklescence_RPC =
+			    DIVIDE(Sum(V_FACT_FB_OPS_BSO[ShrinkDollars]),
+			    CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner])))
+			RETURN
+			SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute",
+			    FORMAT(TRUNC(DIVIDE(Shrinklescence_Abs, 1000)), "$#,##0"),
+			    
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC",
+			    IF(VALUE(Shrinklescence_RPC) = 0, "$0" , FORMAT(Shrinklescence_RPC,"$0.000"))
+			) 
+			```
+		displayFolder: Ops
+		lineageTag: b0c7c48e-7ab2-4bea-a313-cee9f411b64e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Total_Break_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New = ```
+			
+			VAR _Act = SUM(V_FACT_FB_OPS_BSO[WhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[TradeBreakDollars])  
+			VAR _Act_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[ActualVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Plan = SUM(V_FACT_FB_OPS_BSO[PlanWhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[PlanTradeBreakDollars])  
+			VAR _Plan_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[PlanVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Fcst = SUM(V_FACT_FB_OPS_BSO[FcstWhseBreakDollars]) + SUM(V_FACT_FB_OPS_BSO[FcstTradeBreakDollars])
+			VAR _FCST_Vol = CALCULATE(SUM(V_FACT_FB_OPS_BSO[FcstVolume]), ALL(V_FACT_FB_OPS_BSO[Owner]))
+			VAR _Attainment_to_AOP_Ops = DIVIDE((_Act - _Plan), _Plan)
+			VAR _RPC_ACT_AOP = DIVIDE(_Act, _Act_Vol)
+			VAR RPC_AOP_Op = DIVIDE(_Plan, _Plan_Vol)
+			VAR _RPC_FCST = DIVIDE(_Fcst, _FCST_Vol)
+			VAR _PY_Ops = CALCULATE([WhseBreaklescence_Ops ] + [TradeBreaklescence_Ops ], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))
+			VAR _RPC_Act_PY_Ops = CALCULATE([WhseBreaklescence_Rate_per_Case_Act_Ops] + [TradeBreaklescence_Rate_per_Case_Act_Ops], REMOVEFILTERS(Operation_Cal_Day), SAMEPERIODLASTYEAR(V_Dim_FB_CalDay[DayDate]))
+			RETURN SWITCH(
+			    TRUE(),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", _Attainment_to_AOP_Ops,
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "AOP", DIVIDE((_RPC_ACT_AOP - RPC_AOP_Op), RPC_AOP_Op),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "FCST", DIVIDE((_Act - _Fcst), _Fcst),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "FCST", DIVIDE((_RPC_ACT_AOP - _RPC_FCST), _RPC_FCST),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "Absolute" && SELECTEDVALUE('Metric Table'[Metrics]) = "YA", DIVIDE((_Act - _PY_Ops), _PY_Ops),
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]) = "RPC" && SELECTEDVALUE('Metric Table'[Metrics]) = "YA", DIVIDE((_RPC_ACT_AOP - _RPC_Act_PY_Ops), _RPC_Act_PY_Ops)
+			) 
+			```
+		formatString: #,##0%;(#,##0%)
+		displayFolder: Ops
+		lineageTag: 52d0310a-789a-4e9c-92e9-441fa14378de
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
