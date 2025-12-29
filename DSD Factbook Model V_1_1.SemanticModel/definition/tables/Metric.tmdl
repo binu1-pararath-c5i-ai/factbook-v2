@@ -119,37 +119,11 @@ table Metric
 
 		calculationItem BSO_AOP_FCST_YA =
 				
-				
-				VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-				VAR CurrentYear = YEAR(_cl_day)
-				VAR CurrentMonth = MONTH(_cl_day)
-				VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-				VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-				VAR SelectedMonths =
-				CALCULATETABLE(
-				    VALUES(Operation_Cal_Day[MonthNumber]),
-				    Operation_Cal_Day[Year] = VisualYear
-				)
-				VAR TotalMonthsSelected = COUNTROWS(SelectedMonths)
-				VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-				VAR MaxClosedQuarter =
-				CALCULATE(
-				    MAX(Operation_Cal_Day[Quarter]),
-				    Operation_Cal_Day[DayDate] <= _cl_day,
-				    Operation_Cal_Day[Year] = CurrentYear
-				)
-				VAR IsClosedQuarter =
-				    VisualYear < CurrentYear ||
-				    (VisualYear = CurrentYear && VisualQuarter < MaxClosedQuarter)
-				VAR FilteredMeasure = CALCULATE(SELECTEDMEASURE(), Operation_Cal_Day[DayDate] <= _cl_day)
-				RETURN IF (
-					SELECTEDVALUE('Metric Table'[Metrics]) = "FCST",
-					IF (
-						NOT IsFullPeriod && NOT IsClosedQuarter,
-						IF(FilteredMeasure <> 0, FilteredMeasure, BLANK()),
-						BLANK()
-					),
-					SELECTEDMEASURE()
+				IF (SELECTEDVALUE('Metric Table'[Metrics]) <> "FCST", SELECTEDMEASURE(),
+				    IF(NOT [IsFullPeriod] && NOT [IsClosedQuarter],
+				        VAR FilteredMeasure = CALCULATE(SELECTEDMEASURE(), KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END])))
+				        RETURN IF(FilteredMeasure <> 0, FilteredMeasure)
+				    )
 				)
 
 	column Group

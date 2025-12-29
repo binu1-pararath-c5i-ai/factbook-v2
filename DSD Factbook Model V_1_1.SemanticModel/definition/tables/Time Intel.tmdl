@@ -230,64 +230,54 @@ table 'Time Intel'
 
 		calculationItem PRIOR_RST_ANY =
 				
-				VAR _SelectedPeriod=[IM_Selected_Period]
+				VAR _SelectedPeriod = [IM_Selected_Period]
 				VAR _maxdate1 = MAX(Operation_Cal_Day[DayDate])
 				VAR _mindate1 = MIN(Operation_Cal_Day[DayDate])
-				VAR _x = DATEDIFF(_mindate1, _maxdate1,DAY)
+				VAR _x = DATEDIFF(_mindate1, _maxdate1, DAY)
 				
-				VAR _isWeek_val = CALCULATE(
-				    SELECTEDMEASURE(),
-				    REMOVEFILTERS(Operation_Cal_Day),
-				    Operation_Cal_Day[DayDate] >=_mindate1 - 7,
-				    Operation_Cal_Day[DayDate] <=_mindate1 - 7 + _x
-				)
-				VAR _isMonth_val = CALCULATE(
-				    SELECTEDMEASURE(),
-				    REMOVEFILTERS(Operation_Cal_Day),
-				    Operation_Cal_Day[FirstDayOfMonth] = EDATE(_SelectedPeriod, -1)
-				)
-				VAR _iscurrmonth_val = CALCULATE(
-				    SELECTEDMEASURE(),
-				    REMOVEFILTERS(Operation_Cal_Day),
-				    Operation_Cal_Day[FirstDayOfMonth] = EDATE(_SelectedPeriod, -1),
-				    DAY(Operation_Cal_Day[DayDate]) <= DAY(MAX(Operation_Cal_Day[DayDate]))
-				)
-				VAR _isQuarter_val = CALCULATE(
-				    SELECTEDMEASURE(),
-				    REMOVEFILTERS(Operation_Cal_Day),
-				    Operation_Cal_Day[FirstDayOfQuarter] = EDATE(_SelectedPeriod, -3),
-				    Operation_Cal_Day[DayDate] <= MAX(Operation_Cal_Day[DayDate])
-				)
-				
-				// CurrentQuartercal
 				VAR prev_q = STARTOFQUARTER(DATEADD(Operation_Cal_Day[DayDate], -1, QUARTER))
 				VAR prev_q_end = ENDOFQUARTER(DATEADD(Operation_Cal_Day[DayDate], -1, QUARTER))
 				VAR curr_q_start = STARTOFQUARTER(Operation_Cal_Day[DayDate])
 				VAR _maxdate = MAX(Operation_Cal_Day[DayDate])
-				VAR _isquarter_curr_val = CALCULATE(
-				    SELECTEDMEASURE(),
-				    Operation_Cal_Day[DayDate] >= prev_q,
-				    Operation_Cal_Day[DayDate] <= IF(
-				        prev_q_end <= prev_q + DATEDIFF(curr_q_start, _maxdate, DAY),
-				        prev_q_end, prev_q + DATEDIFF(curr_q_start, _maxdate, DAY)
-				    )
-				)
-				VAR _isYear_val = CALCULATE(
-				    SELECTEDMEASURE(),
-				    REMOVEFILTERS(Operation_Cal_Day),
-				    Operation_Cal_Day[FirstDayOfYear] = DATE(YEAR(_SelectedPeriod) - 1,
-				            MONTH(_SelectedPeriod), DAY(_SelectedPeriod)),
-				    Operation_Cal_Day[DayDate] <= MAX(Operation_Cal_Day[LYDayDate])
-				)
 				VAR _z = SWITCH(
 				    TRUE(),
-				    _x < 7, _isWeek_val,
+				    _x < 7, CALCULATE(
+				        SELECTEDMEASURE(),
+				        REMOVEFILTERS(Operation_Cal_Day),
+				        Operation_Cal_Day[DayDate] >=_mindate1 - 7,
+				        Operation_Cal_Day[DayDate] <=_mindate1 - 7 + _x
+				    ), // Week_val
 				    _x <= 30 && MONTH([CM]) in VALUES(Operation_Cal_Day[MonthNumber])
-				        && HASONEVALUE(Operation_Cal_Day[L3]), _iscurrmonth_val,
-				    _x <= 92 && MONTH([CM]) in VALUES(Operation_Cal_Day[MonthNumber]), _isquarter_curr_val,
-				    _x <= 30, _isMonth_val,
-				    _x <= 92, _isQuarter_val,
-				    _isYear_val
+				        && HASONEVALUE(Operation_Cal_Day[L3]), CALCULATE(
+				        SELECTEDMEASURE(),
+				        REMOVEFILTERS(Operation_Cal_Day),
+				        Operation_Cal_Day[FirstDayOfMonth] = EDATE(_SelectedPeriod, -1),
+				        DAY(Operation_Cal_Day[DayDate]) <= DAY(MAX(Operation_Cal_Day[DayDate]))
+				    ), // _iscurrmonth_val
+				    _x <= 92 && MONTH([CM]) in VALUES(Operation_Cal_Day[MonthNumber]), CALCULATE(
+				        SELECTEDMEASURE(),
+				        Operation_Cal_Day[DayDate] >= prev_q,
+				        Operation_Cal_Day[DayDate] <= IF(
+				            prev_q_end <= prev_q + DATEDIFF(curr_q_start, _maxdate, DAY),
+				            prev_q_end, prev_q + DATEDIFF(curr_q_start, _maxdate, DAY)
+				        )
+				    ), // _isquarter_curr_val
+				    _x <= 30, CALCULATE(
+				        SELECTEDMEASURE(),
+				        REMOVEFILTERS(Operation_Cal_Day),
+				        Operation_Cal_Day[FirstDayOfMonth] = EDATE(_SelectedPeriod, -1)
+				    ), //_isMonth_val
+				    _x <= 92, CALCULATE(
+				        SELECTEDMEASURE(),
+				        REMOVEFILTERS(Operation_Cal_Day),
+				        Operation_Cal_Day[FirstDayOfQuarter] = EDATE(_SelectedPeriod, -3),
+				        Operation_Cal_Day[DayDate] <= MAX(Operation_Cal_Day[DayDate])
+				    ), //_isQuarter_val,
+				    CALCULATE(
+				        SELECTEDMEASURE(),
+				        REMOVEFILTERS(Operation_Cal_Day),
+				        Operation_Cal_Day[Year] = YEAR(_SelectedPeriod) - 1
+				    ) //_isYear_val
 				)
 				RETURN _z
 

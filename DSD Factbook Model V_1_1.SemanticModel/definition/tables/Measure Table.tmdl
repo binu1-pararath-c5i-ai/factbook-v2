@@ -6627,51 +6627,18 @@ table 'Measure Table'
 
 	measure 'Conditional_Volume AttainmentSelected' =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([Volume Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([Volume Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "AOP", [Volume Varient AOP%],
+			            "FCST", IF(NOT [IsFullPeriod], [Volume Varient FCST%]),
+			            "YA", [Volume Varient PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([Volume Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([Volume Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([Volume Varient FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([Volume Varient PY%], slicerFilter),
-			
-			    BLANK()
-			)
+			10))
 		formatString: #,##0%;(#,##0%)
 		lineageTag: 7e9380ce-03e3-4d64-9769-ad1afff3d55a
 
@@ -6683,52 +6650,21 @@ table 'Measure Table'
 
 	measure 'Conditional_Revenue AttainmentSelected' =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN
-			MAX(-10, MIN(SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([Revenue Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([Revenue Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [Revenue Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [Revenue Varient FCST%]),
+			            "Absolute_YA", [Revenue Varient PY%],
+			            "RPC_AOP", [Revenue Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [Revenue Varient RPC FCST%]),
+			            "RPC_YA", [Revenue Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([Revenue Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([Revenue Varient RPC AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([Revenue Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([Revenue Varient RPC PY%], slicerFilter),
-			
-			    BLANK()
-			), 10))
+			10))
 		formatString: #,##0%;(#,##0%)
 		lineageTag: c3234e8e-1e38-43b7-8073-bef7e4d04799
 
@@ -6740,51 +6676,21 @@ table 'Measure Table'
 
 	measure Conditional_Opex_AttainmentSelected =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN MAX(-10, MIN(SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([OPex Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([OPex Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [Opex Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [Opex Varient FCST%]),
+			            "Absolute_YA", [Opex Varient PY%],
+			            "RPC_AOP", [Opex Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [Opex Varient RPC FCST%]),
+			            "RPC_YA", [Opex Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([OPex Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([Opex Varient RPC AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([Opex Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([Opex Varient RPC PY%], slicerFilter),
-			
-			    BLANK()
-			), 10))
+			10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: 43189af4-864f-46c7-a772-272b12373c3a
 
@@ -6796,51 +6702,21 @@ table 'Measure Table'
 
 	measure Conditional_GP_AttainmentSelected =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([GP Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([GP Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [GP Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [GP Varient FCST%]),
+			            "Absolute_YA", [GP Varient PY%],
+			            "RPC_AOP", [GP Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [GP Varient RPC FCST%]),
+			            "RPC_YA", [GP Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([GP Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([GP Varient RPC AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([GP Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([GP Varient RPC PY%], slicerFilter),
-			
-			    BLANK()
-			)
+			10))
 		formatString: #,##0%;(#,##0%)
 		lineageTag: fe9f3fc4-1bd1-4269-93fc-b5640631339d
 
@@ -6852,51 +6728,21 @@ table 'Measure Table'
 
 	measure 'Conditional_OI AttainmentSelected' =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN MAX(-10, MIN(SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([OI Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([OI Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [OI Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [OI Varient FCST%]),
+			            "Absolute_YA", [OI Varient PY%],
+			            "RPC_AOP", [OI Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [OI Varient RPC FCST%]),
+			            "RPC_YA", [OI Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([OI Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([OI Varient RPC AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([OI Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([OI Varient RPC PY%], slicerFilter),
-			
-			    BLANK()
-			), 10))
+			10))
 		formatString: #,##0%;(#,##0%)
 		lineageTag: 823842a0-46f1-468f-8be9-1e12ce774a2e
 
@@ -6908,45 +6754,21 @@ table 'Measure Table'
 
 	measure 'conditional DSD labor_AttainmentSelected' =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN
-			MAX(-10,MIN(SWITCH(
-			    TRUE(),
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([DSD Labor Varient AOP%], slicerFilter),
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([DSD Labor Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [DSD Labor Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [DSD Labor Varient FCST%]),
+			            "Absolute_YA", [DSD Labor Varient PY%],
+			            "RPC_AOP", [DSD Labor Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [DSD Labor Varient RPC FCST%]),
+			            "RPC_YA", [DSD Labor Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([DSD Labor Varient PY%], slicerFilter),
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([DSD Labor Varient RPC AOP%], slicerFilter),
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([DSD Labor Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([DSD Labor Varient RPC PY%], slicerFilter),
-			    BLANK()
-			), 10))
+			10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: dc4efeaf-4bff-4aeb-9f87-ef204f2aac4e
 
@@ -6958,51 +6780,21 @@ table 'Measure Table'
 
 	measure 'conditional Non Labor Opex AttainmentSelected' =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN MAX(-10, MIN(SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([Non Labor Opex Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([Non Labor Opex Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [Non Labor Opex Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [Non Labor Opex Varient FCST%]),
+			            "Absolute_YA", [Non Labor Opex Varient PY%],
+			            "RPC_AOP", [Non Labor Opex Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [Non Labor OPex Varient RPC FCST%]),
+			            "RPC_YA", [Non Labor OPex Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([Non Labor Opex Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([Non Labor Opex Varient RPC AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([Non Labor OPex Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([Non Labor OPex Varient RPC PY%], slicerFilter),
-			
-			    BLANK()
-			), 10))
+			10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: 824f82f3-8678-4ba4-9c67-8630e5686831
 
@@ -7014,51 +6806,21 @@ table 'Measure Table'
 
 	measure 'Conditional Opex AO AttainmentSelected' =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([Opex AO Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([Opex AO Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [Opex AO Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [Opex AO Varient FCST%]),
+			            "Absolute_YA", [Opex AO Varient PY%],
+			            "RPC_AOP", [Opex AO Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [Opex AO Varient RPC FCST%]),
+			            "RPC_YA", [Opex AO Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([Opex AO Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([Opex AO Varient RPC AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([Opex AO Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([Opex AO Varient RPC PY%], slicerFilter),
-			
-			    BLANK()
-			)
+			10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: 7f91a98d-5a85-4068-93f3-2938c1e61292
 
@@ -7070,51 +6832,21 @@ table 'Measure Table'
 
 	measure 'conditional SG&A labor AttainmentSelected' =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([SG&A Labor Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([SG&A Labor Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [SG&A Labor Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [SG&A Labor Varient FCST%]),
+			            "Absolute_YA", [SG&A Labor Varient PY%],
+			            "RPC_AOP", [SG&A Labor Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [SG&A Labor Varient RPC FCST%]),
+			            "RPC_YA", [SG&A Labor Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([SG&A Labor Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([SG&A Labor Varient RPC AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([SG&A Labor Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([SG&A Labor Varient RPC PY%], slicerFilter),
-			
-			    BLANK()
-			)
+			10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: 95ca9273-f954-47bd-81f9-5d36c8271b6d
 
@@ -7126,51 +6858,21 @@ table 'Measure Table'
 
 	measure 'Conditional T&WL_new' =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([T&W Labor Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([T&W Labor Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [T&W Labor Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [T&W Labor Varient FCST%]),
+			            "Absolute_YA", [T&W Labor Varient PY%],
+			            "RPC_AOP", [T&W Labor Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [T&W Labor Varient RPC FCST%]),
+			            "RPC_YA", [T&W Labor Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([T&W Labor Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([T&W Labor Varient RPC AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([T&W Labor Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([T&W Labor Varient RPC PY%], slicerFilter),
-			
-			    BLANK()
-			)
+			10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: 74b1b745-db5b-426c-951b-dce745e3afea
 
@@ -7182,51 +6884,21 @@ table 'Measure Table'
 
 	measure 'Conditional T&WB_new' =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([T&W Building Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([T&W Building Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [T&W Building Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [T&W Building Varient FCST%]),
+			            "Absolute_YA", [T&W Building Varient PY%],
+			            "RPC_AOP", [T&W Building Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [T&W Building Varient RPC FCST%]),
+			            "RPC_YA", [T&W Building Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([T&W Building Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([T&W Building Varient RPC AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([T&W Building Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([T&W Building Varient RPC PY%], slicerFilter),
-			
-			    BLANK()
-			)
+			10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: fd828bbb-93f2-48b6-aaca-fb1423bb16da
 
@@ -7238,51 +6910,21 @@ table 'Measure Table'
 
 	measure 'Conditional T&WF_new' =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([T&W Fleet Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([T&W Fleet Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [T&W Fleet Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [T&W Fleet Varient FCST%]),
+			            "Absolute_YA", [T&W Fleet Varient PY%],
+			            "RPC_AOP", [T&W Fleet Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [T&W Fleet Varient RPC FCST%]),
+			            "RPC_YA", [T&W Fleet Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([T&W Fleet Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([T&W Fleet Varient RPC AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([T&W Fleet Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([T&W Fleet Varient RPC PY%], slicerFilter),
-			
-			    BLANK()
-			)
+			10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: 8101f08e-ba5d-4611-ae19-18b076c6a025
 
@@ -7294,51 +6936,21 @@ table 'Measure Table'
 
 	measure 'Conditional NSG_new' =
 			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			VAR _cl_day = MAX('V_Dim_FB_CalDay'[CL_M_END])
-			VAR CurrentYear = YEAR(_cl_day)
-			VAR CurrentMonth = MONTH(_cl_day)
-			VAR VisualYear = SELECTEDVALUE(Operation_Cal_Day[Year])
-			VAR VisualQuarter = SELECTEDVALUE(Operation_Cal_Day[Quarter])
-			VAR SelectedMonths = CALCULATETABLE(
-				VALUES(Operation_Cal_Day[MonthNumber]),
-				Operation_Cal_Day[Year] = VisualYear
-			)
-			VAR IsFullPeriod = COUNTROWS(SelectedMonths) = IF(VisualYear = CurrentYear, CurrentMonth, 12)
-			VAR slicerFilter = FILTER(
-				ALLSELECTED(Operation_Cal_Day),
-				Operation_Cal_Day[DayDate] <= _cl_day
-			)
-			RETURN SWITCH(
-			    TRUE(),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "AOP",
-			    CALCULATE([SG&A NON Labor Varient AOP%], slicerFilter),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([SG&A NON Labor Varient FCST%], slicerFilter),
-			        BLANK()
+			MAX(-10, MIN(
+			    CALCULATE(
+			        SWITCH(
+			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			            "Absolute_AOP", [SG&A NON Labor Varient AOP%],
+			            "Absolute_FCST", IF(NOT [IsFullPeriod], [SG&A NON Labor Varient FCST%]),
+			            "Absolute_YA", [SG&A NON Labor Varient PY%],
+			            "RPC_AOP", [SG&A NON Labor Varient RPC AOP%],
+			            "RPC_FCST", IF(NOT [IsFullPeriod], [SG&A NON Labor Varient RPC FCST%]),
+			            "RPC_YA", [SG&A NON Labor Varient RPC PY%],
+			            BLANK()
+			        ),
+			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
 			    ),
-			
-			    SelectedToggle = "Absolute" && SelectedScenario = "YA",
-			    CALCULATE([SG&A NON Labor Varient PY%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "AOP",
-			    CALCULATE([SG&A NON Labor Varient RPC AOP%], slicerFilter),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "FCST",
-			    IF(NOT IsFullPeriod,
-			        CALCULATE([SG&A NON Labor Varient RPC FCST%], slicerFilter),
-			        BLANK()
-			    ),
-			
-			    SelectedToggle = "RPC" && SelectedScenario = "YA",
-			    CALCULATE([SG&A NON Labor Varient RPC PY%], slicerFilter),
-			
-			    BLANK()
-			)
+			10))
 		formatString: (#,##0%);#,##0%
 		lineageTag: cd28dff8-d4ec-475a-9bca-bb2f0d4ec50b
 
@@ -13109,15 +12721,6 @@ table 'Measure Table'
 		formatString: 0
 		displayFolder: Stack Rank
 		lineageTag: 0258094e-a0bf-4b7d-b3dc-332523916b93
-
-		changedProperty = DisplayFolder
-
-		changedProperty = Name
-
-	measure Selected_Dynamic_Parameter = SELECTEDVALUE(Dynamic_Parameter[Dynamic_Parameter Order])
-		formatString: 0
-		displayFolder: Stack Rank
-		lineageTag: 1ea1827a-612e-486e-a148-b252668a3a62
 
 		changedProperty = DisplayFolder
 

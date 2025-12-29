@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "1a36ae086b9f76e72ae1",
+  "name": "e58966406669e113773c",
   "position": {
-    "x": 0,
-    "y": 0,
-    "z": 0,
-    "height": 412.47015583212561,
-    "width": 722.12875946870656
+    "x": 31.69691973823663,
+    "y": 319.72545127264772,
+    "z": 1,
+    "height": 378.9849099136988,
+    "width": 1030.8389549652609
   },
   "visual": {
     "visualType": "tableEx",
@@ -19,14 +19,42 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "V_Dim_FB_CalDay"
+                      "Entity": "Operation_Cal_Day"
                     }
                   },
-                  "Property": "FirstDayOfMonth"
+                  "Property": "L1"
                 }
               },
-              "queryRef": "V_Dim_FB_CalDay.FirstDayOfMonth",
-              "nativeQueryRef": "FirstDayOfMonth"
+              "queryRef": "Operation_Cal_Day.L1",
+              "nativeQueryRef": "L1"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Operation_Cal_Day"
+                    }
+                  },
+                  "Property": "L2"
+                }
+              },
+              "queryRef": "Operation_Cal_Day.L2",
+              "nativeQueryRef": "L2"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Operation_Cal_Day"
+                    }
+                  },
+                  "Property": "L3"
+                }
+              },
+              "queryRef": "Operation_Cal_Day.L3",
+              "nativeQueryRef": "L3"
             },
             {
               "field": {
@@ -36,11 +64,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Total_CFR_Card"
+                  "Property": "Requested_Deliveries_Prior_Period_abs"
                 }
               },
-              "queryRef": "Measure Table.Total_CFR_Card",
-              "nativeQueryRef": "Total_CFR_Card"
+              "queryRef": "Measure Table.Requested_Deliveries_Prior_Period_abs",
+              "nativeQueryRef": "Requested_Deliveries_Prior_Period_abs"
             },
             {
               "field": {
@@ -50,11 +78,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Conditional_Revenue AttainmentSelected"
+                  "Property": "Haulback_cases_table"
                 }
               },
-              "queryRef": "Measure Table.Conditional_Revenue AttainmentSelected",
-              "nativeQueryRef": "Conditional_Revenue AttainmentSelected"
+              "queryRef": "Measure Table.Haulback_cases_table",
+              "nativeQueryRef": "Haulback_cases_table"
             },
             {
               "field": {
@@ -64,11 +92,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Revenue Varient AOP%"
+                  "Property": "Haulback_cases_table_prior_period_abs"
                 }
               },
-              "queryRef": "Measure Table.Revenue Varient AOP%",
-              "nativeQueryRef": "Revenue Varient AOP%"
+              "queryRef": "Measure Table.Haulback_cases_table_prior_period_abs",
+              "nativeQueryRef": "Haulback_cases_table_prior_period_abs"
             },
             {
               "field": {
@@ -78,11 +106,11 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Revenue Act"
+                  "Property": "Schedule_Adherence_Prior_Period_den"
                 }
               },
-              "queryRef": "Measure Table.Revenue Act",
-              "nativeQueryRef": "Revenue Act"
+              "queryRef": "Measure Table.Schedule_Adherence_Prior_Period_den",
+              "nativeQueryRef": "Schedule_Adherence_Prior_Period_den"
             },
             {
               "field": {
@@ -92,45 +120,14 @@
                       "Entity": "Measure Table"
                     }
                   },
-                  "Property": "Revenue AOP"
+                  "Property": "Schedule_Adherence_Prior_Period_num"
                 }
               },
-              "queryRef": "Measure Table.Revenue AOP",
-              "nativeQueryRef": "Revenue AOP"
-            },
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "Measure Table"
-                    }
-                  },
-                  "Property": "Conditional_Revenue AttainmentSelected max per CasesOrdered"
-                }
-              },
-              "queryRef": "Measure Table.Conditional_Revenue AttainmentSelected max per CasesOrdered",
-              "nativeQueryRef": "Conditional_Revenue AttainmentSelected max per CasesOrdered"
+              "queryRef": "Measure Table.Schedule_Adherence_Prior_Period_num",
+              "nativeQueryRef": "Schedule_Adherence_Prior_Period_num"
             }
           ]
         }
-      },
-      "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_Dim_FB_CalDay"
-                  }
-                },
-                "Property": "FirstDayOfMonth"
-              }
-            },
-            "direction": "Descending"
-          }
-        ]
       }
     },
     "objects": {
@@ -140,13 +137,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "78.17217617866905D"
+                  "Value": "91.10407060404074D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "Measure Table.Conditional_Revenue AttainmentSelected"
+            "metadata": "Measure Table.Requested_Deliveries_Prior_Period_abs"
           }
         },
         {
@@ -154,13 +151,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "99.76909570334672D"
+                  "Value": "82.89351448845204D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "Measure Table.Conditional_Revenue AttainmentSelected max per CasesOrdered"
+            "metadata": "Measure Table.Haulback_cases_table_prior_period_abs"
           }
         },
         {
@@ -168,13 +165,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "51.42983074665679D"
+                  "Value": "79.89351710215581D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "Measure Table.Revenue Varient AOP%"
+            "metadata": "Measure Table.Schedule_Adherence_Prior_Period_den"
           }
         },
         {
@@ -182,27 +179,13 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "99.76052929643777D"
+                  "Value": "81.13726878412231D"
                 }
               }
             }
           },
           "selector": {
-            "metadata": "V_Dim_FB_CalDay.FirstDayOfMonth"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
-                  "Value": "49.81815689427084D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Measure Table.Total_CFR_Card"
+            "metadata": "Measure Table.Schedule_Adherence_Prior_Period_num"
           }
         }
       ]

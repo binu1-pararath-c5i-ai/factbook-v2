@@ -1,12 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "b14b04f0abed53fa8600",
+  "name": "d6dfea56c98418479690",
   "position": {
-    "x": 1023.2197337556588,
-    "y": 78.332611196605455,
-    "z": 9000,
-    "height": 42.838146748143608,
-    "width": 135.85812254411258
+    "x": 852.568254135682,
+    "y": 0,
+    "z": 2,
+    "height": 70.567304818662862,
+    "width": 138.25431148146194,
+    "tabOrder": 3
   },
   "visual": {
     "visualType": "slicer",
@@ -19,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Metric Table"
+                      "Entity": "Act/VolAdj Table"
                     }
                   },
-                  "Property": "Metrics"
+                  "Property": "Act/VolAdj"
                 }
               },
-              "queryRef": "Metric Table.Metrics",
-              "nativeQueryRef": "Metrics",
+              "queryRef": "Act/VolAdj Table.Act/VolAdj",
+              "nativeQueryRef": "Act/VolAdj",
               "active": true
             }
           ]
@@ -40,7 +41,7 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Dropdown'"
+                  "Value": "'Basic'"
                 }
               }
             }
@@ -53,7 +54,7 @@
             "orientation": {
               "expr": {
                 "Literal": {
-                  "Value": "1D"
+                  "Value": "0D"
                 }
               }
             },
@@ -62,8 +63,8 @@
                 "Version": 2,
                 "From": [
                   {
-                    "Name": "m",
-                    "Entity": "Metric Table",
+                    "Name": "a",
+                    "Entity": "Act/VolAdj Table",
                     "Type": 0
                   }
                 ],
@@ -76,10 +77,10 @@
                             "Column": {
                               "Expression": {
                                 "SourceRef": {
-                                  "Source": "m"
+                                  "Source": "a"
                                 }
                               },
-                              "Property": "Metrics"
+                              "Property": "Act/VolAdj"
                             }
                           }
                         ],
@@ -87,7 +88,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'AOP'"
+                                "Value": "'Actuals'"
                               }
                             }
                           ]
@@ -96,6 +97,19 @@
                     }
                   }
                 ]
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
               }
             }
           }
@@ -113,14 +127,37 @@
             }
           }
         }
-      ],
-      "header": [
+      ]
+    },
+    "visualContainerObjects": {
+      "padding": [
         {
           "properties": {
-            "show": {
+            "top": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "0D"
+                }
+              }
+            },
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
                 }
               }
             }

@@ -1,12 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "b14b04f0abed53fa8600",
+  "name": "6772dcc7ffab9838dfee",
   "position": {
-    "x": 1023.2197337556588,
-    "y": 78.332611196605455,
-    "z": 9000,
-    "height": 42.838146748143608,
-    "width": 135.85812254411258
+    "x": 1147.7988151117206,
+    "y": 273.6283248070601,
+    "z": 4,
+    "height": 77.76805020832235,
+    "width": 129.61341701387056,
+    "tabOrder": 2
   },
   "visual": {
     "visualType": "slicer",
@@ -19,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Metric Table"
+                      "Entity": "Abs/RPC Table"
                     }
                   },
-                  "Property": "Metrics"
+                  "Property": "Abs/RPC"
                 }
               },
-              "queryRef": "Metric Table.Metrics",
-              "nativeQueryRef": "Metrics",
+              "queryRef": "Abs/RPC Table.Abs/RPC",
+              "nativeQueryRef": "Abs/RPC",
               "active": true
             }
           ]
@@ -40,62 +41,8 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Dropdown'"
+                  "Value": "'Basic'"
                 }
-              }
-            }
-          }
-        }
-      ],
-      "general": [
-        {
-          "properties": {
-            "orientation": {
-              "expr": {
-                "Literal": {
-                  "Value": "1D"
-                }
-              }
-            },
-            "filter": {
-              "filter": {
-                "Version": 2,
-                "From": [
-                  {
-                    "Name": "m",
-                    "Entity": "Metric Table",
-                    "Type": 0
-                  }
-                ],
-                "Where": [
-                  {
-                    "Condition": {
-                      "In": {
-                        "Expressions": [
-                          {
-                            "Column": {
-                              "Expression": {
-                                "SourceRef": {
-                                  "Source": "m"
-                                }
-                              },
-                              "Property": "Metrics"
-                            }
-                          }
-                        ],
-                        "Values": [
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'AOP'"
-                              }
-                            }
-                          ]
-                        ]
-                      }
-                    }
-                  }
-                ]
               }
             }
           }
@@ -109,6 +56,53 @@
                 "Literal": {
                   "Value": "true"
                 }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "filter": {
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "a",
+                    "Entity": "Abs/RPC Table",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "In": {
+                        "Expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "a"
+                                }
+                              },
+                              "Property": "Abs/RPC"
+                            }
+                          }
+                        ],
+                        "Values": [
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'Absolute'"
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  }
+                ]
               }
             }
           }

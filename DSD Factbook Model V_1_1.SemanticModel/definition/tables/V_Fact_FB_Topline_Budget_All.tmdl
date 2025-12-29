@@ -2,12 +2,14 @@ table V_Fact_FB_Topline_Budget_All
 	lineageTag: 9d532829-e432-471d-81cb-65df83d6bf8f
 
 	column MonthID
-		dataType: string
+		dataType: double
 		lineageTag: eb3a5973-1a80-4e4a-bc36-1d19e59decbe
-		summarizeBy: none
+		summarizeBy: count
 		sourceColumn: MonthID
 
 		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column RYBkt
 		dataType: string

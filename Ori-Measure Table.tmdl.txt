@@ -25033,19 +25033,9 @@ table 'Measure Table'
 		formatString: 0
 		displayFolder: Stack Rank
 		lineageTag: 114a271c-a5be-475a-9a97-aee5a5f133b2
-
 		changedProperty = Name
-
 		changedProperty = FormatString
-
 		changedProperty = DisplayFolder
-
-	measure 'Conditional_Volume AttainmentSelected_Rank' = EXTERNALMEASURE("Conditional_Volume AttainmentSelected_Rank", INTEGER, "DirectQuery to AS - DSD_Master_Semantic_Model")
-		formatString: 0
-		displayFolder: Stack Rank
-		lineageTag: dda5175a-0f18-4f33-b201-033d9f5f0726
-		sourceLineageTag: 2df1c344-7c0c-41ae-a14f-52d2ec6ea451
-		dataCategory: Uncategorized
 
 	measure 'Opex_KPI_NEW 1' = ```
 			
@@ -25054,8 +25044,8 @@ table 'Measure Table'
 			RETURN
 			SWITCH(
 			    TRUE(),
-			SelectedToggle = "Absolute",ABS([Opex Act]),
-			SelectedToggle = "RPC",ABS([Opex RPC])
+                SelectedToggle = "Absolute",ABS([Opex Act]),
+                SelectedToggle = "RPC",ABS([Opex RPC])
 			)
 			
 			```
