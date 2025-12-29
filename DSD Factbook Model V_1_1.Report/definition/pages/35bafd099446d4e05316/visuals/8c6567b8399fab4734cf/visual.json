@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "8c6567b8399fab4734cf",
   "position": {
-    "x": 1027.513023905901,
-    "y": 80.29768927774046,
+    "x": 1106.7472736815505,
+    "y": 79.62210602025543,
     "z": 1000,
-    "height": 32.713873409449818,
-    "width": 252.78902180029405
+    "height": 54.143032093773691,
+    "width": 173.57619112415682
   },
   "visual": {
     "visualType": "slicer",
@@ -40,7 +40,7 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Basic'"
+                  "Value": "'Dropdown'"
                 }
               }
             }
@@ -165,5 +165,23 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "84effc18647481c55bfe",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Act/VolAdj Table"
+              }
+            },
+            "Property": "Act/VolAdj"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }

@@ -1,12 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "aea43ecdfb09f1828371",
+  "name": "95d225c33cf3074022c7",
   "position": {
-    "x": 1106.7472736815505,
-    "y": 152.87444355889042,
-    "z": 4000,
-    "height": 74.8447796590401,
-    "width": 173.57619112415682
+    "x": 1174.8957311681004,
+    "y": 135.66621111021786,
+    "z": 2000,
+    "height": 61.90594099204116,
+    "width": 105.37181445453814,
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "slicer",
@@ -19,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Whse/Delv/Mech Table"
+                      "Entity": "SKU_Category_Selector"
                     }
                   },
-                  "Property": "Whse/Delv/Mech"
+                  "Property": "Selector"
                 }
               },
-              "queryRef": "Whse/Delv/Mech Table.Whse/Delv/Mech",
-              "nativeQueryRef": "Whse/Delv/Mech",
+              "queryRef": "SKU_Category_Selector.Selector",
+              "nativeQueryRef": "Selector",
               "active": true
             }
           ]
@@ -40,7 +41,7 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Dropdown'"
+                  "Value": "'Basic'"
                 }
               }
             }
@@ -53,7 +54,7 @@
             "orientation": {
               "expr": {
                 "Literal": {
-                  "Value": "1D"
+                  "Value": "0D"
                 }
               }
             },
@@ -62,8 +63,8 @@
                 "Version": 2,
                 "From": [
                   {
-                    "Name": "w",
-                    "Entity": "Whse/Delv/Mech Table",
+                    "Name": "s",
+                    "Entity": "SKU_Category_Selector",
                     "Type": 0
                   }
                 ],
@@ -76,10 +77,10 @@
                             "Column": {
                               "Expression": {
                                 "SourceRef": {
-                                  "Source": "w"
+                                  "Source": "s"
                                 }
                               },
-                              "Property": "Whse/Delv/Mech"
+                              "Property": "Selector"
                             }
                           }
                         ],
@@ -87,7 +88,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Merchandising'"
+                                "Value": "'Account'"
                               }
                             }
                           ]
@@ -96,6 +97,19 @@
                     }
                   }
                 ]
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
               }
             }
           }
@@ -115,24 +129,42 @@
         }
       ]
     },
-    "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "19c27dfc497ef1d000b3",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Whse/Delv/Mech Table"
+    "visualContainerObjects": {
+      "padding": [
+        {
+          "properties": {
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
               }
             },
-            "Property": "Whse/Delv/Mech"
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "bottom": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
           }
-        },
-        "type": "Categorical"
-      }
-    ]
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
   }
 }

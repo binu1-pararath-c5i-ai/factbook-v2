@@ -1,12 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "0700d74ab2ddc822333d",
+  "name": "7ff5f26333f1605582ee",
   "position": {
-    "x": 1070.9536687035902,
-    "y": 0,
-    "z": 10000,
-    "height": 73.436822996817611,
-    "width": 195.83152799151364
+    "x": 907.51475198970979,
+    "y": 18.440067529544176,
+    "z": 1000,
+    "height": 75.077417798858434,
+    "width": 168.59490312726103,
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "slicer",
@@ -57,7 +58,7 @@
               },
               "queryRef": "Operation_Cal_Day.L31",
               "nativeQueryRef": "L31",
-              "active": true
+              "active": false
             }
           ]
         }
@@ -142,23 +143,12 @@
                   }
                 }
               ],
-              "isToggled": true,
               "children": [
                 {
                   "identityValues": [
                     {
                       "Literal": {
-                        "Value": "'Q2'"
-                      }
-                    }
-                  ],
-                  "isToggled": true
-                },
-                {
-                  "identityValues": [
-                    {
-                      "Literal": {
-                        "Value": "'Q4'"
+                        "Value": "'Q1'"
                       }
                     }
                   ],
@@ -196,7 +186,99 @@
       ],
       "general": [
         {
-          "properties": {}
+          "properties": {
+            "filter": {
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "o",
+                    "Entity": "Operation_Cal_Day",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "In": {
+                        "Expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "o"
+                                }
+                              },
+                              "Property": "L1"
+                            }
+                          }
+                        ],
+                        "Values": [
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'2025'"
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    },
+                    "Annotations": {
+                      "filterExpressionMetadata": {
+                        "expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Entity": "Operation_Cal_Day"
+                                }
+                              },
+                              "Property": "L1"
+                            }
+                          }
+                        ],
+                        "decomposedIdentities": {
+                          "values": [
+                            [
+                              {
+                                "0": [
+                                  {
+                                    "Literal": {
+                                      "Value": "'2025'"
+                                    }
+                                  }
+                                ]
+                              }
+                            ]
+                          ],
+                          "columns": [
+                            {
+                              "value": {
+                                "Column": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Entity": "Operation_Cal_Day"
+                                    }
+                                  },
+                                  "Property": "L1"
+                                }
+                              }
+                            }
+                          ]
+                        },
+                        "valueMap": [
+                          {
+                            "0": "2025"
+                          }
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
         }
       ],
       "selection": [

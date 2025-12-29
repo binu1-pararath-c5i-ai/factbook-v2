@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "aea43ecdfb09f1828371",
+  "name": "1cffc887b2591764848f",
   "position": {
-    "x": 1106.7472736815505,
-    "y": 152.87444355889042,
-    "z": 4000,
-    "height": 74.8447796590401,
-    "width": 173.57619112415682
+    "x": 1192.2294449847298,
+    "y": 254.37955332616744,
+    "z": 5000,
+    "height": 96.440599887393148,
+    "width": 88.054460766750267
   },
   "visual": {
     "visualType": "slicer",
@@ -19,14 +19,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Whse/Delv/Mech Table"
+                      "Entity": "Metric Table"
                     }
                   },
-                  "Property": "Whse/Delv/Mech"
+                  "Property": "Metrics"
                 }
               },
-              "queryRef": "Whse/Delv/Mech Table.Whse/Delv/Mech",
-              "nativeQueryRef": "Whse/Delv/Mech",
+              "queryRef": "Metric Table.Metrics",
+              "nativeQueryRef": "Metrics",
               "active": true
             }
           ]
@@ -40,7 +40,7 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Dropdown'"
+                  "Value": "'Basic'"
                 }
               }
             }
@@ -53,7 +53,7 @@
             "orientation": {
               "expr": {
                 "Literal": {
-                  "Value": "1D"
+                  "Value": "0D"
                 }
               }
             },
@@ -62,8 +62,8 @@
                 "Version": 2,
                 "From": [
                   {
-                    "Name": "w",
-                    "Entity": "Whse/Delv/Mech Table",
+                    "Name": "m",
+                    "Entity": "Metric Table",
                     "Type": 0
                   }
                 ],
@@ -76,10 +76,10 @@
                             "Column": {
                               "Expression": {
                                 "SourceRef": {
-                                  "Source": "w"
+                                  "Source": "m"
                                 }
                               },
-                              "Property": "Whse/Delv/Mech"
+                              "Property": "Metrics"
                             }
                           }
                         ],
@@ -87,7 +87,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Merchandising'"
+                                "Value": "'AOP'"
                               }
                             }
                           ]
@@ -113,26 +113,21 @@
             }
           }
         }
+      ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "19c27dfc497ef1d000b3",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Whse/Delv/Mech Table"
-              }
-            },
-            "Property": "Whse/Delv/Mech"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

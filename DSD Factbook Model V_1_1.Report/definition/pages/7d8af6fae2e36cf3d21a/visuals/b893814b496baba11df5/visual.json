@@ -1,0 +1,101 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
+  "name": "b893814b496baba11df5",
+  "position": {
+    "x": 571.64209341586945,
+    "y": 0,
+    "z": 3007,
+    "height": 135.66621111021786,
+    "width": 260.79524077498189
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Operation_Cal_Day"
+                    }
+                  },
+                  "Property": "FirstDayOfMonth"
+                }
+              },
+              "queryRef": "Operation_Cal_Day.FirstDayOfMonth",
+              "nativeQueryRef": "FirstDayOfMonth"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Revenue_Bar_Actual_Selected"
+                }
+              },
+              "queryRef": "Measure Table.Revenue_Bar_Actual_Selected",
+              "nativeQueryRef": "Revenue_Bar_Actual_Selected"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "106.60542613038251D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Revenue_Bar_Actual_Selected"
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "8278c5376daad3f044c2",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue_Bar_Actual_Selected"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "c994643ef11adec11ebb",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Operation_Cal_Day"
+              }
+            },
+            "Property": "FirstDayOfMonth"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

@@ -3,10 +3,10 @@
   "name": "85b70119ab265ae6c2e5",
   "position": {
     "x": 0,
-    "y": 188.84826922727848,
+    "y": 388.10549817574554,
     "z": 3000,
-    "height": 530.85694578061748,
-    "width": 813.38585249859318
+    "height": 331.59971683215042,
+    "width": 481.78613566644276
   },
   "visual": {
     "visualType": "tableEx",
@@ -55,6 +55,34 @@
               },
               "queryRef": "Measure Table.Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Table",
               "nativeQueryRef": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Table"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Bar"
+                }
+              },
+              "queryRef": "Measure Table.Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Bar",
+              "nativeQueryRef": "Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Bar"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Measure Table"
+                    }
+                  },
+                  "Property": "Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops_Bar"
+                }
+              },
+              "queryRef": "Measure Table.Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops_Bar",
+              "nativeQueryRef": "Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops_Bar"
             }
           ]
         }
@@ -67,7 +95,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "77.67498033737975D"
+                  "Value": "85.14226154892444D"
                 }
               }
             }
@@ -81,7 +109,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "81.85407977152545D"
+                  "Value": "87.81295619892867D"
                 }
               }
             }
@@ -103,9 +131,111 @@
           "selector": {
             "metadata": "Operation_Cal_Day.FirstDayOfMonth"
           }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "75.51897674804697D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Bar"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "63.880093430358045D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops_Bar"
+          }
         }
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "1525b7c75f5d3fad0d11",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Operation_Cal_Day"
+              }
+            },
+            "Property": "FirstDayOfMonth"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "27d62161f1eb2c7eb4f9",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "f8d9751c91da71a1948e",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Table"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "6448f1d77487735c9fbf",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Bar"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "13a092be99e9290fce5d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops_Bar"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

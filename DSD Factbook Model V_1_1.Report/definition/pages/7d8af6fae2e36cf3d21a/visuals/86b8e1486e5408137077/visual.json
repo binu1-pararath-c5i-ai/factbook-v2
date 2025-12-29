@@ -1,12 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
-  "name": "aea43ecdfb09f1828371",
+  "name": "86b8e1486e5408137077",
   "position": {
-    "x": 1106.7472736815505,
-    "y": 152.87444355889042,
-    "z": 4000,
-    "height": 74.8447796590401,
-    "width": 173.57619112415682
+    "x": 1151.1870729158293,
+    "y": 389.87571348179114,
+    "z": 3003,
+    "height": 77.711713160221876,
+    "width": 129.08047270680922,
+    "tabOrder": 6003
   },
   "visual": {
     "visualType": "slicer",
@@ -19,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Whse/Delv/Mech Table"
+                      "Entity": "Abs/RPC Table"
                     }
                   },
-                  "Property": "Whse/Delv/Mech"
+                  "Property": "Abs/RPC"
                 }
               },
-              "queryRef": "Whse/Delv/Mech Table.Whse/Delv/Mech",
-              "nativeQueryRef": "Whse/Delv/Mech",
+              "queryRef": "Abs/RPC Table.Abs/RPC",
+              "nativeQueryRef": "Abs/RPC",
               "active": true
             }
           ]
@@ -40,62 +41,8 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Dropdown'"
+                  "Value": "'Basic'"
                 }
-              }
-            }
-          }
-        }
-      ],
-      "general": [
-        {
-          "properties": {
-            "orientation": {
-              "expr": {
-                "Literal": {
-                  "Value": "1D"
-                }
-              }
-            },
-            "filter": {
-              "filter": {
-                "Version": 2,
-                "From": [
-                  {
-                    "Name": "w",
-                    "Entity": "Whse/Delv/Mech Table",
-                    "Type": 0
-                  }
-                ],
-                "Where": [
-                  {
-                    "Condition": {
-                      "In": {
-                        "Expressions": [
-                          {
-                            "Column": {
-                              "Expression": {
-                                "SourceRef": {
-                                  "Source": "w"
-                                }
-                              },
-                              "Property": "Whse/Delv/Mech"
-                            }
-                          }
-                        ],
-                        "Values": [
-                          [
-                            {
-                              "Literal": {
-                                "Value": "'Merchandising'"
-                              }
-                            }
-                          ]
-                        ]
-                      }
-                    }
-                  }
-                ]
               }
             }
           }
@@ -113,6 +60,66 @@
             }
           }
         }
+      ],
+      "general": [
+        {
+          "properties": {
+            "filter": {
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "a",
+                    "Entity": "Abs/RPC Table",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "In": {
+                        "Expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "a"
+                                }
+                              },
+                              "Property": "Abs/RPC"
+                            }
+                          }
+                        ],
+                        "Values": [
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'RPC'"
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "drillFilterOtherVisuals": true
@@ -120,15 +127,15 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "19c27dfc497ef1d000b3",
+        "name": "436815e540767a9fa146",
         "field": {
           "Column": {
             "Expression": {
               "SourceRef": {
-                "Entity": "Whse/Delv/Mech Table"
+                "Entity": "Abs/RPC Table"
               }
             },
-            "Property": "Whse/Delv/Mech"
+            "Property": "Abs/RPC"
           }
         },
         "type": "Categorical"

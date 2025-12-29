@@ -1143,30 +1143,25 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Volume_Bar_Selected =
-			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			
-			RETURN
-			SWITCH(
-			    TRUE(),
-				SelectedToggle = "Absolute" && SelectedScenario = "AOP", [Volume_Bar_AOP],
-				SelectedToggle = "Absolute" && SelectedScenario = "FCST", [Volume_Bar_FCST_new],
-				SelectedToggle = "Absolute" && SelectedScenario = "YA", [Volume_Bar_PY],
-				SelectedToggle = "RPC" && SelectedScenario = "AOP", [Volume_Bar_AOP],
-				SelectedToggle = "RPC" && SelectedScenario = "FCST", [Volume_Bar_FCST_new],
-				SelectedToggle = "RPC" && SelectedScenario = "YA", [Volume_Bar_PY]
-			)
-		formatString: 0.0
+			CALCULATE(SWITCH(
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+				"Absolute_AOP", [Volume_Bar_AOP],
+				"Absolute_FCST", [Volume_Bar_FCST_new],
+			    "Absolute_YA", [Volume_Bar_PY],
+				"RPC_AOP", [Volume_Bar_AOP],
+				"RPC_FCST", [Volume_Bar_FCST_new],
+				"RPC_YA", [Volume_Bar_PY]
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: 98b90cbb-3cbd-4b60-8fd3-0e47455dfccc
+
+		formatStringDefinition = CONVERT(CALCULATE([Volume_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure Revenue_Bar_Selected =
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
 			
-			RETURN
-			SWITCH(
+			RETURN CALCULATE(SWITCH(
 			    TRUE(),
 				SelectedToggle = "Absolute" && SelectedScenario = "AOP", [Revenue_Bar_AOP],
 				SelectedToggle = "Absolute" && SelectedScenario = "FCST", [Revenue_Bar_FCST_new],
@@ -1174,88 +1169,73 @@ table 'Measure Table'
 				SelectedToggle = "RPC" && SelectedScenario = "AOP", [Revenue_Bar_RPC AOP],
 				SelectedToggle = "RPC" && SelectedScenario = "FCST", [Revenue_Bar_RPC FCST],
 				SelectedToggle = "RPC" && SelectedScenario = "YA", [Revenue_Bar_RPC PY]
-			)
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: 0cadca40-3463-467b-857e-2ed5f829a6e6
 
 		formatStringDefinition = CONVERT(CALCULATE([Revenue_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure Opex_Bar_Selected =
-			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			
-			RETURN
-			SWITCH(
-			    TRUE(),
-				SelectedToggle = "Absolute" && SelectedScenario = "AOP", ABS([Opex_Bar_AOP]),
-				SelectedToggle = "Absolute" && SelectedScenario = "FCST", ABS([Opex_Bar_FCST_new]),
-				SelectedToggle = "Absolute" && SelectedScenario = "YA", ABS([Opex_Bar_PY]),
-				SelectedToggle = "RPC" && SelectedScenario = "AOP", ABS([Opex_Bar_RPC AOP]),
-				SelectedToggle = "RPC" && SelectedScenario = "FCST", ABS([Opex_Bar_RPC FCST]),
-				SelectedToggle = "RPC" && SelectedScenario = "YA", ABS([Opex_Bar_RPC PY])
-			)
+			CALCULATE(SWITCH(
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+				"Absolute_AOP", ABS([Opex_Bar_AOP]),
+				"Absolute_FCST", ABS([Opex_Bar_FCST_new]),
+				"Absolute_YA", ABS([Opex_Bar_PY]),
+				"RPC_AOP", ABS([Opex_Bar_RPC AOP]),
+				"RPC_FCST", ABS([Opex_Bar_RPC FCST]),
+				"RPC_YA", ABS([Opex_Bar_RPC PY])
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: c2816e44-6484-40e5-a546-d4fd34f3f167
 
 		formatStringDefinition = CONVERT(CALCULATE([Opex_Bar_Selected], Formatter[Group] = "NUM_NEG1_ABS_RPC"), STRING)
 
 	measure OI_Bar_Selected =
-			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			
-			RETURN
-			SWITCH(
-			    TRUE(),
-				SelectedToggle = "Absolute" && SelectedScenario = "AOP", [OI_Bar_AOP],
-				SelectedToggle = "Absolute" && SelectedScenario = "FCST", [OI_Bar_FCST_new],
-				SelectedToggle = "Absolute" && SelectedScenario = "YA", [OI_Bar_PY],
-				SelectedToggle = "RPC" && SelectedScenario = "AOP", [OI_Bar_RPC AOP],
-				SelectedToggle = "RPC" && SelectedScenario = "FCST", [OI_Bar_RPC FCST],
-				SelectedToggle = "RPC" && SelectedScenario = "YA", [OI_Bar_RPC PY]
-			)
+			CALCULATE(SWITCH(
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+				"Absolute_AOP", [OI_Bar_AOP],
+				"Absolute_FCST", [OI_Bar_FCST_new],
+				"Absolute_YA", [OI_Bar_PY],
+				"RPC_AOP", [OI_Bar_RPC AOP],
+				"RPC_FCST", [OI_Bar_RPC FCST],
+				"RPC_YA", [OI_Bar_RPC PY]
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: 21681a42-711f-4149-809f-c48c1f62a647
 
 		formatStringDefinition = CONVERT(CALCULATE([OI_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure GP_Bar_Selected =
-			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			
-			RETURN
-			SWITCH(
-			    TRUE(),
-				SelectedToggle = "Absolute" && SelectedScenario = "AOP", [GP_Bar_AOP],
-				SelectedToggle = "Absolute" && SelectedScenario = "FCST", [GP_Bar_FCST_new],
-				SelectedToggle = "Absolute" && SelectedScenario = "YA", [GP_Bar_PY],
-				SelectedToggle = "RPC" && SelectedScenario = "AOP", [GP_Bar_RPC AOP],
-				SelectedToggle = "RPC" && SelectedScenario = "FCST", [GP_Bar_RPC FCST],
-				SelectedToggle = "RPC" && SelectedScenario = "YA", [GP_Bar_RPC PY]
-			)
+			CALCULATE(SWITCH(
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+				"Absolute_AOP", [GP_Bar_AOP],
+				"Absolute_FCST", [GP_Bar_FCST_new],
+				"Absolute_YA", [GP_Bar_PY],
+				"RPC_AOP", [GP_Bar_RPC AOP],
+				"RPC_FCST", [GP_Bar_RPC FCST],
+				"RPC_YA", [GP_Bar_RPC PY]
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: ae6f4312-7f79-453a-af8f-b401ffa738be
 
 		formatStringDefinition = CONVERT(CALCULATE([GP_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
-	measure Volume_Bar_Actual_Selected = CALCULATE([Volume_Bar_Act], 'Time Intel'[Group] = "PL_BAR_SEL")
+	measure Volume_Bar_Actual_Selected = CALCULATE([Volume_Bar_Act], 'Time Intel'[Group] = "PL_BAR_SEL", REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		formatString: 0.0
 		lineageTag: b14c4579-8f5d-45e1-af9c-0615dfd8cd77
 
-	measure Revenue_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Revenue_Bar_Act], [Revenue_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
+	measure Revenue_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Revenue_Bar_Act], [Revenue_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL", REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: fca33011-7f33-4f17-99c8-c23b12184d7d
 
 		formatStringDefinition = CONVERT(CALCULATE([Revenue_Bar_Actual_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
-	measure GP_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [GP_Bar_Act], [GP_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
+	measure GP_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [GP_Bar_Act], [GP_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL", REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: ee16f601-7f3b-4aca-8cdf-4940322fbb51
 
 		formatStringDefinition = CONVERT(CALCULATE([Revenue_Bar_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
-	measure Opex_Bar_Actual_Selected = ABS(CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Opex_Bar_Act], [Opex_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL"))
+	measure Opex_Bar_Actual_Selected = ABS(CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [Opex_Bar_Act], [Opex_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL", REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3])))
 		lineageTag: 6462e576-1689-48ec-9d5b-e4e63177a099
 
 		formatStringDefinition = CONVERT(CALCULATE([Opex_Bar_Actual_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
-	measure OI_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [OI_Bar_Act], [OI_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL")
+	measure OI_Bar_Actual_Selected = CALCULATE(IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "Absolute", [OI_Bar_Act], [OI_Bar_RPC]), 'Time Intel'[Group] = "PL_BAR_SEL", REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: 47547e05-bfa9-41a2-88c8-04aedd9cc1bd
 
 		formatStringDefinition = CONVERT(CALCULATE([OI_Bar_Actual_Selected], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
@@ -3978,24 +3958,23 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Volume_Bar_Actual_TL = CALCULATE([Volume_TL])
+	measure Volume_Bar_Actual_TL = CALCULATE([Volume_TL], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		displayFolder: Topline
 		lineageTag: 8725d8cd-8f3c-4802-b127-2e00b692b3f0
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		formatStringDefinition = CONVERT(CALCULATE([Volume_Bar_Actual_TL], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure Volume_Bar_AOP_FCST_YA =
-			
-			SWITCH(
+			CALCULATE(SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
 			    "AOP", CALCULATE([Volume_AOP_TL]),
 			    "FCST", CALCULATE([Volume_FCST_TL]),
 				"YA", [Volume_Bar_Act_YA]
-			)
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		displayFolder: Topline
 		lineageTag: 55855e16-87c9-4f28-b690-ae7e29e97a91
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		formatStringDefinition = CONVERT(CALCULATE([Volume_Bar_AOP_FCST_YA], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure 'Volume_Sales%_W.r.t_AOP' = DIVIDE([Volume_TL], [Quarter dynamic volume aop KPICARD])
 		displayFolder: Topline
@@ -4041,7 +4020,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Revenue_Bar_Actual_TL = CALCULATE([Revenue_TL])
+	measure Revenue_Bar_Actual_TL = CALCULATE([Revenue_TL], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
 		displayFolder: Topline
 		lineageTag: 3c555a93-c8b5-4e6a-a9ef-f3505d50c753
@@ -4049,31 +4028,29 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
 	measure Revenue_Bar_AOP_FCST_YA =
-			
-			SWITCH(
+			CALCULATE(SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
 			    "AOP", CALCULATE([Revenue_AOP_TL]),
 				"FCST", CALCULATE([Revenue_FCST_TL]),
 				"YA", CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD")
-			)
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		displayFolder: Topline
 		lineageTag: de85365d-e467-4719-9a8e-25fddebf602b
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		formatStringDefinition = CONVERT(CALCULATE([Revenue_Bar_AOP_FCST_YA], Formatter[Group] = "NUM_POS1"), STRING)
 
-	measure Rate_per_Case_Bar_Actual_TL = CALCULATE([Rate_per_Case_TL])
+	measure Rate_per_Case_Bar_Actual_TL = CALCULATE([Rate_per_Case_TL], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Topline
 		lineageTag: 2580d8ba-a950-4f50-a832-3790d03f08d4
 
 	measure Rate_Per_Case_Bar_AOP_FCST_YA =
-			
-			SWITCH(
+			CALCULATE(SWITCH(
 				SELECTEDVALUE('Metric Table'[Metrics]),
 			    "AOP", [Rate_Per_Case_AOP_TL],
 				"FCST", [Rate_Per_Case_FCST_TL],
 				"YA", DIVIDE([Revenue_PY_TL], [Volume_PY_TL])
-			)
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Topline
 		lineageTag: 47f3e9bb-bc46-48eb-ab25-f8d3c58b2e34
@@ -7616,17 +7593,11 @@ table 'Measure Table'
 
 	measure Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops = ```
 			
-			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
-			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
-			RETURN
 			SWITCH(
-			    TRUE(),
-				_wdm = "Warehouse" && _av = "Actuals", [Wh_CPH_Actuals_CPH],
-				_wdm = "Warehouse" && _av = "Vol.Adjusted", [Wh_CPH_Actuals_CPH],
-				_wdm = "Delivery" && _av = "Actuals", [Delv_CPH_Actuals_CPH],
-				_wdm = "Delivery" && _av = "Vol.Adjusted", [Delv_CPH_Actuals_CPH],
-				_wdm = "Merchandising" && _av = "Actuals", [Mech_CPH_Actuals_CPH],
-				_wdm = "Merchandising" && _av = "Vol.Adjusted", [Mech_CPH_Actuals_CPH]
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]),
+				"Warehouse", [Wh_CPH_Actuals_CPH],
+				"Delivery", [Delv_CPH_Actuals_CPH],
+				"Merchandising", [Mech_CPH_Actuals_CPH]
 			)			
 			```
 		displayFolder: Ops
@@ -8687,34 +8658,33 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops_Bar =
-			
 			CALCULATE(
-			    [Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops],
-			    KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_CalDay[CL_M_END]))
+			    CALCULATE([Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops],
+			        V_Dim_FB_CalDay[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END])
+			    ),
+			    REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3])
 			)
 		lineageTag: 58cb14c5-e7b2-4e3b-bfe8-63d2e09d3f32
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Bar =
-			
-			VAR _cl_day = [CL_M_END]
-			RETURN
-			SWITCH(
+			CALCULATE(
+			VAR _cl_day = MAX(V_Dim_FB_Ref[CL_M_END])
+			RETURN SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
 				"AOP", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC],
-			        Operation_Cal_Day[DayDate] <= _cl_day),
+			        KEEPFILTERS(V_Dim_FB_CalDay[DayDate] <= _cl_day)),
 				"FCST", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC],
-					Operation_Cal_Day[DayDate] <= _cl_day),
-				"YA", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC],
-			        Operation_Cal_Day[Year] = YEAR(_cl_day))
-			)
+					KEEPFILTERS(V_Dim_FB_CalDay[DayDate] <= _cl_day)),
+				"YA", [Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC]
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3], Operation_Cal_Day[DayDate]))
 		lineageTag: b4f97c2e-7104-4c7e-b5af-88f5864cd73e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Bar =
-			
+			CALCULATE(
 			VAR _cl_day = [CL_M_END]
 			RETURN
 			SWITCH(
@@ -8725,7 +8695,7 @@ table 'Measure Table'
 					Operation_Cal_Day[DayDate] <= _cl_day),
 				"YA", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_CC],
 			        Operation_Cal_Day[Year] = YEAR(_cl_day))
-			)
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Ops
 		lineageTag: b8de5284-ca20-4903-b245-e358a56eb685
@@ -8869,7 +8839,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops_Bar = CALCULATE([Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops], 'Time Intel'[Group] = "BAR_YR_CL")
+	measure Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops_Bar = CALCULATE([Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops], 'Time Intel'[Group] = "BAR_YR_CL", REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Ops
 		lineageTag: d40252b3-5246-4935-9568-97a128a6545c
@@ -14182,13 +14152,12 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Volume_FCST Topline bar' =
-			
-			SWITCH(
+			CALCULATE(SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
 			    "AOP", [Quarter FCST dynamic volume Bar],
 			    "FCST", "",
 			    "YA", [Quarter FCST dynamic volume Bar]
-			)
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		displayFolder: Topline
 		lineageTag: 68ca4353-2a63-4639-a890-2f49d2cfac20
 
@@ -14209,26 +14178,24 @@ table 'Measure Table'
 		lineageTag: 719a1d8a-6923-442d-8a89-ce96ac66bf05
 
 	measure 'Revenue_FCST topline bar' =
-			
-			SWITCH(
+			CALCULATE(SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
 			    "AOP", [Quarter FCST dynamic Revenue Bar],
 				"FCST", "",
 				"YA", [Quarter FCST dynamic Revenue Bar]
-			)
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		displayFolder: Topline
 		lineageTag: 77bfb708-cb56-4ee6-944c-cc235f353652
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Rate_Per_Case_FCST topline bar' = ```
-			
-			SWITCH(
+			CALCULATE(SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
 			    "AOP", CALCULATE([Quarter FCST dynamic Rate per case], 'Time Intel'[Group] = "CY_LE_CD"),
 			    "FCST", BLANK(),
 			    "YA", CALCULATE([Quarter FCST dynamic Rate per case], 'Time Intel'[Group] = "YA_LE_CD") 
-			)
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 			```
 		displayFolder: Topline
 		lineageTag: 11ec5284-d599-415e-8895-e409552b0765
@@ -14236,19 +14203,15 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Volume_Bar_Selected_graph =
-			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			RETURN
-			SWITCH(
-			    TRUE(),
-				SelectedToggle = "Absolute" && SelectedScenario = "AOP", [Volume_Bar_FCST_new],
-				SelectedToggle = "Absolute" && SelectedScenario = "FCST", BLANK(),
-				SelectedToggle = "Absolute" && SelectedScenario = "YA", [Volume_Bar_FCST_new],
-				SelectedToggle = "RPC" && SelectedScenario = "AOP", [Volume_Bar_FCST_new],
-				SelectedToggle = "RPC" && SelectedScenario = "FCST",BLANK(),
-				SelectedToggle = "RPC" && SelectedScenario = "YA", [Volume_Bar_FCST_new]
-			)
+			CALCULATE(SWITCH(
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+				"Absolute_AOP", [Volume_Bar_FCST_new],
+				"Absolute_FCST", BLANK(),
+				"Absolute_YA", [Volume_Bar_FCST_new],
+				"RPC_AOP", [Volume_Bar_FCST_new],
+				"RPC_FCST",BLANK(),
+				"RPC_YA", [Volume_Bar_FCST_new]
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: 6b4fcf4c-20ba-48c0-a132-6c9e23b4776c
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
@@ -14257,8 +14220,7 @@ table 'Measure Table'
 			
 			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
 			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			RETURN
-			SWITCH(
+			RETURN CALCULATE(SWITCH(
 			    TRUE(),
 				SelectedToggle = "Absolute" && SelectedScenario = "AOP", [Revenue_Bar_FCST_new],
 				SelectedToggle = "Absolute" && SelectedScenario = "FCST", BLANK(),
@@ -14266,58 +14228,40 @@ table 'Measure Table'
 				SelectedToggle = "RPC" && SelectedScenario = "AOP", [Revenue_Bar_RPC FCST],
 				SelectedToggle = "RPC" && SelectedScenario = "FCST", BLANK(),
 				SelectedToggle = "RPC" && SelectedScenario = "YA", [Revenue_Bar_RPC FCST]
-			)
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: 0a2b7fb2-0857-490c-8bf8-a26f19f179dc
 
 		formatStringDefinition = CONVERT(CALCULATE([Revenue_Bar_Selected graph], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure 'GP_Bar_Selected graph' =
-			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			RETURN
-			SWITCH(
-			    TRUE(),
-				SelectedToggle = "Absolute" && SelectedScenario = "AOP", [GP_Bar_FCST_new],
-				SelectedToggle = "Absolute" && SelectedScenario = "FCST", BLANK(),
-				SelectedToggle = "Absolute" && SelectedScenario = "YA", [GP_Bar_FCST_new],
-				SelectedToggle = "RPC" && SelectedScenario = "AOP", [GP_Bar_RPC FCST],
-				SelectedToggle = "RPC" && SelectedScenario = "FCST", BLANK(),
-				SelectedToggle = "RPC" && SelectedScenario = "YA", [GP_Bar_RPC FCST]
-			)
+			CALCULATE(SWITCH(
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+				"Absolute_AOP", [GP_Bar_FCST_new],
+				"Absolute_FCST", BLANK(),
+				"Absolute_YA", [GP_Bar_FCST_new],
+				"RPC_AOP", [GP_Bar_RPC FCST],
+				"RPC_FCST", BLANK(),
+				"RPC_YA", [GP_Bar_RPC FCST]
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: 71bc82ec-7470-45a1-99b4-e46c92a9c43c
 
 		formatStringDefinition = CONVERT(CALCULATE([GP_Bar_Selected graph], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
-	measure 'OI_Bar_Selected graph' =
-			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			RETURN
-			SWITCH(
-			    TRUE(),
-			    SelectedScenario = "FCST", "",
-			    SelectedToggle = "RPC", [OI_Bar_RPC FCST],
-			    SelectedToggle = "Absolute", [OI_Bar_FCST_new]
-			)
+	measure 'OI_Bar_Selected graph' = CALCULATE(IF(SELECTEDVALUE('Metric Table'[Metrics], "AOP") = "FCST", BLANK(), IF(SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") = "RPC", [OI_Bar_RPC FCST], [OI_Bar_FCST_new])), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: 9c77b857-2bc0-48c5-bd37-0b08d9dbc9cf
 
 		formatStringDefinition = CONVERT(CALCULATE([OI_Bar_Selected graph], Formatter[Group] = "NUM_POS1_ABS_RPC"), STRING)
 
 	measure 'Opex_Bar_Selected graph' =
-			
-			VAR SelectedScenario = SELECTEDVALUE('Metric Table'[Metrics], "AOP")
-			VAR SelectedToggle = SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute")
-			RETURN
-			SWITCH(
-			    TRUE(),
-				SelectedToggle = "Absolute" && SelectedScenario = "AOP", ABS([Opex_Bar_FCST_new]),
-				SelectedToggle = "Absolute" && SelectedScenario = "FCST", BLANK(),
-				SelectedToggle = "Absolute" && SelectedScenario = "YA", ABS([Opex_Bar_FCST_new]),
-				SelectedToggle = "RPC" && SelectedScenario = "AOP",  ABS([Opex_Bar_RPC FCST]),
-				SelectedToggle = "RPC" && SelectedScenario = "FCST", BLANK(),
-				SelectedToggle = "RPC" && SelectedScenario = "YA",  ABS([Opex_Bar_RPC FCST])
-			)
+			CALCULATE(SWITCH(
+			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+				"Absolute_AOP", ABS([Opex_Bar_FCST_new]),
+				"Absolute_FCST", BLANK(),
+				"Absolute_YA", ABS([Opex_Bar_FCST_new]),
+				"RPC_AOP",  ABS([Opex_Bar_RPC FCST]),
+				"RPC_FCST", BLANK(),
+				"RPC_YA",  ABS([Opex_Bar_RPC FCST])
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
 		lineageTag: 6f89766c-c2f0-484c-bd51-cf48b501b86a
 
 		formatStringDefinition = CONVERT(CALCULATE([Opex_Bar_Selected graph], Formatter[Group] = "NUM_NEG1_ABS_RPC"), STRING)

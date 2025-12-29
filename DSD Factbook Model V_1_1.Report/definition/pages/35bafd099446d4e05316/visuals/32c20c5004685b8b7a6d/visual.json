@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "32c20c5004685b8b7a6d",
   "position": {
-    "x": 1060.2268973153509,
-    "y": 380.67052694632514,
+    "x": 1150.93354631428,
+    "y": 359.852607503948,
     "z": 2000,
-    "height": 35.687861901217985,
-    "width": 220.07514839084422
+    "height": 56.505781343595139,
+    "width": 129.36849939191518
   },
   "visual": {
     "visualType": "slicer",
@@ -40,7 +40,7 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Basic'"
+                  "Value": "'Dropdown'"
                 }
               }
             }
@@ -87,7 +87,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'FCST'"
+                                "Value": "'AOP'"
                               }
                             }
                           ]
@@ -129,5 +129,23 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "5514169e7cb8c8d4b1f4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Metric Table"
+              }
+            },
+            "Property": "Metrics"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }
