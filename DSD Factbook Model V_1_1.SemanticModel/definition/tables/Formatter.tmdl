@@ -78,6 +78,15 @@ table Formatter
 					BLANK()
 				)
 
+		calculationItem NO$_POS1 =
+				
+				SWITCH(
+					TRUE(),
+					ABS(SELECTEDMEASURE()) >= 1e6, "#,##0,,.0M",
+					ABS(SELECTEDMEASURE()) >= 1e3, "#,##0,.0K",
+					"#,##0.0"
+				)
+
 	column Group
 		dataType: string
 		lineageTag: 3da06004-e2c5-48f5-ac98-609a5e9e3bf9

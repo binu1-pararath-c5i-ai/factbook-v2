@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "c39d9182ee57cd6164b8",
   "position": {
-    "x": 1174.7254542484252,
-    "y": 397.02746365105,
+    "x": 1187.3570396607167,
+    "y": 404.69403924127323,
     "z": 9000,
-    "height": 83.271677769508628,
-    "width": 81.784683523624537,
+    "height": 95.446707368224821,
+    "width": 92.901461838405481,
     "tabOrder": 9000
   },
   "visual": {
@@ -63,7 +63,49 @@
       ],
       "general": [
         {
-          "properties": {}
+          "properties": {
+            "filter": {
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "v",
+                    "Entity": "V_FB_Financial_Management",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "In": {
+                        "Expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "v"
+                                }
+                              },
+                              "Property": "IsForecast"
+                            }
+                          }
+                        ],
+                        "Values": [
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'N'"
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
         }
       ]
     },
