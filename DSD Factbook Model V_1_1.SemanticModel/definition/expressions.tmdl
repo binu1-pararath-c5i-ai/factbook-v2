@@ -26,3 +26,17 @@ expression Snowflake_Schema = "TEST1" meta [IsParameterQuery=true, Type="Text", 
 
 	annotation PBI_ResultType = Text
 
+expression Range_Start = #date(2024, 1, 1) meta [IsParameterQuery=true, Type="Date", IsParameterQueryRequired=true]
+	lineageTag: 661a7b22-3970-4deb-848c-8a6245f68eba
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Date
+
+expression Range_End = #date(2035, 12, 31) meta [IsParameterQuery=true, Type="Date", IsParameterQueryRequired=true]
+	lineageTag: 3e10715a-5416-4cfd-bff5-6413aad26621
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Date
+

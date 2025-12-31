@@ -121,9 +121,10 @@ table V_Fact_FB_ToplineActuals_Summary
 				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
 				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
 				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
-				    V_Fact_FB_ToplineActuals_Summary_View = DSD_Schema{[Name="V_Fact_FB_ToplineActuals_Summary",Kind="View"]}[Data]
+				    Fact = DSD_Schema{[Name="V_Fact_FB_ToplineActuals_Summary",Kind="View"]}[Data],
+					Filtered = Table.SelectRows(Fact, each [Period] >= Range_Start and [Period] <= Range_End)
 				in
-				    V_Fact_FB_ToplineActuals_Summary_View
+				    Filtered
 
 	annotation PBI_NavigationStepName = Navigation
 

@@ -297,9 +297,10 @@ table V_FB_Financial_Management
 				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
 				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
 				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
-				    V_FB_Financial_Management_View = DSD_Schema{[Name="V_Fact_FB_FinancialManagement",Kind="View"]}[Data]
+					Fact = DSD_Schema{[Name="V_Fact_FB_FinancialManagement",Kind="View"]}[Data],
+					Filtered = Table.SelectRows(Fact, each [DayDate] >= Range_Start and [DayDate] <= Range_End)
 				in
-				    V_FB_Financial_Management_View
+					Filtered
 
 	annotation PBI_NavigationStepName = Navigation
 

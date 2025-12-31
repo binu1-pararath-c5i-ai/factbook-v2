@@ -148,9 +148,10 @@ table V_FACT_FB_OPS_ROLLEDSTOP
 				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
 				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
 				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
-				    V_FACT_FB_OPS_ROLLEDSTOP_View = DSD_Schema{[Name="V_Fact_FB_Ops_RolledStop",Kind="View"]}[Data]
+				    Fact = DSD_Schema{[Name="V_Fact_FB_Ops_RolledStop",Kind="View"]}[Data],
+					Filtered = Table.SelectRows(Fact, each [CalendarDay] >= Range_Start and [CalendarDay] <= Range_End)
 				in
-				    V_FACT_FB_OPS_ROLLEDSTOP_View
+				    Filtered
 
 	annotation PBI_NavigationStepName = Navigation
 

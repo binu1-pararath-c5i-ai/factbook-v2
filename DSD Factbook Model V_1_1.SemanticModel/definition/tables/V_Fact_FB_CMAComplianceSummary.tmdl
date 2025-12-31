@@ -474,15 +474,11 @@ table V_Fact_FB_CMAComplianceSummary
 				let
 				
 				    Source = Snowflake.Databases(#"Snowflake Server",#"Snowflake Warehouse",[Implementation="2.0"]),
-				
 				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
-				
 				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
-				
-				    V_Fact_FB_CMAComplianceSummary_View = DSD_Schema{[Name="V_Fact_FB_CMAComplianceSummary",Kind="View"]}[Data],
-				
-				    #"Changed Type" = Table.TransformColumnTypes(V_Fact_FB_CMAComplianceSummary_View,{{"CSDPromo", Int64.Type}, {"TeaJCPromo", Int64.Type}, {"WaterPromo", Int64.Type}, {"SportsPromo", Int64.Type}, {"EneryPromo", Int64.Type}}),
-				
+				    Fact = DSD_Schema{[Name="V_Fact_FB_CMAComplianceSummary",Kind="View"]}[Data],
+					Filtered = Table.SelectRows(Fact, each [PeriodEnd] >= Range_Start and [PeriodEnd] <= Range_End),
+				    #"Changed Type" = Table.TransformColumnTypes(Filtered,{{"CSDPromo", Int64.Type}, {"TeaJCPromo", Int64.Type}, {"WaterPromo", Int64.Type}, {"SportsPromo", Int64.Type}, {"EneryPromo", Int64.Type}}),
 				    #"Added Custom6" = Table.AddColumn(#"Changed Type", "Total Missing SKUs", each [CSDVariance] + [EnergyVariance] + [SportsVariance] + [WaterVariance] + [TeaJCVariance]),
 				    #"Added Custom7" = Table.AddColumn(#"Added Custom6", "Total Planned SKUs", each [CSDPromo] + [EneryPromo] + [SportsPromo] + [WaterPromo] + [TeaJCPromo])
 				in
