@@ -1,12 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "487ce6522c554533697d",
   "position": {
     "x": 9.0194965418166824,
     "y": 89.385964912280741,
     "z": 3000,
     "height": 67.195520298646755,
-    "width": 123.55988702565509
+    "width": 123.55988702565509,
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "tableEx",
@@ -19,14 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Schema": "extension",
                       "Entity": "Measure Table"
                     }
                   },
                   "Property": "Total_Obso_KPI"
                 }
               },
-              "queryRef": "Measure Table.Total_Obso_KPI",
+              "queryRef": "Measure Table.Total_Obso_KPI1",
               "nativeQueryRef": " ",
               "displayName": " "
             }
@@ -38,13 +38,6 @@
       "grid": [
         {
           "properties": {
-            "gridHorizontal": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
             "outlineColor": {
               "solid": {
                 "color": {
@@ -56,6 +49,13 @@
                   }
                 }
               }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
             }
           }
         }
@@ -63,17 +63,17 @@
       "values": [
         {
           "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "14D"
-                }
-              }
-            },
             "fontFamily": {
               "expr": {
                 "Literal": {
                   "Value": "'''Segoe UI Semibold'', wf_segoe-ui_semibold, helvetica, arial, sans-serif'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
                 }
               }
             }
@@ -97,7 +97,261 @@
                                     "Measure": {
                                       "Expression": {
                                         "SourceRef": {
-                                          "Schema": "extension",
+                                          "Entity": "Measure Table"
+                                        }
+                                      },
+                                      "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
+                                    }
+                                  },
+                                  "Right": {
+                                    "Literal": {
+                                      "Value": "-99D"
+                                    }
+                                  }
+                                }
+                              },
+                              "Right": {
+                                "Comparison": {
+                                  "ComparisonKind": 3,
+                                  "Left": {
+                                    "Measure": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Entity": "Measure Table"
+                                        }
+                                      },
+                                      "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
+                                    }
+                                  },
+                                  "Right": {
+                                    "Literal": {
+                                      "Value": "0D"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "Value": {
+                            "Literal": {
+                              "Value": "'#348939'"
+                            }
+                          }
+                        },
+                        {
+                          "Condition": {
+                            "And": {
+                              "Left": {
+                                "Comparison": {
+                                  "ComparisonKind": 1,
+                                  "Left": {
+                                    "Measure": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Entity": "Measure Table"
+                                        }
+                                      },
+                                      "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
+                                    }
+                                  },
+                                  "Right": {
+                                    "Literal": {
+                                      "Value": "0D"
+                                    }
+                                  }
+                                }
+                              },
+                              "Right": {
+                                "Comparison": {
+                                  "ComparisonKind": 3,
+                                  "Left": {
+                                    "Measure": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Entity": "Measure Table"
+                                        }
+                                      },
+                                      "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
+                                    }
+                                  },
+                                  "Right": {
+                                    "Literal": {
+                                      "Value": "99D"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "Value": {
+                            "Literal": {
+                              "Value": "'#9B1D1E'"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "icon": {
+              "kind": "Icon",
+              "layout": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'After'"
+                  }
+                }
+              },
+              "verticalAlignment": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'Middle'"
+                  }
+                }
+              },
+              "value": {
+                "expr": {
+                  "Conditional": {
+                    "Cases": [
+                      {
+                        "Condition": {
+                          "And": {
+                            "Left": {
+                              "Comparison": {
+                                "ComparisonKind": 1,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Measure Table"
+                                      }
+                                    },
+                                    "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "-99D"
+                                  }
+                                }
+                              }
+                            },
+                            "Right": {
+                              "Comparison": {
+                                "ComparisonKind": 3,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Measure Table"
+                                      }
+                                    },
+                                    "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "0D"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Value": {
+                          "Literal": {
+                            "Value": "'GreenArrowDown'"
+                          }
+                        }
+                      },
+                      {
+                        "Condition": {
+                          "And": {
+                            "Left": {
+                              "Comparison": {
+                                "ComparisonKind": 1,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Measure Table"
+                                      }
+                                    },
+                                    "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "0D"
+                                  }
+                                }
+                              }
+                            },
+                            "Right": {
+                              "Comparison": {
+                                "ComparisonKind": 3,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Measure Table"
+                                      }
+                                    },
+                                    "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "99D"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Value": {
+                          "Literal": {
+                            "Value": "'RedArrowUp'"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Measure Table.Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops_RB"
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Conditional": {
+                      "Cases": [
+                        {
+                          "Condition": {
+                            "And": {
+                              "Left": {
+                                "Comparison": {
+                                  "ComparisonKind": 2,
+                                  "Left": {
+                                    "Measure": {
+                                      "Expression": {
+                                        "SourceRef": {
                                           "Entity": "Measure Table"
                                         }
                                       },
@@ -118,7 +372,6 @@
                                     "Measure": {
                                       "Expression": {
                                         "SourceRef": {
-                                          "Schema": "extension",
                                           "Entity": "Measure Table"
                                         }
                                       },
@@ -145,12 +398,11 @@
                             "And": {
                               "Left": {
                                 "Comparison": {
-                                  "ComparisonKind": 1,
+                                  "ComparisonKind": 2,
                                   "Left": {
                                     "Measure": {
                                       "Expression": {
                                         "SourceRef": {
-                                          "Schema": "extension",
                                           "Entity": "Measure Table"
                                         }
                                       },
@@ -171,7 +423,6 @@
                                     "Measure": {
                                       "Expression": {
                                         "SourceRef": {
-                                          "Schema": "extension",
                                           "Entity": "Measure Table"
                                         }
                                       },
@@ -229,7 +480,6 @@
                                   "Measure": {
                                     "Expression": {
                                       "SourceRef": {
-                                        "Schema": "extension",
                                         "Entity": "Measure Table"
                                       }
                                     },
@@ -245,12 +495,11 @@
                             },
                             "Right": {
                               "Comparison": {
-                                "ComparisonKind": 4,
+                                "ComparisonKind": 3,
                                 "Left": {
                                   "Measure": {
                                     "Expression": {
                                       "SourceRef": {
-                                        "Schema": "extension",
                                         "Entity": "Measure Table"
                                       }
                                     },
@@ -259,7 +508,7 @@
                                 },
                                 "Right": {
                                   "Literal": {
-                                    "Value": "100D"
+                                    "Value": "99D"
                                   }
                                 }
                               }
@@ -277,12 +526,11 @@
                           "And": {
                             "Left": {
                               "Comparison": {
-                                "ComparisonKind": 1,
+                                "ComparisonKind": 2,
                                 "Left": {
                                   "Measure": {
                                     "Expression": {
                                       "SourceRef": {
-                                        "Schema": "extension",
                                         "Entity": "Measure Table"
                                       }
                                     },
@@ -303,7 +551,6 @@
                                   "Measure": {
                                     "Expression": {
                                       "SourceRef": {
-                                        "Schema": "extension",
                                         "Entity": "Measure Table"
                                       }
                                     },
@@ -339,7 +586,23 @@
                 }
               }
             ],
-            "metadata": "Measure Table.Total_Obso_KPI"
+            "metadata": "Measure Table.Total_Obso_KPI1"
+          }
+        }
+      ],
+      "columnFormatting": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Measure Table.Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops_RB"
           }
         }
       ]
@@ -352,6 +615,13 @@
               "expr": {
                 "Literal": {
                   "Value": "'Var3'"
+                }
+              }
+            },
+            "titleWrap": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }
@@ -378,6 +648,26 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "transparency": {
+              "expr": {
+                "Literal": {
+                  "Value": "0D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "width": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
                 }
               }
             }

@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "38cec2a36b08bc587c9e",
   "position": {
-    "x": 196.29080118694364,
-    "y": 92.136498516320472,
+    "x": 189.12280701786585,
+    "y": 95.984405458089711,
     "z": 4000,
-    "height": 68.100890207715139,
-    "width": 122.18100890207715,
-    "tabOrder": 3000
+    "height": 64.444444444444443,
+    "width": 130,
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "tableEx",
@@ -98,6 +98,72 @@
         },
         {
           "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Conditional": {
+                      "Cases": [
+                        {
+                          "Condition": {
+                            "Comparison": {
+                              "ComparisonKind": 1,
+                              "Left": {
+                                "Measure": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Entity": "Measure Table"
+                                    }
+                                  },
+                                  "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
+                                }
+                              },
+                              "Right": {
+                                "Literal": {
+                                  "Value": "0D"
+                                }
+                              }
+                            }
+                          },
+                          "Value": {
+                            "Literal": {
+                              "Value": "'#9B1D1E'"
+                            }
+                          }
+                        },
+                        {
+                          "Condition": {
+                            "Comparison": {
+                              "ComparisonKind": 3,
+                              "Left": {
+                                "Measure": {
+                                  "Expression": {
+                                    "SourceRef": {
+                                      "Entity": "Measure Table"
+                                    }
+                                  },
+                                  "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
+                                }
+                              },
+                              "Right": {
+                                "Literal": {
+                                  "Value": "0D"
+                                }
+                              }
+                            }
+                          },
+                          "Value": {
+                            "Literal": {
+                              "Value": "'#348939'"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
             "icon": {
               "kind": "Icon",
               "layout": {
@@ -120,96 +186,21 @@
                     "Cases": [
                       {
                         "Condition": {
-                          "And": {
+                          "Comparison": {
+                            "ComparisonKind": 1,
                             "Left": {
-                              "Comparison": {
-                                "ComparisonKind": 1,
-                                "Left": {
-                                  "Measure": {
-                                    "Expression": {
-                                      "SourceRef": {
-                                        "Entity": "Measure Table"
-                                      }
-                                    },
-                                    "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
+                              "Measure": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Entity": "Measure Table"
                                   }
                                 },
-                                "Right": {
-                                  "Literal": {
-                                    "Value": "-99D"
-                                  }
-                                }
+                                "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
                               }
                             },
                             "Right": {
-                              "Comparison": {
-                                "ComparisonKind": 3,
-                                "Left": {
-                                  "Measure": {
-                                    "Expression": {
-                                      "SourceRef": {
-                                        "Entity": "Measure Table"
-                                      }
-                                    },
-                                    "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
-                                  }
-                                },
-                                "Right": {
-                                  "Literal": {
-                                    "Value": "0D"
-                                  }
-                                }
-                              }
-                            }
-                          }
-                        },
-                        "Value": {
-                          "Literal": {
-                            "Value": "'GreenArrowDown'"
-                          }
-                        }
-                      },
-                      {
-                        "Condition": {
-                          "And": {
-                            "Left": {
-                              "Comparison": {
-                                "ComparisonKind": 1,
-                                "Left": {
-                                  "Measure": {
-                                    "Expression": {
-                                      "SourceRef": {
-                                        "Entity": "Measure Table"
-                                      }
-                                    },
-                                    "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
-                                  }
-                                },
-                                "Right": {
-                                  "Literal": {
-                                    "Value": "0D"
-                                  }
-                                }
-                              }
-                            },
-                            "Right": {
-                              "Comparison": {
-                                "ComparisonKind": 3,
-                                "Left": {
-                                  "Measure": {
-                                    "Expression": {
-                                      "SourceRef": {
-                                        "Entity": "Measure Table"
-                                      }
-                                    },
-                                    "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
-                                  }
-                                },
-                                "Right": {
-                                  "Literal": {
-                                    "Value": "99D"
-                                  }
-                                }
+                              "Literal": {
+                                "Value": "0D"
                               }
                             }
                           }
@@ -219,122 +210,35 @@
                             "Value": "'RedArrowUp'"
                           }
                         }
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Conditional": {
-                      "Cases": [
-                        {
-                          "Condition": {
-                            "And": {
-                              "Left": {
-                                "Comparison": {
-                                  "ComparisonKind": 1,
-                                  "Left": {
-                                    "Measure": {
-                                      "Expression": {
-                                        "SourceRef": {
-                                          "Entity": "Measure Table"
-                                        }
-                                      },
-                                      "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
-                                    }
-                                  },
-                                  "Right": {
-                                    "Literal": {
-                                      "Value": "-99D"
-                                    }
+                      },
+                      {
+                        "Condition": {
+                          "Comparison": {
+                            "ComparisonKind": 3,
+                            "Left": {
+                              "Measure": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Entity": "Measure Table"
                                   }
-                                }
-                              },
-                              "Right": {
-                                "Comparison": {
-                                  "ComparisonKind": 3,
-                                  "Left": {
-                                    "Measure": {
-                                      "Expression": {
-                                        "SourceRef": {
-                                          "Entity": "Measure Table"
-                                        }
-                                      },
-                                      "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
-                                    }
-                                  },
-                                  "Right": {
-                                    "Literal": {
-                                      "Value": "0D"
-                                    }
-                                  }
-                                }
+                                },
+                                "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
                               }
-                            }
-                          },
-                          "Value": {
-                            "Literal": {
-                              "Value": "'#348939'"
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "0D"
+                              }
                             }
                           }
                         },
-                        {
-                          "Condition": {
-                            "And": {
-                              "Left": {
-                                "Comparison": {
-                                  "ComparisonKind": 1,
-                                  "Left": {
-                                    "Measure": {
-                                      "Expression": {
-                                        "SourceRef": {
-                                          "Entity": "Measure Table"
-                                        }
-                                      },
-                                      "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
-                                    }
-                                  },
-                                  "Right": {
-                                    "Literal": {
-                                      "Value": "0D"
-                                    }
-                                  }
-                                }
-                              },
-                              "Right": {
-                                "Comparison": {
-                                  "ComparisonKind": 3,
-                                  "Left": {
-                                    "Measure": {
-                                      "Expression": {
-                                        "SourceRef": {
-                                          "Entity": "Measure Table"
-                                        }
-                                      },
-                                      "Property": "Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops"
-                                    }
-                                  },
-                                  "Right": {
-                                    "Literal": {
-                                      "Value": "99D"
-                                    }
-                                  }
-                                }
-                              }
-                            }
-                          },
-                          "Value": {
-                            "Literal": {
-                              "Value": "'#9B1D1E'"
-                            }
+                        "Value": {
+                          "Literal": {
+                            "Value": "'GreenArrowDown'"
                           }
                         }
-                      ]
-                    }
+                      }
+                    ]
                   }
                 }
               }

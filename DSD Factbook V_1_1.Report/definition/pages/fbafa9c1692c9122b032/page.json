@@ -5,17 +5,127 @@
   "displayOption": "FitToPage",
   "height": 900,
   "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "835199fb5e4a2f3f24f3",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CalDay"
+              }
+            },
+            "Property": "EQ_CL_Y0"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CalDay",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "EQ_CL_Y0"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "de6a093d5b751bb56013",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Operation_Cal_Day"
+              }
+            },
+            "Property": "L1"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "o",
+              "Entity": "Operation_Cal_Day",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "StartsWith": {
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "o"
+                            }
+                          },
+                          "Property": "L1"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'We'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ]
+  },
   "visibility": "HiddenInViewMode",
   "visualInteractions": [
     {
       "source": "ddb6b5409369c4c82403",
       "target": "e5f7704b62a9d2008982",
-      "type": "NoFilter"
+      "type": "DataFilter"
     },
     {
       "source": "ddb6b5409369c4c82403",
       "target": "f9692068600412ad30ec",
-      "type": "NoFilter"
+      "type": "DataFilter"
     }
   ]
 }

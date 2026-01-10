@@ -126,6 +126,18 @@ table Metric
 				    )
 				)
 
+		calculationItem BSO_AOP_FCST_YAEMPTY =
+				
+				VAR _ref = SELECTEDVALUE('Metric Table'[Metrics])
+				RETURN SWITCH(TRUE(),
+				    _ref = "YA", "",
+				    _ref <> "FCST", SELECTEDMEASURE(),
+				    IF(NOT [IsFullPeriod] && NOT [IsClosedQuarter],
+				        VAR FilteredMeasure = CALCULATE(SELECTEDMEASURE(), KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END])))
+				        RETURN IF(FilteredMeasure <> 0, FilteredMeasure)
+				    )
+				)
+
 	column Group
 		dataType: string
 		lineageTag: dd9f098e-e1e5-460a-a82a-98a349ed76c7

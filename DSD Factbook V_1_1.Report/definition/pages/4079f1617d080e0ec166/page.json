@@ -8,7 +8,59 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "babab20a3d024a21101f",
+        "name": "bbb39afe6b2763c79d1a",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Operation_Cal_Day"
+              }
+            },
+            "Property": "L1"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "o",
+              "Entity": "Operation_Cal_Day",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "StartsWith": {
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "o"
+                            }
+                          },
+                          "Property": "L1"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'We'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "3ada75ee4465be9a624a",
         "field": {
           "Column": {
             "Expression": {
@@ -16,7 +68,7 @@
                 "Entity": "V_Dim_FB_CalDay"
               }
             },
-            "Property": "Showslicer_topline"
+            "Property": "EQ_CL_Y0"
           }
         },
         "type": "Categorical",
@@ -41,7 +93,7 @@
                             "Source": "v"
                           }
                         },
-                        "Property": "Showslicer_topline"
+                        "Property": "EQ_CL_Y0"
                       }
                     }
                   ],

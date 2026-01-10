@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "7bcefbfd0b9de6b49250",
   "position": {
     "x": 40.027797081306467,
     "y": 53,
-    "z": 44000,
+    "z": 43000,
     "height": 40,
     "width": 174.6667509002464,
-    "tabOrder": 30000
+    "tabOrder": 28000
   },
   "visual": {
     "visualType": "slicer",
@@ -17,63 +17,48 @@
           "projections": [
             {
               "field": {
-                "HierarchyLevel": {
+                "Column": {
                   "Expression": {
-                    "Hierarchy": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_Dim_FB_CalDay"
-                        }
-                      },
-                      "Hierarchy": "Period Levels"
+                    "SourceRef": {
+                      "Entity": "Operation_Cal_Day"
                     }
                   },
-                  "Level": "L1"
+                  "Property": "L1"
                 }
               },
-              "queryRef": "V_Dim_FB_CalDay.Period Levels.L1",
-              "nativeQueryRef": "Period Levels L1",
+              "queryRef": "Operation_Cal_Day.L1",
+              "nativeQueryRef": "L1",
               "active": true
             },
             {
               "field": {
-                "HierarchyLevel": {
+                "Column": {
                   "Expression": {
-                    "Hierarchy": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_Dim_FB_CalDay"
-                        }
-                      },
-                      "Hierarchy": "Period Levels"
+                    "SourceRef": {
+                      "Entity": "Operation_Cal_Day"
                     }
                   },
-                  "Level": "L2"
+                  "Property": "L2"
                 }
               },
-              "queryRef": "V_Dim_FB_CalDay.Period Levels.L2",
-              "nativeQueryRef": "Period Levels L2",
-              "active": false
+              "queryRef": "Operation_Cal_Day.L2",
+              "nativeQueryRef": "L2",
+              "active": true
             },
             {
               "field": {
-                "HierarchyLevel": {
+                "Column": {
                   "Expression": {
-                    "Hierarchy": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_Dim_FB_CalDay"
-                        }
-                      },
-                      "Hierarchy": "Period Levels"
+                    "SourceRef": {
+                      "Entity": "Operation_Cal_Day"
                     }
                   },
-                  "Level": "L3"
+                  "Property": "L3"
                 }
               },
-              "queryRef": "V_Dim_FB_CalDay.Period Levels.L3",
-              "nativeQueryRef": "Period Levels L3",
-              "active": false
+              "queryRef": "Operation_Cal_Day.L3",
+              "nativeQueryRef": "L3",
+              "active": true
             }
           ]
         }
@@ -87,27 +72,86 @@
         "levels": [
           {
             "queryRefs": [
-              "V_Dim_FB_CalDay.Period Levels.L1"
+              "Operation_Cal_Day.L1"
             ],
             "isCollapsed": true,
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Operation_Cal_Day"
+                    }
+                  },
+                  "Property": "L1"
+                }
+              }
+            ],
             "isPinned": true
           },
           {
             "queryRefs": [
-              "V_Dim_FB_CalDay.Period Levels.L2"
+              "Operation_Cal_Day.L2"
             ],
             "isCollapsed": true,
+            "identityKeys": [
+              {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Operation_Cal_Day"
+                    }
+                  },
+                  "Property": "L2"
+                }
+              }
+            ],
             "isPinned": true
           },
           {
             "queryRefs": [
-              "V_Dim_FB_CalDay.Period Levels.L3"
+              "Operation_Cal_Day.L3"
             ],
             "isCollapsed": true,
             "isPinned": true
           }
         ],
-        "root": {}
+        "root": {
+          "children": [
+            {
+              "identityValues": [
+                {
+                  "Literal": {
+                    "Value": "'2025'"
+                  }
+                }
+              ],
+              "isToggled": true
+            },
+            {
+              "identityValues": [
+                {
+                  "Literal": {
+                    "Value": "'2026'"
+                  }
+                }
+              ],
+              "isToggled": true,
+              "children": [
+                {
+                  "identityValues": [
+                    {
+                      "Literal": {
+                        "Value": "'Q1'"
+                      }
+                    }
+                  ],
+                  "isToggled": true
+                }
+              ]
+            }
+          ]
+        }
       }
     ],
     "objects": {
@@ -132,8 +176,8 @@
                 "Version": 2,
                 "From": [
                   {
-                    "Name": "v",
-                    "Entity": "V_Dim_FB_CalDay",
+                    "Name": "o",
+                    "Entity": "Operation_Cal_Day",
                     "Type": 0
                   }
                 ],
@@ -146,7 +190,7 @@
                             "Column": {
                               "Expression": {
                                 "SourceRef": {
-                                  "Source": "v"
+                                  "Source": "o"
                                 }
                               },
                               "Property": "L1"
@@ -157,7 +201,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'2024'"
+                                "Value": "'2026'"
                               }
                             }
                           ]
@@ -168,18 +212,13 @@
                       "filterExpressionMetadata": {
                         "expressions": [
                           {
-                            "HierarchyLevel": {
+                            "Column": {
                               "Expression": {
-                                "Hierarchy": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "V_Dim_FB_CalDay"
-                                    }
-                                  },
-                                  "Hierarchy": "Period Levels"
+                                "SourceRef": {
+                                  "Entity": "Operation_Cal_Day"
                                 }
                               },
-                              "Level": "L1"
+                              "Property": "L1"
                             }
                           }
                         ],
@@ -190,7 +229,7 @@
                                 "0": [
                                   {
                                     "Literal": {
-                                      "Value": "'2024'"
+                                      "Value": "'2026'"
                                     }
                                   }
                                 ]
@@ -203,7 +242,7 @@
                                 "Column": {
                                   "Expression": {
                                     "SourceRef": {
-                                      "Entity": "V_Dim_FB_CalDay"
+                                      "Entity": "Operation_Cal_Day"
                                     }
                                   },
                                   "Property": "L1"
@@ -214,7 +253,7 @@
                         },
                         "valueMap": [
                           {
-                            "0": "2024"
+                            "0": "2026"
                           }
                         ]
                       }
@@ -381,61 +420,58 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "a0ac9da1c799a98d8c67",
+        "name": "82801a3bbc155f4e79fd",
         "field": {
-          "HierarchyLevel": {
+          "Column": {
             "Expression": {
-              "Hierarchy": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_Dim_FB_CalDay"
-                  }
-                },
-                "Hierarchy": "Period Levels"
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CalDay"
               }
             },
-            "Level": "L1"
+            "Property": "LE_CD"
           }
         },
-        "type": "Categorical"
-      },
-      {
-        "name": "2bf4fed605e4a4d3e99a",
-        "field": {
-          "HierarchyLevel": {
-            "Expression": {
-              "Hierarchy": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_Dim_FB_CalDay"
-                  }
-                },
-                "Hierarchy": "Period Levels"
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CalDay",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "LE_CD"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    ]
+                  ]
+                }
               }
-            },
-            "Level": "L2"
-          }
+            }
+          ]
         },
-        "type": "Categorical"
-      },
-      {
-        "name": "f160a9c21517e500cde9",
-        "field": {
-          "HierarchyLevel": {
-            "Expression": {
-              "Hierarchy": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "V_Dim_FB_CalDay"
-                  }
-                },
-                "Hierarchy": "Period Levels"
-              }
-            },
-            "Level": "L3"
-          }
-        },
-        "type": "Categorical"
+        "howCreated": "User"
       }
     ]
   }

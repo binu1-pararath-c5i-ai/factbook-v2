@@ -22,11 +22,11 @@
                       "Entity": "Operation_Cal_Day"
                     }
                   },
-                  "Property": "FirstDayOfMonth"
+                  "Property": "DayDate"
                 }
               },
-              "queryRef": "Operation_Cal_Day.FirstDayOfMonth",
-              "nativeQueryRef": "FirstDayOfMonth"
+              "queryRef": "Operation_Cal_Day.DayDate",
+              "nativeQueryRef": "DayDate"
             },
             {
               "field": {
@@ -125,7 +125,7 @@
                     "Entity": "Operation_Cal_Day"
                   }
                 },
-                "Property": "FirstDayOfMonth"
+                "Property": "DayDate"
               }
             },
             "direction": "Descending"
@@ -196,20 +196,6 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "97.0891168790622D"
-                }
-              }
-            }
-          },
-          "selector": {
-            "metadata": "Operation_Cal_Day.FirstDayOfMonth"
-          }
-        },
-        {
-          "properties": {
-            "value": {
-              "expr": {
-                "Literal": {
                   "Value": "60.761574113786224D"
                 }
               }
@@ -219,8 +205,123 @@
             "metadata": "Measure Table.Rate_Per_Case_Bar_AOP_FCST_YA"
           }
         }
+      ],
+      "total": [
+        {
+          "properties": {
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "de2255120d3390024e0c",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_TL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "390d8bcd4e2b4f317fd2",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_PY_TL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "b8bd59b72195b5249e4a",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "1Y"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "40cdfdfa7d94bd9cb464",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "2Y"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "b73c6a14c61d9c263d57",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "3Y"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "1e15ade743c3a8430d76",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Rate_Per_Case_Bar_AOP_FCST_YA"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "2896c12577eceab5636d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Operation_Cal_Day"
+              }
+            },
+            "Property": "DayDate"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
   }
 }

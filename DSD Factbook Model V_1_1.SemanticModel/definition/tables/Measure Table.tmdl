@@ -3727,11 +3727,7 @@ table 'Measure Table'
 		displayFolder: Topline
 		lineageTag: d6b1a1bb-d29f-4e8e-9bee-dd4109aed7e2
 
-	measure Revenue_AOP_TL =
-			
-			IF(NOT [IsFiltered_NC_to_SG],
-			    SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetBudget])
-			)
+	measure Revenue_AOP_TL = IF(NOT [IsFiltered_NC_to_SG], SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetBudget]))
 		displayFolder: Topline
 		lineageTag: b989a16e-0768-44f7-8d98-885071a41b88
 
@@ -3747,20 +3743,13 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Volume_FCST_TL =
-			
-			IF ([IsFiltered_NC_to_SG], "", CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[SalesCasesFC]),
-				V_Fact_FB_Topline_Budget_All[ISFC] = TRUE()))
+	measure Volume_FCST_TL = IF (NOT [IsFiltered_NC_to_SG], SUM(V_Fact_FB_Topline_Budget_All[SalesCasesFC]))
 		displayFolder: Topline
 		lineageTag: 302ab3ab-1d6e-402e-94bd-35aac8913f5a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Revenue_FCST_TL =
-			
-			IF([IsFiltered_NC_to_SG], "", CALCULATE(SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetFC]),
-			    FILTER(V_Fact_FB_Topline_Budget_All, V_Fact_FB_Topline_Budget_All[ISFC] = TRUE())
-			))
+	measure Revenue_FCST_TL = IF(NOT [IsFiltered_NC_to_SG], SUM(V_Fact_FB_Topline_Budget_All[RevenueDeadNetFC]))
 		displayFolder: Topline
 		lineageTag: 7fa9e8dd-43dc-4134-adb8-95789fc754e9
 
@@ -3959,7 +3948,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Volume_Bar_Actual_TL = CALCULATE([Volume_TL], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
+	measure Volume_Bar_Actual_TL = CALCULATE([Volume_TL], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]), REMOVEFILTERS(V_Dim_FB_CalDay[LE_CD]))
 		displayFolder: Topline
 		lineageTag: 8725d8cd-8f3c-4802-b127-2e00b692b3f0
 
@@ -3968,10 +3957,10 @@ table 'Measure Table'
 	measure Volume_Bar_AOP_FCST_YA =
 			CALCULATE(SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", CALCULATE([Volume_AOP_TL]),
-			    "FCST", CALCULATE([Volume_FCST_TL]),
-				"YA", [Volume_Bar_Act_YA]
-			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
+			    "AOP", [Volume_AOP_TL],
+			    "FCST", [Volume_FCST_TL],
+				"YA", [Volume_Full_PY_TL]
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]), REMOVEFILTERS(V_Dim_FB_CalDay[LE_CD]))
 		displayFolder: Topline
 		lineageTag: 55855e16-87c9-4f28-b690-ae7e29e97a91
 
@@ -4021,7 +4010,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Revenue_Bar_Actual_TL = CALCULATE([Revenue_TL], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
+	measure Revenue_Bar_Actual_TL = CALCULATE([Revenue_TL], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]), REMOVEFILTERS(V_Dim_FB_CalDay[LE_CD]))
 		displayFolder: Topline
 		lineageTag: 3c555a93-c8b5-4e6a-a9ef-f3505d50c753
 
@@ -4030,27 +4019,21 @@ table 'Measure Table'
 	measure Revenue_Bar_AOP_FCST_YA =
 			CALCULATE(SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", CALCULATE([Revenue_AOP_TL]),
-				"FCST", CALCULATE([Revenue_FCST_TL]),
-				"YA", CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_LE_CD")
-			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
+			    "AOP", [Revenue_AOP_TL],
+				"FCST", [Revenue_FCST_TL],
+				"YA", [Revenue_Full_PY_TL]
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]), REMOVEFILTERS(V_Dim_FB_CalDay[LE_CD]))
 		displayFolder: Topline
 		lineageTag: de85365d-e467-4719-9a8e-25fddebf602b
 
 		formatStringDefinition = CONVERT(CALCULATE([Revenue_Bar_AOP_FCST_YA], Formatter[Group] = "NUM_POS1"), STRING)
 
-	measure Rate_per_Case_Bar_Actual_TL = CALCULATE([Rate_per_Case_TL], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
+	measure Rate_per_Case_Bar_Actual_TL = CALCULATE([Rate_per_Case_TL], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]), REMOVEFILTERS(V_Dim_FB_CalDay[LE_CD]))
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Topline
 		lineageTag: 2580d8ba-a950-4f50-a832-3790d03f08d4
 
-	measure Rate_Per_Case_Bar_AOP_FCST_YA =
-			CALCULATE(SWITCH(
-				SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", [Rate_Per_Case_AOP_TL],
-				"FCST", [Rate_Per_Case_FCST_TL],
-				"YA", DIVIDE([Revenue_PY_TL], [Volume_PY_TL])
-			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
+	measure Rate_Per_Case_Bar_AOP_FCST_YA = DIVIDE([Revenue_Bar_AOP_FCST_YA], [Volume_Bar_AOP_FCST_YA])
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Topline
 		lineageTag: 47f3e9bb-bc46-48eb-ab25-f8d3c58b2e34
@@ -5087,7 +5070,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isDecimal":true}
 
-	measure Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops =
+	measure breakage_abs_rpc_change_vs_ya_selection_opsObsolescence_Abs_RPC_Change_vs_YA_Selection_Ops =
 			
 			SWITCH(
 			    SELECTEDVALUE('Abs/RPC Table'[Abs/RPC]),
@@ -6492,7 +6475,7 @@ table 'Measure Table'
 				    "RPC", "$0.000"
 				)
 
-	measure Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops_UI = [Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops]
+	measure Obsolescence_Abs_RPC_Change_vs_YA_Selection_Ops_UI = [breakage_abs_rpc_change_vs_ya_selection_opsObsolescence_Abs_RPC_Change_vs_YA_Selection_Ops]
 		displayFolder: Ops
 		lineageTag: fca59527-df1a-420d-835b-f5321e4e60ca
 
@@ -6782,22 +6765,19 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isCustom":true}
 
 	measure 'Conditional Opex AO AttainmentSelected' =
-			
-			MAX(-10, MIN(
-			    CALCULATE(
-			        SWITCH(
-			            SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
-			            "Absolute_AOP", [Opex AO Varient AOP%],
-			            "Absolute_FCST", IF(NOT [IsFullPeriod], [Opex AO Varient FCST%]),
-			            "Absolute_YA", [Opex AO Varient PY%],
-			            "RPC_AOP", [Opex AO Varient RPC AOP%],
-			            "RPC_FCST", IF(NOT [IsFullPeriod], [Opex AO Varient RPC FCST%]),
-			            "RPC_YA", [Opex AO Varient RPC PY%],
-			            BLANK()
-			        ),
-			        KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
+			CALCULATE(
+			    SWITCH(
+			        SELECTEDVALUE('Abs/RPC Table'[Abs/RPC], "Absolute") & "_" & SELECTEDVALUE('Metric Table'[Metrics], "AOP"),
+			        "Absolute_AOP", [Opex AO Varient AOP%],
+			        "Absolute_FCST", IF(NOT [IsFullPeriod], [Opex AO Varient FCST%]),
+			        "Absolute_YA", [Opex AO Varient PY%],
+			        "RPC_AOP", [Opex AO Varient RPC AOP%],
+			        "RPC_FCST", IF(NOT [IsFullPeriod], [Opex AO Varient RPC FCST%]),
+			        "RPC_YA", [Opex AO Varient RPC PY%],
+			        BLANK()
 			    ),
-			10))
+			    KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX('V_Dim_FB_CalDay'[CL_M_END]))
+			)
 		formatString: (#,##0%);#,##0%
 		lineageTag: 7f91a98d-5a85-4068-93f3-2938c1e61292
 
@@ -7733,8 +7713,7 @@ table 'Measure Table'
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
 			)
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[DelvElasticity])
-			var _val = 
-			c22 / ((d5 + f5) * ((((c22-c5) / c5) * _e) + 1))
+			var _val = DIVIDE(c22, (d5 + f5) * (DIVIDE(c22 - c5, c5) * _e + 1), BLANK())
 			return _val
 			```
 		displayFolder: Ops
@@ -7761,8 +7740,7 @@ table 'Measure Table'
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate]))
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[WhseElasticity])
 			
-			var _val = c22 / ((d5 + f5) * (((c22 - c5) / c5) * _e + 1))
-			
+			var _val = DIVIDE(c22, (d5 + f5) * (DIVIDE(c22 - c5, c5) * _e + 1), BLANK())
 			RETURN _val
 			```
 		displayFolder: Ops
@@ -7798,7 +7776,7 @@ table 'Measure Table'
 			    SAMEPERIODLASTYEAR(Operation_Cal_Day[DayDate])
 			)
 			var _e = SELECTEDVALUE(V_Fact_FB_Ops_CPH_CPC[MechElasticity])
-			var _val = DIVIDE(c22, (d5 + f5) * (((c22 - c5) / c5 * _e) + 1), BLANK())
+			var _val = DIVIDE(c22, (d5 + f5) * (DIVIDE(c22 - c5, c5) * _e + 1), BLANK())
 			return _val
 			```
 		displayFolder: Ops
@@ -8584,21 +8562,18 @@ table 'Measure Table'
 			(
 			   ( [Breakage_Abs_RPC_Selection_OPs]- [Breakage_Abs_RPC_Selection_Py_OPs]), [Breakage_Abs_RPC_Selection_Py_OPs]
 			)
+		formatString: 0.00%;-0.00%;0.00%
 		displayFolder: Ops
 		lineageTag: 39fffcbf-57be-4a44-84e1-4d3f965c1512
 
-		formatStringDefinition = "#,##0%;(#,##0%)"
-
 	measure Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table =
 			
-			MAX(-10, MIN(
-				IF(SELECTEDVALUE('Metric Table'[Metrics]) = "FCST",
-			    	IF(MAX(Operation_Cal_Day[MonthNumber]) <= 6, "",
-						[Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_final]
-					),
-			    	[Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_final]
-				), 10
-			))
+			IF(SELECTEDVALUE('Metric Table'[Metrics]) = "FCST",
+			    IF(MAX(Operation_Cal_Day[MonthNumber]) <= 6, "",
+			        [Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_final]
+			    ),
+			    [Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_final]
+			)
 		displayFolder: Ops
 		lineageTag: 7841221f-e32d-492d-92e1-e4e63adf7682
 
@@ -8657,45 +8632,19 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops_Bar =
-			CALCULATE(
-			    CALCULATE([Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops],
-			        V_Dim_FB_CalDay[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END])
-			    ),
-			    REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3])
-			)
+	measure Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops_Bar = CALCULATE([Wh_Delv_Mech_CPH_Actuals_VolAdj_Selection_Ops], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]), V_Dim_FB_CalDay[DayDate] <= V_Dim_FB_CalDay[CL_M_END])
 		lineageTag: 58cb14c5-e7b2-4e3b-bfe8-63d2e09d3f32
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Bar =
-			CALCULATE(
-			VAR _cl_day = MAX(V_Dim_FB_Ref[CL_M_END])
-			RETURN SWITCH(
-			    SELECTEDVALUE('Metric Table'[Metrics]),
-				"AOP", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC],
-			        KEEPFILTERS(V_Dim_FB_CalDay[DayDate] <= _cl_day)),
-				"FCST", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC],
-					KEEPFILTERS(V_Dim_FB_CalDay[DayDate] <= _cl_day)),
-				"YA", [Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC]
-			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3], Operation_Cal_Day[DayDate]))
+	measure Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_Bar = CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]), 'Time Intel'[Group] = "BAR_YR_CL")
 		lineageTag: b4f97c2e-7104-4c7e-b5af-88f5864cd73e
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Bar =
-			CALCULATE(
-			VAR _cl_day = [CL_M_END]
-			RETURN
-			SWITCH(
-			    SELECTEDVALUE('Metric Table'[Metrics]),
-				"AOP", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_CC],
-			        Operation_Cal_Day[DayDate] <= _cl_day),
-				"FCST", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_CC],
-					Operation_Cal_Day[DayDate] <= _cl_day),
-				"YA", CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_CC],
-			        Operation_Cal_Day[Year] = YEAR(_cl_day))
-			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
+			
+			CALCULATE([Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_CC], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]), 'Time Intel'[Group] = "BAR_YR_CL")
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Ops
 		lineageTag: b8de5284-ca20-4903-b245-e358a56eb685
@@ -8771,75 +8720,37 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC = ```
+	measure Wh_Delv_Mech_AOP_Fcst_YA_Actuals_VolAdj_CPH_Selection_Ops_CC =
 			
-			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
-			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
-			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
-			RETURN
 			SWITCH(
-			    TRUE(),
-			    _wdm = "Warehouse" && _av = "Actuals" &&
-			    _metric = "AOP", [Wh_CPH_AOP_CPH],
-			    
-			    _wdm = "Warehouse" && _av = "Actuals" &&
-			    _metric = "Fcst", [Wh_CPH_Fcst_CPH],
-			    
-			    _wdm = "Warehouse" && _av = "Actuals" &&
-			    _metric = "YA", [Wh_CPH_Actuals_PY_CPH],
-			    
-			    _wdm = "Warehouse" && _av = "Vol.Adjusted" &&
-			    _metric = "AOP", [Wh_CPH_Vol_Adj_AOP_CPH],
-			    
-			    _wdm = "Warehouse" && _av = "Vol.Adjusted" &&
-			    _metric = "Fcst", [Wh_CPH_Vol_Adj_Fcst_CPH],
-			    
-			    _wdm = "Warehouse" && _av = "Vol.Adjusted" &&
-			    _metric = "YA", [Wh_CPH_Adj_Vol_PY_CPH],
-			    
-			    _wdm = "Delivery" && _av = "Actuals" &&
-			    _metric = "AOP", [Delv_CPH_AOP_CPH],
-			    
-			    _wdm = "Delivery" && _av = "Actuals" &&
-			    _metric = "Fcst", [Delv_CPH_Fcst_CPH],
-			    
-			    _wdm = "Delivery" && _av = "Actuals" &&
-			    _metric = "YA", [Delv_CPH_Actuals_PY_CPH],
-			    
-			    _wdm = "Delivery" && _av = "Vol.Adjusted" &&
-			    _metric = "AOP", [Delv_CPH_Vol_Adj_AOP_CPH],
-			    
-			    _wdm = "Delivery" && _av = "Vol.Adjusted" &&
-			    _metric = "Fcst", [Delv_CPH_Vol_Adj_Fcst_CPH],
-			    
-			    _wdm = "Delivery" && _av = "Vol.Adjusted" &&
-			    _metric = "YA", [Delv_CPH_Adj_Vol_PY_CPH],
-			    
-			    _wdm = "Merchandising" && _av = "Actuals" &&
-			    _metric = "AOP", [Mech_CPH_AOP_CPH],
-			    
-			    _wdm = "Merchandising" && _av = "Actuals" &&
-			    _metric = "Fcst", [Mech_CPH_Fcst_CPH],
-			    
-			    _wdm = "Merchandising" && _av = "Actuals" &&
-			    _metric = "YA", [Mech_CPH_Actuals_PY_CPH],
-			
-			    _wdm = "Merchandising" && _av = "Vol.Adjusted" &&
-			    _metric = "AOP", [Mech_CPH_Vol_Adj_AOP_CPH],
-			    
-			    _wdm = "Merchandising" && _av = "Vol.Adjusted" &&
-			    _metric = "Fcst", [Mech_CPH_Vol_Adj_Fcst_CPH],
-			    
-			    _wdm = "Merchandising" && _av = "Vol.Adjusted" &&
-			    _metric = "YA", [Mech_CPH_Adj_Vol_PY_CPH]
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) & "_" &
+			    SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) & "_" &
+			    SELECTEDVALUE('Metric Table'[Metrics]),
+			    "Warehouse_Actuals_AOP", [Wh_CPH_AOP_CPH],
+			    "Warehouse_Actuals_Fcst", [Wh_CPH_Fcst_CPH],
+			    "Warehouse_Actuals_YA", [Wh_CPH_Actuals_PY_CPH],
+			    "Warehouse_Vol.Adjusted_AOP", [Wh_CPH_Vol_Adj_AOP_CPH],
+			    "Warehouse_Vol.Adjusted_Fcst", [Wh_CPH_Vol_Adj_Fcst_CPH],
+			    "Warehouse_Vol.Adjusted_YA", [Wh_CPH_Adj_Vol_PY_CPH],
+			    "Delivery_Actuals_AOP", [Delv_CPH_AOP_CPH],
+			    "Delivery_Actuals_Fcst", [Delv_CPH_Fcst_CPH],
+			    "Delivery_Actuals_YA", [Delv_CPH_Actuals_PY_CPH],
+			    "Delivery_Vol.Adjusted_AOP", [Delv_CPH_Vol_Adj_AOP_CPH],
+			    "Delivery_Vol.Adjusted_Fcst", [Delv_CPH_Vol_Adj_Fcst_CPH],
+			    "Delivery_Vol.Adjusted_YA", [Delv_CPH_Adj_Vol_PY_CPH],
+			    "Merchandising_Actuals_AOP", [Mech_CPH_AOP_CPH],
+			    "Merchandising_Actuals_Fcst", [Mech_CPH_Fcst_CPH],
+			    "Merchandising_Actuals_YA", [Mech_CPH_Actuals_PY_CPH],
+			    "Merchandising_Vol.Adjusted_AOP", [Mech_CPH_Vol_Adj_AOP_CPH],
+			    "Merchandising_Vol.Adjusted_Fcst", [Mech_CPH_Vol_Adj_Fcst_CPH],
+			    "Merchandising_Vol.Adjusted_YA", [Mech_CPH_Adj_Vol_PY_CPH]
 			)
-			```
 		displayFolder: Ops
 		lineageTag: 7ae4b5a9-0ac7-473c-85f7-bcd49c4d1b1a
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops_Bar = CALCULATE([Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops], 'Time Intel'[Group] = "BAR_YR_CL", REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
+	measure Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops_Bar = CALCULATE([Wh_Delv_Mech_CPC_Actuals_VolAdj_Selection_Ops], REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]), 'Time Intel'[Group] = "BAR_YR_CL")
 		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: Ops
 		lineageTag: d40252b3-5246-4935-9568-97a128a6545c
@@ -8964,12 +8875,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter FCST dynamic Rate per case' =
-			
-			CALCULATE([Rate_Per_Case_FCST_TL], FILTER(
-			    ALL('V_Fact_FB_Topline_Budget_All'[TimeGranularity], V_Fact_FB_Topline_Budget_All[RYBkt]),
-			    V_Fact_FB_Topline_Budget_All[TimeGranularity] = "Monthly"
-			))
+	measure 'Quarter FCST dynamic Rate per case' = CALCULATE([Rate_Per_Case_FCST_TL])
 		displayFolder: Topline
 		lineageTag: db5fbb99-80c6-467b-8e9e-c9e4790a870e
 
@@ -9042,7 +8948,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Quarter dynamic volume FCST KPICARD' = CALCULATE([Volume_FCST_TL_nw], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CM])))
+	measure 'Quarter dynamic volume FCST KPICARD' = CALCULATE([Volume_FCST_TL_nw], KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CD])))
 		displayFolder: Topline
 		lineageTag: d37de0b7-e189-4ec2-94e1-0418b141a24b
 
@@ -9202,25 +9108,21 @@ table 'Measure Table'
 				RETURN IF(_a = "Vol.Adjusted","#,###",
 				"(#,##0%);#,##0%")
 
-	measure 'Previous Month Name' = ```
+	measure 'Previous Month Name' =
 			
-			IF(
-			ISFILTERED(Operation_Cal_Day[Monthname]),
+			IF(SELECTEDVALUE(Operation_Cal_Day[L1]) = "Weeks", BLANK(), "Prior Period = " & SWITCH(TRUE(),
 			
-			CONCATENATE("Prior Period = ",
-			    CALCULATE(SELECTEDVALUE( Operation_Cal_Day[Monthdesc]),
-			        DATEADD ( Operation_Cal_Day[DayDate], -1, MONTH ))),
-			IF(
-			ISFILTERED(Operation_Cal_Day[Quarter_Name]),       
-			CONCATENATE("Prior Period = ",CALCULATE(SELECTEDVALUE( Operation_Cal_Day[QuarterDesc]),
-			        DATEADD ( Operation_Cal_Day[DayDate], -1, QUARTER ))),
+			    ISFILTERED(Operation_Cal_Day[L3]),
+			    FORMAT(EDATE(MIN(V_Dim_FB_CalDay[FirstDayOfMonth]), -1), "MMM yyyy"),
 			
-			IF(ISFILTERED(Operation_Cal_Day[Year]),
-			 CONCATENATE("Prior Period = ",CALCULATE(SELECTEDVALUE( Operation_Cal_Day[year]),
-			         DATEADD ( Operation_Cal_Day[DayDate], -1, YEAR ))),BLANK())
+			    ISFILTERED(Operation_Cal_Day[L2]),
+			    FORMAT(EDATE(MIN(V_Dim_FB_CalDay[FirstDayOfMonth]), -3), """Q""Q yyyy"),
+			
+			    FORMAT(EDATE(MIN(V_Dim_FB_CalDay[FirstDayOfMonth]), -12), "yyyy")
 			))
-			```
 		lineageTag: a993db7f-37ab-4a10-b432-84177ca9b3c1
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Label vs Selected Metric_%Temp' =
 			
@@ -10941,11 +10843,9 @@ table 'Measure Table'
 
 	measure Cases_Per_Delivery_Change_vs_YA_CPH_matrix_LP =
 			
-			CALCULATE(IF([Cases_Per_Deliver_actuals_CPH_matrix_LP] <> 0,
-			    DIVIDE([Cases_Per_Deliver_actuals_CPH_matrix_LP] - [Cases_Per_Deliver_actuals_PY_CPH_matrix_LP],
-			    [Cases_Per_Deliver_actuals_PY_CPH_matrix_LP], 0), " "),
-			    KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END]))
-			)
+			VAR _cy = CALCULATE([Cases_Per_Deliver_actuals_CPH_matrix_LP], 'Time Intel'[Group] = "CY_LE_CL")
+			VAR _ya = CALCULATE([Cases_Per_Deliver_actuals_CPH_matrix_LP], 'Time Intel'[Group] = "YA_LE_CL")
+			RETURN IF(_cy <> 0, DIVIDE(_cy - _ya, _ya, 0), " ")
 		formatString: (#,##0%);#,##0%
 		displayFolder: Ops
 		lineageTag: c348ec0d-c883-4b07-9874-589a4154a4e3
@@ -10962,10 +10862,9 @@ table 'Measure Table'
 
 	measure Cases_Per_Visit_Change_vs_YA_CPH_matrix_LP =
 			
-			CALCULATE(IF([Cases_Per_Visit_actuals_CPH_matrix_LP] <> 0,
-			    DIVIDE([Cases_Per_Visit_actuals_CPH_matrix_LP] - [Cases_Per_Visit_actuals_PY_CPH_matrix_LP], [Cases_Per_Visit_actuals_PY_CPH_matrix_LP],0), ""),
-			    KEEPFILTERS(Operation_Cal_Day[DayDate] <= MAX(V_Dim_FB_Ref[CL_M_END]))
-			)
+			VAR _cy = CALCULATE([Cases_Per_Visit_actuals_CPH_matrix_LP], 'Time Intel'[Group] = "CY_LE_CL")
+			VAR _ya = CALCULATE([Cases_Per_Visit_actuals_CPH_matrix_LP], 'Time Intel'[Group] = "YA_LE_CL")
+			RETURN IF(_cy <> 0, DIVIDE(_cy - _ya, _ya, 0), " ")
 		formatString: (#,##0%);#,##0%
 		displayFolder: Ops
 		lineageTag: 7fa188ea-9c5c-4617-8551-334f2efac3ef
@@ -13391,24 +13290,24 @@ table 'Measure Table'
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Label vs Selected Metric P&L' =
-			
 			SWITCH(
-				SELECTEDVALUE('Metric Table'[Metrics]),
-				"AOP",  "vs AOP",
-				"FCST", IF(ISBLANK([Conditional_Volume AttainmentSelected])
-					|| ISBLANK([Conditional_Volume AttainmentSelected])
-					||ISBLANK([Conditional_Revenue AttainmentSelected])
-					|| ISBLANK([Conditional_GP_AttainmentSelected])
-					|| ISBLANK([Conditional_Opex_AttainmentSelected])
-					|| ISBLANK([Conditional_OI AttainmentSelected])
-					|| ISBLANK([conditional DSD labor_AttainmentSelected])
-					|| ISBLANK([conditional Non Labor Opex AttainmentSelected])
-					|| ISBLANK([Conditional Opex AO AttainmentSelected]),
-					"", "vs FCST"
-				),
-				"YA",   "vs YA"
+			    SELECTEDVALUE('Metric Table'[Metrics]),
+			    "AOP",  "vs AOP",
+			    "FCST", IF(NOT ISBLANK([Conditional_Volume AttainmentSelected])
+			        || NOT ISBLANK([Conditional_Revenue AttainmentSelected])
+			        || NOT ISBLANK([Conditional_GP_AttainmentSelected])
+			        || NOT ISBLANK([Conditional_Opex_AttainmentSelected])
+			        || NOT ISBLANK([Conditional_OI AttainmentSelected])
+			        || NOT ISBLANK([conditional DSD labor_AttainmentSelected])
+			        || NOT ISBLANK([conditional Non Labor Opex AttainmentSelected])
+			        || NOT ISBLANK([Conditional Opex AO AttainmentSelected]),
+			        "vs FCST", ""
+			    ),
+			    "YA", "vs YA"
 			)
 		lineageTag: 74203c8f-c149-47cf-935d-85f2e18d2272
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Label vs Selected Metric rev No YA' =
 			
@@ -13712,74 +13611,32 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_final = ```
+	measure Wh_Delv_Mech_Attainment_AOP_Fcst_YA_Actuals_VolAdj_CPC_Selection_Ops_Table_final =
 			
-			VAR _wdm = SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech])
-			VAR _av = SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj])
-			VAR _metric = SELECTEDVALUE('Metric Table'[Metrics])
-			RETURN
 			SWITCH(
-			    TRUE(),
-				_wdm = "Warehouse" && _av = "Actuals" && 
-				_metric = "AOP", [Wh_CPC_Attainment_to_AOP_CPH],
-				
-				_wdm = "Warehouse" && _av = "Actuals" && 
-				_metric = "Fcst", [Wh_CPC_Attainment_to_Fcst_CPH],
-				
-				_wdm = "Warehouse" && _av = "Actuals" && 
-				_metric = "YA",
-				[Wh_CPC_Change_vs_YA_CPH],
-				
-				_wdm = "Warehouse" && _av = "Vol.Adjusted" && 
-				_metric = "AOP", [Wh_CPC_Vol_Adj_Attainment_to_AOP_CPH],
-				
-				_wdm = "Warehouse" && _av = "Vol.Adjusted" && 
-				_metric = "Fcst", [Wh_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
-				
-				_wdm = "Warehouse" && _av = "Vol.Adjusted" && 
-				_metric = "YA",
-				[Wh_CPC_Adj_Vol_Change_vs_YA_CPH],
-				
-				_wdm = "Delivery" && _av = "Actuals" && 
-				_metric = "AOP", [Delv_CPC_Attainment_to_AOP_CPH],
-				
-				_wdm = "Delivery" && _av = "Actuals" && 
-				_metric = "Fcst", [Delv_CPC_Attainment_to_Fcst_CPH],
-				
-				_wdm = "Delivery" && _av = "Actuals" && 
-				_metric = "YA",
-				[Delv_CPC_Change_vs_YA_CPH],
-				
-				_wdm = "Delivery" && _av = "Vol.Adjusted" && 
-				_metric = "AOP", [Delv_CPC_Vol_Adj_Attainment_to_AOP_CPH],
-				
-				_wdm = "Delivery" && _av = "Vol.Adjusted" && 
-				_metric = "Fcst", [Delv_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
-				
-				_wdm = "Delivery" && _av = "Vol.Adjusted" && 
-				_metric = "YA",
-				[Delv_CPC_Adj_Vol_Change_vs_YA_CPH],
-				
-				_wdm = "Merchandising" && _av = "Actuals" && 
-				_metric = "AOP", [Mech_CPC_Attainment_to_AOP_CPH],
-				
-				_wdm = "Merchandising" && _av = "Actuals" && 
-				_metric = "Fcst", [Mech_CPC_Attainment_to_Fcst_CPH],
-				
-				_wdm = "Merchandising" && _av = "Actuals" && 
-				_metric = "YA",
-				[Mech_CPC_Change_vs_YA_CPH],
-				
-				_wdm = "Merchandising" && _av = "Vol.Adjusted" && 
-				_metric = "AOP", [Mech_CPC_Vol_Adj_Attainment_to_AOP_CPH],
-				
-				_wdm = "Merchandising" && _av = "Vol.Adjusted" && 
-				_metric = "Fcst", [Mech_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
-				
-				_wdm = "Merchandising" && _av = "Vol.Adjusted" && 
-				_metric = "YA", [Mech_CPC_Adj_Vol_Change_vs_YA_CPH]
+			    SELECTEDVALUE('Whse/Delv/Mech Table'[Whse/Delv/Mech]) & "_" &
+			    SELECTEDVALUE('Act/VolAdj Table'[Act/VolAdj]) & "_" &
+			    SELECTEDVALUE('Metric Table'[Metrics]),
+			
+				"Warehouse_Actuals_AOP", [Wh_CPC_Attainment_to_AOP_CPH],
+				"Warehouse_Actuals_Fcst", [Wh_CPC_Attainment_to_Fcst_CPH],
+				"Warehouse_Actuals_YA", [Wh_CPC_Change_vs_YA_CPH],
+				"Warehouse_Vol.Adjusted_AOP", [Wh_CPC_Vol_Adj_Attainment_to_AOP_CPH],
+				"Warehouse_Vol.Adjusted_Fcst", [Wh_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
+				"Warehouse_Vol.Adjusted_YA", [Wh_CPC_Adj_Vol_Change_vs_YA_CPH],
+				"Delivery_Actuals_AOP", [Delv_CPC_Attainment_to_AOP_CPH],
+				"Delivery_Actuals_Fcst", [Delv_CPC_Attainment_to_Fcst_CPH],
+				"Delivery_Actuals_YA", [Delv_CPC_Change_vs_YA_CPH],
+				"Delivery_Vol.Adjusted_AOP", [Delv_CPC_Vol_Adj_Attainment_to_AOP_CPH],
+				"Delivery_Vol.Adjusted_Fcst", [Delv_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
+				"Delivery_Vol.Adjusted_YA", [Delv_CPC_Adj_Vol_Change_vs_YA_CPH],
+				"Merchandising_Actuals_AOP", [Mech_CPC_Attainment_to_AOP_CPH],
+				"Merchandising_Actuals_Fcst", [Mech_CPC_Attainment_to_Fcst_CPH],
+				"Merchandising_Actuals_YA", [Mech_CPC_Change_vs_YA_CPH],
+				"Merchandising_Vol.Adjusted_AOP", [Mech_CPC_Vol_Adj_Attainment_to_AOP_CPH],
+				"Merchandising_Vol.Adjusted_Fcst", [Mech_CPC_Vol_Adj_Attainment_to_Fcst_CPH],
+				"Merchandising_Vol.Adjusted_YA", [Mech_CPC_Adj_Vol_Change_vs_YA_CPH]
 			)
-			```
 		displayFolder: Ops
 		lineageTag: f7ca0c77-5008-4f53-8c16-a3a0b044f6f8
 
@@ -14147,14 +14004,14 @@ table 'Measure Table'
 	measure 'Volume_FCST Topline bar' =
 			CALCULATE(SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", [Quarter FCST dynamic volume Bar],
-			    "FCST", "",
-			    "YA", [Quarter FCST dynamic volume Bar]
-			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
+			    "AOP", [Volume_FCST_TL_nw],
+			    "FCST", BLANK(),
+			    "YA", [Volume_FCST_TL_nw]
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]), REMOVEFILTERS(V_Dim_FB_CalDay[LE_CD]))
 		displayFolder: Topline
 		lineageTag: 68ca4353-2a63-4639-a890-2f49d2cfac20
 
-		formatStringDefinition = CONVERT(CALCULATE([Volume_FCST Topline bar], Formatter[Group] = "NUM_POS1"), STRING)
+		formatStringDefinition = CONVERT(CALCULATE([Volume_FCST Topline bar], Formatter[Group] = "NO$_POS1"), STRING)
 
 	measure IM_Selected_Period_Op =
 			
@@ -14173,23 +14030,16 @@ table 'Measure Table'
 	measure 'Revenue_FCST topline bar' =
 			CALCULATE(SWITCH(
 			    SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", [Quarter FCST dynamic Revenue Bar],
-				"FCST", "",
-				"YA", [Quarter FCST dynamic Revenue Bar]
-			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
+			    "AOP", [Revenue_FCST_TL_nw],
+				"FCST", BLANK(),
+				"YA", [Revenue_FCST_TL_nw]
+			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]), REMOVEFILTERS(V_Dim_FB_CalDay[LE_CD]))
 		displayFolder: Topline
 		lineageTag: 77bfb708-cb56-4ee6-944c-cc235f353652
 
 		formatStringDefinition = CONVERT(CALCULATE([Revenue_FCST topline bar], Formatter[Group] = "NUM_POS1"), STRING)
 
-	measure 'Rate_Per_Case_FCST topline bar' = ```
-			CALCULATE(SWITCH(
-			    SELECTEDVALUE('Metric Table'[Metrics]),
-			    "AOP", CALCULATE([Quarter FCST dynamic Rate per case], 'Time Intel'[Group] = "CY_LE_CD"),
-			    "FCST", BLANK(),
-			    "YA", CALCULATE([Quarter FCST dynamic Rate per case], 'Time Intel'[Group] = "YA_LE_CD") 
-			), REMOVEFILTERS(Operation_Cal_Day[L2], Operation_Cal_Day[L3]))
-			```
+	measure 'Rate_Per_Case_FCST topline bar' = DIVIDE([Revenue_FCST topline bar], [Volume_FCST Topline bar])
 		displayFolder: Topline
 		lineageTag: 11ec5284-d599-415e-8895-e409552b0765
 
@@ -14708,7 +14558,7 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Volume_Bar_Act_YA = CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_LE_CD")
+	measure Volume_Bar_Act_YA = CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_FULL")
 		displayFolder: Topline
 		lineageTag: d1fdbf0d-57f0-4213-b4b6-9f0e4bf8c331
 
@@ -14725,11 +14575,11 @@ table 'Measure Table'
 		lineageTag: c4917e27-19fa-4d17-84f5-d88da3021e83
 
 	measure IsFiltered_NC_to_SG =
-			FALSE()
-			// ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
-			//     || ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
-			//     || ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
-			//     || ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName])
+			
+			ISFILTERED(V_Dim_FB_CustChainHeir[NationalChainName])
+			    || ISFILTERED(V_Dim_FB_CustChainHeir[TerritoryName])
+			    || ISFILTERED(V_Dim_FB_CustChainHeir[BranchName])
+			    || ISFILTERED(V_Dim_FB_CustChainHeir[SalesGroupName])
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: fd1eeaea-2abc-40a1-b6b8-bb2061ac760e
 
@@ -15170,28 +15020,28 @@ table 'Measure Table'
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Total_Shrink_KPI = CALCULATE([Shrinkage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+	measure Total_Shrink_KPI = CALCULATE([Shrinkage_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YAEMPTY")
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Ops
 		lineageTag: 2ef820ac-c0ca-45f4-b8ae-aee053f0a662
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Total_BSO_KPI = CALCULATE([Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New], Metric[Group] = "BSO_AOP_FCST_YA")
+	measure Total_BSO_KPI = CALCULATE([Total_BSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New], Metric[Group] = "BSO_AOP_FCST_YAEMPTY")
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Ops
 		lineageTag: c92cf2d0-2895-43a1-824a-7177521bf018
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Total_Obso_KPI = CALCULATE([OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YA")
+	measure Total_Obso_KPI = CALCULATE([OBSO_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_final], Metric[Group] = "BSO_AOP_FCST_YAEMPTY")
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Ops
 		lineageTag: 0dff1e17-cb08-42d3-a281-428877614f04
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure Total_Break_KPI = CALCULATE([Total_Break_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New], Metric[Group] = "BSO_AOP_FCST_YA")
+	measure Total_Break_KPI = CALCULATE([Total_Break_Abs_RPC_Aops_FCST_YA_Attainment_Selection_Ops_Table_New], Metric[Group] = "BSO_AOP_FCST_YAEMPTY")
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Ops
 		lineageTag: c34aa98d-9814-4f4f-91e0-95199a9bd873
@@ -15244,6 +15094,18 @@ table 'Measure Table'
 		formatString: #,##0%;(#,##0%)
 		displayFolder: Ops
 		lineageTag: 52d0310a-789a-4e9c-92e9-441fa14378de
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Revenue_Full_PY_TL = CALCULATE([Revenue_TL], 'Time Intel'[Group] = "YA_FULL")
+		displayFolder: Topline
+		lineageTag: 283ac840-2927-4d9b-8c07-d2d4124c901c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure Volume_Full_PY_TL = CALCULATE([Volume_TL], 'Time Intel'[Group] = "YA_FULL")
+		displayFolder: Topline
+		lineageTag: 76b8a3ad-af68-4e40-a877-63a9010efaa5
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 

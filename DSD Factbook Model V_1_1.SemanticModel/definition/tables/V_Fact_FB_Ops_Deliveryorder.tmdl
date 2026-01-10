@@ -103,9 +103,11 @@ table V_Fact_FB_Ops_Deliveryorder
 
 		annotation SummarizationSetBy = Automatic
 
-	column MonthID = V_Fact_FB_Ops_DeliveryOrder[Year] & V_Fact_FB_Ops_Deliveryorder[Month]
+	column MonthID
+		dataType: string
 		lineageTag: b34db1e2-7112-4f2e-8f1d-70ccea40c603
 		summarizeBy: none
+		sourceColumn: MonthID
 
 		annotation SummarizationSetBy = Automatic
 
@@ -117,8 +119,10 @@ table V_Fact_FB_Ops_Deliveryorder
 				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
 				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
 				    Fact = DSD_Schema{[Name="V_Fact_FB_Ops_Deliveryorder",Kind="View"]}[Data],
-					Filtered = Table.SelectRows(Fact, each #date([Year], Number.FromText([Month]), 1) >= Range_Start
-				        and #date([Year], Number.FromText([Month]), 1) <= Range_End)
+					Rng1 = Date.ToText(Range_Start, "yyyyMM"),
+					Rng2 = Date.ToText(Range_End, "yyyyMM"),
+					AddMonthID = Table.AddColumn(Fact, "MonthID", each Text.Combine({Text.From([Year], "en-US"), [Month]}), type text),
+					Filtered = Table.SelectRows(AddMonthID, each [MonthID] >= Rng1 and [MonthID] <= Rng2)
 				in
 				    Filtered
 

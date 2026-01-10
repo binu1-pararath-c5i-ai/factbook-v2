@@ -1,13 +1,13 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.3.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "df6ff1634e100e4f3ac5",
   "position": {
-    "x": 31.666666666666668,
-    "y": 475,
+    "x": 32.384566729917772,
+    "y": 473.62428842504744,
     "z": 25000,
-    "height": 375,
-    "width": 1298.3333333333335,
-    "tabOrder": 27000
+    "height": 376.47058823529409,
+    "width": 1297.4067046173307,
+    "tabOrder": 26000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -35,21 +35,6 @@
         },
         "Y": {
           "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Schema": "extension",
-                      "Entity": "Measure Table"
-                    }
-                  },
-                  "Property": "PL_BAR_SEL1"
-                }
-              },
-              "queryRef": "Measure Table.PL_BAR_SEL1",
-              "nativeQueryRef": "PL_BAR_SEL1"
-            },
             {
               "field": {
                 "Measure": {
@@ -120,6 +105,13 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            },
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
                 }
               }
             }
@@ -329,73 +321,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "05c9378f61e18508d8a9",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "V_Dim_FB_CalDay"
-              }
-            },
-            "Property": "MonthName"
-          }
-        },
-        "type": "Categorical",
-        "objects": {
-          "general": [
-            {
-              "properties": {}
-            }
-          ]
-        }
-      },
-      {
-        "name": "1d8d62178b294885352d",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Volume_Bar_Actual_Selected"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "eb04a7d97ac9d004be3a",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Volume_Bar_Selected"
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "419ceafa8615fba274f2",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "Measure Table"
-              }
-            },
-            "Property": "Volume_Bar_Selected_graph"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
-  },
-  "isHidden": true
+  }
 }

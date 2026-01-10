@@ -345,60 +345,6 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "115df74ddbfce8ded089",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "V_Fact_FB_Topline_Budget_All"
-              }
-            },
-            "Property": "TimeGranularity"
-          }
-        },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "v",
-              "Entity": "V_Fact_FB_Topline_Budget_All",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "v"
-                          }
-                        },
-                        "Property": "TimeGranularity"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "'Monthly'"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        "howCreated": "User"
-      },
-      {
         "name": "beea8ed3a1ae12f17408",
         "field": {
           "Column": {
@@ -469,6 +415,48 @@
             }
           ]
         }
+      },
+      {
+        "name": "151c219180d7bd471d30",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue_Bar_Actual_TL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "738c43a50adde5dc9863",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue_Bar_AOP_FCST_YA"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "11d296c6cc5d868448b6",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue_FCST topline bar"
+          }
+        },
+        "type": "Advanced"
       }
     ]
   }

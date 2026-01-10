@@ -20,13 +20,13 @@
                 "Measure": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "Abs/RPC Table"
+                      "Entity": "Measure Table"
                     }
                   },
                   "Property": "%Sold_Vs_CurrentWeek"
                 }
               },
-              "queryRef": "Abs/RPC Table.%Sold_Vs_CurrentWeek",
+              "queryRef": "Measure Table.%Sold_Vs_CurrentWeek",
               "nativeQueryRef": " ",
               "displayName": " "
             }
@@ -84,165 +84,6 @@
                 }
               }
             }
-          }
-        },
-        {
-          "properties": {
-            "icon": {
-              "kind": "Icon",
-              "layout": {
-                "expr": {
-                  "Literal": {
-                    "Value": "'After'"
-                  }
-                }
-              },
-              "verticalAlignment": {
-                "expr": {
-                  "Literal": {
-                    "Value": "'Middle'"
-                  }
-                }
-              },
-              "value": {
-                "expr": {
-                  "Conditional": {
-                    "Cases": [
-                      {
-                        "Condition": {
-                          "Comparison": {
-                            "ComparisonKind": 2,
-                            "Left": {
-                              "Measure": {
-                                "Expression": {
-                                  "SourceRef": {
-                                    "Entity": "Abs/RPC Table"
-                                  }
-                                },
-                                "Property": "%Sold_Vs_CurrentWeek"
-                              }
-                            },
-                            "Right": {
-                              "Literal": {
-                                "Value": "0D"
-                              }
-                            }
-                          }
-                        },
-                        "Value": {
-                          "Literal": {
-                            "Value": "'GreenUpArrow'"
-                          }
-                        }
-                      },
-                      {
-                        "Condition": {
-                          "Comparison": {
-                            "ComparisonKind": 3,
-                            "Left": {
-                              "Measure": {
-                                "Expression": {
-                                  "SourceRef": {
-                                    "Entity": "Abs/RPC Table"
-                                  }
-                                },
-                                "Property": "%Sold_Vs_CurrentWeek"
-                              }
-                            },
-                            "Right": {
-                              "Literal": {
-                                "Value": "0D"
-                              }
-                            }
-                          }
-                        },
-                        "Value": {
-                          "Literal": {
-                            "Value": "'RedDownArrow'"
-                          }
-                        }
-                      }
-                    ]
-                  }
-                }
-              }
-            },
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Conditional": {
-                      "Cases": [
-                        {
-                          "Condition": {
-                            "Comparison": {
-                              "ComparisonKind": 2,
-                              "Left": {
-                                "Measure": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "Abs/RPC Table"
-                                    }
-                                  },
-                                  "Property": "%Sold_Vs_CurrentWeek"
-                                }
-                              },
-                              "Right": {
-                                "Literal": {
-                                  "Value": "0D"
-                                }
-                              }
-                            }
-                          },
-                          "Value": {
-                            "Literal": {
-                              "Value": "'#348939'"
-                            }
-                          }
-                        },
-                        {
-                          "Condition": {
-                            "Comparison": {
-                              "ComparisonKind": 3,
-                              "Left": {
-                                "Measure": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "Abs/RPC Table"
-                                    }
-                                  },
-                                  "Property": "%Sold_Vs_CurrentWeek"
-                                }
-                              },
-                              "Right": {
-                                "Literal": {
-                                  "Value": "0D"
-                                }
-                              }
-                            }
-                          },
-                          "Value": {
-                            "Literal": {
-                              "Value": "'#9B1D1E'"
-                            }
-                          }
-                        }
-                      ]
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "selector": {
-            "data": [
-              {
-                "dataViewWildcard": {
-                  "matchingOption": 1
-                }
-              }
-            ],
-            "metadata": "Abs/RPC Table.%Sold_Vs_CurrentWeek"
           }
         }
       ],

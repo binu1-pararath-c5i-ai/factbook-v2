@@ -7,15 +7,7 @@ table V_Fact_FB_Topline_Budget_All
 		summarizeBy: count
 		sourceColumn: MonthID
 
-		annotation SummarizationSetBy = Automatic
-
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
-
-	column RYBkt
-		dataType: string
-		lineageTag: d729ffed-f2b9-4f58-bd9f-af7da4a7323f
-		summarizeBy: none
-		sourceColumn: RYBkt
 
 		annotation SummarizationSetBy = Automatic
 
@@ -86,14 +78,6 @@ table V_Fact_FB_Topline_Budget_All
 
 		annotation SummarizationSetBy = Automatic
 
-	column TimeGranularity
-		dataType: string
-		lineageTag: b89610d0-3b73-448d-ab3a-55812d983997
-		summarizeBy: none
-		sourceColumn: TimeGranularity
-
-		annotation SummarizationSetBy = Automatic
-
 	column PeriodEnd
 		dataType: dateTime
 		formatString: dd MMM yyyy
@@ -120,14 +104,6 @@ table V_Fact_FB_Topline_Budget_All
 		lineageTag: 2cdac108-c332-42dd-916e-95a9155b6aec
 		summarizeBy: none
 		sourceColumn: ProfitCenterID
-
-		annotation SummarizationSetBy = Automatic
-
-	column ProfitCenter
-		dataType: string
-		lineageTag: 8575b259-ecd2-4103-8703-ccb24eafed5c
-		summarizeBy: none
-		sourceColumn: ProfitCenter
 
 		annotation SummarizationSetBy = Automatic
 
@@ -159,12 +135,11 @@ table V_Fact_FB_Topline_Budget_All
 
 		annotation SummarizationSetBy = Automatic
 
-	column ISFC
-		dataType: boolean
-		formatString: """TRUE"";""TRUE"";""FALSE"""
-		lineageTag: a3818c32-0016-427e-b1ba-56e52a58cb5d
+	column ProfitCenter
+		dataType: string
+		lineageTag: 2e24dd68-8e46-4ca6-9d0a-e04b5f343b7b
 		summarizeBy: none
-		sourceColumn: ISFC
+		sourceColumn: ProfitCenter
 
 		annotation SummarizationSetBy = Automatic
 

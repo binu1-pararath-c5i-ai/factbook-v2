@@ -209,12 +209,6 @@ table V_FACT_FB_OPS_BSO
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	column MonthID = CONCATENATE(V_FACT_FB_OPS_BSO[Year],V_FACT_FB_OPS_BSO[Month])
-		lineageTag: d1b54a47-a6d0-40c5-9330-f0821df02d68
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
 	column Owner
 		dataType: string
 		lineageTag: 9cd959c6-0168-4fb6-bc57-735d0678bbd5
@@ -230,6 +224,14 @@ table V_FACT_FB_OPS_BSO
 
 		annotation SummarizationSetBy = Automatic
 
+	column MonthID
+		dataType: string
+		lineageTag: d1b54a47-a6d0-40c5-9330-f0821df02d68
+		summarizeBy: none
+		sourceColumn: MonthID
+
+		annotation SummarizationSetBy = Automatic
+
 	partition V_FACT_FB_OPS_BSO = m
 		mode: import
 		source =
@@ -238,8 +240,10 @@ table V_FACT_FB_OPS_BSO
 				    SOLUTIONS_DEV_Database = Source{[Name=Snowflake_DataBase,Kind="Database"]}[Data],
 				    DSD_Schema = SOLUTIONS_DEV_Database{[Name=Snowflake_Schema,Kind="Schema"]}[Data],
 				    Fact = DSD_Schema{[Name="V_Fact_FB_Ops_BSO",Kind="View"]}[Data],
-					Filtered = Table.SelectRows(Fact, each #date([Year], Number.FromText([Month]), 1) >= Range_Start
-				        and #date([Year], Number.FromText([Month]), 1) <= Range_End)
+				    Rng1 = Date.ToText(Range_Start, "yyyyMM"),
+				    Rng2 = Date.ToText(Range_End, "yyyyMM"),
+				    AddMonthID = Table.AddColumn(Fact, "MonthID", each Text.Combine({Text.From([Year], "en-US"), [Month]}), type text),
+				    Filtered = Table.SelectRows(AddMonthID, each [MonthID] >= Rng1 and [MonthID] <= Rng2)
 				in
 				    Filtered
 

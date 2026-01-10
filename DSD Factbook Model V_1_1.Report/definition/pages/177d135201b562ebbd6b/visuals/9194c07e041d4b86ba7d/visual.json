@@ -3,10 +3,10 @@
   "name": "9194c07e041d4b86ba7d",
   "position": {
     "x": 0,
-    "y": 264.13183663721043,
+    "y": 264.44261659036238,
     "z": 4000,
-    "height": 189.53904943873897,
-    "width": 590.6281347026511,
+    "height": 189.43245130751922,
+    "width": 589.91045239388529,
     "tabOrder": 0
   },
   "visual": {
@@ -311,60 +311,6 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "33c27a7174555d7d1ecb",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "V_Fact_FB_Topline_Budget_All"
-              }
-            },
-            "Property": "TimeGranularity"
-          }
-        },
-        "type": "Categorical",
-        "filter": {
-          "Version": 2,
-          "From": [
-            {
-              "Name": "v",
-              "Entity": "V_Fact_FB_Topline_Budget_All",
-              "Type": 0
-            }
-          ],
-          "Where": [
-            {
-              "Condition": {
-                "In": {
-                  "Expressions": [
-                    {
-                      "Column": {
-                        "Expression": {
-                          "SourceRef": {
-                            "Source": "v"
-                          }
-                        },
-                        "Property": "TimeGranularity"
-                      }
-                    }
-                  ],
-                  "Values": [
-                    [
-                      {
-                        "Literal": {
-                          "Value": "'Monthly'"
-                        }
-                      }
-                    ]
-                  ]
-                }
-              }
-            }
-          ]
-        },
-        "howCreated": "User"
-      },
-      {
         "name": "db1d7f9398ac34788255",
         "field": {
           "Column": {
@@ -392,6 +338,48 @@
             }
           ]
         }
+      },
+      {
+        "name": "b2a17562e057d58967db",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_Bar_Actual_TL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "e783ad2790d4aa016526",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_Bar_AOP_FCST_YA"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "33c352248a00c714a7b4",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_FCST Topline bar"
+          }
+        },
+        "type": "Advanced"
       }
     ]
   }

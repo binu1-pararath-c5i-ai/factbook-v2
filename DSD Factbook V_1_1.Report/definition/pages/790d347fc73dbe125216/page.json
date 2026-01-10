@@ -21,6 +21,112 @@
         },
         "type": "Categorical",
         "howCreated": "Drillthrough"
+      },
+      {
+        "name": "7214f14b6976230850aa",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CalDay"
+              }
+            },
+            "Property": "GE_CL_Y0"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CalDay",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "GE_CL_Y0"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "5c146cbb9b376ea4a716",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Operation_Cal_Day"
+              }
+            },
+            "Property": "L1"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "o",
+              "Entity": "Operation_Cal_Day",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "StartsWith": {
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "o"
+                            }
+                          },
+                          "Property": "L1"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'We'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
       }
     ]
   },
@@ -49,7 +155,7 @@
     {
       "source": "7bcefbfd0b9de6b49250",
       "target": "5249fe0275f0d730fab4",
-      "type": "NoFilter"
+      "type": "DataFilter"
     },
     {
       "source": "ac63d75647e2ea21e93d",
@@ -64,7 +170,7 @@
     {
       "source": "7bcefbfd0b9de6b49250",
       "target": "74757899f3023884e87b",
-      "type": "NoFilter"
+      "type": "DataFilter"
     },
     {
       "source": "5249fe0275f0d730fab4",
@@ -74,7 +180,7 @@
     {
       "source": "7bcefbfd0b9de6b49250",
       "target": "ac63d75647e2ea21e93d",
-      "type": "NoFilter"
+      "type": "DataFilter"
     },
     {
       "source": "7bcefbfd0b9de6b49250",

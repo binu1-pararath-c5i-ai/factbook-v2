@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "a0220b09f6582cb7789e",
   "position": {
-    "x": 1.27009721080947,
-    "y": 472.47616242112281,
+    "x": 1.2228325770241224,
+    "y": 478.12753761643182,
     "z": 0,
-    "height": 247.66895610784664,
-    "width": 1030.04883796648
+    "height": 242.12085025077621,
+    "width": 1087.0981609744447
   },
   "visual": {
     "visualType": "tableEx",
@@ -22,11 +22,11 @@
                       "Entity": "Operation_Cal_Day"
                     }
                   },
-                  "Property": "DayDate"
+                  "Property": "FirstDayOfMonth"
                 }
               },
-              "queryRef": "Operation_Cal_Day.DayDate",
-              "nativeQueryRef": "DayDate"
+              "queryRef": "Operation_Cal_Day.FirstDayOfMonth",
+              "nativeQueryRef": "FirstDayOfMonth"
             },
             {
               "field": {
@@ -195,7 +195,7 @@
                     "Entity": "Operation_Cal_Day"
                   }
                 },
-                "Property": "DayDate"
+                "Property": "FirstDayOfMonth"
               }
             },
             "direction": "Descending"
@@ -210,7 +210,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "74.2063524377163D"
+                  "Value": "84.03720973125398D"
                 }
               }
             }
@@ -224,7 +224,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "89.91447523273295D"
+                  "Value": "113.17090007696854D"
                 }
               }
             }
@@ -238,7 +238,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "97.70106964441734D"
+                  "Value": "118.55305295908377D"
                 }
               }
             }
@@ -266,7 +266,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "68.30955557796773D"
+                  "Value": "82.91908519865112D"
                 }
               }
             }
@@ -280,7 +280,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "70.99088711034773D"
+                  "Value": "80.77527529281318D"
                 }
               }
             }
@@ -322,7 +322,7 @@
             "value": {
               "expr": {
                 "Literal": {
-                  "Value": "109.26235150938692D"
+                  "Value": "85.45999365086553D"
                 }
               }
             }
@@ -330,9 +330,194 @@
           "selector": {
             "metadata": "Measure Table.Revenue_Bar_Actual_TL"
           }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "88.45229165767901D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "Operation_Cal_Day.FirstDayOfMonth"
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
         }
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "571f1db8999915c9d891",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue_FCST_TL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "bf26e829fd3faa66fb8b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_FCST_TL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "be2074790c2dba1bf46c",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_AOP_TL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "5ca0db029c4890ce7fe7",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_TL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "86c83946679b6fd65951",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue_TL"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "9040037a29f391c1f73d",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue_TL_Table"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "597829d62be73ecc1832",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "RevTL1"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "78398171cd637ce9ea86",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "VTL1"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "43b83596af1c09e4f6d8",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue_Bar_AOP_FCST_YA"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "a140bb974265ca7cd544",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Volume_FCST Topline bar"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "19df66927c41f0f1996f",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Measure Table"
+              }
+            },
+            "Property": "Revenue_Bar_Actual_TL"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

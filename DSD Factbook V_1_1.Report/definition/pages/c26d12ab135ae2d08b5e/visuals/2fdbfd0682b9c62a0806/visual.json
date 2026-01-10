@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "2fdbfd0682b9c62a0806",
   "position": {
-    "x": 176.26112759643917,
-    "y": 94.139465875370931,
+    "x": 179.71726368981214,
+    "y": 92.7917114157559,
     "z": 4000,
-    "height": 70.103857566765583,
-    "width": 144.21364985163206,
-    "tabOrder": 2000
+    "height": 72.777812875102668,
+    "width": 123.72228188767453,
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "tableEx",
@@ -38,13 +38,6 @@
       "grid": [
         {
           "properties": {
-            "gridHorizontal": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
-            },
             "outlineColor": {
               "solid": {
                 "color": {
@@ -56,6 +49,13 @@
                   }
                 }
               }
+            },
+            "gridHorizontal": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
             }
           }
         }
@@ -63,27 +63,275 @@
       "values": [
         {
           "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "14D"
-                }
-              }
-            },
-            "wordWrap": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            },
             "fontFamily": {
               "expr": {
                 "Literal": {
                   "Value": "'''Segoe UI Semibold'', wf_segoe-ui_semibold, helvetica, arial, sans-serif'"
                 }
               }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "14D"
+                }
+              }
             }
+          }
+        },
+        {
+          "properties": {
+            "fontColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Conditional": {
+                      "Cases": [
+                        {
+                          "Condition": {
+                            "And": {
+                              "Left": {
+                                "Comparison": {
+                                  "ComparisonKind": 1,
+                                  "Left": {
+                                    "Measure": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Entity": "Measure Table"
+                                        }
+                                      },
+                                      "Property": "Total_BSO_KPI"
+                                    }
+                                  },
+                                  "Right": {
+                                    "Literal": {
+                                      "Value": "0D"
+                                    }
+                                  }
+                                }
+                              },
+                              "Right": {
+                                "Comparison": {
+                                  "ComparisonKind": 3,
+                                  "Left": {
+                                    "Measure": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Entity": "Measure Table"
+                                        }
+                                      },
+                                      "Property": "Total_BSO_KPI"
+                                    }
+                                  },
+                                  "Right": {
+                                    "Literal": {
+                                      "Value": "99D"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "Value": {
+                            "Literal": {
+                              "Value": "'#9B1D1E'"
+                            }
+                          }
+                        },
+                        {
+                          "Condition": {
+                            "And": {
+                              "Left": {
+                                "Comparison": {
+                                  "ComparisonKind": 1,
+                                  "Left": {
+                                    "Measure": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Entity": "Measure Table"
+                                        }
+                                      },
+                                      "Property": "Total_BSO_KPI"
+                                    }
+                                  },
+                                  "Right": {
+                                    "Literal": {
+                                      "Value": "-99D"
+                                    }
+                                  }
+                                }
+                              },
+                              "Right": {
+                                "Comparison": {
+                                  "ComparisonKind": 3,
+                                  "Left": {
+                                    "Measure": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Entity": "Measure Table"
+                                        }
+                                      },
+                                      "Property": "Total_BSO_KPI"
+                                    }
+                                  },
+                                  "Right": {
+                                    "Literal": {
+                                      "Value": "0D"
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          },
+                          "Value": {
+                            "Literal": {
+                              "Value": "'#348939'"
+                            }
+                          }
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "icon": {
+              "kind": "Icon",
+              "layout": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'After'"
+                  }
+                }
+              },
+              "verticalAlignment": {
+                "expr": {
+                  "Literal": {
+                    "Value": "'Top'"
+                  }
+                }
+              },
+              "value": {
+                "expr": {
+                  "Conditional": {
+                    "Cases": [
+                      {
+                        "Condition": {
+                          "And": {
+                            "Left": {
+                              "Comparison": {
+                                "ComparisonKind": 1,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Measure Table"
+                                      }
+                                    },
+                                    "Property": "Total_BSO_KPI"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "0D"
+                                  }
+                                }
+                              }
+                            },
+                            "Right": {
+                              "Comparison": {
+                                "ComparisonKind": 4,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Measure Table"
+                                      }
+                                    },
+                                    "Property": "Total_BSO_KPI"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "100D"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Value": {
+                          "Literal": {
+                            "Value": "'GreenUpArrow'"
+                          }
+                        }
+                      },
+                      {
+                        "Condition": {
+                          "And": {
+                            "Left": {
+                              "Comparison": {
+                                "ComparisonKind": 1,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Measure Table"
+                                      }
+                                    },
+                                    "Property": "Total_BSO_KPI"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "-99D"
+                                  }
+                                }
+                              }
+                            },
+                            "Right": {
+                              "Comparison": {
+                                "ComparisonKind": 3,
+                                "Left": {
+                                  "Measure": {
+                                    "Expression": {
+                                      "SourceRef": {
+                                        "Entity": "Measure Table"
+                                      }
+                                    },
+                                    "Property": "Total_BSO_KPI"
+                                  }
+                                },
+                                "Right": {
+                                  "Literal": {
+                                    "Value": "0D"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Value": {
+                          "Literal": {
+                            "Value": "'GreenArrowDown'"
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "data": [
+              {
+                "dataViewWildcard": {
+                  "matchingOption": 1
+                }
+              }
+            ],
+            "metadata": "Measure Table.Total_BSO_KPI1"
           }
         },
         {
@@ -113,7 +361,7 @@
                           "And": {
                             "Left": {
                               "Comparison": {
-                                "ComparisonKind": 1,
+                                "ComparisonKind": 2,
                                 "Left": {
                                   "Measure": {
                                     "Expression": {
@@ -164,7 +412,7 @@
                           "And": {
                             "Left": {
                               "Comparison": {
-                                "ComparisonKind": 1,
+                                "ComparisonKind": 2,
                                 "Left": {
                                   "Measure": {
                                     "Expression": {
@@ -226,7 +474,7 @@
                             "And": {
                               "Left": {
                                 "Comparison": {
-                                  "ComparisonKind": 1,
+                                  "ComparisonKind": 2,
                                   "Left": {
                                     "Measure": {
                                       "Expression": {
@@ -277,7 +525,7 @@
                             "And": {
                               "Left": {
                                 "Comparison": {
-                                  "ComparisonKind": 1,
+                                  "ComparisonKind": 2,
                                   "Left": {
                                     "Measure": {
                                       "Expression": {
@@ -342,13 +590,26 @@
           }
         }
       ],
-      "columnFormatting": [
+      "columnHeaders": [
         {
           "properties": {
-            "alignment": {
+            "wordWrap": {
               "expr": {
                 "Literal": {
-                  "Value": "'Center'"
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "83.5751850939618D"
                 }
               }
             }
@@ -370,6 +631,13 @@
                 }
               }
             },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
             "titleWrap": {
               "expr": {
                 "Literal": {
@@ -387,17 +655,6 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
-                }
-              }
-            },
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#EFE6DE'"
-                    }
-                  }
                 }
               }
             },
@@ -424,34 +681,13 @@
           }
         }
       ],
-      "padding": [
+      "visualHeader": [
         {
           "properties": {
-            "top": {
+            "show": {
               "expr": {
                 "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
-            "bottom": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
-            "left": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
-                }
-              }
-            },
-            "right": {
-              "expr": {
-                "Literal": {
-                  "Value": "0D"
+                  "Value": "false"
                 }
               }
             }

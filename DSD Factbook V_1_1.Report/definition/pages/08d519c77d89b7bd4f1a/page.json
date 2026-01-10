@@ -5,32 +5,157 @@
   "displayOption": "FitToPage",
   "height": 900,
   "width": 1350,
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a3a22ad0aa447d2d358d",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Operation_Cal_Day"
+              }
+            },
+            "Property": "L1"
+          }
+        },
+        "type": "Advanced",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "o",
+              "Entity": "Operation_Cal_Day",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "StartsWith": {
+                      "Left": {
+                        "Column": {
+                          "Expression": {
+                            "SourceRef": {
+                              "Source": "o"
+                            }
+                          },
+                          "Property": "L1"
+                        }
+                      },
+                      "Right": {
+                        "Literal": {
+                          "Value": "'We'"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "d3146e3e64e52d648f6b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CalDay"
+              }
+            },
+            "Property": "EQ_CL_Y0"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CalDay",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "EQ_CL_Y0"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "41f7d470241d8ee5b187",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CalDay"
+              }
+            },
+            "Property": "CurrYearCounter"
+          }
+        },
+        "type": "Categorical",
+        "howCreated": "User"
+      }
+    ]
+  },
   "visibility": "HiddenInViewMode",
   "visualInteractions": [
     {
       "source": "e6a18a7bbbb58081010f",
       "target": "df6ff1634e100e4f3ac5",
-      "type": "NoFilter"
+      "type": "DataFilter"
     },
     {
       "source": "e6a18a7bbbb58081010f",
       "target": "e95948c26fd5185a1515",
-      "type": "NoFilter"
+      "type": "DataFilter"
     },
     {
       "source": "e6a18a7bbbb58081010f",
       "target": "aa195dbc28331ae5c222",
-      "type": "NoFilter"
+      "type": "DataFilter"
     },
     {
       "source": "e6a18a7bbbb58081010f",
       "target": "a0649d9a76f5923c1cc9",
-      "type": "NoFilter"
+      "type": "DataFilter"
     },
     {
       "source": "e6a18a7bbbb58081010f",
       "target": "dad9a13eb28f2b6c501b",
-      "type": "NoFilter"
+      "type": "DataFilter"
     }
   ]
 }

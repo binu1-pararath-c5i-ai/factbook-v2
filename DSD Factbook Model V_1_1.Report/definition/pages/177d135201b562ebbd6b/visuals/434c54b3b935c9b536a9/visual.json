@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.4.0/schema.json",
   "name": "434c54b3b935c9b536a9",
   "position": {
-    "x": 904.88045662834634,
-    "y": 135.66621111021786,
+    "x": 1099.0102316190032,
+    "y": 351.49241850622246,
     "z": 1000,
-    "height": 75.077417798858434,
-    "width": 168.59490312726103,
+    "height": 76.342244743432929,
+    "width": 168.5891238084144,
     "tabOrder": 4000
   },
   "visual": {
@@ -58,7 +58,7 @@
               },
               "queryRef": "Operation_Cal_Day.L31",
               "nativeQueryRef": "L31",
-              "active": true
+              "active": false
             }
           ]
         }
@@ -143,13 +143,32 @@
                   }
                 }
               ],
-              "isToggled": true,
               "children": [
                 {
                   "identityValues": [
                     {
                       "Literal": {
                         "Value": "'Q1'"
+                      }
+                    }
+                  ],
+                  "isToggled": true
+                },
+                {
+                  "identityValues": [
+                    {
+                      "Literal": {
+                        "Value": "'Q2'"
+                      }
+                    }
+                  ],
+                  "isToggled": true
+                },
+                {
+                  "identityValues": [
+                    {
+                      "Literal": {
+                        "Value": "'Q4'"
                       }
                     }
                   ],
@@ -212,16 +231,6 @@
                               },
                               "Property": "L1"
                             }
-                          },
-                          {
-                            "Column": {
-                              "Expression": {
-                                "SourceRef": {
-                                  "Source": "o"
-                                }
-                              },
-                              "Property": "L2"
-                            }
                           }
                         ],
                         "Values": [
@@ -229,11 +238,6 @@
                             {
                               "Literal": {
                                 "Value": "'2025'"
-                              }
-                            },
-                            {
-                              "Literal": {
-                                "Value": "'Q1'"
                               }
                             }
                           ]
@@ -252,16 +256,6 @@
                               },
                               "Property": "L1"
                             }
-                          },
-                          {
-                            "Column": {
-                              "Expression": {
-                                "SourceRef": {
-                                  "Entity": "Operation_Cal_Day"
-                                }
-                              },
-                              "Property": "L2"
-                            }
                           }
                         ],
                         "decomposedIdentities": {
@@ -272,15 +266,6 @@
                                   {
                                     "Literal": {
                                       "Value": "'2025'"
-                                    }
-                                  }
-                                ]
-                              },
-                              {
-                                "1": [
-                                  {
-                                    "Literal": {
-                                      "Value": "'Q1'"
                                     }
                                   }
                                 ]
@@ -299,25 +284,12 @@
                                   "Property": "L1"
                                 }
                               }
-                            },
-                            {
-                              "value": {
-                                "Column": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Entity": "Operation_Cal_Day"
-                                    }
-                                  },
-                                  "Property": "L2"
-                                }
-                              }
                             }
                           ]
                         },
                         "valueMap": [
                           {
-                            "0": "2025",
-                            "1": "Q1"
+                            "0": "2025"
                           }
                         ]
                       }
@@ -398,6 +370,88 @@
             }
           ]
         }
+      },
+      {
+        "name": "23fa5a68b395569b8440",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Operation_Cal_Day"
+              }
+            },
+            "Property": "L2"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "9c267e81b30871e0412b",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "Operation_Cal_Day"
+              }
+            },
+            "Property": "L3"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "3ce1ec89d24c2824fc93",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "V_Dim_FB_CalDay"
+              }
+            },
+            "Property": "LE_CD"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "v",
+              "Entity": "V_Dim_FB_CalDay",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "v"
+                          }
+                        },
+                        "Property": "LE_CD"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "true"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
       }
     ]
   }

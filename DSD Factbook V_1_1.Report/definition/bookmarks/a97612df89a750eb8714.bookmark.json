@@ -26,6 +26,112 @@
                 }
               },
               "howCreated": 5
+            },
+            {
+              "name": "7214f14b6976230850aa",
+              "type": "Categorical",
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "v",
+                    "Entity": "V_Dim_FB_CalDay",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "In": {
+                        "Expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "v"
+                                }
+                              },
+                              "Property": "GE_CL_Y0"
+                            }
+                          }
+                        ],
+                        "Values": [
+                          [
+                            {
+                              "Literal": {
+                                "Value": "true"
+                              }
+                            }
+                          ]
+                        ]
+                      }
+                    }
+                  }
+                ]
+              },
+              "expression": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "V_Dim_FB_CalDay"
+                    }
+                  },
+                  "Property": "GE_CL_Y0"
+                }
+              },
+              "howCreated": 1
+            },
+            {
+              "name": "5c146cbb9b376ea4a716",
+              "type": "Advanced",
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "o",
+                    "Entity": "Operation_Cal_Day",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "Not": {
+                        "Expression": {
+                          "StartsWith": {
+                            "Left": {
+                              "Column": {
+                                "Expression": {
+                                  "SourceRef": {
+                                    "Source": "o"
+                                  }
+                                },
+                                "Property": "L1"
+                              }
+                            },
+                            "Right": {
+                              "Literal": {
+                                "Value": "'We'"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                ]
+              },
+              "expression": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "Operation_Cal_Day"
+                    }
+                  },
+                  "Property": "L1"
+                }
+              },
+              "howCreated": 1
             }
           ]
         },
@@ -34,6 +140,60 @@
             "singleVisual": {
               "visualType": "actionButton",
               "objects": {}
+            }
+          },
+          "02799dd3e27417872d70": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "e395de292d59b2ce93cc",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SalesStatus"
+                        }
+                      },
+                      "Property": "Status"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "87889610daa1b1234b6e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Volume_DonutValues"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "donutChart",
+              "objects": {},
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SalesStatus"
+                        }
+                      },
+                      "Property": "Status"
+                    }
+                  }
+                ]
+              }
             }
           },
           "0580d8f4708760979614": {
@@ -48,11 +208,66 @@
               "objects": {}
             }
           },
+          "08ac7d1a876656feabef": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "0aba07faa112f87beb3f": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "0b56ecf24123506263cd": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "106bb56d5e9c4d416ea7": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "1f9940d065a01a466d74": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "030838aa169ce7e56061",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "1V"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {}
+            }
+          },
+          "1f9c68a4a3032c094119": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
           "206a6680d17eb4da70a4": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "f1cf8f9b52d33f6b7440",
+                  "name": "e2f6ad3cb0eb92b09326",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -73,11 +288,72 @@
               "objects": {}
             }
           },
+          "22b25222d46570c8dbcb": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "274714863097b944edfb": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "55801dcd15afa62083bb",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "NationalChainName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "NationalChainName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
           "2f2197b45c5e9e06b1ca": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "83157c8140bb17c911e9",
+                  "name": "1418641b5aff918d6249",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -98,11 +374,223 @@
               "objects": {}
             }
           },
+          "3032cbd397081637a51d": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "38def2f04b20bb300b23": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "b98efb7d0f3471dbf53d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "1Y"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {}
+            }
+          },
+          "3ccd598c0a740474bd16": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "4feb7e37ce922a409ba5",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "TerritoryName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "TerritoryName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "433aecc03240b906cc32": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "4501ce6b2429afb5fc0e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "3b778154a4f8afe70b4d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Label vs Selected Metric Actual vs Rev"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "46693c51b7e29ab176b2": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "734368b0cef489af6dcc",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Last Refresh as of"
+                        }
+                      },
+                      "Property": "Last Refresh as of"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Last Refresh as of"
+                        }
+                      },
+                      "Property": "Last Refresh as of"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "50fc99b11030010750d5": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "5b4d0a9cd98d46a54abd",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "RegionName"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "slicer",
+              "objects": {
+                "merge": {
+                  "data": [
+                    {
+                      "properties": {
+                        "mode": {
+                          "expr": {
+                            "Literal": {
+                              "Value": "'Dropdown'"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              "activeProjections": {
+                "Values": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "V_Dim_FB_CustChainHeir"
+                        }
+                      },
+                      "Property": "RegionName"
+                    }
+                  }
+                ]
+              }
+            }
+          },
           "510c772a1cb083d6006b": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "8ee1fab5bcdbee9966e0",
+                  "name": "67d53862a520e5fc9094",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -142,419 +630,6 @@
             "singleVisual": {
               "visualType": "textbox",
               "objects": {}
-            }
-          },
-          "73d06c9fe3ea928a00ab": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "4abc271502c1e1eb89e3",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "TSR"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {}
-            }
-          },
-          "92e2601fe894f6682945": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "db52fc67ca647091f805",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Label vs Selected Metric Actual Rev"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {}
-            }
-          },
-          "a251aa94a2292be8f263": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "86a89aa93cacd99478a9",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Revenue_AOP_FCST_YA_Selection_TL"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "tableEx",
-              "objects": {}
-            }
-          },
-          "a3a2b5ee6970531f3b23": {
-            "singleVisual": {
-              "visualType": "shape",
-              "objects": {}
-            }
-          },
-          "c290baaa124de80e533f": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "b34d714b506e7677ac89",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "SalesStatus"
-                        }
-                      },
-                      "Property": "Status"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "877f138bd992e2a6bd6f",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Revenue_DonutValues"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "donutChart",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Revenue_DonutValues"
-                    }
-                  }
-                }
-              ],
-              "activeProjections": {
-                "Category": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "SalesStatus"
-                        }
-                      },
-                      "Property": "Status"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "da110d95e52889b614c1": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "245c2e1eee4f9f311467",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "1R"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "tableEx",
-              "objects": {}
-            }
-          },
-          "e0f6b02a54091d78c707": {
-            "singleVisual": {
-              "visualType": "textbox",
-              "objects": {}
-            }
-          },
-          "08ac7d1a876656feabef": {
-            "singleVisual": {
-              "visualType": "shape",
-              "objects": {}
-            }
-          },
-          "0aba07faa112f87beb3f": {
-            "singleVisual": {
-              "visualType": "shape",
-              "objects": {}
-            }
-          },
-          "0b56ecf24123506263cd": {
-            "singleVisual": {
-              "visualType": "textbox",
-              "objects": {}
-            }
-          },
-          "106bb56d5e9c4d416ea7": {
-            "singleVisual": {
-              "visualType": "shape",
-              "objects": {}
-            }
-          },
-          "22b25222d46570c8dbcb": {
-            "singleVisual": {
-              "visualType": "textbox",
-              "objects": {}
-            }
-          },
-          "3032cbd397081637a51d": {
-            "singleVisual": {
-              "visualType": "shape",
-              "objects": {}
-            }
-          },
-          "3ccd598c0a740474bd16": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "a7410bb5281c3794177b",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_Dim_FB_CustChainHeir"
-                        }
-                      },
-                      "Property": "TerritoryName"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "slicer",
-              "objects": {
-                "merge": {
-                  "data": [
-                    {
-                      "properties": {
-                        "mode": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "'Dropdown'"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              "activeProjections": {
-                "Values": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_Dim_FB_CustChainHeir"
-                        }
-                      },
-                      "Property": "TerritoryName"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "46693c51b7e29ab176b2": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "df205e5e6f3b62e3be59",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Last Refresh as of"
-                        }
-                      },
-                      "Property": "Last Refresh as of"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "tableEx",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 1,
-                  "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Last Refresh as of"
-                        }
-                      },
-                      "Property": "Last Refresh as of"
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "c5472355723508be7181": {
-            "singleVisual": {
-              "visualType": "actionButton",
-              "objects": {}
-            }
-          },
-          "ce911a18056850c23163": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "a6c66290865456a03dc7",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Abs/RPC Table"
-                        }
-                      },
-                      "Property": "Tooltip"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Abs/RPC Table"
-                        }
-                      },
-                      "Property": "Tooltip"
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "50fc99b11030010750d5": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "11a80da2f35c69eb755f",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_Dim_FB_CustChainHeir"
-                        }
-                      },
-                      "Property": "RegionName"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "slicer",
-              "objects": {
-                "merge": {
-                  "data": [
-                    {
-                      "properties": {
-                        "mode": {
-                          "expr": {
-                            "Literal": {
-                              "Value": "'Dropdown'"
-                            }
-                          }
-                        }
-                      }
-                    }
-                  ]
-                }
-              },
-              "activeProjections": {
-                "Values": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "V_Dim_FB_CustChainHeir"
-                        }
-                      },
-                      "Property": "RegionName"
-                    }
-                  }
-                ]
-              }
             }
           },
           "5249fe0275f0d730fab4": {
@@ -673,7 +748,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "a7edd233d44f4945e349",
+                  "name": "9c52c993e97de7f6806a",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -688,7 +763,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "47569e005f4fa7ee495a",
+                  "name": "02ecd4b0b565ce7c7707",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -703,7 +778,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "baa7aab0be96eb07a605",
+                  "name": "0e4a1786a9bfb3fd9532",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -738,39 +813,41 @@
               }
             }
           },
-          "5df0d44a6ae8ac48e274": {
-            "singleVisual": {
-              "visualType": "textbox",
-              "objects": {}
-            }
-          },
-          "1f9c68a4a3032c094119": {
-            "singleVisual": {
-              "visualType": "actionButton",
-              "objects": {}
-            }
-          },
-          "433aecc03240b906cc32": {
-            "singleVisual": {
-              "visualType": "actionButton",
-              "objects": {}
-            }
-          },
           "56d0a8c2009563dc473b": {
             "singleVisual": {
               "visualType": "actionButton",
               "objects": {}
             }
           },
-          "d6bc8c5f8eae080d4a0d": {
+          "572b221ee25bf8b5f109": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "c17462404c026ed68f5a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Schema": "extension",
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Selected_Duration"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
             "singleVisual": {
-              "visualType": "actionButton",
+              "visualType": "card",
               "objects": {}
             }
           },
-          "e3afc85190708c04a3d7": {
+          "5df0d44a6ae8ac48e274": {
             "singleVisual": {
-              "visualType": "actionButton",
+              "visualType": "textbox",
               "objects": {}
             }
           },
@@ -792,6 +869,12 @@
               "objects": {}
             }
           },
+          "6c8e259f3595fc39907c": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
           "6ca3e9e125607dc0dc77": {
             "singleVisual": {
               "visualType": "shape",
@@ -802,7 +885,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "c9bfea3b3b6184d3c55c",
+                  "name": "a5591c50846794ca337c",
                   "type": "Categorical",
                   "expression": {
                     "HierarchyLevel": {
@@ -822,7 +905,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "dc57fe7e3ac93be6025d",
+                  "name": "2e705ae96d76153aaa22",
                   "type": "Categorical",
                   "expression": {
                     "HierarchyLevel": {
@@ -842,7 +925,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "678fdd1c65eda2fe65c0",
+                  "name": "068680cb6fd37d712e18",
                   "type": "Categorical",
                   "expression": {
                     "HierarchyLevel": {
@@ -907,7 +990,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "7397bb4f780b1190c186",
+                  "name": "cd0a4ecfd0f9675f17a6",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -925,6 +1008,37 @@
             },
             "singleVisual": {
               "visualType": "card",
+              "objects": {}
+            }
+          },
+          "73d06c9fe3ea928a00ab": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "d3146aaf8cc812400203",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "TSR"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "742ffad395ff2cbc57af": {
+            "singleVisual": {
+              "visualType": "textbox",
               "objects": {}
             }
           },
@@ -1044,7 +1158,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "dc8441fead795d367fa0",
+                  "name": "dddb5f49743085407bdf",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1059,7 +1173,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "dc710f2797393bb77b03",
+                  "name": "1a2725c81bae58888f61",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1074,7 +1188,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "079c986c32f86f013de1",
+                  "name": "59ab35382b091a53ed06",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1112,6 +1226,71 @@
               }
             }
           },
+          "783c9ac0403b1a382fa9": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "49c608839cc2c5fbef2e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Rate_per_Case_TL"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "cardVisual",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Rate_per_Case_TL"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "7a7a0691018d41bb097c": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7ce2acbb0199b4b79c46",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "1RPC"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {}
+            }
+          },
           "7b9458fd6464082306db": {
             "singleVisual": {
               "visualType": "textbox",
@@ -1122,115 +1301,46 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "7e6c24f13d00d3150ca3",
+                  "name": "78b3f7f36814c06e8292",
                   "type": "Categorical",
-                  "filter": {
-                    "Version": 2,
-                    "From": [
-                      {
-                        "Name": "v",
-                        "Entity": "V_Dim_FB_CalDay",
-                        "Type": 0
-                      }
-                    ],
-                    "Where": [
-                      {
-                        "Condition": {
-                          "In": {
-                            "Expressions": [
-                              {
-                                "Column": {
-                                  "Expression": {
-                                    "SourceRef": {
-                                      "Source": "v"
-                                    }
-                                  },
-                                  "Property": "ShowInSlicer_TL"
-                                }
-                              }
-                            ],
-                            "Values": [
-                              [
-                                {
-                                  "Literal": {
-                                    "Value": "true"
-                                  }
-                                }
-                              ]
-                            ]
-                          }
-                        }
-                      }
-                    ]
-                  },
                   "expression": {
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "V_Dim_FB_CalDay"
+                          "Entity": "Operation_Cal_Day"
                         }
                       },
-                      "Property": "ShowInSlicer_TL"
-                    }
-                  },
-                  "howCreated": 1
-                },
-                {
-                  "name": "28aef526592e5aeca457",
-                  "type": "Advanced",
-                  "expression": {
-                    "HierarchyLevel": {
-                      "Expression": {
-                        "Hierarchy": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "V_Dim_FB_CalDay"
-                            }
-                          },
-                          "Hierarchy": "Year Hierarchy"
-                        }
-                      },
-                      "Level": "Year"
+                      "Property": "L1"
                     }
                   },
                   "howCreated": 0
                 },
                 {
-                  "name": "dd82f77da447768795ec",
+                  "name": "5ac00e295340897615ef",
                   "type": "Categorical",
                   "expression": {
-                    "HierarchyLevel": {
+                    "Column": {
                       "Expression": {
-                        "Hierarchy": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "V_Dim_FB_CalDay"
-                            }
-                          },
-                          "Hierarchy": "Year Hierarchy"
+                        "SourceRef": {
+                          "Entity": "Operation_Cal_Day"
                         }
                       },
-                      "Level": "Quarter_Name"
+                      "Property": "L2"
                     }
                   },
                   "howCreated": 0
                 },
                 {
-                  "name": "6929d45bd64606851030",
+                  "name": "f41386b90253a9a6ac16",
                   "type": "Categorical",
                   "expression": {
-                    "HierarchyLevel": {
+                    "Column": {
                       "Expression": {
-                        "Hierarchy": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "V_Dim_FB_CalDay"
-                            }
-                          },
-                          "Hierarchy": "Year Hierarchy"
+                        "SourceRef": {
+                          "Entity": "Operation_Cal_Day"
                         }
                       },
-                      "Level": "MonthName"
+                      "Property": "L3"
                     }
                   },
                   "howCreated": 0
@@ -1249,8 +1359,8 @@
                             "Version": 2,
                             "From": [
                               {
-                                "Name": "v",
-                                "Entity": "V_Dim_FB_CalDay",
+                                "Name": "o",
+                                "Entity": "Operation_Cal_Day",
                                 "Type": 0
                               }
                             ],
@@ -1263,10 +1373,10 @@
                                         "Column": {
                                           "Expression": {
                                             "SourceRef": {
-                                              "Source": "v"
+                                              "Source": "o"
                                             }
                                           },
-                                          "Property": "Year"
+                                          "Property": "L1"
                                         }
                                       }
                                     ],
@@ -1274,7 +1384,7 @@
                                       [
                                         {
                                           "Literal": {
-                                            "Value": "2025L"
+                                            "Value": "'2025'"
                                           }
                                         }
                                       ]
@@ -1319,48 +1429,13 @@
               "activeProjections": {
                 "Values": [
                   {
-                    "HierarchyLevel": {
+                    "Column": {
                       "Expression": {
-                        "Hierarchy": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "V_Dim_FB_CalDay"
-                            }
-                          },
-                          "Hierarchy": "Year Hierarchy"
+                        "SourceRef": {
+                          "Entity": "Operation_Cal_Day"
                         }
                       },
-                      "Level": "Year"
-                    }
-                  },
-                  {
-                    "HierarchyLevel": {
-                      "Expression": {
-                        "Hierarchy": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "V_Dim_FB_CalDay"
-                            }
-                          },
-                          "Hierarchy": "Year Hierarchy"
-                        }
-                      },
-                      "Level": "Quarter_Name"
-                    }
-                  },
-                  {
-                    "HierarchyLevel": {
-                      "Expression": {
-                        "Hierarchy": {
-                          "Expression": {
-                            "SourceRef": {
-                              "Entity": "V_Dim_FB_CalDay"
-                            }
-                          },
-                          "Hierarchy": "Year Hierarchy"
-                        }
-                      },
-                      "Level": "MonthName"
+                      "Property": "L1"
                     }
                   }
                 ]
@@ -1375,122 +1450,21 @@
                           "Column": {
                             "Expression": {
                               "SourceRef": {
-                                "Entity": "V_Dim_FB_CalDay"
+                                "Entity": "Operation_Cal_Day"
                               }
                             },
-                            "Property": "Year"
+                            "Property": "L1"
                           }
                         },
                         "Right": {
                           "Literal": {
-                            "Value": "2025L"
+                            "Value": "'2025'"
                           }
                         }
                       }
                     }
                   },
                   "displayName": "2025"
-                }
-              ],
-              "expansionStates": [
-                {
-                  "roles": [
-                    "Values"
-                  ],
-                  "levels": [
-                    {
-                      "queryRefs": [
-                        "V_Dim_FB_CalDay.Year Hierarchy.Year"
-                      ],
-                      "isCollapsed": true,
-                      "identityKeys": [
-                        {
-                          "Column": {
-                            "Expression": {
-                              "SourceRef": {
-                                "Entity": "V_Dim_FB_CalDay"
-                              }
-                            },
-                            "Property": "Year"
-                          }
-                        }
-                      ],
-                      "isPinned": true
-                    },
-                    {
-                      "queryRefs": [
-                        "V_Dim_FB_CalDay.Year Hierarchy.Quarter_Name"
-                      ],
-                      "isCollapsed": true,
-                      "identityKeys": [
-                        {
-                          "Column": {
-                            "Expression": {
-                              "SourceRef": {
-                                "Entity": "V_Dim_FB_CalDay"
-                              }
-                            },
-                            "Property": "Quarter_Name"
-                          }
-                        }
-                      ],
-                      "isPinned": true
-                    },
-                    {
-                      "queryRefs": [
-                        "V_Dim_FB_CalDay.Year Hierarchy.MonthName"
-                      ],
-                      "isCollapsed": true,
-                      "isPinned": true
-                    }
-                  ],
-                  "root": {
-                    "identityValues": null,
-                    "children": [
-                      {
-                        "identityValues": [
-                          {
-                            "Literal": {
-                              "Value": "2025L"
-                            }
-                          }
-                        ],
-                        "isToggled": true,
-                        "children": [
-                          {
-                            "identityValues": [
-                              {
-                                "Literal": {
-                                  "Value": "'Q1'"
-                                }
-                              }
-                            ],
-                            "isToggled": true
-                          },
-                          {
-                            "identityValues": [
-                              {
-                                "Literal": {
-                                  "Value": "'Q2'"
-                                }
-                              }
-                            ],
-                            "isToggled": true
-                          },
-                          {
-                            "identityValues": [
-                              {
-                                "Literal": {
-                                  "Value": "'Q3'"
-                                }
-                              }
-                            ],
-                            "isToggled": true
-                          }
-                        ]
-                      }
-                    ]
-                  }
                 }
               ]
             }
@@ -1499,7 +1473,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "cc503412832ad9ba8bbb",
+                  "name": "c79d3dc59ae2779ec883",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1529,177 +1503,17 @@
               }
             }
           },
-          "02799dd3e27417872d70": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "72622745b017161903d9",
-                  "type": "Categorical",
-                  "expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "SalesStatus"
-                        }
-                      },
-                      "Property": "Status"
-                    }
-                  },
-                  "howCreated": 0
-                },
-                {
-                  "name": "14b56b29651d1d6a3ac6",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Volume_DonutValues"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "donutChart",
-              "objects": {},
-              "activeProjections": {
-                "Category": [
-                  {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "SalesStatus"
-                        }
-                      },
-                      "Property": "Status"
-                    }
-                  }
-                ]
-              }
-            }
-          },
-          "1f9940d065a01a466d74": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "68d7c0a767a28dab4d47",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "1V"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "tableEx",
-              "objects": {}
-            }
-          },
-          "38def2f04b20bb300b23": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "6133a8dcf916ca2a4e10",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "1Y"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "tableEx",
-              "objects": {}
-            }
-          },
-          "c1b693d1a8a7b2a55dbe": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "1bb09e25c7da77a705ea",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Volume_AOP_FCST_YA_Selection_TL"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "tableEx",
-              "objects": {}
-            }
-          },
-          "e72b9ea5ec67bc8e0c10": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "ed2c1c910c344b9e62fc",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "TSV"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {}
-            }
-          },
-          "edce4861432297e8c607": {
+          "92954f4b4e44f0efcc71": {
             "singleVisual": {
               "visualType": "textbox",
               "objects": {}
             }
           },
-          "f1e7ffdd18ed5a8371ed": {
-            "singleVisual": {
-              "visualType": "shape",
-              "objects": {}
-            }
-          },
-          "f9e48edc04d9bdd00843": {
+          "92e2601fe894f6682945": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "e1e9308f88495f1982ae",
+                  "name": "593d6370c86d28ccfdf3",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1708,63 +1522,7 @@
                           "Entity": "Measure Table"
                         }
                       },
-                      "Property": "Label vs Selected Metric Actual Vol"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {}
-            }
-          },
-          "fa376860ddc0c7575721": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "be15ad33a1bf2d18a2f4",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Volume_TL"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "card",
-              "objects": {}
-            }
-          },
-          "fd0a4ae32063b6830904": {
-            "singleVisual": {
-              "visualType": "textbox",
-              "objects": {}
-            }
-          },
-          "fd752963710d05d53018": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "37528b3067de37fa64c8",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Label vs Selected Metric Actual vs Vol"
+                      "Property": "Label vs Selected Metric Actual Rev"
                     }
                   },
                   "howCreated": 0
@@ -1780,7 +1538,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "02f3df9d6578eb238317",
+                  "name": "8eecc23500e50a49e769",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1837,6 +1595,83 @@
               "objects": {}
             }
           },
+          "9534ad22a4067355f47e": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "3fb680753c1785a5205a",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Rate_Per_Case_AOP_FCST_YA_Selection_TL"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 1,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Rate_Per_Case_AOP_FCST_YA_Selection_TL"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "9da9db9fd01e3b42dab3": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "a251aa94a2292be8f263": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "12555ca7fa713f18ae22",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Revenue_AOP_FCST_YA_Selection_TL"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {}
+            }
+          },
+          "a3a2b5ee6970531f3b23": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
           "a6243e4a714ce73bf686": {
             "singleVisual": {
               "visualType": "shape",
@@ -1847,7 +1682,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "0cf617b5df0e2d62bf9b",
+                  "name": "ea7d6ba0688461ef709b",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -1966,7 +1801,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "b90995c25faabe00b2ee",
+                  "name": "03d61f3ae9f13ccac7c1",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1981,7 +1816,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "d510d37cc64e78b896e1",
+                  "name": "3f222f04a0e6df33a525",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -1996,7 +1831,7 @@
                   "howCreated": 0
                 },
                 {
-                  "name": "175c7de692cd38bcfa4f",
+                  "name": "80e0abe5e89e77b2ea1c",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -2038,7 +1873,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "775d8ae4d0e6b9ea2927",
+                  "name": "77bca2a74387c8545ae7",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -2093,7 +1928,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "9d70f5694521fd42c9b3",
+                  "name": "4d08ee5c67f74c083664",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -2118,7 +1953,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "7d3c6c1d61185820e6e1",
+                  "name": "a57e00a4232f25d059d4",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -2169,6 +2004,131 @@
               }
             }
           },
+          "c1b693d1a8a7b2a55dbe": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7d6c31503fe37d22db2f",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Volume_AOP_FCST_YA_Selection_TL"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "tableEx",
+              "objects": {}
+            }
+          },
+          "c290baaa124de80e533f": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "1457761ee99fc72d1610",
+                  "type": "Categorical",
+                  "expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SalesStatus"
+                        }
+                      },
+                      "Property": "Status"
+                    }
+                  },
+                  "howCreated": 0
+                },
+                {
+                  "name": "208779c026c4d9334878",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Revenue_DonutValues"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "donutChart",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Revenue_DonutValues"
+                    }
+                  }
+                }
+              ],
+              "activeProjections": {
+                "Category": [
+                  {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "SalesStatus"
+                        }
+                      },
+                      "Property": "Status"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          "c5472355723508be7181": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "c5ea026c1770c55ecf43": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "e320dff151be368eb86f",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Label vs Selected Metric Actual Rev"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
           "c60ba41a481fadb5b08d": {
             "singleVisual": {
               "visualType": "textbox",
@@ -2184,6 +2144,46 @@
               "objects": {}
             }
           },
+          "ce911a18056850c23163": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "7740d19c7ac99d811d9d",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Abs/RPC Table"
+                        }
+                      },
+                      "Property": "Tooltip"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {},
+              "orderBy": [
+                {
+                  "Direction": 2,
+                  "Expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Abs/RPC Table"
+                        }
+                      },
+                      "Property": "Tooltip"
+                    }
+                  }
+                }
+              ]
+            }
+          },
           "d0a1938e0b199da55725": {
             "singleVisual": {
               "visualType": "textbox",
@@ -2194,7 +2194,7 @@
             "filters": {
               "byExpr": [
                 {
-                  "name": "50506b984df4ab1e468f",
+                  "name": "4f3df29cbe5df1a4d43a",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -2293,11 +2293,17 @@
               ]
             }
           },
-          "4501ce6b2429afb5fc0e": {
+          "d6bc8c5f8eae080d4a0d": {
+            "singleVisual": {
+              "visualType": "actionButton",
+              "objects": {}
+            }
+          },
+          "da110d95e52889b614c1": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "99e10bf05e52a8e9d1d1",
+                  "name": "300fa5c74c67e3a2097a",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -2306,7 +2312,7 @@
                           "Entity": "Measure Table"
                         }
                       },
-                      "Property": "Label vs Selected Metric Actual vs Rev"
+                      "Property": "1R"
                     }
                   },
                   "howCreated": 0
@@ -2314,149 +2320,34 @@
               ]
             },
             "singleVisual": {
-              "visualType": "card",
+              "visualType": "tableEx",
               "objects": {}
             }
           },
-          "6c8e259f3595fc39907c": {
+          "dbb94a36fb4c33024b36": {
             "singleVisual": {
               "visualType": "shape",
               "objects": {}
             }
           },
-          "783c9ac0403b1a382fa9": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "fb5074d545e6720532ab",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Rate_per_Case_TL"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "cardVisual",
-              "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 2,
-                  "Expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Rate_per_Case_TL"
-                    }
-                  }
-                }
-              ]
-            }
-          },
-          "7a7a0691018d41bb097c": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "2411b424ceed7c53aca7",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "1RPC"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
-            "singleVisual": {
-              "visualType": "tableEx",
-              "objects": {}
-            }
-          },
-          "92954f4b4e44f0efcc71": {
+          "e0f6b02a54091d78c707": {
             "singleVisual": {
               "visualType": "textbox",
               "objects": {}
             }
           },
-          "9534ad22a4067355f47e": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "515c04d9a060518c7b8f",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Rate_Per_Case_AOP_FCST_YA_Selection_TL"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
+          "e197677ea486baea033e": {
             "singleVisual": {
-              "visualType": "tableEx",
+              "visualType": "shape",
               "objects": {},
-              "orderBy": [
-                {
-                  "Direction": 1,
-                  "Expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Rate_Per_Case_AOP_FCST_YA_Selection_TL"
-                    }
-                  }
-                }
-              ]
+              "display": {
+                "mode": "hidden"
+              }
             }
           },
-          "c5ea026c1770c55ecf43": {
-            "filters": {
-              "byExpr": [
-                {
-                  "name": "e466fb54af8357215ab3",
-                  "type": "Advanced",
-                  "expression": {
-                    "Measure": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "Measure Table"
-                        }
-                      },
-                      "Property": "Label vs Selected Metric Actual Rev"
-                    }
-                  },
-                  "howCreated": 0
-                }
-              ]
-            },
+          "e3afc85190708c04a3d7": {
             "singleVisual": {
-              "visualType": "card",
+              "visualType": "actionButton",
               "objects": {}
             }
           },
@@ -2466,11 +2357,42 @@
               "objects": {}
             }
           },
+          "e4484aae541090e6e250": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "e72b9ea5ec67bc8e0c10": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "313baafbec83330d19c1",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "TSV"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
           "e81a306f82d6a80aa509": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "2ca476fb6953394e8fea",
+                  "name": "3bc2e298f23bd229eee9",
                   "type": "Advanced",
                   "expression": {
                     "Measure": {
@@ -2491,26 +2413,11 @@
               "objects": {}
             }
           },
-          "e197677ea486baea033e": {
-            "singleVisual": {
-              "visualType": "shape",
-              "objects": {},
-              "display": {
-                "mode": "hidden"
-              }
-            }
-          },
-          "e4484aae541090e6e250": {
-            "singleVisual": {
-              "visualType": "shape",
-              "objects": {}
-            }
-          },
           "e90221bab62315d6ec43": {
             "filters": {
               "byExpr": [
                 {
-                  "name": "e56fa56b9a4aef80c587",
+                  "name": "1a728c860493d550267c",
                   "type": "Categorical",
                   "expression": {
                     "Column": {
@@ -2570,9 +2477,71 @@
               }
             }
           },
+          "edce4861432297e8c607": {
+            "singleVisual": {
+              "visualType": "textbox",
+              "objects": {}
+            }
+          },
           "f1debc0d34ce67878e41": {
             "singleVisual": {
               "visualType": "textbox",
+              "objects": {}
+            }
+          },
+          "f1e7ffdd18ed5a8371ed": {
+            "singleVisual": {
+              "visualType": "shape",
+              "objects": {}
+            }
+          },
+          "f9e48edc04d9bdd00843": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "e6d84497997a7dea5e3f",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Label vs Selected Metric Actual Vol"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
+              "objects": {}
+            }
+          },
+          "fa376860ddc0c7575721": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "2104c57bdae5ce5c102e",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Volume_TL"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
+            "singleVisual": {
+              "visualType": "card",
               "objects": {}
             }
           },
@@ -2582,21 +2551,34 @@
               "objects": {}
             }
           },
-          "9da9db9fd01e3b42dab3": {
+          "fd0a4ae32063b6830904": {
             "singleVisual": {
               "visualType": "textbox",
               "objects": {}
             }
           },
-          "dbb94a36fb4c33024b36": {
+          "fd752963710d05d53018": {
+            "filters": {
+              "byExpr": [
+                {
+                  "name": "be30aef8b5c1f630d6a0",
+                  "type": "Advanced",
+                  "expression": {
+                    "Measure": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "Measure Table"
+                        }
+                      },
+                      "Property": "Label vs Selected Metric Actual vs Vol"
+                    }
+                  },
+                  "howCreated": 0
+                }
+              ]
+            },
             "singleVisual": {
-              "visualType": "shape",
-              "objects": {}
-            }
-          },
-          "742ffad395ff2cbc57af": {
-            "singleVisual": {
-              "visualType": "textbox",
+              "visualType": "card",
               "objects": {}
             }
           }
